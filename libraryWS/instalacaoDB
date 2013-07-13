@@ -1,0 +1,28 @@
+O sistema de back-end da biblioteca utiliza MySQL como base de dados;
+
+requisitos:
+
+* mysql rodando na maquina onde o sistema irá rodar.
+* criar banco de dados chamado "library"
+* saber: 
+	* url de conexão
+	* usuario e senha de conexão
+
+* alterar arquivo jdbc.properties 
+	* jdbc.url = recebe url de conexão ao banco
+	* jdbc.username = recebe user de conexão ao banco
+	* jdbc.password = recebe passowrod de conexão ao banco
+	
+###Dicas de instalação do MySQL###
+
+* instala o mysql na porta 3306;
+* acessa o mysql com o usuario root;
+* cria o usuario libuser com a senha libpass;
+    CREATE USER 'libuser'@'localhost' IDENTIFIED BY 'libpass';
+* da acesso permissão de grant ao usuario criado;
+    GRANT ALL PRIVILEGES ON *.* TO 'libuser'@'localhost' WITH GRANT OPTION;
+* acessa com o usuario lambscan
+    mysql -u libuser -p
+
+cria o banco, library
+  create database library;
