@@ -1,0 +1,31 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui">
+        	
+      	<h:form id="newAuthor" prependId="false" >
+		    <div id="messages" class="messages">
+	       		<p:messages showDetail="false"  id="msg"/>
+	       	</div>
+	       	
+	       	<div id="boxNewAuthor" class="boxNewAuthor">
+	       		<h:panelGrid columns="2" columnClasses="colunaLabel60,coluna290" styleClass="formCadastroAuthor" border="0">
+					<h:outputText value="#{messages['lb_name']}" />
+					<p:inputText id="name" label="#{messages['lb_name_']}" required="true"  value="#{authorMBean.author.name}" style="width:100%" />
+
+				</h:panelGrid>
+				
+				<br />
+			
+				<div class="messages" align="center">
+					<p:commandButton value="#{messages['lb_post']}" 
+						id="gravar" action="#{authorMBean.save}" ajax="false" 
+						styleClass="button" 
+						oncomplete="newAuthorModal.hide();">  
+					</p:commandButton>
+					<p:commandButton value="#{messages['lb_back']}" immediate="true" id="voltar" ajax="false"  styleClass="button" action="#{authorMBean.cancel}"/>
+				</div>
+	       	</div>
+		</h:form>
+</ui:composition>

@@ -1,0 +1,32 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui">
+        	
+      	<h:form id="newCategory" prependId="false" >
+		    <div id="messages" class="messages">
+	       		<p:messages showDetail="false"  id="msg"/>
+	       	</div>
+	       	
+	       	<div id="boxNewCategory" class="boxNewCategory">
+	       		<h:panelGrid columns="2" columnClasses="colunaLabel60,coluna290" styleClass="formCadastroCategory" border="0">
+					<h:outputText value="#{messages['lb_type']}" />
+					<p:inputText id="name" label="#{messages['lb_type_']}" required="true"  value="#{categoryMBean.category.type}" style="width:100%" />
+
+				</h:panelGrid>
+				
+				<br />
+			
+				<div class="messages" align="center">
+					<p:commandButton value="#{messages['lb_post']}" 
+						id="gravar" action="#{categoryMBean.save}" ajax="false" 
+						styleClass="button" 
+						oncomplete="newCategoryModal.hide();">  
+					</p:commandButton>
+					<p:commandButton value="#{messages['lb_back']}" immediate="true" id="voltar" ajax="false"  styleClass="button" action="#{categoryMBean.cancel}">
+					</p:commandButton>
+				</div>
+	       	</div>
+		</h:form>
+</ui:composition>

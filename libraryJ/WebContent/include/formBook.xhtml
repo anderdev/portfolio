@@ -1,0 +1,50 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui">
+        	
+      	<h:form id="newBook" prependId="false" >
+	       	<div id="boxNewBook" class="boxNewBook">
+	       		<h:panelGrid columns="2" columnClasses="colunaLabel60,coluna290" styleClass="formCadastroBook" border="0">
+					<h:outputText value="#{messages['lb_title']}" />
+					<p:inputText id="name" label="#{messages['lb_title_']}" required="true"  value="#{bookMBean.book.title}" style="width:97%" />
+
+					<h:outputText value="#{messages['lb_description']}" />
+					<p:inputTextarea rows="10" cols="53" counter="counter" maxlength="300" label="#{messages['lb_description_']}" required="true"
+					    counterTemplate="#{messages['lb_caracters_count']}" autoResize="false" value="#{bookMBean.book.description}"/>
+					<h:outputText  />
+					<h:outputText id="counter" />
+					
+					
+					<h:outputText value="#{messages['lb_published']}" />
+					<p:inputText id="publicado" label="#{messages['lb_published_']}" required="true" maxlength="4" value="#{bookMBean.book.yearOfPublished}" size="2" />
+				</h:panelGrid>
+				
+				<h:panelGrid columns="4" columnClasses="colunaLabel70Right,colunaLabel180,colunaLabel80Right,colunaLabel100"  border="0">
+					<h:outputText value="#{messages['lb_author']}" />
+					<p:selectOneMenu value="#{bookMBean.author.id}" label="#{messages['lb_author_']}" required="true" style="width:100%">
+			            <f:selectItem itemLabel="#{messages['lb_select']}" itemValue="" />
+			            <f:selectItems value="#{bookMBean.authores}"  var="a" itemLabel="#{a.name}" itemValue="#{a}"/>  
+			        </p:selectOneMenu>
+			        
+			        <h:outputText value="#{messages['lb_category']}"  />
+					<p:selectOneMenu value="#{bookMBean.category.id}" label="#{messages['lb_category_']}" required="true" >
+			            <f:selectItem itemLabel="#{messages['lb_select']}" itemValue="" />
+			            <f:selectItems value="#{bookMBean.categories}" var="c" itemLabel="#{c.type}" itemValue="#{c}"/>  
+			        </p:selectOneMenu>
+				</h:panelGrid>
+				
+				<br />
+			
+				<div class="buttonNewBook" align="center">
+					<p:commandButton value="#{messages['lb_post']}" 
+						id="gravar" action="#{bookMBean.save}" ajax="false" 
+						styleClass="button" 
+						oncomplete="newBookModal.hide();">  
+					</p:commandButton>
+					<p:commandButton value="#{messages['lb_back']}" immediate="true" id="voltar" ajax="false"  action="#{bookMBean.cancel}" styleClass="button" oncomplete="newBookModal.hide();"/>
+				</div>
+	       	</div>
+		</h:form>
+</ui:composition>

@@ -1,0 +1,62 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui"
+        template="../template/templateAPP.xhtml" >
+        
+        
+        <ui:define name="contentAPP">
+	        <h:form prependId="false">
+	        	<h:outputText value="#{messages['lb_author_list']}" styleClass="boxTitulo"/>
+	        	
+	        	<div align="center" style="width: 100%;" >
+	        		<div id="messages" class="messages" style="width: 50%;">
+			       		<p:messages showDetail="true" showSummary="false"  autoUpdate="true" id="mensagem"/>
+			       	</div>
+	        	
+	        		<h:panelGrid columns="2" width="50%" border="0" columnClasses="alignLeft,alignRight">
+		        		<p:commandButton value="#{messages['lb_delete']}" styleClass="button" onclick="confirmation.show()" />
+		        		<p:commandButton value="#{messages['lb_new']}" 
+		        			action="#{authorMBean.newAuthor}"  
+		        			styleClass="button" 
+		        			update=":newAuthor" 
+		        			id="newButton"
+		        			oncomplete="newAuthorModal.show()" >
+		        		</p:commandButton>
+				    </h:panelGrid>
+				   
+				    <p:dataTable var="cat" value="#{authorMBean.authorList}" style="width:50%" id="authorList"
+				    		paginatorAlwaysVisible="false" paginator="true" emptyMessage="#{messages['lb_empty_list']}"
+				    		rows="10" selection="#{authorMBean.selectedAuthors}" rowKey="#{cat}" 
+				    		paginatorPosition="botton" >
+				    	
+				    	<p:column selectionMode="multiple" style="text-align:center;width:5%"  />
+				        
+				        <p:column sortBy="#{cat.name}" >
+				            <f:facet name="header">
+				                <h:outputText value="#{messages['lb_name_']}" />
+				            </f:facet>
+				            <h:outputText value="#{cat.name}" />
+				        </p:column>
+				        
+				        <p:column style="width:5%">
+				        	<p:commandLink action="#{authorMBean.edit}" update=":newAuthor" oncomplete="newAuthorModal.show();" id="editButton">
+				        		<f:setPropertyActionListener value="#{cat}" target="#{authorMBean.author}" />  
+								<p:graphicImage value="#{messages['img_update']}" style="border: 0px" />
+							</p:commandLink>
+				        </p:column>
+				    </p:dataTable>
+				</div>	
+				<p:confirmDialog message="#{messages['lb_multiple_exclusion']}" header="#{messages['lb_header_confirmation']}" severity="alert" widgetVar="confirmation">  
+                  	<div align="center">
+				        <p:commandButton value="#{messages['lb_yes']}" update="authorList,mensagem" oncomplete="confirmation.hide()" action="#{authorMBean.delete}"/>  
+				        <p:commandButton value="#{messages['lb_no']}" onclick="confirmation.hide()" type="button" action="#{authorMBean.cancel}"/>   
+	                 </div> 
+	    		</p:confirmDialog>  		
+			</h:form>  
+			<p:dialog header="#{messages['lb_author_registration']}" resizable="false" widgetVar="newAuthorModal" modal="true" appendToBody="true" height="150" width="420">  
+			    <ui:include src="/include/formAuthor.xhtml" />
+			</p:dialog>
+        </ui:define>
+</ui:composition>

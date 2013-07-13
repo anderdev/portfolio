@@ -1,0 +1,43 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui">
+        
+       	<div id="login" >
+       		<h:form prependId="false">
+       			<p:focus context="panel"/>  
+       			<p:panel header="#{messages['lb_login_info']}" id="panel">
+       				<h:panelGrid styleClass="boxLogin" columns="2" border="0" columnClasses="width80,width200">
+						<h:outputText value="#{messages['lb_email']}"/>
+						<h:inputText tabindex="1" label="#{messages['lb_email_']}" required="true" value="#{userMBean.user.email}" size="30"/>
+						
+						<h:outputText value="#{messages['lb_password']}"/>
+						<h:inputSecret tabindex="2" label="#{messages['lb_password_']}" required="true"  value="#{userMBean.user.password}" size="30"/>
+					</h:panelGrid>
+						
+					<h:panelGrid styleClass="boxLogin" columns="4" columnClasses="width80,width80,width80,width80" border="0">
+						<h:outputText />
+						<p:commandButton id="btLogin" 
+								tabindex="3"
+								styleClass="button" 
+								value="#{messages['lb_login']}" 
+								action="#{userMBean.login}"
+								update="msgLogin" 
+								ajax="false">
+						</p:commandButton>	
+						<p:commandButton id="btNewUser"
+								tabindex="4" 
+								value="#{messages['lb_new']}" 
+								update=":newUser" 
+								action="#{userMBean.newUser}"
+								oncomplete="newUserModal.show()"
+								styleClass="button" 
+								immediate="true" >
+						</p:commandButton>	
+						<h:outputText />
+					</h:panelGrid>
+       			</p:panel>
+			</h:form>
+		</div>
+</ui:composition>

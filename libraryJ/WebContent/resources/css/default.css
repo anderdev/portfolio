@@ -1,0 +1,470 @@
+html,body {
+	margin:0;
+	padding:0;
+	height:100%; /* needed for container min-height */
+	
+	font-family:arial,sans-serif;
+	font-size:small;
+	color:#666;
+}
+
+h1 { 
+	font:1.5em georgia,serif; 
+	margin:0.5em 0;
+}
+
+h2 {
+	font:1.25em georgia,serif; 
+	margin:0 0 0.5em;
+}
+
+p { 
+	line-height:1.5; 
+	margin:0 0 1em;
+}
+
+div#container {
+	position:relative; /* needed for footer positioning*/
+	margin:0 auto; /* center, not in IE5 */
+	width:100%;
+	background:#f0f0f0;
+	
+	height:auto !important; /* real browsers */
+	height:100%; /* IE6: treaded as min-height*/
+
+	min-height:100%; /* real browsers */
+}
+
+.main {
+	width: 99.5%;
+	height:auto !important; /* real browsers */
+	border: 0px dotted #000;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	position: absolute;
+	top: 180px;
+}
+
+div#header {
+	padding:1em;
+	background:#ddd url("../csslayout.gif") 98% 10px no-repeat;
+	border-bottom:6px double gray;
+}
+
+div#header p {
+	font-style:italic;
+	font-size:1.1em;
+	margin:0;
+}
+
+div#logo{
+	border: 0px dotted #000;
+	width:300px;
+	height: 100px;
+	position: absolute;
+	top: 20px;
+	margin-left: 20px;
+}
+
+.menu {
+	width: 98%;
+	position: absolute;
+	left: 1%;
+	height: 10px;
+	border: 0px dotted #000;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	top: 10px;
+}
+
+div#footer {
+	width: 98%;
+	position: absolute;
+	left: 1%;
+	height:45px;
+	bottom:0; /* stick to bottom */
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-weight: bold;
+	text-align: center;
+}
+
+div#content {
+	padding:1em 1em 5em; /* bottom padding for footer */
+}
+
+div#content p {
+	text-align:justify;
+	padding:0 1em;
+}
+
+
+div#login{
+	width: 350px;
+	margin-left: -175px;
+	position: absolute;
+	left: 50%;
+	top: 38%;
+	border: 0px dotted #000;
+
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+}
+
+div#register{
+	width: 50px;
+	margin-left: -25px;
+	position: absolute;
+	left: 91%;
+	top: 8px;
+	border: 0px dotted #000;
+	cursor: pointer;
+}
+
+.messages{
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	border: 0px dotted #000;
+}
+
+.notLoggedMessage{
+	width: 100%;
+	top:45%;
+	position: absolute;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	text-align:center;
+	border: 0px dotted #000;
+}
+
+.infoLogo{
+	width: 600px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-weight: bold;
+	text-align: center;
+	color: red;
+	border: 0px dotted #000;
+}
+
+.infoLogoSuccess{
+	width: 600px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-weight: bold;
+	text-align: center;
+	color: blue;
+	border: 0px dotted #000;
+}
+
+.form{
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-weight: bold;
+}
+
+.fontMessage{
+	font-size: 12px;
+	font-weight: bold;
+}
+
+.boxLogin{
+	width: 320px;
+}
+
+.boxLoginMessage{
+	width: 500px;
+	left: 50%;
+	top: 20%;
+	position: absolute;
+	margin-left: -250px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-weight: bold;
+	border: 0px dotted #000;
+}
+
+.boxNewUser{
+	width:400px;
+	position: absolute;
+	top:70px;
+	border: 0px dotted #000;
+}
+
+.boxNewBook{
+	width:462px;
+	position: absolute;
+	top:40px;
+	border: 0px dotted #000;
+}
+
+.buttonNewBook{
+	width:462px;
+	border: 0px dotted #000;
+}
+
+.boxNewAuthor{
+	width:400px;
+	position: absolute;
+	top:70px;
+	border: 0px dotted #000;
+}
+
+.boxNewCategory{
+	width:400px;
+	position: absolute;
+	border: 0px dotted #000;
+	top:70px;
+}
+
+
+.boxTitulo{
+	border: 0px dotted #000;
+	margin-left: -100px;
+	position: absolute;
+	left: 50%;
+	top: -50px;
+	font-family: sans-serif;
+	font-weight: bold;
+	font-size: 20px;
+}
+
+div#boxUsuarioLogado{
+	width: 300px;
+	margin-left: -150px;
+	left: 85%;
+	position: absolute;
+	font-style: italic;
+	text-align: center;
+	font-weight: bold;
+	font-size: 12px;
+	vertical-align: middle;	
+	color: #fff;
+	text-decoration: none;
+	border: solid #dfedf8;
+	border-width: 0px 0;
+	top: 20px;
+	padding-right: 10px;
+}
+
+.formModal{
+	overflow: hidden;
+}
+
+.alignRightWithPadding{
+	text-align: right;
+	padding-right: 10px;
+}
+
+.alignCenter{
+	text-align: centrer;
+}
+.alignLeftWithPadding{
+	text-align: left;
+	padding-left: 10px;
+}
+
+.alignLef{float:left !important;}
+.alignRight{float:right !important;}
+
+.button{
+	width: 100px;
+	font-family:tahoma,verdana,arial;
+   	font-size: 12px;
+   	font-weight: bold !important;
+	cursor: pointer;
+}
+
+.button150{
+	width: 150px;
+	height:25px;
+	font-family:tahoma,verdana,arial;
+   	font-size: 9px !important;
+   	font-weight: bold !important;
+	cursor: pointer;
+}
+
+.width30px{
+	width: 100px !important;
+}
+
+.colunaLabe20Porcento{
+	width: 20% !important;
+}
+
+.colunaLabel50Center{
+	width: 50px !important;
+	text-align: center;
+	border: 0px dotted #000;
+}
+
+.colunaLabel60{
+	width: 60px  !important;
+	text-align: right;
+	border: 0px dotted #000;
+}
+
+.colunaLabel70Right{
+	width: 70px  !important;
+	text-align: right;
+	border: 0px dotted #000 !important;
+}
+
+.colunaLabel70Center{
+	width: 70px !important;
+	text-align: center;
+	border: 0px dotted #000;
+}
+
+.colunaLabel80Right{
+	width: 90px  !important;
+	text-align: right;
+	border: 0px dotted #000;
+}
+
+.colunaLabel100{
+	width:100px  !important;
+	border: 0px dotted #000 !important;
+}
+
+.colunaLabe100Porcento{
+	width: 100% !important;
+}
+
+.editor{
+	width: 100% !important;
+}
+
+.coluna120{
+	width: 120px !important;
+	border: 0px dotted #000;
+}
+
+.coluna120RightWithPaddingRigth{
+	width: 120px !important;
+	text-align: right;
+	padding-right: 5px;
+	border: 0px dotted #000;
+}
+
+.coluna140{
+	width: 140px !important;
+}
+
+.colunaLabel150Center{
+	width: 150px !important;
+	text-align: center;
+	border: 0px dotted #000;
+}
+
+.colunaLabel160Left{
+	width: 160px;
+	text-align: left;
+	border: 0px dotted #000;
+}
+
+.coluna160{
+	width: 160px !important;
+}
+
+.colunaLabel170Right{
+	width: 170px;
+	text-align: right;
+	border: 0px dotted #000;
+}
+
+.colunaLabel200Right{
+	width: 200px;
+	text-align: right;
+	border: 0px dotted #000;
+}
+
+.colunaLabel180{
+	width: 180px;
+	border: 0px dotted #000;
+}
+
+.colunaLabel190{
+	width: 190px;
+	border: 0px dotted #000;
+}
+
+.colunaLabel200{
+	width: 200px;
+	border: 0px dotted #000;
+}
+
+.colunaLabel220{
+	width: 220px;
+	border: 0px dotted #000;
+}
+
+.coluna290{
+	width: 290px;
+	border: 0px dotted #000;
+}
+
+.coluna310{
+	width: 310px;
+	border: 0px dotted #000;
+}
+
+.colunaLabel330{
+	width: 330px;
+	border: 0px dotted #000;
+}
+
+.coluna420{
+	width: 420px;
+	border: 0px dotted #000;
+}
+
+
+
+.colunaInput100{
+	width: 100px  !important;
+	border:0px dotted #000;
+}
+
+.inputText150{
+	width: 150px ;
+}
+
+.inputText100{
+	width: 100px ;
+}
+
+.menuItem{
+	border:0px dotted #000;
+	margin-left: 20px;
+	margin-right: 20px;
+}
+
+.menuLogout{
+	border:0px dotted #000;
+	margin-right: 20px;
+	margin-left: 50%;
+}
+
+.autoSize{
+	width: auto !important;
+	height: auto;
+}
+
+.separator{
+	height: 5px !important;
+}
+
+
+.width80{
+	width: 80px;	
+}
+
+.width200{
+	width: 200px;	
+}
+
+.width300{
+	width: 300px;	
+}

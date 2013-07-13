@@ -1,0 +1,20 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui"> 
+        
+        <h:form prependId="false">
+        	
+        	<div class="menu">
+		       	<p:menubar autoSubmenuDisplay="true" rendered="#{userMBean.loggedUser != null}">
+		       		<p:menuitem value="#{messages['lb_book']}" action="#{bookMBean.list}" ajax="false" styleClass="menuItem" rendered="#{userMBean.loggedUser.admin}"/>
+					<p:menuitem value="#{messages['lb_author_']}" action="#{authorMBean.list}" ajax="false" styleClass="menuItem" rendered="#{userMBean.loggedUser.admin}"/>
+					<p:menuitem value="#{messages['lb_category_']}" action="#{categoryMBean.list}" ajax="false" styleClass="menuItem" rendered="#{userMBean.loggedUser.admin}"/>
+					<p:menuitem value="#{messages['lb_user']}" action="#{userMBean.list}" ajax="false" styleClass="menuItem" rendered="#{userMBean.loggedUser.admin}"/>
+					<p:menuitem value="#{messages['lb_logout']}" action="#{userMBean.logout}" ajax="false" styleClass="menuItem"/>
+				</p:menubar>
+			</div>
+			
+		</h:form>
+</ui:composition>
