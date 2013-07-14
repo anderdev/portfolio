@@ -1,0 +1,63 @@
+<ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:c="http://java.sun.com/jstl/core"
+	  xmlns:a4j="http://richfaces.org/a4j"
+	  xmlns:rich="http://richfaces.org/rich"
+      template="template/templateAPP.xhtml">
+            
+            <ui:define name="titulo">
+            	<h:outputText value="#{msg.label_titulo_parametros}"/>                
+            </ui:define>
+            
+            <ui:define name="conteudo">  
+            	<div align="center">
+            		<rich:spacer width="1" height="30" /> 
+            		<h2><h:outputText value="#{msg.tt_cadastroDeParametros}"/></h2>            						
+					<rich:spacer width="1" height="60" />
+					<rich:panel style="width:50%;">
+						<h:inputHidden id="codigo" value="#{parametrosController.parametrosDTO.codigo}"></h:inputHidden>
+						
+						<h:panelGrid columns="1">
+							<rich:message  for="descricaoMoeda" styleClass="errorMessage"/>
+							<rich:message  for="descricaoTipoFechamento" styleClass="errorMessage"/>
+						</h:panelGrid> 
+										
+						<h:panelGrid columns="4" >
+			            	<h:outputText value="#{msg.label_moeda}" style="colunaLabel"/>
+			            	<rich:comboBox width="110" label="#{msg.label_tabela_moeda}" 
+			            		required="true"  
+			            		suggestionValues="#{parametrosController.listaDeMoedas}" 
+			            		directInputSuggestions="true" 
+			            		enableManualInput="false"
+			            		defaultLabel="#{msg.label_selecione}" 
+			            		id="descricaoMoeda" 
+			            		value="#{parametrosController.parametrosDTO.descricaoMoeda}"/>
+			            	
+						
+							<h:outputText value="#{msg.label_tipoFechamento}" style="colunaLabel"/>
+							<rich:comboBox width="110" label="#{msg.label_tabela_tipoFechamento}" 
+			            		required="true"  
+			            		suggestionValues="#{parametrosController.listaDeTiposFechamento}" 
+			            		directInputSuggestions="true" 
+			            		enableManualInput="false"
+			            		defaultLabel="#{msg.label_selecione}" 
+			            		id="descricaoTipoFechamento" 
+			            		value="#{parametrosController.parametrosDTO.descricaoTipoFechamento}"/>
+						</h:panelGrid>
+						<br/>									
+						<h:panelGrid columns="2">
+			            	<a4j:commandButton value="#{msg.btn_gravar}" styleClass="botao"  action="#{parametrosController.salvar}" >
+			            	</a4j:commandButton>
+							<a4j:commandButton value="#{msg.btn_sair}" styleClass="botao"  action="#{parametrosController.cancelar}" immediate="true">
+							</a4j:commandButton>
+						</h:panelGrid>	
+					</rich:panel>		
+					<br/>
+					<p><h:outputText value="#{msg.hint_infoParametros1}"/></p>
+					<p><h:outputText value="#{msg.hint_infoParametros2}"/></p>
+					<p><h:outputText value="#{msg.hint_infoParametros3}"/></p>						    
+				</div>
+            </ui:define>
+        </ui:composition>

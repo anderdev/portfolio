@@ -1,0 +1,157 @@
+<ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:c="http://java.sun.com/jstl/core"
+	  xmlns:a4j="http://richfaces.org/a4j"
+	  xmlns:rich="http://richfaces.org/rich"
+      template="template/templateAPP.xhtml">
+	<ui:define name="titulo">
+	    <h:outputText value="#{msg.label_titulo_listaDescricoes}"/>
+	</ui:define>
+            
+	<ui:define name="conteudo">  
+    	<rich:spacer width="1" height="20" /> 
+		<a4j:keepAlive beanName="descricaoController" />
+		<center>
+			<h2><h:outputText value="#{msg.tt_listaDeDescricoes}"/></h2>
+		</center>					
+        <rich:spacer width="1" height="5" /> 
+        <div align="center">
+	       	<div class="boxBotaoNovo60" align="right">
+	        	<a4j:commandButton action="#{descricaoController.novaDescricao}"  reRender="descricaoTipoConta,descricao" oncomplete="#{rich:component('mdNovaDescricao')}.show();" onclick="#{rich:component('mdIndicatorLDesc')}.show()" value="#{msg.btn_novaDescricao}" styleClass="botao" ajaxSingle="true" immediate="true">
+	        	</a4j:commandButton>
+			</div>					
+			<h:panelGrid columns="1">
+				<rich:message  for="descricao" styleClass="errorMessage"/>
+				<rich:message  for="descricaoTipoConta" styleClass="errorMessage"/>
+			</h:panelGrid> 	
+			<rich:spacer width="1" height="10" /> 
+			<a4j:region  id="regionListaDeDescricao">	        
+				<rich:dataTable value="#{descricaoController.listaDeDescricao}" var="d" width="60%" 
+		        	rows="10" reRender="dsd" id="listaDeDescricao" ajaxSingle="true" immediate="true">
+		        	
+		            <rich:column sortBy="#{d.tipoConta.descricao}" style="text-align: left;"  width="10%" filterBy="#{d.tipoConta.descricao}" filterEvent="onkeyup"> 
+		                <f:facet name="header">
+		                    <h:outputText value="#{msg.label_tabela_tipoDescricao}"/>
+		                </f:facet>
+		                <h:outputText value="#{d.tipoConta.descricao}" />
+		            </rich:column> 
+		            
+		            <rich:column sortBy="#{d.descricao}" style="text-align: left;" width="55%" filterBy="#{d.descricao}" filterEvent="onkeyup"> 
+		                <f:facet name="header">
+		                    <h:outputText value="#{msg.label_tabela_descricao}"/>
+		                </f:facet>
+		                <h:outputText value="#{d.descricao}" />
+		            </rich:column> 
+		            
+		            <rich:column width="5%">
+		                <f:facet name="header">
+							<h:outputText value=""></h:outputText>
+						</f:facet>
+						<a4j:commandLink action="#{descricaoController.editar}" reRender="descricaoTipoConta,descricao" ajaxSingle="true" onclick="#{rich:component('mdIndicatorLDesc')}.show()" oncomplete="#{rich:component('mdNovaDescricao')}.show();">
+							<f:setPropertyActionListener target="#{descricaoController.descricaoDTO.codigo}" value="#{d.codigo}"/>
+							<h:graphicImage  url="/imagens/btn_editar.gif" style="border: 0px" />
+						</a4j:commandLink>
+		            </rich:column>
+		           
+		            <rich:column width="5%">
+		                <f:facet name="header">
+							<h:outputText value=""></h:outputText>
+						</f:facet>
+						<a4j:commandLink oncomplete="#{rich:component('mdExcluirDescricao')}.show();" onclick="#{rich:component('mdIndicatorLDesc')}.show()" ajaxSingle="true" >
+							<f:setPropertyActionListener target="#{descricaoController.descricaoDTO.codigo}" value="#{d.codigo}"/>
+							<h:graphicImage  url="/imagens/btn_deletar.gif" style="border: 0px" />
+						</a4j:commandLink>
+		            </rich:column>
+		            <f:facet name="footer">
+		                <rich:datascroller stepControls="hide" id="dsd" renderIfSinglePage="false">
+		                	<f:facet name="first" >
+		                        <h:graphicImage value="#{msg.first}" style="border:0px" onclick="#{rich:component('mdIndicatorLDesc')}.show()" alt="#{msg.btn_first}" title="#{msg.btn_first}"/>
+		                    </f:facet>
+		                    <f:facet name="first_disabled"  >
+		                        <h:graphicImage value="#{msg.first_disabled}" style="border:0px" alt="#{msg.btn_first}" title="#{msg.btn_first}"/>
+		                    </f:facet>
+		                    <f:facet name="last">
+		                        <h:graphicImage value="#{msg.last}" style="border:0px" onclick="#{rich:component('mdIndicatorLDesc')}.show()" alt="#{msg.btn_last}" title="#{msg.btn_last}"/>
+		                    </f:facet>     
+		                    <f:facet name="last_disabled">
+		                        <h:graphicImage value="#{msg.last_disabled}" style="border:0px" alt="#{msg.btn_last}" title="#{msg.btn_last}"/>
+		                    </f:facet>                       
+		                    <f:facet name="fastforward">
+		                        <h:graphicImage value="#{msg.next}" style="border:0px" onclick="#{rich:component('mdIndicatorLDesc')}.show()" alt="#{msg.btn_fastforward}" title="#{msg.btn_fastforward}"/>
+		                    </f:facet>
+		                    <f:facet name="fastforward_disabled">
+		                        <h:graphicImage value="#{msg.next_disabled}" style="border:0px" alt="#{msg.btn_fastforward}" title="#{msg.btn_fastforward}"/>
+		                    </f:facet>
+		                    <f:facet name="fastrewind">
+		                        <h:graphicImage value="#{msg.previous}" style="border:0px" onclick="#{rich:component('mdIndicatorLDesc')}.show()" alt="#{msg.btn_fastrewind}" title="#{msg.btn_fastforward}"/>
+		                    </f:facet>
+		                    <f:facet name="fastrewind_disabled" >
+		                        <h:graphicImage value="#{msg.previous_disabled}" style="border:0px" alt="#{msg.btn_fastrewind}" title="#{msg.btn_fastrewind}"/>
+		                    </f:facet>
+		                </rich:datascroller>
+		            </f:facet>
+		        </rich:dataTable>
+		        
+		        <rich:modalPanel id="mdIndicatorLDesc" autosized="true">
+			      	<div align="center">	
+			      		<h:graphicImage url="/imagens/ajax-loader.gif"/>
+			         	<a4j:status id="loadingLDesc" onstop="#{rich:component('mdIndicatorLDesc')}.hide()">  
+						</a4j:status>  
+					</div>
+				</rich:modalPanel>
+		    
+		    
+		         <rich:modalPanel id="mdExcluirDescricao" width="280" height="150">
+		        	<a4j:keepAlive beanName="descricaoController" />
+		        	<f:facet name="header">
+		        		<h:outputText value="#{msg.label_tabela_confirmacao}"/>
+		        	</f:facet>
+		        	<div align="center">
+					   	<h:panelGrid>
+					      	<h:panelGrid columns="2">
+					         	<h:graphicImage url="/imagens/alert_g.gif" />
+						 		<h:outputText value="#{msg.label_confirmaExclusao}"/>
+					      	</h:panelGrid>
+					      	<h:panelGroup style="width=100%">
+					      		<a4j:commandButton action="#{descricaoController.excluir}" ajaxSingle="true" value="#{msg.btn_sim}" reRender="listaDeDescricao" styleClass="botao" onclick="#{rich:component('mdExcluirDescricao')}.hide();#{rich:component('mdIndicatorLDesc')}.show();">
+					      		</a4j:commandButton>
+					        	<a4j:commandButton value="#{msg.btn_nao}" styleClass="botao" onclick="#{rich:component('mdExcluirDescricao')}.hide();"/> 
+					     	</h:panelGroup>
+					   	</h:panelGrid>
+					</div>
+				</rich:modalPanel>		
+				<rich:modalPanel id="mdNovaDescricao" autosized="true">
+					<a4j:keepAlive beanName="descricaoController" />
+		        	<f:facet name="header">
+		        		<h:outputText value="#{msg.label_cadastrarDescricao}"/>
+		        	</f:facet>		
+					<rich:panel style="width:98%;">
+						<h:panelGrid columns="2" columnClasses="colunaLabel,colunaInputGrande" >
+							<h:outputText value="#{msg.label_tipoDescricao}" style="colunaLabel"/>
+							<rich:comboBox required="true" width="180" 
+										   label="#{msg.label_tabela_tipoDescricao}" 
+										   suggestionValues="#{descricaoController.listaDeContas}" 
+										   directInputSuggestions="true" 
+										   enableManualInput="false"
+										   defaultLabel="#{msg.label_selecione}" 
+										   id="descricaoTipoConta" 
+										   value="#{descricaoController.descricaoDTO.descricaoTipoConta}"/>
+															
+			            	<h:outputText value="#{msg.label_descricao}" style="colunaLabel"/>
+							<h:inputText required="true"  id="descricao" label="#{msg.label_tabela_descricao}" value="#{descricaoController.descricaoDTO.descricao}" style="width:100%" styleClass="input_content"/>
+						</h:panelGrid>
+						<br/>									
+						<h:panelGrid columns="2">
+			            	<a4j:commandButton value="#{msg.btn_gravar}" id="gravar" styleClass="botao" action="#{descricaoController.salvar}" onclick="#{rich:component('mdNovaDescricao')}.hide();#{rich:component('mdIndicatorLDesc')}.show();" reRender="listaDeDescricao">
+			            	</a4j:commandButton>
+							<a4j:commandButton value="#{msg.btn_voltar}" immediate="true" styleClass="botao"  onclick="#{rich:component('mdNovaDescricao')}.hide();" >
+							</a4j:commandButton>
+						</h:panelGrid>	
+					</rich:panel>
+				</rich:modalPanel>	
+			</a4j:region>				
+		</div>
+	</ui:define>
+</ui:composition>

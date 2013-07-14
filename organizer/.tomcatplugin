@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tomcatProjectProperties>
+    <rootDir>/webContent</rootDir>
+    <exportSource>false</exportSource>
+    <reloadable>true</reloadable>
+    <redirectLogger>false</redirectLogger>
+    <updateXml>true</updateXml>
+    <warLocation>D:\Java\BKP_Organizer\WAR_richorganizer\organizer.war</warLocation>
+    <extraInfo></extraInfo>
+    <webPath>organizer</webPath>
+</tomcatProjectProperties>

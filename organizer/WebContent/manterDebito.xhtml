@@ -1,0 +1,268 @@
+<ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:c="http://java.sun.com/jstl/core"
+	  xmlns:a4j="http://richfaces.org/a4j"
+	  xmlns:rich="http://richfaces.org/rich"
+      template="template/templateAPP.xhtml">
+            
+	<ui:define name="titulo">
+    	<h:outputText value="#{msg.label_titulo_debito}"/>
+	</ui:define>
+            
+	<ui:define name="conteudo">  
+		<rich:spacer width="1" height="20" /> 
+		<a4j:keepAlive beanName="debitoController" />
+		<center>
+			<h2><h:outputText value="#{msg.tt_cadastroDebitos}"/></h2>
+		</center>					
+		<rich:spacer width="1" height="45" /> 
+        <div align="center">
+        	<table border="0">
+        		<tr>
+        			<td width="30%" >
+        				<center>
+        					<h:panelGrid columns="1">
+								<rich:message  for="data" styleClass="errorMessage"/>
+								<rich:message  for="descricao" styleClass="errorMessage"/>
+								<rich:message  for="grupo" styleClass="errorMessage"/>
+								<rich:message  for="tipo" styleClass="errorMessage"/>
+								<rich:message  for="moeda" styleClass="errorMessage"/>
+								<rich:message  for="valor" styleClass="errorMessage"/>
+								<rich:message  for="cartao" styleClass="errorMessage"/>
+								<rich:message  for="parcelas" styleClass="errorMessage"/>
+							</h:panelGrid> 
+							<br/>
+							
+	        				<h:panelGrid columns="2" columnClasses="colunaLabel,colunaInputGrande" width="400" border="0">
+								<h:outputText value="#{msg.label_data}" style="colunaLabel"/>
+								<rich:calendar id="data" required="true" 
+ 										   value="#{debitoController.debitoDTO.data}" 
+ 										   label="#{msg.label_tabela_data}" 
+ 										   inputStyle="background-color: white;border-color: gray;border-width:1px;left: 0px;width:80px"
+ 										   locale="#{loginController.calendarLocale}"
+ 										   enableManualInput="true"
+ 										   datePattern="dd/MM/yyyy"
+ 										   oninputkeydown="Mascara(this,Data);"
+ 										   oninputkeypress="Mascara(this,Data);" 
+ 										   oninputkeyup="Mascara(this,Data);"  
+ 										   maxlength="10"/>
+								<h:outputText value="#{msg.label_descricao}" style="colunaLabel"/>
+								<rich:comboBox width="300" label="#{msg.label_tabela_descricao}" required="true" suggestionValues="#{debitoController.listaDeDescricoes}" 
+									 directInputSuggestions="true" defaultLabel="#{msg.label_selecione}" id="descricao" value="#{debitoController.debitoDTO.descricao}">
+									<a4j:support event="onchange" 
+										process="descricao"
+										action="#{debitoController.validarDescricao}" 
+								 		oncomplete="if(#{debitoController.novaDescricao == true}){#{rich:component('mdNovaDescricao')}.show();}"
+										ajaxSingle="true">
+									</a4j:support> 
+								</rich:comboBox>
+								<h:outputText value="#{msg.label_grupo}" style="colunaLabel"/>
+								<rich:comboBox width="300" label="#{msg.label_tabela_grupo}" required="true" suggestionValues="#{debitoController.listaDeGrupos}" 
+									 directInputSuggestions="true" defaultLabel="#{msg.label_selecione}" id="grupo" value="#{debitoController.debitoDTO.grupo}">
+									<a4j:support event="onchange" 
+										process="grupo"
+										action="#{debitoController.validarGrupo}" 
+								 		oncomplete="if(#{debitoController.novoGrupo == true}){#{rich:component('mdNovaDescricao')}.show();}"
+										ajaxSingle="true">
+									</a4j:support> 
+								</rich:comboBox>
+								<h:outputText value="#{msg.label_superGrupo}" style="colunaLabel"/>
+								<rich:comboBox width="300" label="#{msg.label_tabela_superGrupo}" suggestionValues="#{debitoController.listaDeSuperGrupos}" 
+									  directInputSuggestions="true" defaultLabel="#{msg.label_selecione}" id="superGrupo" value="#{debitoController.debitoDTO.superGrupo}">
+									<a4j:support event="onchange" 
+										process="superGrupo"
+										action="#{debitoController.validarSuperGrupo}" 
+								 		oncomplete="if(#{debitoController.novoSuperGrupo == true}){#{rich:component('mdNovaDescricao')}.show();}"
+										ajaxSingle="true">
+									</a4j:support> 
+								</rich:comboBox>
+							</h:panelGrid>
+							<table width="400px">
+								<tr>
+									<td class="colunaLabel"><h:outputText value="#{msg.label_cartao}" /></td>
+									<td>
+										<div id="blocoCartao" class="boxCartao" >
+											<div id="ckCartao" style="display: block" align="left">
+												<input type="radio" id="radioButton" onclick="desabilitaCheck();"/>
+											</div>									
+											<div id="comboCartao" style="display: none" align="left">
+												<rich:comboBox width="150" label="#{msg.label_tabela_cartao}" suggestionValues="#{debitoController.listaDeCartoes}" directInputSuggestions="true" defaultLabel="#{msg.label_selecione}" id="cartao" value="#{debitoController.debitoDTO.descricaoCartao}"/>
+											</div>
+										</div>
+									</td>
+								</tr>
+							</table>
+																
+							<h:panelGrid columns="4" columnClasses="colunaLabel,,colunaLabel" width="400" border="0" >
+								<h:outputText value="#{msg.label_tipo}" style="colunaLabel"/>
+								<rich:comboBox width="80" suggestionValues="#{debitoController.listaDeTipoFechamento}" required="true" directInputSuggestions="true" defaultLabel="#{msg.label_selecione}" id="tipo" value="#{debitoController.debitoDTO.tipo}"/>										
+								<h:outputText value="#{msg.label_parcelas}" style="colunaLabel"/>
+								<h:inputText id="parcelas" label="#{msg.label_tabela_parcelas}" size="5" required="true" value="#{debitoController.debitoDTO.parcelas}" styleClass="input_content_align_right" maxlength="3" onkeypress="return somente_numeros(event);">
+								</h:inputText>
+								
+								<h:outputText value="#{msg.label_moeda}" style="colunaLabel"/>
+								<rich:comboBox width="50" suggestionValues="#{debitoController.listaDeMoedas}" directInputSuggestions="true" defaultLabel="#{msg.label_selecione}" id="moeda" value="#{debitoController.debitoDTO.moeda}"/>
+								<h:outputText value="#{msg.label_valor}" style="colunaLabel"/>
+								<h:inputText id="valor" label="#{msg.label_tabela_valor}" size="10" required="true" value="#{debitoController.debitoDTO.valor}" styleClass="input_content" dir="rtl" onkeypress="return formatar_moeda(this,'.',',',event,11);" >
+								</h:inputText>
+							</h:panelGrid>
+						
+							<h:panelGrid columns="2">
+								<a4j:commandButton value="#{msg.btn_gravar}" id="gravar" type="submit" styleClass="botao" action="#{debitoController.salvar}" reRender="data,descricao,grupo,superGrupo,cartao,tipo,parcelas,moeda,valor,listaDeDebitos" onclick="habilitaCheck();#{rich:component('mdIndicator')}.show();">
+									<f:setPropertyActionListener target="#{debitoController.alterarParcelas}" value="false"/>
+								</a4j:commandButton>
+								<a4j:commandButton value="#{msg.btn_voltar}" styleClass="botao" action="#{debitoController.cancelar}" immediate="true" />
+							</h:panelGrid>
+						</center>
+        			</td>
+        			<td width="70%" valign="top" align="center" >
+        				
+	        			<a4j:region  id="regionListaDeDebitos">
+	        				<div class="boxTabPanel100">
+								<rich:dataTable value="#{debitoController.listaDeDebitos}" var="d" 
+						        	rows="10" width="100%" reRender="dsd" id="listaDeDebitos" ajaxSingle="true">
+						        	
+						        	<rich:column sortBy="#{d.data}" width="8%" > 
+						                <f:facet name="header">
+						                    <h:outputText value="#{msg.label_tabela_data}"/>
+						                </f:facet>
+						                <h:outputText value="#{d.data}" >
+						                	<f:convertDateTime pattern="dd/MM/yyyy" />
+						                </h:outputText>
+						            </rich:column> 
+						        	
+						            <rich:column sortBy="#{d.descricao}"  width="30%" style="text-align: left;"> 
+						                <f:facet name="header">
+						                    <h:outputText value="#{msg.label_tabela_descricao}"/>
+						                </f:facet>
+						                <h:outputText value="#{d.descricao}" />
+						            </rich:column> 
+						            
+						            <rich:column sortBy="#{d.grupo}"  width="28%" style="text-align: left;">
+						                <f:facet name="header">
+						                    <h:outputText value="#{msg.label_tabela_grupo}"/>
+						                </f:facet>
+						                <h:outputText value="#{d.grupo}" />
+						            </rich:column> 
+						            
+						            <rich:column sortBy="#{d.cartao.descricao}" width="20%" style="text-align: left;"> 
+						                <f:facet name="header">
+						                    <h:outputText value="#{msg.label_tabela_cartao}"/>
+						                </f:facet>
+						                	<h:outputText value="#{d.cartao.descricao}" />
+						            </rich:column> 
+						            
+						            <rich:column sortBy="#{d.valor}" styleClass="alignRight" width="10%">   
+						                <f:facet name="header">
+						                    <h:outputText value="#{msg.label_tabela_valor}"/>
+						                </f:facet>
+						                <h:outputText value="#{d.valor}"  >
+						                	<f:convertNumber pattern="#,##0.00" />
+						                </h:outputText>
+						            </rich:column> 
+						            
+						            <rich:column width="2%"> 
+						                <f:facet name="header">
+											<h:outputText value=""></h:outputText>
+										</f:facet>
+										<a4j:commandLink action="#{debitoController.editar}" reRender="data,descricao,grupo,superGrupo,cartao,tipo,parcelas,moeda,valor,listaDeDebitos" ajaxSingle="true" immediate="true" onclick="#{rich:component('mdIndicatorD')}.show();" oncomplete="if(#{debitoController.debitoDTO.cartao != null}){desabilitaCheck()}else{habilitaCheck()};">
+											<f:setPropertyActionListener target="#{debitoController.debitoDTO.codigo}" value="#{d.codigo}"/>
+											<h:graphicImage  url="/imagens/btn_editar.gif" style="border: 0px" />
+										</a4j:commandLink>
+						            </rich:column>
+						            						            						           
+						            <rich:column width="2%">   
+						                <f:facet name="header">
+											<h:outputText value=""></h:outputText>
+										</f:facet>
+										<a4j:commandLink oncomplete="#{rich:component('mdExcluirDebito')}.show();" immediate="true">
+											<f:setPropertyActionListener target="#{debitoController.debitoDTO.codigo}" value="#{d.codigo}"/>
+											<h:graphicImage  url="/imagens/btn_deletar.gif" style="border: 0px" />
+										</a4j:commandLink>
+						            </rich:column>
+						            <f:facet name="footer">
+						                <rich:datascroller stepControls="hide" id="dsd" renderIfSinglePage="false">
+						                	<f:facet name="first" >
+						                        <h:graphicImage value="#{msg.first}" style="border:0px" onclick="#{rich:component('mdIndicatorD')}.show();" alt="#{msg.btn_first}" title="#{msg.btn_first}"/>
+						                    </f:facet>
+						                    <f:facet name="first_disabled"  >
+						                        <h:graphicImage value="#{msg.first_disabled}" style="border:0px" alt="#{msg.btn_first}" title="#{msg.btn_first}"/>
+						                    </f:facet>
+						                    <f:facet name="last">
+						                        <h:graphicImage value="#{msg.last}" style="border:0px" onclick="#{rich:component('mdIndicatorD')}.show();" alt="#{msg.btn_last}" title="#{msg.btn_last}"/>
+						                    </f:facet>     
+						                    <f:facet name="last_disabled">
+						                        <h:graphicImage value="#{msg.last_disabled}" style="border:0px" alt="#{msg.btn_last}" title="#{msg.btn_last}"/>
+						                    </f:facet>                       
+						                    <f:facet name="fastforward">
+						                        <h:graphicImage value="#{msg.next}" style="border:0px" onclick="#{rich:component('mdIndicatorD')}.show();" alt="#{msg.btn_fastforward}" title="#{msg.btn_fastforward}"/>
+						                    </f:facet>
+						                    <f:facet name="fastforward_disabled">
+						                        <h:graphicImage value="#{msg.next_disabled}" style="border:0px" alt="#{msg.btn_fastforward}" title="#{msg.btn_fastforward}"/>
+						                    </f:facet>
+						                    <f:facet name="fastrewind">
+						                        <h:graphicImage value="#{msg.previous}" style="border:0px" onclick="#{rich:component('mdIndicatorD')}.show();" alt="#{msg.btn_fastrewind}" title="#{msg.btn_fastforward}"/>
+						                    </f:facet>
+						                    <f:facet name="fastrewind_disabled" >
+						                        <h:graphicImage value="#{msg.previous_disabled}" style="border:0px" alt="#{msg.btn_fastrewind}" title="#{msg.btn_fastrewind}"/>
+						                    </f:facet>
+						                </rich:datascroller>
+						            </f:facet>
+						        </rich:dataTable>
+					        </div>
+					        <rich:modalPanel id="mdExcluirDebito" width="280" height="150">
+					        	<a4j:keepAlive beanName="debitoController" />
+					        	<f:facet name="header">
+					        		<h:outputText value="#{msg.label_tabela_confirmacao}"/>
+					        	</f:facet>
+					        	<div align="center">
+								   	<h:panelGrid>
+								      	<h:panelGrid columns="2">
+								         	<h:graphicImage url="/imagens/alert_g.gif" />
+									 		<h:outputText value="#{msg.label_confirmaExclusao}"/>
+								      	</h:panelGrid>
+								      	<h:panelGroup style="width=100%">
+								      		<a4j:commandButton action="#{debitoController.excluir}" value="#{msg.btn_sim}" reRender="data,descricao,grupo,superGrupo,cartao,tipo,parcelas,moeda,valor,listaDeDebitos" ajaxSingle="true" immediate="true" styleClass="botao" onclick="#{rich:component('mdExcluirDebito')}.hide();habilitaCheck();#{rich:component('mdIndicatorD')}.show();">
+								      		</a4j:commandButton>
+								        	<a4j:commandButton value="#{msg.btn_nao}" styleClass="botao" onclick="#{rich:component('mdExcluirDebito')}.hide();"/> 
+								     	</h:panelGroup>
+								   	</h:panelGrid>
+								</div>
+							</rich:modalPanel>	
+							
+							<rich:modalPanel id="mdNovaDescricao" width="280" height="150">
+					        	<a4j:keepAlive beanName="debitoController" />
+					        	<f:facet name="header">
+					        		<h:outputText value="#{msg.label_tabela_confirmacao}"/>
+					        	</f:facet>
+					        	<div align="center">
+								   	<h:panelGrid>
+								      	<h:panelGrid columns="2">
+								         	<h:graphicImage url="/imagens/alert_g.gif" />
+									 		<h:outputText value="#{msg.label_confirmaInclusao}"/>
+								      	</h:panelGrid>
+								      	<h:panelGroup style="width=100%">
+								      		<a4j:commandButton action="#{debitoController.salvarDescricao}" value="#{msg.btn_sim}" ajaxSingle="true" immediate="true" styleClass="botao" rerender="descricao,grupo,superGrupo" onclick="#{rich:component('mdNovaDescricao')}.hide();">
+								      		</a4j:commandButton>
+								        	<a4j:commandButton value="#{msg.btn_nao}" styleClass="botao" onclick="#{rich:component('mdNovaDescricao')}.hide();"/> 
+								     	</h:panelGroup>
+								   	</h:panelGrid>
+								</div>
+							</rich:modalPanel>	
+							
+							<rich:modalPanel id="mdIndicatorD" autosized="true">
+						      	<div align="center">	
+						      		<h:graphicImage url="/imagens/ajax-loader.gif"/>
+						         	<a4j:status id="loadingD" onstop="#{rich:component('mdIndicatorD')}.hide()">  
+									</a4j:status>  
+								</div>
+							</rich:modalPanel>
+						</a4j:region>
+					</td>
+        		</tr>
+        	</table>					
+		</div>				
+    </ui:define>
+</ui:composition>

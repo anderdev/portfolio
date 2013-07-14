@@ -1,0 +1,194 @@
+<ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:c="http://java.sun.com/jstl/core"
+	  xmlns:a4j="http://richfaces.org/a4j"
+	  xmlns:rich="http://richfaces.org/rich"
+      template="template/templateAPP.xhtml">
+            
+            <ui:define name="titulo">
+                <h:outputText value="#{msg.label_titulo_listaPropagandas}"/>
+            </ui:define>
+
+            <ui:define name="conteudo">   
+            	<rich:spacer width="1" height="20" /> 
+				<h:form id="frmListaDePropagandas" >
+					<a4j:keepAlive beanName="propagandaController" />
+					<center>
+						<h2><h:outputText value="#{msg.tt_listaDePropagandas}"/></h2>
+					</center>					
+			        <rich:spacer width="1" height="5" /> 
+			        <div align="center">			     
+			        	<h:panelGrid columns="1">
+							<rich:message  for="tipo" styleClass="errorMessage"/>
+							<rich:message  for="descricao" styleClass="errorMessage"/>
+							<rich:message  for="texto" styleClass="errorMessage"/>
+							<rich:message  for="ativa" styleClass="errorMessage"/>
+							<rich:message  for="idioma" styleClass="errorMessage"/>
+						</h:panelGrid>    
+			        	<div class="boxBotaoNovo60" align="right">
+				        	<a4j:commandButton action="#{propagandaController.novo}" reRender="descricao,tipo,idioma,ativa,texto" onclick="#{rich:component('mdNovaPropaganda')}.show();" value="#{msg.btn_novaPropaganda}" styleClass="botao" ajaxSingle="true" immediate="true">
+				        	</a4j:commandButton>
+						</div>					
+						<rich:spacer width="1" height="10" /> 	
+						<a4j:region  renderRegionOnly="false" id="regionListaDePropagandas">	        
+							<rich:dataTable value="#{propagandaController.listaDePropagandas}" var="d" width="60%" 
+					        	rows="10" reRender="dsd" id="listaDePropagandas">
+					        	
+					            <rich:column sortBy="#{d.descricao}"  width="25%" filterBy="#{d.descricao}" filterEvent="onkeyup" > 
+					                <f:facet name="header">
+					                    <h:outputText value="#{msg.label_tabela_descricao}"/>
+					                </f:facet>
+					                <h:outputText value="#{d.descricao}" />
+					            </rich:column> 
+					            
+					            <rich:column sortBy="#{d.tipo}" width="25%" filterBy="#{d.tipo}" filterEvent="onkeyup" > 
+					                <f:facet name="header">
+					                    <h:outputText value="#{msg.label_tabela_tipo}"/>
+					                </f:facet>
+					                <h:outputText value="#{d.tipo}" />
+					            </rich:column> 
+					            
+					            <rich:column sortBy="#{d.ativa}" width="25%" filterBy="#{d.ativa}" filterEvent="onkeyup"> 
+					                <f:facet name="header">
+					                    <h:outputText value="#{msg.label_tabela_ativo}"/>
+					                </f:facet>
+					                <h:outputText value="#{d.ativa}" />
+					            </rich:column>
+					            
+					            <rich:column sortBy="#{d.idioma}" width="23%" filterBy="#{d.idioma}" filterEvent="onkeyup"> 
+					                <f:facet name="header">
+					                    <h:outputText value="#{msg.label_tabela_idioma}"/>
+					                </f:facet>
+					                <h:outputText value="#{d.idioma}" />
+					            </rich:column>
+					            
+					            <rich:column width="1%">
+					                <f:facet name="header">
+										<h:outputText value=""></h:outputText>
+									</f:facet>
+									<a4j:commandLink action="#{propagandaController.editar}" reRender="descricao,tipo,ativa,idioma,texto" ajaxSingle="true" onclick="#{rich:component('mdIndicatorLProp')}.show()" oncomplete="#{rich:component('mdNovaPropaganda')}.show();">
+										<f:setPropertyActionListener target="#{propagandaController.propagandaDTO.codigo}" value="#{d.codigo}"/>
+										<h:graphicImage  url="/imagens/btn_editar.gif" style="border: 0px" />
+									</a4j:commandLink>
+					            </rich:column>
+					           
+					            <rich:column width="1%">
+					                <f:facet name="header">
+										<h:outputText value=""></h:outputText>
+									</f:facet>
+									<a4j:commandLink oncomplete="#{rich:component('mdExcluirPropaganda')}.show();" onclick="#{rich:component('mdIndicatorLProp')}.show()" ajaxSingle="true" >
+										<f:setPropertyActionListener target="#{propagandaController.propagandaDTO.codigo}" value="#{d.codigo}"/>
+										<h:graphicImage  url="/imagens/btn_deletar.gif" style="border: 0px" />
+									</a4j:commandLink>
+					            </rich:column>
+					            <f:facet name="footer">
+					                <rich:datascroller stepControls="hide" id="dsd" renderIfSinglePage="false">
+					                	<f:facet name="first" >
+					                        <h:graphicImage value="#{msg.first}" style="border:0px" onclick="#{rich:component('mdIndicatorLProp')}.show()" alt="#{msg.btn_first}" title="#{msg.btn_first}"/>
+					                    </f:facet>
+					                    <f:facet name="first_disabled"  >
+					                        <h:graphicImage value="#{msg.first_disabled}" style="border:0px" alt="#{msg.btn_first}" title="#{msg.btn_first}"/>
+					                    </f:facet>
+					                    <f:facet name="last">
+					                        <h:graphicImage value="#{msg.last}" style="border:0px" onclick="#{rich:component('mdIndicatorLProp')}.show()" alt="#{msg.btn_last}" title="#{msg.btn_last}"/>
+					                    </f:facet>     
+					                    <f:facet name="last_disabled">
+					                        <h:graphicImage value="#{msg.last_disabled}" style="border:0px" alt="#{msg.btn_last}" title="#{msg.btn_last}"/>
+					                    </f:facet>                       
+					                    <f:facet name="fastforward">
+					                        <h:graphicImage value="#{msg.next}" style="border:0px" onclick="#{rich:component('mdIndicatorLProp')}.show()" alt="#{msg.btn_fastforward}" title="#{msg.btn_fastforward}"/>
+					                    </f:facet>
+					                    <f:facet name="fastforward_disabled">
+					                        <h:graphicImage value="#{msg.next_disabled}" style="border:0px" alt="#{msg.btn_fastforward}" title="#{msg.btn_fastforward}"/>
+					                    </f:facet>
+					                    <f:facet name="fastrewind">
+					                        <h:graphicImage value="#{msg.previous}" style="border:0px" onclick="#{rich:component('mdIndicatorLProp')}.show()" alt="#{msg.btn_fastrewind}" title="#{msg.btn_fastforward}"/>
+					                    </f:facet>
+					                    <f:facet name="fastrewind_disabled" >
+					                        <h:graphicImage value="#{msg.previous_disabled}" style="border:0px" alt="#{msg.btn_fastrewind}" title="#{msg.btn_fastrewind}"/>
+					                    </f:facet>
+					                </rich:datascroller>
+					            </f:facet>
+					        </rich:dataTable>
+					        
+					        <rich:modalPanel id="mdIndicatorLProp" autosized="true">
+						      	<div align="center">	
+						      		<h:graphicImage url="/imagens/ajax-loader.gif"/>
+						         	<a4j:status id="loadingLProp" onstop="#{rich:component('mdIndicatorLProp')}.hide()">  
+									</a4j:status>  
+								</div>
+							</rich:modalPanel>
+					    
+					    
+					         <rich:modalPanel id="mdExcluirPropaganda" width="280" height="150">
+					        	<a4j:keepAlive beanName="propagandaController" />
+					        	<f:facet name="header">
+					        		<h:outputText value="#{msg.label_tabela_confirmacao}"/>
+					        	</f:facet>
+					        	<div align="center">
+								   	<h:panelGrid>
+								      	<h:panelGrid columns="2">
+								         	<h:graphicImage url="/imagens/alert_g.gif" />
+									 		<h:outputText value="#{msg.label_confirmaExclusao}"/>
+								      	</h:panelGrid>
+								      	<h:panelGroup style="width=100%">
+								      		<a4j:commandButton action="#{propagandaController.excluir}" ajaxSingle="true" value="#{msg.btn_sim}" reRender="listaDePropagandas" styleClass="botao" onclick="#{rich:component('mdExcluirPropaganda')}.hide();#{rich:component('mdIndicatorLProp')}.show();">
+								      		</a4j:commandButton>
+								        	<a4j:commandButton value="#{msg.btn_nao}" styleClass="botao" onclick="#{rich:component('mdExcluirPropaganda')}.hide();"/> 
+								     	</h:panelGroup>
+								   	</h:panelGrid>
+								</div>
+							</rich:modalPanel>		
+							
+							<rich:modalPanel id="mdNovaPropaganda" autosized="true" domElementAttachment="parent">
+								<a4j:keepAlive beanName="propagandaController" />
+					        	<f:facet name="header">
+					        		<h:outputText value="#{msg.label_cadastrarPropaganda}"/>
+					        	</f:facet>		
+								<rich:panel style="width:98%;">
+									<a4j:form id="formPropagandaModal" >
+										<h:panelGrid columns="6" styleClass="formCadastro" border="0">
+											<h:outputText value="#{msg.label_tipo}" style="colunaLabel"/>
+											<h:selectOneMenu id="tipo" label="#{msg.label_tabela_tipo}" required="true" styleClass="input_content" style="width:155px"
+													 value="#{propagandaController.propagandaDTO.tipo}">
+												<f:selectItems value="#{propagandaController.tipos}"/>
+											</h:selectOneMenu>
+											
+											<h:outputText value="#{msg.label_ativo}" style="colunaLabel"/>
+											<h:selectOneMenu id="ativa" label="#{msg.label_tabela_ativo}" required="true" styleClass="input_content" style="width:155px"
+													 value="#{propagandaController.propagandaDTO.ativa}">
+												<f:selectItems value="#{propagandaController.ativo}"/>
+											</h:selectOneMenu>
+											
+											<h:outputText value="#{msg.label_idioma}" style="colunaLabel"/>
+											<h:selectOneMenu id="idioma" label="#{msg.label_tabela_idioma}" required="true" styleClass="input_content" style="width:155px"
+													 value="#{propagandaController.propagandaDTO.idioma}">
+												<f:selectItems value="#{propagandaController.idioma}"/>
+											</h:selectOneMenu>
+										</h:panelGrid>
+										
+										<h:panelGrid columns="2" columnClasses="colunaLabel,colunaInputGrande" styleClass="formCadastro" border="0">
+											<h:outputText value="#{msg.label_descricao}" style="colunaLabel"/>
+											<h:inputText id="descricao" label="#{msg.label_tabela_descricao}" required="true" value="#{propagandaController.propagandaDTO.descricao}" style="width:100%" styleClass="input_content"/>
+											
+											<h:outputText value="#{msg.label_texto}" style="vertical-align: top;" />
+											<rich:editor id="texto" label="#{msg.label_tabela_texto}" required="true" width="400" value="#{propagandaController.propagandaDTO.texto}" theme="advanced"  plugins="save,paste"></rich:editor>
+										</h:panelGrid>	
+										<div align="center">
+											<h:panelGrid columns="2">
+												<a4j:commandButton value="#{msg.btn_gravar}" id="gravar" styleClass="botao" action="#{propagandaController.salvar}" onclick="#{rich:component('mdNovaPropaganda')}.hide();#{rich:component('mdIndicatorLProp')}.show();" reRender="listaDePropagandas">
+								            	</a4j:commandButton>
+												<a4j:commandButton value="#{msg.btn_voltar}" immediate="true" styleClass="botao" action="#{propagandaController.cancelar}"  onclick="#{rich:component('mdNovaPropaganda')}.hide();" >
+												</a4j:commandButton>
+											</h:panelGrid>
+										</div>
+									</a4j:form>
+								</rich:panel>
+							</rich:modalPanel>	
+						</a4j:region>				
+					</div>
+				</h:form>
+			</ui:define>
+        </ui:composition>

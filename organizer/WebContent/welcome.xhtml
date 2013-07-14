@@ -1,0 +1,55 @@
+<ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:c="http://java.sun.com/jstl/core"
+	  xmlns:a4j="http://richfaces.org/a4j"
+	  xmlns:rich="http://richfaces.org/rich">
+
+	<a4j:region id="rgWelcome">
+		<table width="100%" border="0" class="welcome">
+    		<tr>
+    			<td height="380px">
+			    	<center>
+				    	<c:if test="#{localeController.locale=='pt_BR'}">
+					    	<h2>Seja Bem vindo...</h2>    	
+					    	O Organizer, foi desenvolvido com o intuito de ajudar na organizacao financeira pessoal.<br/>
+					    	Com ele e possivel cadastrar, creditos, debitos e pagamentos assim como<br/>
+					    	fazer o fechamento destas contas por data pre estipulada.<br/>
+					    	Disponibilizo este software de organizacao financeira gratuitamente,<br/>
+					    	assim fazendo publicidade do meu trabalho como exercitando meus conhecimentos.<br/>
+					    	Para manter a integridade de seus dados, utilizo um sistema de criptografia avancado,<br/>
+					        assim toda informacao registrada no organizer e codificada e gravada.<br/>
+							Agradeco desde ja a utilizacao deste sistema.<br/>
+							Pois um sistema sem usuarios e como um lago sem peixes para um pescador.<br/>
+							<br/>Anderson Santos<br/>
+							Desenvolvedor Java.<br/>
+						</c:if>
+						<c:if test="#{localeController.locale=='en' || localeController.locale=='en_US'}">
+					    	<h2>Welcome...</h2>    	
+					    	Organizer was developed with the goal to help the personal financial organization. <br/>
+							With it you can register, credits, debts and payments<br/>
+							as well to close those inserts by a pre set date <br/>
+							I'm providing this financial organization software for free, <br/>
+							so doing publicity for my work as exercising my knowledge. <br/>
+							To maintain the integrity of your data, its using an  advanced encryption system, <br/>
+							thus all information inserted in the Organizer will be encripted and recorded. <br/>
+							Thanks for use this system. <br/>
+							Because a system without users is like a lake without fish for a fisherman. <br/>
+							<br/> Anderson Santos <br/>
+							Java Developer. <br/>
+						</c:if>
+					</center>
+				</td>
+			</tr>
+		</table>
+		<div id="contador">
+			<h:panelGrid columns="1" border="0" styleClass="fonteContador">
+				<h:outputText value="#{msg.label_tabela_acesso}"></h:outputText>
+				<h:outputText value="#{loginController.contador}" >
+					<f:convertNumber pattern="000000" />
+				</h:outputText>
+			</h:panelGrid>
+		</div>
+	</a4j:region>
+</ui:composition>

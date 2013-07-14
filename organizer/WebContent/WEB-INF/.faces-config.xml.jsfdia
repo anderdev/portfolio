@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PROCESS model-entity="JSFProcess">
+ <PROCESS-ITEM NAME="rules:#contato.xhtml" PATH="/contato.xhtml"
+  SHAPE="488,24,50,73" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#contato.xhtml:0" NAME="item"
+   PATH="/contato.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="index::#index.xhtml" NAME="output"
+    PATH="/index.xhtml" TARGET="rules:#index.xhtml" TITLE="index" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="novoUsuario::#cadastro.xhtml" NAME="output1"
+    PATH="/cadastro.xhtml" TARGET="rules:#cadastro.xhtml"
+    TITLE="novoUsuario" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="logado::#restrict_area.xhtml" NAME="output2"
+    PATH="/restrict_area.xhtml" TARGET="rules:#restrict_area.xhtml"
+    TITLE="logado" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#index.xhtml" PATH="/index.xhtml"
+  SHAPE="112,16,50,89" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#index.xhtml:0" NAME="item"
+   PATH="/index.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="contato::#contato.xhtml" NAME="output"
+    PATH="/contato.xhtml" TARGET="rules:#contato.xhtml" TITLE="contato" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="novoUsuario::#cadastro.xhtml" NAME="output1"
+    PATH="/cadastro.xhtml" TARGET="rules:#cadastro.xhtml"
+    TITLE="novoUsuario" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="logado::#restrict_area.xhtml" NAME="output2"
+    PATH="/restrict_area.xhtml" TARGET="rules:#restrict_area.xhtml"
+    TITLE="logado" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#cadastro.xhtml" PATH="/cadastro.xhtml"
+  SHAPE="32,400,50,73" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#cadastro.xhtml:0" NAME="item"
+   PATH="/cadastro.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="index::#index.xhtml" NAME="output"
+    PATH="/index.xhtml" TARGET="rules:#index.xhtml" TITLE="index" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="contato::#contato.xhtml" NAME="output1"
+    PATH="/contato.xhtml" TARGET="rules:#contato.xhtml" TITLE="contato" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="logado::#restrict_area.xhtml" NAME="output2"
+    PATH="/restrict_area.xhtml" TARGET="rules:#restrict_area.xhtml"
+    TITLE="logado" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#restrict_area.xhtml"
+  PATH="/restrict_area.xhtml" SHAPE="704,272,50,25" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#listarFechamentos.xhtml"
+  PATH="/listarFechamentos.xhtml" SHAPE="1040,1777,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#manterCredito.xhtml"
+  PATH="/manterCredito.xhtml" SHAPE="848,480,50,25" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#sessionTimeout.xhtml"
+  PATH="/sessionTimeout.xhtml" SHAPE="1040,2113,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#listarUsuarios.xhtml"
+  PATH="/listarUsuarios.xhtml" SHAPE="928,368,50,25" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#listarDebitos.xhtml"
+  PATH="/listarDebitos.xhtml" SHAPE="1040,1665,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#listarCreditos.xhtml"
+  PATH="/listarCreditos.xhtml" SHAPE="1040,1441,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#manterCartao.xhtml"
+  PATH="/manterCartao.xhtml" SHAPE="1040,17,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#uncaughtException.xhtml"
+  PATH="/uncaughtException.xhtml" SHAPE="1040,2225,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#listarPropaganda.xhtml"
+  PATH="/listarPropaganda.xhtml" SHAPE="1040,2001,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#manterDebito.xhtml"
+  PATH="/manterDebito.xhtml" SHAPE="1040,1553,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#listarDescricoes.xhtml"
+  PATH="/listarDescricoes.xhtml" SHAPE="1040,193,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#manterUsuario.xhtml"
+  PATH="/manterUsuario.xhtml" SHAPE="1040,305,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#manterParametros.xhtml"
+  PATH="/manterParametros.xhtml" SHAPE="848,416,50,25" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#manterFechamento.xhtml"
+  PATH="/manterFechamento.xhtml" SHAPE="1040,1889,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#manterConfiguracaoParametros.xhtml"
+  PATH="/manterConfiguracaoParametros.xhtml" SHAPE="936,440,50,25" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:*" PATH="*" SHAPE="232,376,53,298" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:*:0" NAME="item" PATH="*" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="index::#index.xhtml" NAME="output"
+    PATH="/index.xhtml" TARGET="rules:#index.xhtml" TITLE="index" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="logado::#restrict_area.xhtml" NAME="output1"
+    PATH="/restrict_area.xhtml" TARGET="rules:#restrict_area.xhtml"
+    TITLE="logado" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="carregarUsuario::#manterUsuario.xhtml"
+    NAME="output2" PATH="/manterUsuario.xhtml"
+    TARGET="rules:#manterUsuario.xhtml" TITLE="carregarUsuario" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="novoUsuarioFilho::#manterUsuario.xhtml"
+    NAME="output3" PATH="/manterUsuario.xhtml"
+    TARGET="rules:#manterUsuario.xhtml" TITLE="novoUsuarioFilho" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="listarDescricoes::#listarDescricoes.xhtml"
+    NAME="output4" PATH="/listarDescricoes.xhtml"
+    TARGET="rules:#listarDescricoes.xhtml" TITLE="listarDescricoes" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="manterParametros::#manterParametros.xhtml"
+    NAME="output5" PATH="/manterParametros.xhtml"
+    TARGET="rules:#manterParametros.xhtml" TITLE="manterParametros" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="listarCartoes::#manterCartao.xhtml"
+    NAME="output6" PATH="/manterCartao.xhtml"
+    TARGET="rules:#manterCartao.xhtml" TITLE="listarCartoes" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="manterConfiguracaoParametros::#manterConfiguracaoParametros.xhtml"
+    NAME="output7" PATH="/manterConfiguracaoParametros.xhtml"
+    TARGET="rules:#manterConfiguracaoParametros.xhtml"
+    TITLE="manterConfiguracaoParametros" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="manterCredito::#manterCredito.xhtml"
+    NAME="output8" PATH="/manterCredito.xhtml"
+    TARGET="rules:#manterCredito.xhtml" TITLE="manterCredito" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="listarCreditos::#listarCreditos.xhtml"
+    NAME="output9" PATH="/listarCreditos.xhtml"
+    TARGET="rules:#listarCreditos.xhtml" TITLE="listarCreditos" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="manterDebito::#manterDebito.xhtml"
+    NAME="output10" PATH="/manterDebito.xhtml"
+    TARGET="rules:#manterDebito.xhtml" TITLE="manterDebito" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="listarDebitos::#listarDebitos.xhtml"
+    NAME="output11" PATH="/listarDebitos.xhtml"
+    TARGET="rules:#listarDebitos.xhtml" TITLE="listarDebitos" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="listarFechamentos::#listarFechamentos.xhtml"
+    NAME="output12" PATH="/listarFechamentos.xhtml"
+    TARGET="rules:#listarFechamentos.xhtml" TITLE="listarFechamentos" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="manterFechamento::#manterFechamento.xhtml"
+    NAME="output13" PATH="/manterFechamento.xhtml"
+    TARGET="rules:#manterFechamento.xhtml" TITLE="manterFechamento" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="listarPropagandas::#listarPropaganda.xhtml"
+    NAME="output14" PATH="/listarPropaganda.xhtml"
+    TARGET="rules:#listarPropaganda.xhtml" TITLE="listarPropagandas" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="sessionTimeout::#sessionTimeout.xhtml"
+    NAME="output15" PATH="/sessionTimeout.xhtml"
+    TARGET="rules:#sessionTimeout.xhtml" TITLE="sessionTimeout" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="uncaughtException::#uncaughtException.xhtml"
+    NAME="output16" PATH="/uncaughtException.xhtml"
+    TARGET="rules:#uncaughtException.xhtml" TITLE="uncaughtException" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+</PROCESS>

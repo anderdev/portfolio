@@ -1,0 +1,133 @@
+<ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:c="http://java.sun.com/jstl/core"
+	  xmlns:a4j="http://richfaces.org/a4j"
+	  xmlns:rich="http://richfaces.org/rich"
+      template="template/templateAPP.xhtml">
+            
+	<ui:define name="titulo">
+	    <h:outputText value="#{msg.label_titulo_listaUsuarios}"/>
+	</ui:define>
+            
+    <ui:define name="conteudo">  
+    	<rich:spacer width="1" height="30" /> 
+		<a4j:keepAlive beanName="usuarioController"/>
+		<center>
+			<h2><h:outputText value="#{msg.tt_listaDeUsuarios}"/></h2>
+		</center>
+		<br/>
+			
+		<div align="center">
+			<a4j:region  renderRegionOnly="false" id="regionlistaDeUsuarios">
+				<rich:dataTable value="#{usuarioController.listaDeUsuarios}" var="user" width="100%" 
+		        rows="10" reRender="ds" id="listaDeUsuarios">
+		            <rich:column sortBy="#{user.usuario}" width="80px" style="text-align: left;">  
+		                <f:facet name="header">
+		                    <h:outputText value="#{msg.label_tabela_usuario}"/>
+		                </f:facet>
+		                <h:outputText value="#{user.usuario}" />
+		            </rich:column> 
+		            
+		             <c:if test="#{usuarioController.origemTela=='ADM'}">
+		            	<rich:column sortBy="#{user.usuarioMaster}" style="text-align: left;"> 
+			                <f:facet name="header">
+			                    <h:outputText value="#{msg.label_tabela_usuarioPai}"/>
+			                </f:facet>
+			                <h:outputText value="#{user.usuarioMaster}" />
+			            </rich:column>
+		            </c:if>
+		            
+		            <rich:column sortBy="#{user.nome}" style="text-align: left;"> 
+		                <f:facet name="header">
+		                    <h:outputText value="#{msg.label_tabela_nome}"/>
+		                </f:facet>
+		                <h:outputText value="#{user.nome}"/>
+		            </rich:column> 
+		            
+		            <rich:column sortBy="#{user.email}" style="text-align: left;">
+		                <f:facet name="header">
+		                    <h:outputText value="#{msg.label_tabela_email}"/>
+		                </f:facet>
+		                <h:outputText value="#{user.email}"/> 
+		            </rich:column>
+		            
+		            <rich:column sortBy="#{user.dtnasc}" width="80px">
+		                <f:facet name="header">
+		                    <h:outputText value="#{msg.label_tabela_dataNasc}"/>
+		                </f:facet>
+		                <h:outputText value="#{user.dtnasc}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />								
+						</h:outputText>
+		            </rich:column>
+		            <rich:column width="10px">
+		                <f:facet name="header">
+							<h:outputText value=""></h:outputText>
+						</f:facet>
+						<a4j:commandLink onclick="#{rich:component('confirmation')}.show();">
+							<f:setPropertyActionListener target="#{usuarioController.usuario.codigo}" value="#{user.codigo}"/>
+							<h:graphicImage  url="/imagens/btn_deletar.gif" style="border: 0px" />
+						</a4j:commandLink>
+		            </rich:column>
+		            <f:facet name="footer">
+		                <rich:datascroller stepControls="hide" id="ds" renderIfSinglePage="false" >
+		                	<f:facet name="first" >
+		                        <h:graphicImage value="#{msg.first}" style="border:0px" onclick="#{rich:component('mdIndicatorLU')}.show();" alt="#{msg.btn_first}" title="#{msg.btn_first}"/>
+		                    </f:facet>
+		                    <f:facet name="first_disabled"  >
+		                        <h:graphicImage value="#{msg.first_disabled}" style="border:0px" alt="#{msg.btn_first}" title="#{msg.btn_first}"/>
+		                    </f:facet>
+		                    <f:facet name="last">
+		                        <h:graphicImage value="#{msg.last}" style="border:0px" onclick="#{rich:component('mdIndicatorLU')}.show();" alt="#{msg.btn_last}" title="#{msg.btn_last}"/>
+		                    </f:facet>     
+		                    <f:facet name="last_disabled">
+		                        <h:graphicImage value="#{msg.last_disabled}" style="border:0px" alt="#{msg.btn_last}" title="#{msg.btn_last}"/>
+		                    </f:facet>                       
+		                    <f:facet name="fastforward">
+		                        <h:graphicImage value="#{msg.next}" style="border:0px" onclick="#{rich:component('mdIndicatorLU')}.show();" alt="#{msg.btn_fastforward}" title="#{msg.btn_fastforward}"/>
+		                    </f:facet>
+		                    <f:facet name="fastforward_disabled">
+		                        <h:graphicImage value="#{msg.next_disabled}" style="border:0px" alt="#{msg.btn_fastforward}" title="#{msg.btn_fastforward}"/>
+		                    </f:facet>
+		                    <f:facet name="fastrewind">
+		                        <h:graphicImage value="#{msg.previous}" style="border:0px" onclick="#{rich:component('mdIndicatorLU')}.show();" alt="#{msg.btn_fastrewind}" title="#{msg.btn_fastforward}"/>
+		                    </f:facet>
+		                    <f:facet name="fastrewind_disabled" >
+		                        <h:graphicImage value="#{msg.previous_disabled}" style="border:0px" alt="#{msg.btn_fastrewind}" title="#{msg.btn_fastrewind}"/>
+		                    </f:facet>
+		                </rich:datascroller>
+		            </f:facet>
+		        </rich:dataTable>
+		        
+		        <rich:modalPanel id="confirmation" width="280" height="150">
+		        	<a4j:keepAlive beanName="usuarioController" />
+		        	<f:facet name="header">
+		        		<h:outputText value="#{msg.label_tabela_confirmacao}"/>
+		        	</f:facet>
+		        	<div align="center">
+					   	<h:panelGrid>
+					      	<h:panelGrid columns="2">
+					         	<h:graphicImage url="/imagens/alert_g.gif" />
+						 		<h:outputText value="#{msg.label_confirmaExclusao}"/>
+					      	</h:panelGrid>
+					      	<h:panelGroup style="width=100%">
+					      		<a4j:commandButton action="#{usuarioController.excluir}" value="#{msg.btn_sim}" reRender="listaDeUsuarios" styleClass="botao" onclick="#{rich:component('confirmation')}.hide();#{rich:component('mdIndicatorLU')}.show();">
+					      		</a4j:commandButton>
+					        	<a4j:commandButton value="#{msg.btn_nao}" styleClass="botao" onclick="#{rich:component('confirmation')}.hide();"/> 
+					     	</h:panelGroup>
+					   	</h:panelGrid>
+					</div>
+				</rich:modalPanel>		
+				
+				<rich:modalPanel id="mdIndicatorLU" autosized="true">
+			      	<div align="center">	
+			      		<h:graphicImage url="/imagens/ajax-loader.gif"/>
+			         	<a4j:status id="loadingLU" onstop="#{rich:component('mdIndicatorLU')}.hide()">  
+						</a4j:status>  
+					</div>
+				</rich:modalPanel>
+			</a4j:region>		        
+		</div>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,21 @@
+<ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:c="http://java.sun.com/jstl/core"
+	  xmlns:a4j="http://richfaces.org/a4j"
+	  xmlns:rich="http://richfaces.org/rich">
+	  
+	<a4j:region id="rgPropaganda">
+    	<rich:spacer width="1" height="50px" /> 
+    	<rich:panel>
+			<f:facet name="header">
+				<h:outputText value="#{msg.label_atualizacoes}"/>
+			</f:facet>
+			<h:panelGrid style="text-align:center;" width="170px">
+				<a4j:commandLink value="28/08/2009 - Novo layout." styleClass="link"></a4j:commandLink>
+				<a4j:commandLink value="28/08/2009 - Fechamento." styleClass="link"></a4j:commandLink>				
+			</h:panelGrid>
+		</rich:panel>
+	</a4j:region>
+</ui:composition>

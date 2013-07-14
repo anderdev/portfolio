@@ -1,0 +1,26 @@
+<!DOCTYPE hibernate-configuration PUBLIC
+	"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+       
+        <mapping class="br.com.organizer.model.Usuario"/>
+		<mapping class="br.com.organizer.model.RegistroAcesso"/>
+		<mapping class="br.com.organizer.model.Pais"/>
+		<mapping class="br.com.organizer.model.Estado"/>
+		<mapping class="br.com.organizer.model.Cidade"/>
+		<mapping class="br.com.organizer.model.Descricao"/>
+		<mapping class="br.com.organizer.model.Conta"/>
+		<mapping class="br.com.organizer.model.Moeda"/>
+		<mapping class="br.com.organizer.model.TipoFechamento"/>
+		<mapping class="br.com.organizer.model.Parametros"/>	
+		<mapping class="br.com.organizer.model.Cartao"/>
+		<mapping class="br.com.organizer.model.Credito"/>
+		<mapping class="br.com.organizer.model.Debito"/>
+		<mapping class="br.com.organizer.model.Fechamento"/>	
+		<mapping class="br.com.organizer.model.Parcela" />
+		<mapping class="br.com.organizer.model.Propaganda" />
+		
+    </session-factory>
+</hibernate-configuration>

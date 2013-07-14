@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+<head>
+	<title>
+		<ui:insert name="titulo"></ui:insert>
+	</title>
+	<link href="css/site.css" rel="stylesheet" type="text/css" />
+	<a4j:loadScript src="js/functions.js"/>
+	<a4j:loadScript src="js/formaters.js"/>
+	<link rel="shortcut icon" href="imagens/logo/organizerLogo.ico"/>
+</head>
+
+<body bgcolor="#CCCCCC">
+	<f:view locale="#{loginController.locale}">
+		<a4j:form id="templateAPP">
+			<rich:spacer width="1" height="#{loginController.altura}" /> 
+			
+			<f:loadBundle basename="br.com.organizer.web.bundle.Messages" var="msg"/>
+					
+			<rich:panel styleClass="site">
+				<f:facet name="header">
+					<h:panelGrid columns="3" border="0" columnClasses="colunaLogo,colunaBand,colunaBand">
+						<h:graphicImage value="#{msg.site_logo}" />				
+					</h:panelGrid>
+				</f:facet>
+				
+				<div id="menu">
+					<rich:toolBar>
+						<rich:dropDownMenu value="#{msg.menu_cadastrosApp}">
+							<rich:menuItem submitMode="ajax" value="#{msg.menu_credito}" action="#{creditoController.carregarCredito}" 	immediate="true" onclick="#{rich:component('mdIndicator')}.show()"/>
+							<rich:menuItem submitMode="ajax" value="#{msg.menu_debito}"  action="#{debitoController.carregarDebito}" 	immediate="true" onclick="#{rich:component('mdIndicator')}.show()"/>
+						</rich:dropDownMenu>
+						
+						<rich:dropDownMenu value="#{msg.menu_consultas}" >
+							<rich:menuItem submitMode="ajax" value="#{msg.menu_credito}" 	action="#{creditoController.listarCreditos}" 		immediate="true" onclick="#{rich:component('mdIndicator')}.show()"/>
+							<rich:menuItem submitMode="ajax" value="#{msg.menu_debito}" 	action="#{debitoController.listarDebitos}" 			immediate="true" onclick="#{rich:component('mdIndicator')}.show()"/>
+							<rich:menuItem submitMode="ajax" value="#{msg.menu_fechamento}" action="#{fechamentoController.listarFechamentos}" 	immediate="true" onclick="#{rich:component('mdIndicator')}.show()"/>
+						</rich:dropDownMenu>
+						
+						<rich:dropDownMenu value="#{msg.menu_ferramentas}">
+							<rich:menuItem submitMode="ajax" value="#{msg.menu_fechamento}" action="#{fechamentoController.manterFechamento}" 	immediate="true" onclick="#{rich:component('mdIndicator')}.show()"/>
+							<rich:menuItem submitMode="ajax" value="#{msg.menu_planejamento}" disabled="true" />
+						</rich:dropDownMenu>
+						
+						<rich:dropDownMenu value="#{msg.menu_configuracoes}" >
+							<rich:menuGroup value="#{msg.menu_cadastroUsuario}">
+								<c:if test="#{loginController.usuario.masterCodigo==null}">
+									<rich:menuItem submitMode="ajax" value="#{msg.menu_editarUsuario}" 	action="#{usuarioController.carregarUsuario}" 	immediate="true" onclick="#{rich:component('mdIndicator')}.show()"/>
+									<rich:menuItem submitMode="ajax" value="#{msg.menu_novoUsuario}" 	action="#{usuarioController.novoUsuarioFilho}" 	immediate="true" onclick="#{rich:component('mdIndicator')}.show()">
+										<f:setPropertyActionListener target="#{usuarioController.novoUsuario}" value="true"/>
+									</rich:menuItem>
+									<rich:menuItem submitMode="ajax" value="#{msg.menu_listaUsuarios}" 	action="#{usuarioController.listarUsuarios}" 	immediate="true" onclick="#{rich:component('mdIndicator')}.show()"/>
+								</c:if>
+								<c:if test="#{loginController.usuario.masterCodigo!=null}">
+									<rich:menuItem submitMode="ajax" value="#{msg.menu_editarUsuario}" action="#{usuarioController.carregarUsuario}" immediate="true" onclick="#{rich:component('mdIndicator')}.show()"/>							
+								</c:if>
+								
+							</rich:menuGroup>
+							<rich:menuItem submitMode="ajax" value="#{msg.menu_descricoes}" 	action="#{descricaoController.listarDescricoes}" 	immediate="true" 	onclick="#{rich:component('mdIndicator')}.show()"/>
+							<rich:menuItem submitMode="ajax" value="#{msg.menu_cartaoCredito}" 	action="#{cartaoController.listarCartoes}" 			immediate="true" 	onclick="#{rich:component('mdIndicator')}.show()"/>
+							<rich:menuItem submitMode="ajax" value="#{msg.menu_parametrizacao}" action="#{parametrosController.carregarParametros}" immediate="true" 	onclick="#{rich:component('mdIndicator')}.show()"/>
+						</rich:dropDownMenu>
+						
+						<c:if test="#{loginController.usuario.administrador==true}">
+							<rich:dropDownMenu value="#{msg.menu_administrador}">		
+								<rich:menuItem submitMode="ajax" value="#{msg.menu_listaUsuarios}" 		action="#{usuarioController.listarUsuariosAdm}"		immediate="true" onclick="#{rich:component('mdIndicator')}.show()"/>
+								<rich:menuItem submitMode="ajax" value="#{msg.menu_localidades}" 		action="#{usuarioController.listarUsuariosAdm}" 	immediate="true" onclick="#{rich:component('mdIndicator')}.show()"/>
+								<rich:menuItem submitMode="ajax" value="#{msg.menu_parametrosGerais}" 	action="manterParametros" 							immediate="true" onclick="#{rich:component('mdIndicator')}.show()"/>
+								<rich:menuItem submitMode="ajax" value="#{msg.menu_propaganda}" 		action="listarPropagandas" 							immediate="true" onclick="#{rich:component('mdIndicator')}.show()"/>
+							</rich:dropDownMenu>
+						</c:if>
+						<rich:menuItem immediate="true" action="#{loginController.logout}" value="#{msg.menu_logout}"></rich:menuItem>
+					</rich:toolBar>
+					<br/> 
+					<label class="efeitoUsuarioLogado">
+						<h:outputText value="#{msg.label_usuarioLogado}" /> <br/>
+						<h:outputText id="usuarioLogado" value="#{usuarioLogado.nome}" />
+					</label>
+				</div>
+				
+				<div id="mainApp">
+					<ui:insert name="conteudo"></ui:insert>
+				</div>
+						
+				<div id="footer">
+					<center>				
+						<h:outputText value="#{msg.site_rodapeVisualizacao}" /><br/>
+						<h:outputText value="#{msg.site_rodapeAssinatura}" />
+					</center>
+				</div>
+			</rich:panel>
+		</a4j:form>	
+		<rich:modalPanel id="mdIndicator" autosized="true">
+		      	<div align="center">
+		         	<a4j:status id="loading" onstop="#{rich:component('mdIndicator')}.hide()">  
+				    <f:facet name="start">                                        
+				         <h:graphicImage value="/imagens/ajax-loader.gif"/>   
+				    </f:facet>                                          
+				</a4j:status>  
+			</div>
+		</rich:modalPanel>
+	</f:view>
+</body>
+
+</html>

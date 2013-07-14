@@ -1,0 +1,9 @@
+2010-12-08 22:22:26,071 ERROR [org.hibernate.tool.hbm2ddl.SchemaExport] - schema export unsuccessful
+java.io.FileNotFoundException: ..\richOrganizer\sql\scriptSql.sql (The system cannot find the path specified)
+	at java.io.FileOutputStream.open(Native Method)
+	at java.io.FileOutputStream.<init>(Unknown Source)
+	at java.io.FileOutputStream.<init>(Unknown Source)
+	at java.io.FileWriter.<init>(Unknown Source)
+	at org.hibernate.tool.hbm2ddl.SchemaExport.execute(SchemaExport.java:175)
+	at org.hibernate.tool.hbm2ddl.SchemaExport.create(SchemaExport.java:133)
+	at br.com.organizer.util.CreateTables.main(CreateTables.java:18)

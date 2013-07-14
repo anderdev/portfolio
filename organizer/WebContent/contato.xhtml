@@ -1,0 +1,52 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:c="http://java.sun.com/jstl/core"
+	  xmlns:a4j="http://richfaces.org/a4j"
+	  xmlns:rich="http://richfaces.org/rich"
+      template="template/template.xhtml">
+            
+	<ui:define name="titulo">
+	    <h:outputText value="#{msg.label_titulo_contato}"/>
+	</ui:define>
+
+	<ui:define name="conteudo">   
+		<a4j:region id="rgContato">
+			<div align="center">
+		    	<a4j:status id="indicator">  
+					<f:facet name="start">                                        
+						<h:graphicImage value="/imagens/ajax-loader.gif"/>   
+					</f:facet>                                          
+				</a4j:status>  
+			</div>
+				<div align="center">
+					<rich:spacer width="1" height="60px" />
+					<h2><h:outputText value="#{msg.tt_envieSuaMensagem}"/></h2>
+					<rich:panel style="width:600px;">
+						<h:panelGrid columns="1">
+							<rich:message  for="nome" styleClass="errorMessage"/>
+							<rich:message  for="email" styleClass="errorMessage"/>
+							<rich:message  for="mensagem" styleClass="errorMessage"/>
+						</h:panelGrid> 
+						<h:panelGrid columns="2" columnClasses="colunaLabel,colunaInputGrande" styleClass="formCadastro" border="0">
+							<h:outputText value="#{msg.label_nome}" style="colunaLabel"/>
+							<h:inputText id="nome" label="#{msg.label_tabela_nome}" required="true" value="#{contatoController.contatoDTO.nome}" style="width:100%" styleClass="input_content"/>
+							<h:outputText value="#{msg.label_email}" style="colunaLabel"/>
+							<h:inputText id="email" label="#{msg.label_tabela_email}" required="true" value="#{contatoController.contatoDTO.email}" validator="#{validatorController.validaEmail}" style="width:100%" styleClass="input_content"/>
+							<h:outputText value="#{msg.label_mensagem}" style="vertical-align: top;" />
+							<rich:editor id="mensagem" label="#{msg.label_tabela_mensagem}" required="true" width="400" value="#{contatoController.contatoDTO.mensagem}" plugins="save,paste" ></rich:editor>
+						</h:panelGrid>	
+		                			
+						<rich:spacer height="7" />
+						<br />
+						
+						<h:panelGrid columns="2">
+							<a4j:commandButton value="#{msg.btn_enviar}" submitMode="ajax" styleClass="botao" action="#{contatoController.enviarEmail}" />
+							<a4j:commandButton value="#{msg.btn_voltar}" submitMode="ajax" styleClass="botao" action="index" immediate="true" />
+						</h:panelGrid>
+					</rich:panel>
+				</div>
+		</a4j:region>
+	</ui:define>
+</ui:composition>

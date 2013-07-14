@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+<head>
+	<title>
+		<ui:insert name="titulo"></ui:insert>
+	</title>
+	<link href="css/site.css" rel="stylesheet" type="text/css" />
+	<a4j:loadScript src="js/functions.js"/>
+	<a4j:loadScript src="js/formaters.js"/>
+	<link rel="shortcut icon" href="imagens/logo/organizerLogo.ico"/>
+</head>
+
+<body bgcolor="#CCCCCC">
+	<f:view locale="#{localeController.locale}" id="view">
+		<a4j:form id="template">
+			<rich:spacer width="1" height="#{loginController.altura}" id="spacer"/> 
+			
+			<f:loadBundle basename="br.com.organizer.web.bundle.Messages" var="msg" id="bundle"/>
+					
+			<rich:panel styleClass="site" id="panelSite">
+				<f:facet name="header">
+					<h:panelGrid columns="3" border="0" styleClass="cabecalho" columnClasses="colunaLogo,colunaBand,colunaBand">
+						<h:graphicImage value="#{msg.site_logo}" />
+						<a4j:commandLink action="#{localeController.mudaPortugues}" immediate="true">
+						  	<h:graphicImage value="#{msg.site_pt_BR}" style="border:0px"/>
+						</a4j:commandLink>
+						
+						<a4j:commandLink action="#{localeController.mudaIngles}" immediate="true">
+						  	<h:graphicImage value="#{msg.site_en_UK}" style="border:0px"/>
+						</a4j:commandLink>
+					</h:panelGrid>
+				</f:facet>
+				
+				<div id="menu">
+					<rich:toolBar id="bar">
+						<rich:dropDownMenu value="#{msg.menu_sobre}" id="ddMenuSobre" disabled="true">
+							<rich:menuItem value="#{msg.menu_cadastrosApp}"  immediate="true" action="novoUsuario" id="ddNovoUsuario"/>
+							<rich:menuItem value="#{msg.menu_fechamento}"    immediate="true" action="contato"     id="ddContato"/>
+							<rich:menuItem value="#{msg.menu_planejamento}"  immediate="true" action="contato"     id="ddPlanejamento"/>
+						</rich:dropDownMenu>
+						<rich:menuItem value="#{msg.menu_cadastro}" immediate="true" action="novoUsuario" id="miNovoUsuario"/>
+						<rich:menuItem value="#{msg.menu_contato}"  immediate="true" action="contato"     id="miContato"/>
+					</rich:toolBar>
+				</div>
+				
+				<div id="main">
+					<ui:insert name="conteudo"></ui:insert>
+				</div>
+				
+				<div id="sidebar">
+					<a4j:region  renderRegionOnly="true">
+				    	<rich:panel>
+							<f:facet name="header">
+								<h:outputText value="Login"></h:outputText>
+							</f:facet>
+							<h:panelGrid columns="2" border="0" >
+								<h:outputText value="#{msg.label_usuario}"/>
+								<h:inputText id="user" label="#{msg.label_tabela_usuario}" style="width:110px;" 
+									value="#{loginController.loginDTO.user}" >
+									<a4j:support event="onblur" 
+										reRender="ts_usuario"/>
+								</h:inputText>
+								<h:outputText value="#{msg.label_senha}"/>
+								<h:inputSecret id="password" label="#{msg.label_tabela_senha}" 
+									style="width:110px;" value="#{loginController.loginDTO.password}">							
+								</h:inputSecret>
+							</h:panelGrid>
+							<h:panelGrid width="170px" border="0" style="text-align:center;">
+								<a4j:commandButton id="btLogin" type="submit" value="#{msg.btn_login}" 
+									rerender="user,password" styleClass="botao" 
+									action="#{loginController.login}"/>
+								<a4j:commandLink value="#{msg.lnk_esqueceu}" rerender="confirmaSenha"/>
+							</h:panelGrid>
+						</rich:panel>
+					</a4j:region>
+					
+					<a4j:include viewId="/propaganda.xhtml" />
+				</div>
+				<div id="footer">
+					<center>				
+						<h:outputText value="#{msg.site_rodapeVisualizacao}" /><br/>
+						<h:outputText value="#{msg.site_rodapeAssinatura}" />
+					</center>
+				</div>
+			</rich:panel>
+		</a4j:form>
+	
+		<rich:modalPanel id="confirmaSenha" autosized="true">
+			
+			<f:facet name="header">
+				<h:outputText value="#{msg.label_alteracaoSenha}" />
+			</f:facet>
+			
+			<div align="center">
+				<a4j:region id="regionLogin">
+					<a4j:form>
+						<rich:panel style="width:98%;">
+							<h:panelGrid columns="1" border="0" >
+								<rich:message  for="novaSenhaPalavraSecreta" styleClass="errorMessage"/>
+								<rich:message  for="novaSenha" styleClass="errorMessage"/>
+								<rich:message  for="novaSenhaConfirmacao" styleClass="errorMessage"/>
+							</h:panelGrid>	
+							
+							<h:panelGrid columns="2" border="0" >
+								<h:outputText value="#{msg.label_usuario}"/>
+								<h:outputText style="width:110px;text-aling:left;"  id="ts_usuario" value="#{loginController.loginDTO.user}"/>
+								
+								<h:outputText value="#{msg.label_palavraSecreta}"/>
+								<h:inputText   id="novaSenhaPalavraSecreta" label="#{msg.label_tabela_palavraSecreta}" style="width:110px;" required="true"  value="#{loginController.loginDTO.novaSenhaPalavraSecreta}" />
+									
+									
+								<h:outputText value="#{msg.label_senha}"/>
+								<h:inputSecret id="novaSenha" style="width:110px;" label="#{msg.label_tabela_senha}" required="true"   value="#{loginController.loginDTO.novaSenha}" />
+								
+								<h:outputText value="#{msg.label_confirmacao}"/>
+								<h:inputSecret id="novaSenhaConfirmacao" style="width:110px;" label="#{msg.label_tabela_confirmacao}" required="true"  value="#{loginController.loginDTO.novaSenhaConfirmacao}"  />
+								
+							</h:panelGrid>
+							<h:panelGrid columns="2">
+								<a4j:commandButton value="#{msg.btn_gravar}" id="gravaNovaSenha" styleClass="botao" action="#{loginController.login}">
+									<f:setPropertyActionListener target="#{loginController.confirmaSenha}" value="true"/>
+								</a4j:commandButton>
+								<a4j:commandButton value="#{msg.btn_voltar}" onclick="#{rich:component('confirmaSenha')}.hide()" styleClass="botao" immediate="true" >
+									<f:setPropertyActionListener target="#{loginController.confirmaSenha}" value="false"/>
+								</a4j:commandButton>
+							</h:panelGrid>
+						</rich:panel>
+					</a4j:form>	
+				</a4j:region>				
+			</div>
+		</rich:modalPanel>
+	</f:view>
+
+	<script>
+		<c:if test="#{loginController.confirmaSenha=='true'}">
+			#{rich:component('confirmaSenha')}.show();
+		</c:if>
+	</script>
+</body>
+
+</html>

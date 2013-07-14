@@ -1,0 +1,560 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+	<!-- ========================= RESOURCE DEFINITIONS ========================= -->
+  
+	<!-- Configurer that replaces ${...} placeholders with values from a properties file -->
+	<!-- (in this case, JDBC-related settings for the dataSource definition below) -->
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location"><value>/WEB-INF/jdbc.properties</value></property>
+	</bean>
+
+	<!-- Local DataSource that works in any environment -->
+	<!-- Note that DriverManagerDataSource does not pool; it is not intended for production -->	
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName"><value>${jdbc.driverClassName}</value></property>
+		<property name="url"><value>${jdbc.url}</value></property>
+		<property name="username"><value>${jdbc.username}</value></property>
+		<property name="password"><value>${jdbc.password}</value></property>
+
+	</bean>
+
+	<!-- Hibernate SessionFactory -->
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		 <property name="dataSource">   
+            <ref bean="dataSource"/>   
+        </property>   
+        <property name="configLocation">
+		   <value>${hibernate.cfg}</value>
+		</property>
+        <property name="configurationClass">
+		   <value>org.hibernate.cfg.AnnotationConfiguration</value>
+		</property>
+        <property name="hibernateProperties">   
+            <props>   
+                <prop key="hibernate.dialect">${hibernate.dialect}</prop>   
+                <prop key="hibernate.show_sql">${show.sql}</prop>   
+                <prop key="hibernate.query.substitutions">true 1, false 0</prop>
+            </props>   
+        </property>   
+	</bean>
+
+	<!-- Transaction manager for a single Hibernate SessionFactory (alternative to JTA) -->
+	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory"><ref local="sessionFactory"/></property>
+	</bean>
+	
+	<!-- Hibernate Template Defintion -->
+	<bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate"> 
+		<property name="sessionFactory"><ref bean="sessionFactory"/></property> 
+	</bean> 
+
+	<context:annotation-config />
+
+	<context:component-scan base-package="br.com.organizer" />
+	
+	<!-- Trabalha com a anotação  @Autowired -->
+	<bean
+		class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
+
+	<!--Trabalha com a anotação  @Resource -->
+	<bean
+		class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
+
+	<!--  User Service Defintion -->
+	<bean id="genericoDAO" class="br.com.organizer.dao.hibernate.GenericoHIB">
+		<property name="hibernateTemplate"><ref bean="hibernateTemplate"/></property> 
+	</bean>
+	
+	<bean id="usuarioDAO" class="br.com.organizer.dao.hibernate.UsuarioHIB">
+		<property name="hibernateTemplate"><ref bean="hibernateTemplate"/></property> 
+	</bean>	
+	
+	<bean id="usuarioBO" class="br.com.organizer.business.pojo.UsuarioPOJO">
+		<property name="usuarioDAO">
+			<ref local="usuarioDAO"/>
+		</property>		
+		<property name="genericoDAO">
+			<ref local="genericoDAO"/>
+		</property>	
+		<property name="cidadeDAO">
+			<ref local="cidadeDAO"/>
+		</property>	
+		<property name="estadoDAO">
+			<ref local="estadoDAO"/>
+		</property>	
+		<property name="paisDAO">
+			<ref local="paisDAO"/>
+		</property>	
+	</bean>
+	
+	<bean id="usuarioBOTarget" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref local="transactionManager"/>
+		</property>
+		<property name="target">
+			<ref local="usuarioBO"/>
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<bean id="paisDAO" class="br.com.organizer.dao.hibernate.PaisHIB">
+		<property name="hibernateTemplate"><ref bean="hibernateTemplate"/></property> 
+	</bean>
+	
+	<bean id="paisBO" class="br.com.organizer.business.pojo.PaisPOJO">
+		<property name="paisDAO">
+			<ref local="paisDAO"/>
+		</property>		
+	</bean>
+	
+	<bean id="paisBOTarget" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref local="transactionManager"/>
+		</property>
+		<property name="target">
+			<ref local="paisBO"/>
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<bean id="estadoDAO" class="br.com.organizer.dao.hibernate.EstadoHIB">
+		<property name="hibernateTemplate"><ref bean="hibernateTemplate"/></property> 
+	</bean>
+	
+	<bean id="estadoBO" class="br.com.organizer.business.pojo.EstadoPOJO">
+		<property name="estadoDAO">
+			<ref local="estadoDAO"/>
+		</property>		
+	</bean>
+	
+	<bean id="estadoBOTarget" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref local="transactionManager"/>
+		</property>
+		<property name="target">
+			<ref local="estadoBO"/>
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<bean id="cidadeDAO" class="br.com.organizer.dao.hibernate.CidadeHIB">
+		<property name="hibernateTemplate"><ref bean="hibernateTemplate"/></property> 
+	</bean>
+	
+	<bean id="cidadeBO" class="br.com.organizer.business.pojo.CidadePOJO">
+		<property name="cidadeDAO">
+			<ref local="cidadeDAO"/>
+		</property>		
+	</bean>
+	
+	<bean id="cidadeBOTarget" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref local="transactionManager"/>
+		</property>
+		<property name="target">
+			<ref local="cidadeBO"/>
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="registroAcessoDAO" class="br.com.organizer.dao.hibernate.RegistroAcessoHIB">
+		<property name="hibernateTemplate"><ref bean="hibernateTemplate"/></property> 
+	</bean>
+	
+	<bean id="registroAcessoBO" class="br.com.organizer.business.pojo.RegistroAcessoPOJO">
+		<property name="registroAcessoDAO">
+			<ref local="registroAcessoDAO"/>
+		</property>		
+		<property name="genericoDAO">
+			<ref local="genericoDAO"/>
+		</property>	
+	</bean>
+	
+	<bean id="registroAcessoBOTarget" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref local="transactionManager"/>
+		</property>
+		<property name="target">
+			<ref local="registroAcessoBO"/>
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>	
+	
+	<bean id="contatoBO" class="br.com.organizer.business.pojo.ContatoPOJO">
+	</bean>
+	
+	<bean id="contatoBOTarget" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref local="transactionManager"/>
+		</property>
+		<property name="target">
+			<ref local="contatoBO"/>
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<bean id="descricaoDAO" class="br.com.organizer.dao.hibernate.DescricaoHIB">
+		<property name="hibernateTemplate"><ref bean="hibernateTemplate"/></property> 
+	</bean>
+	
+	<bean id="descricaoBO" class="br.com.organizer.business.pojo.DescricaoPOJO">
+		<property name="descricaoDAO">
+			<ref local="descricaoDAO"/>
+		</property>		
+		<property name="contaDAO">
+			<ref local="contaDAO"/>
+		</property>	
+		<property name="usuarioDAO">
+			<ref local="usuarioDAO"/>
+		</property>	
+	</bean>
+	
+	<bean id="descricaoBOTarget" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref local="transactionManager"/>
+		</property>
+		<property name="target">
+			<ref local="descricaoBO"/>
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>	
+	
+	<bean id="contaDAO" class="br.com.organizer.dao.hibernate.ContaHIB">
+		<property name="hibernateTemplate"><ref bean="hibernateTemplate"/></property> 
+	</bean>
+	
+	<bean id="contaBO" class="br.com.organizer.business.pojo.ContaPOJO">
+		<property name="contaDAO">
+			<ref local="contaDAO"/>
+		</property>		
+		<property name="genericoDAO">
+			<ref local="genericoDAO"/>
+		</property>	
+	</bean>
+	
+	<bean id="contaBOTarget" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref local="transactionManager"/>
+		</property>
+		<property name="target">
+			<ref local="contaBO"/>
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>	
+	
+	<bean id="moedaDAO" class="br.com.organizer.dao.hibernate.MoedaHIB">
+		<property name="hibernateTemplate"><ref bean="hibernateTemplate"/></property> 
+	</bean>
+	
+	<bean id="moedaBO" class="br.com.organizer.business.pojo.MoedaPOJO">
+		<property name="moedaDAO">
+			<ref local="moedaDAO"/>
+		</property>		
+		<property name="genericoDAO">
+			<ref local="genericoDAO"/>
+		</property>	
+	</bean>
+	
+	<bean id="moedaBOTarget" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref local="transactionManager"/>
+		</property>
+		<property name="target">
+			<ref local="moedaBO"/>
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<bean id="tipoFechamentoDAO" class="br.com.organizer.dao.hibernate.TipoFechamentoHIB">
+		<property name="hibernateTemplate"><ref bean="hibernateTemplate"/></property> 
+	</bean>
+	
+	<bean id="tipoFechamentoBO" class="br.com.organizer.business.pojo.TipoFechamentoPOJO">
+		<property name="tipoFechamentoDAO">
+			<ref local="tipoFechamentoDAO"/>
+		</property>		
+		<property name="genericoDAO">
+			<ref local="genericoDAO"/>
+		</property>			
+	</bean>
+	
+	<bean id="tipoFechamentoBOTarget" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref local="transactionManager"/>
+		</property>
+		<property name="target">
+			<ref local="tipoFechamentoBO"/>
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<bean id="parametrosDAO" class="br.com.organizer.dao.hibernate.ParametrosHIB">
+		<property name="hibernateTemplate"><ref bean="hibernateTemplate"/></property> 
+	</bean>
+	
+	<bean id="parametrosBO" class="br.com.organizer.business.pojo.ParametrosPOJO">
+		<property name="parametrosDAO">
+			<ref local="parametrosDAO"/>
+		</property>		
+		<property name="genericoDAO">
+			<ref local="genericoDAO"/>
+		</property>	
+		<property name="usuarioDAO">
+			<ref local="usuarioDAO"/>
+		</property>
+		<property name="moedaDAO">
+			<ref local="moedaDAO"/>
+		</property>	
+		<property name="tipoFechamentoDAO">
+			<ref local="tipoFechamentoDAO"/>
+		</property>		
+	</bean>
+	
+	<bean id="parametrosBOTarget" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref local="transactionManager"/>
+		</property>
+		<property name="target">
+			<ref local="parametrosBO"/>
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<bean id="cartaoDAO" class="br.com.organizer.dao.hibernate.CartaoHIB">
+		<property name="hibernateTemplate"><ref bean="hibernateTemplate"/></property> 
+	</bean>
+	
+	<bean id="cartaoBO" class="br.com.organizer.business.pojo.CartaoPOJO">
+		<property name="cartaoDAO">
+			<ref local="cartaoDAO"/>
+		</property>		
+		<property name="genericoDAO">
+			<ref local="genericoDAO"/>
+		</property>	
+		<property name="usuarioDAO">
+			<ref local="usuarioDAO"/>
+		</property>	
+	</bean>
+	
+	<bean id="cartaoBOTarget" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref local="transactionManager"/>
+		</property>
+		<property name="target">
+			<ref local="cartaoBO"/>
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<bean id="creditoDAO" class="br.com.organizer.dao.hibernate.CreditoHIB">
+		<property name="hibernateTemplate"><ref bean="hibernateTemplate"/></property> 
+	</bean>
+	
+	<bean id="creditoBO" class="br.com.organizer.business.pojo.CreditoPOJO">
+		<property name="creditoDAO">
+			<ref local="creditoDAO"/>
+		</property>
+		<property name="usuarioDAO">
+			<ref local="usuarioDAO"/>
+		</property>				
+	</bean>
+	
+	<bean id="creditoBOTarget" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref local="transactionManager"/>
+		</property>
+		<property name="target">
+			<ref local="creditoBO"/>
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<bean id="debitoDAO" class="br.com.organizer.dao.hibernate.DebitoHIB">
+		<property name="hibernateTemplate"><ref bean="hibernateTemplate"/></property> 
+	</bean>
+	
+	<bean id="debitoBO" class="br.com.organizer.business.pojo.DebitoPOJO">
+		<property name="debitoDAO">
+			<ref local="debitoDAO"/>
+		</property>
+		<property name="usuarioDAO">
+			<ref local="usuarioDAO"/>
+		</property>		
+		<property name="tipoFechamentoDAO">
+			<ref local="tipoFechamentoDAO"/>
+		</property>	
+		<property name="cartaoDAO">
+			<ref local="cartaoDAO"/>
+		</property>		
+		<property name="parcelaDAO">
+			<ref local="parcelaDAO"/>
+		</property>		
+	</bean>
+	
+	<bean id="debitoBOTarget" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref local="transactionManager"/>
+		</property>
+		<property name="target">
+			<ref local="debitoBO"/>
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<bean id="parcelaDAO" class="br.com.organizer.dao.hibernate.ParcelaHIB">
+		<property name="hibernateTemplate"><ref bean="hibernateTemplate"/></property> 
+	</bean>
+	
+	<bean id="parcelaBO" class="br.com.organizer.business.pojo.ParcelaPOJO">
+		<property name="parcelaDAO">
+			<ref local="parcelaDAO"/>
+		</property>			
+	</bean>
+	
+	<bean id="parcelaBOTarget" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref local="transactionManager"/>
+		</property>
+		<property name="target">
+			<ref local="parcelaBO"/>
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<bean id="fechamentoDAO" class="br.com.organizer.dao.hibernate.FechamentoHIB">
+		<property name="hibernateTemplate"><ref bean="hibernateTemplate"/></property> 
+	</bean>
+	
+	<bean id="fechamentoBO" class="br.com.organizer.business.pojo.FechamentoPOJO">
+		<property name="fechamentoDAO">
+			<ref local="fechamentoDAO"/>
+		</property>
+		<property name="usuarioDAO">
+			<ref local="usuarioDAO"/>
+		</property>		
+		<property name="tipoFechamentoDAO">
+			<ref local="tipoFechamentoDAO"/>
+		</property>	
+		<property name="parametrosDAO">
+			<ref local="parametrosDAO"/>
+		</property>	
+		<property name="moedaDAO">
+			<ref local="moedaDAO"/>
+		</property>	
+		<property name="creditoDAO">
+			<ref local="creditoDAO"/>
+		</property>
+		<property name="debitoDAO">
+			<ref local="debitoDAO"/>
+		</property>		
+	</bean>
+	
+	<bean id="fechamentoBOTarget" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref local="transactionManager"/>
+		</property>
+		<property name="target">
+			<ref local="fechamentoBO"/>
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<bean id="propagandaDAO" class="br.com.organizer.dao.hibernate.PropagandaHIB">
+		<property name="hibernateTemplate"><ref bean="hibernateTemplate"/></property> 
+	</bean>
+	
+	<bean id="propagandaBO" class="br.com.organizer.business.pojo.PropagandaPOJO">
+		<property name="propagandaDAO">
+			<ref local="propagandaDAO"/>
+		</property>		
+		<property name="genericoDAO">
+			<ref local="genericoDAO"/>
+		</property>		
+	</bean>
+	
+	<bean id="propagandaBOTarget" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref local="transactionManager"/>
+		</property>
+		<property name="target">
+			<ref local="propagandaBO"/>
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+</beans>

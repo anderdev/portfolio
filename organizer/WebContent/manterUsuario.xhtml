@@ -1,0 +1,129 @@
+<ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:c="http://java.sun.com/jstl/core"
+	  xmlns:a4j="http://richfaces.org/a4j"
+	  xmlns:rich="http://richfaces.org/rich"
+      template="template/templateAPP.xhtml">
+            
+	<ui:define name="titulo">
+	    <h:outputText value="#{msg.label_titulo_usuarios}"/>
+	</ui:define>
+	        
+	<ui:define name="conteudo">  
+	   	<a4j:keepAlive beanName="usuarioController"></a4j:keepAlive>
+   		<a4j:keepAlive beanName="localeController"></a4j:keepAlive>
+	    <a4j:region id="manterUsuario">     	
+			<div align="center">
+				<rich:spacer width="1" height="60px" />
+				
+				<h2><h:outputText value="#{msg.tt_cadastroUsuario}"/></h2>
+				<h:inputHidden id="codigo" value="#{usuarioController.usuario.codigo}" validator="#{validatorController.getUsuarioCodigo}"></h:inputHidden>
+				<rich:panel style="width:600px;">
+					<h:panelGrid columns="1">
+						<rich:message  for="nome" styleClass="errorMessage"/>
+						<rich:message  for="email" styleClass="errorMessage"/>
+						<rich:message  for="dtNasc" styleClass="errorMessage"/>
+						<rich:message  for="pais" styleClass="errorMessage"/>
+						<rich:message  for="estado" styleClass="errorMessage"/>
+						<rich:message  for="cidade" styleClass="errorMessage"/>
+						<rich:message  for="usuario" styleClass="errorMessage"/>
+					</h:panelGrid> 							
+					<h:panelGrid columns="2" columnClasses="colunaLabel,colunaInputGrande" styleClass="formCadastro" border="0">
+						<h:outputText value="#{msg.label_nome}" style="colunaLabel"/>
+						<h:inputText id="nome" label="#{msg.label_tabela_nome}" required="true" value="#{usuarioController.usuario.nome}" style="width:100%" styleClass="input_content"/>
+						<h:outputText value="#{msg.label_email}" style="colunaLabel"/>
+						<h:inputText id="email" label="#{msg.label_tabela_email}" required="true" value="#{usuarioController.usuario.email}" validator="#{validatorController.validaEmail}" style="width:100%" styleClass="input_content"/>
+					</h:panelGrid>
+					
+					<h:panelGrid columns="4" columnClasses="colunaLabel,colunaInputPequeno,colunaLabel,colunaInputPequeno" border="0" styleClass="formCadastro">
+						<h:outputText value="#{msg.label_dataNasc}"  styleClass="colunaLabel"/>
+						
+						<rich:calendar id="dtNasc" required="true" 
+									   value="#{usuarioController.usuario.dtnasc}" 
+									   label="#{msg.label_tabela_dataNasc}" 
+									   inputStyle="background-color: white;border-color: gray;border-width:1px;left: 0px;width:80px"
+									   locale="#{loginController.calendarLocale}"
+									   enableManualInput="true"
+									   datePattern="dd/MM/yyyy"
+									   oninputkeydown="Mascara(this,Data);"
+									   oninputkeypress="Mascara(this,Data);" 
+									   oninputkeyup="Mascara(this,Data);"  
+									   maxlength="10"/>  
+						
+						<h:outputText value="#{msg.label_pais}" styleClass="colunaLabel"/>
+						
+						<h:selectOneMenu id="pais" styleClass="input_content" style="width:100%" 
+										value="#{usuarioController.usuario.paisCodigo}"
+										required="true" 
+										validator="#{validatorController.verificaPais}">
+							<f:selectItems value="#{usuarioController.paises}"/>
+							<a4j:support event="onchange" 
+								 ajaxSingle="true" 
+								 onbeforedomupdate="#{rich:component('mdIndicatorMU')}.show()"
+								 action="#{usuarioController.actionCarregarEstados}"	
+								 reRender="pais,estado,cidade">
+							</a4j:support> 
+						</h:selectOneMenu>
+						
+						<h:outputText value="#{msg.label_estado}" styleClass="colunaLabel"/>
+						
+						<h:selectOneMenu id="estado" styleClass="input_content" style="width:100%"
+										 value="#{usuarioController.usuario.estadoCodigo}"
+										 required="true" 
+										 validator="#{validatorController.verificaEstado}">
+							<f:selectItems value="#{usuarioController.estados}"/>
+							<a4j:support event="onchange" 
+								 ajaxSingle="true"
+								 onbeforedomupdate="#{rich:component('mdIndicatorMU')}.show()"
+								 action="#{usuarioController.actionCarregarCidades}"	
+								 reRender="estado,cidade"/> 
+						</h:selectOneMenu>
+						
+						<h:outputText  value="#{msg.label_cidade}" styleClass="colunaLabel"/>
+						<h:selectOneMenu id="cidade" styleClass="input_content" style="width:100%"
+										 value="#{usuarioController.usuario.cidadeCodigo}"
+										 required="true"
+										 validator="#{validatorController.verificaCidade}">
+							<f:selectItems value="#{usuarioController.cidades}"/>
+						</h:selectOneMenu>
+					</h:panelGrid>
+													
+					<h:panelGrid columns="2" styleClass="boxLogin">
+						<h:outputText value="#{msg.label_usuario}"/>
+						<h:inputText id="usuario" required="true" 	  	  label="#{msg.label_tabela_usuario}" 	value="#{usuarioController.usuario.usuario}" 		size="27"  styleClass="input_content" validator="#{validatorController.verificaUsername}"/>
+						<h:outputText value="#{msg.label_palavraSecreta}"/>
+						<h:inputText id="palavaSecreta" required="true"   label="#{msg.label_tabela_palavraSecreta}" 	value="#{usuarioController.usuario.palavraSecreta}" 		size="27"  styleClass="input_content"/>
+					
+						<c:if test="#{usuarioController.usuario.masterCodigo!=null}">
+							<h:inputHidden id="masterCodigo" value="#{usuarioController.usuario.masterCodigo}"  size="27"  styleClass="input_content"/>
+						</c:if>														
+						<h:inputHidden id="senha" 	     value="#{usuarioController.usuario.senha}"   		size="27"  styleClass="input_content"/>	
+						<h:inputHidden id="confirmacao"  value="#{usuarioController.usuario.senha}"   	    size="27"  styleClass="input_content"/>
+					</h:panelGrid>
+					<rich:spacer height="7" />
+					<br />
+					<c:if test="#{usuarioController.novoUsuario==true}">
+						<h:outputText style="color: #0033FF;font-family:tahoma,verdana,arial;font-size: 11px;font-weight: bold;" value="#{msg.info_defaulPassword}"/><br/>
+						<h:outputText style="color: #0033FF;font-family:tahoma,verdana,arial;font-size: 11px;font-weight: bold;" value="#{msg.info_defaulPassword1}"/>
+					</c:if>
+					<br /><br />
+					
+					<h:panelGrid columns="2">
+						<a4j:commandButton value="#{msg.btn_gravar}" id="gravar" styleClass="botao" action="#{usuarioController.salvar}" reRender="usuarioLogado" onclick="#{rich:component('mdIndicatorMU')}.show()"/>
+						<a4j:commandButton value="#{msg.btn_voltar}" styleClass="botao" action="#{usuarioController.cancelarEdicao}" immediate="true" reRender="pais,estado,cidade" onclick="#{rich:component('mdIndicatorMU')}.show()"/>
+					</h:panelGrid>
+				</rich:panel>
+				
+				<rich:modalPanel id="mdIndicatorMU" autosized="true">
+			      	<div align="center">	
+			      		<h:graphicImage url="/imagens/ajax-loader.gif"/>
+			         	<a4j:status id="loadingMU" onstop="#{rich:component('mdIndicatorMU')}.hide()">  
+						</a4j:status>  
+					</div>
+				</rich:modalPanel>
+			</div>
+		</a4j:region>
+	</ui:define>
+</ui:composition>

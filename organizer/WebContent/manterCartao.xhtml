@@ -1,0 +1,185 @@
+<ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:c="http://java.sun.com/jstl/core"
+	  xmlns:a4j="http://richfaces.org/a4j"
+	  xmlns:rich="http://richfaces.org/rich"
+      template="template/templateAPP.xhtml">
+            
+            <ui:define name="titulo">
+            	<h:outputText value="#{msg.label_titulo_listaCartoes}"/>
+            </ui:define>
+            
+            <ui:define name="conteudo">  
+           		<rich:spacer width="1" height="20" /> 
+				<a4j:keepAlive beanName="cartaoController" />
+				<center>
+					<h2><h:outputText value="#{msg.tt_listaDeCartoes}"/></h2>
+				</center>					
+		        <rich:spacer width="1" height="5" /> 
+		        <div align="center">
+		        	<h:panelGrid columns="1">
+						<rich:message  for="descricao" styleClass="errorMessage"/>
+						<rich:message  for="dtExpira" styleClass="errorMessage"/>
+						<rich:message  for="diaVencimento" styleClass="errorMessage"/>
+						<rich:message  for="diaCompra" styleClass="errorMessage"/>
+					</h:panelGrid> 
+		        	<div class="boxBotaoNovo60" align="right">
+			        	<a4j:commandButton action="#{cartaoController.novo}" ajaxSingle="true" reRender="descricao,dtExpira,diaVencimento,diaCompra" oncomplete="#{rich:component('mdNovoCartao')}.show();" onclick="#{rich:component('mdIndicatorCart')}.show()" value="#{msg.btn_novo}" styleClass="botao"/>
+					</div>					
+					<rich:spacer width="1" height="10" /> 		        
+					<a4j:region  renderRegionOnly="false" id="regionListaCartoes">
+						<rich:dataTable value="#{cartaoController.listaDeCartoes}" var="c" width="60%" 
+				        	rows="10" reRender="dsd" id="listaDeCartoes">
+				        	
+				            <rich:column sortBy="#{c.descricao}"  width="50%" style="text-align: left;"> 
+				                <f:facet name="header">
+				                    <h:outputText value="#{msg.label_tabela_descricao}"/>
+				                </f:facet>
+				                <h:outputText value="#{c.descricao}" />
+				            </rich:column> 
+				            
+				            <rich:column sortBy="#{c.diaVencimento}" width="15%" style="text-align: center;"> 
+				                <f:facet name="header">
+				                    <h:outputText value="#{msg.label_tabela_diaVencimento}"/>
+				                </f:facet>
+				                <h:outputText value="#{c.diaVencimento}" />
+				            </rich:column> 
+				            
+				            <rich:column sortBy="#{c.diaCompra}" width="15%" style="text-align: center;"> 
+				                <f:facet name="header">
+				                    <h:outputText value="#{msg.label_tabela_diaCompra}"/>
+				                </f:facet>
+				                <h:outputText value="#{c.diaCompra}" />
+				            </rich:column> 
+				            
+				            <rich:column sortBy="#{c.dtExpira}" width="15%" style="text-align: center;"> 
+				                <f:facet name="header">
+				                    <h:outputText value="#{msg.label_tabela_dtExpira}"/>
+				                </f:facet>
+				                <h:outputText value="#{c.dtExpira}" >
+				                	<f:convertDateTime pattern="MM/yyyy" />
+				                </h:outputText>
+				            </rich:column> 
+				            
+				            <rich:column width="5%">
+				                <f:facet name="header">
+									<h:outputText value=""></h:outputText>
+								</f:facet>
+								<a4j:commandLink action="#{cartaoController.editar}" reRender="descricao,dtExpira,diaVencimento,diaCompra" ajaxSingle="true" oncomplete="#{rich:component('mdNovoCartao')}.show();" onclick="#{rich:component('mdIndicatorCart')}.show()">
+									<f:setPropertyActionListener target="#{cartaoController.cartaoDTO.codigo}" value="#{c.codigo}"/>
+									<h:graphicImage  url="/imagens/btn_editar.gif" style="border: 0px" />
+								</a4j:commandLink>
+				            </rich:column>
+				           
+				            <rich:column width="5%">
+				                <f:facet name="header">
+									<h:outputText value=""></h:outputText>
+								</f:facet>
+								<a4j:commandLink ajaxSingle="true" onclick="#{rich:component('mdExcluirCartao')}.show();#{rich:component('mdIndicatorCart')}.show()">
+									<f:setPropertyActionListener target="#{cartaoController.cartaoDTO.codigo}" value="#{c.codigo}"/>
+									<h:graphicImage  url="/imagens/btn_deletar.gif" style="border: 0px" />
+								</a4j:commandLink>
+				            </rich:column>
+				            <f:facet name="footer">
+				                <rich:datascroller stepControls="hide" id="dsd" renderIfSinglePage="false">
+				                	<f:facet name="first" >
+				                        <h:graphicImage value="#{msg.first}" style="border:0px" onclick="#{rich:component('mdIndicatorCart')}.show()" alt="#{msg.btn_first}" title="#{msg.btn_first}"/>
+				                    </f:facet>
+				                    <f:facet name="first_disabled"  >
+				                        <h:graphicImage value="#{msg.first_disabled}" style="border:0px" alt="#{msg.btn_first}" title="#{msg.btn_first}"/>
+				                    </f:facet>
+				                    <f:facet name="last">
+				                        <h:graphicImage value="#{msg.last}" style="border:0px" onclick="#{rich:component('mdIndicatorCart')}.show()" alt="#{msg.btn_last}" title="#{msg.btn_last}"/>
+				                    </f:facet>     
+				                    <f:facet name="last_disabled">
+				                        <h:graphicImage value="#{msg.last_disabled}" style="border:0px" alt="#{msg.btn_last}" title="#{msg.btn_last}"/>
+				                    </f:facet>                       
+				                    <f:facet name="fastforward">
+				                        <h:graphicImage value="#{msg.next}" style="border:0px" onclick="#{rich:component('mdIndicatorCart')}.show()" alt="#{msg.btn_fastforward}" title="#{msg.btn_fastforward}"/>
+				                    </f:facet>
+				                    <f:facet name="fastforward_disabled">
+				                        <h:graphicImage value="#{msg.next_disabled}" style="border:0px" alt="#{msg.btn_fastforward}" title="#{msg.btn_fastforward}"/>
+				                    </f:facet>
+				                    <f:facet name="fastrewind">
+				                        <h:graphicImage value="#{msg.previous}" style="border:0px" onclick="#{rich:component('mdIndicatorCart')}.show()" alt="#{msg.btn_fastrewind}" title="#{msg.btn_fastforward}"/>
+				                    </f:facet>
+				                    <f:facet name="fastrewind_disabled" >
+				                        <h:graphicImage value="#{msg.previous_disabled}" style="border:0px" alt="#{msg.btn_fastrewind}" title="#{msg.btn_fastrewind}"/>
+				                    </f:facet>
+				                </rich:datascroller>
+				            </f:facet>
+				        </rich:dataTable>
+				        
+				        <rich:modalPanel id="mdIndicatorCart" autosized="true">
+						      	<div align="center">	
+						      		<h:graphicImage url="/imagens/ajax-loader.gif"/>
+						         	<a4j:status id="loadingLDesc" onstop="#{rich:component('mdIndicatorCart')}.hide()">  
+									</a4j:status>  
+								</div>
+							</rich:modalPanel>
+			        
+				        <rich:modalPanel id="mdExcluirCartao" width="280" height="150">
+				        	<a4j:keepAlive beanName="cartaoController" />
+				        	<f:facet name="header">
+				        		<h:outputText value="#{msg.label_tabela_confirmacao}"/>
+				        	</f:facet>
+				        	<div align="center">
+							   	<h:panelGrid>
+							      	<h:panelGrid columns="2">
+							         	<h:graphicImage url="/imagens/alert_g.gif" />
+								 		<h:outputText value="#{msg.label_confirmaExclusao}"/>
+							      	</h:panelGrid>
+							      	<h:panelGroup style="width=100%">
+							      		<a4j:commandButton action="#{cartaoController.excluir}" value="#{msg.btn_sim}" ajaxSingle="true" reRender="listaDeCartoes" styleClass="botao" onclick="#{rich:component('mdExcluirCartao')}.hide();#{rich:component('mdIndicatorCart')}.show();">
+							      		</a4j:commandButton>
+							        	<a4j:commandButton value="#{msg.btn_nao}" styleClass="botao" onclick="#{rich:component('mdExcluirCartao')}.hide();"/> 
+							     	</h:panelGroup>
+							   	</h:panelGrid>
+							</div>
+						</rich:modalPanel>		
+						<rich:modalPanel id="mdNovoCartao" width="400" height="225">
+							<a4j:keepAlive beanName="cartaoController" />
+				        	<f:facet name="header">
+				        		<h:outputText value="#{msg.label_cadastrarCartao}"/>
+				        	</f:facet>							
+							<div align="center">	
+								<rich:panel style="width:98%;">
+									<h:panelGrid columns="2" columnClasses="colunaLabel95,colunaInputGrande" border="0" >
+										<h:outputText value="#{msg.label_descricao}" style="colunaLabel"/>
+										<h:inputText id="descricao" required="true" label="#{msg.label_tabela_descricao}" value="#{cartaoController.cartaoDTO.descricao}" style="width:100%" styleClass="input_content"/>
+									</h:panelGrid>									
+									<h:panelGrid columns="3" columnClasses="colunaLabelMedio,colunaInputMicro,colunaInputGrande" border="0">
+										
+										<h:outputText value="#{msg.label_dtExpira}" style="colunaLabel"/>
+										<h:inputText id="dtExpira" label="#{msg.label_tabela_dtExpira}" value="#{cartaoController.cartaoDTO.dtExpira}" size="4" styleClass="input_content"
+													onkeydown="Mascara(this,DataCartao);"
+		 										    onkeypress="Mascara(this,DataCartao);" 
+		 										    onkeyup="Mascara(this,DataCartao);"  
+		 										    maxlength="7"
+		 										    required="true"/>
+										<h:outputText style="color: #0033FF;font-family:tahoma,verdana,arial;font-size: 11px;font-weight: bold;" value="#{msg.info_expiraCartao}"/>
+										
+										<h:outputText value="#{msg.label_diaVencimento}" style="colunaLabel"/>
+										<h:inputText id="diaVencimento" required="true" label="#{msg.label_tabela_diaVencimento}" value="#{cartaoController.cartaoDTO.diaVencimento}" style="width:13px" maxlength="2" onkeypress="return somente_numeros(event);" styleClass="input_content"/>
+										<h:outputText style="color: #0033FF;font-family:tahoma,verdana,arial;font-size: 11px;font-weight: bold;" value="#{msg.info_vencimento}"/>
+										
+										<h:outputText value="#{msg.label_diaCompra}" style="colunaLabel"/>
+										<h:inputText id="diaCompra" required="true" label="#{msg.label_tabela_diaCompra}" value="#{cartaoController.cartaoDTO.diaCompra}" style="width:13px" maxlength="2" onkeypress="return somente_numeros(event);" styleClass="input_content"/>
+										<h:outputText style="color: #0033FF;font-family:tahoma,verdana,arial;font-size: 11px;font-weight: bold;" value="#{msg.info_diaBom}"/>
+									</h:panelGrid>
+									<br/>									
+									<h:panelGrid columns="2">
+						            	<a4j:commandButton value="#{msg.btn_gravar}" styleClass="botao"  action="#{cartaoController.salvar}" onclick="#{rich:component('mdNovoCartao')}.hide();#{rich:component('mdIndicatorCart')}.show();" reRender="listaDeCartoes">
+						            	</a4j:commandButton>
+										<a4j:commandButton value="#{msg.btn_voltar}" immediate="true" styleClass="botao" onclick="#{rich:component('mdNovoCartao')}.hide();" >
+										</a4j:commandButton>
+									</h:panelGrid>	
+								</rich:panel>
+							</div>
+						</rich:modalPanel>
+					</a4j:region>
+				</div>
+            </ui:define>
+        </ui:composition>

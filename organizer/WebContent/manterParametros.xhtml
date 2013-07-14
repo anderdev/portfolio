@@ -1,0 +1,246 @@
+<ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:c="http://java.sun.com/jstl/core"
+	  xmlns:a4j="http://richfaces.org/a4j"
+	  xmlns:rich="http://richfaces.org/rich"
+      template="template/templateAPP.xhtml">
+            
+            <ui:define name="titulo">
+                <h:outputText value="#{msg.label_titulo_parametros}"/> 
+            </ui:define>
+            
+            <ui:define name="conteudo">  
+            	<div align="center">
+            		<rich:spacer width="1" height="30" /> 
+            		<h2><h:outputText value="#{msg.tt_cadastroDeParametros}"/></h2>            						
+					
+						 <rich:tabPanel switchType="ajax" styleClass="boxTabPanel70">
+					       
+					        <rich:tab label="#{msg.label_cadastroDeMoedas}">
+					        	<div class="boxBotaoNovo100" align="right">
+						        	<a4j:commandButton onclick="#{rich:component('mdNovaMoeda')}.show();" action="#{tipoFechamentoController.novo}" value="#{msg.btn_novo}" styleClass="botao"/>
+								</div>
+					            <rich:spacer width="1" height="10" /> 		        
+								<rich:dataTable value="#{moedaController.listaDeMoedas}" var="m" width="100%" rows="10" reRender="dsd" id="listaDeMoedas">
+								
+									<rich:column sortBy="#{m.sigla}"  width="10%" filterBy="#{m.sigla}" filterEvent="onkeyup"> 
+						                <f:facet name="header">
+						                    <h:outputText value="#{msg.label_tabela_sigla}"/>
+						                </f:facet>
+						                <h:outputText value="#{m.sigla}" />
+						            </rich:column> 
+						        	
+						            <rich:column sortBy="#{m.moeda}"  width="85%" filterBy="#{m.moeda}" filterEvent="onkeyup"> 
+						                <f:facet name="header">
+						                    <h:outputText value="#{msg.label_tabela_moeda}"/>
+						                </f:facet>
+						                <h:outputText value="#{m.moeda}" />
+						            </rich:column> 
+						           
+						            <rich:column width="5%">
+						                <f:facet name="header">
+											<h:outputText value=""></h:outputText>
+										</f:facet>
+										<a4j:commandLink onclick="#{rich:component('mdExcluirMoeda')}.show();">
+											<f:setPropertyActionListener target="#{moedaController.parametrosDTO.codigo}" value="#{m.codigo}"/>
+											<h:graphicImage  url="/imagens/btn_deletar.gif" style="border: 0px" />
+										</a4j:commandLink>
+						            </rich:column>
+						            <f:facet name="footer">
+						                <rich:datascroller stepControls="hide" id="dsd" renderIfSinglePage="false">
+						                	<f:facet name="first" >
+						                        <h:graphicImage value="#{msg.first}" style="border:0px" onclick="#{rich:component('mdIndicatorD')}.show();" alt="#{msg.btn_first}" title="#{msg.btn_first}"/>
+						                    </f:facet>
+						                    <f:facet name="first_disabled"  >
+						                        <h:graphicImage value="#{msg.first_disabled}" style="border:0px" alt="#{msg.btn_first}" title="#{msg.btn_first}"/>
+						                    </f:facet>
+						                    <f:facet name="last">
+						                        <h:graphicImage value="#{msg.last}" style="border:0px" onclick="#{rich:component('mdIndicatorD')}.show();" alt="#{msg.btn_last}" title="#{msg.btn_last}"/>
+						                    </f:facet>     
+						                    <f:facet name="last_disabled">
+						                        <h:graphicImage value="#{msg.last_disabled}" style="border:0px" alt="#{msg.btn_last}" title="#{msg.btn_last}"/>
+						                    </f:facet>                       
+						                    <f:facet name="fastforward">
+						                        <h:graphicImage value="#{msg.next}" style="border:0px" onclick="#{rich:component('mdIndicatorD')}.show();" alt="#{msg.btn_fastforward}" title="#{msg.btn_fastforward}"/>
+						                    </f:facet>
+						                    <f:facet name="fastforward_disabled">
+						                        <h:graphicImage value="#{msg.next_disabled}" style="border:0px" alt="#{msg.btn_fastforward}" title="#{msg.btn_fastforward}"/>
+						                    </f:facet>
+						                    <f:facet name="fastrewind">
+						                        <h:graphicImage value="#{msg.previous}" style="border:0px" onclick="#{rich:component('mdIndicatorD')}.show();" alt="#{msg.btn_fastrewind}" title="#{msg.btn_fastforward}"/>
+						                    </f:facet>
+						                    <f:facet name="fastrewind_disabled" >
+						                        <h:graphicImage value="#{msg.previous_disabled}" style="border:0px" alt="#{msg.btn_fastrewind}" title="#{msg.btn_fastrewind}"/>
+						                    </f:facet>
+						                </rich:datascroller>
+						            </f:facet>
+						        </rich:dataTable>
+						        
+						        <rich:modalPanel id="mdExcluirMoeda" width="280" height="150">
+						        	<a4j:keepAlive beanName="moedaController" />
+						        	<f:facet name="header">
+						        		<h:outputText value="#{msg.label_tabela_confirmacao}"/>
+						        	</f:facet>
+						        	<div align="center">
+									   	<h:panelGrid>
+									      	<h:panelGrid columns="2">
+									         	<h:graphicImage url="/imagens/alert_g.gif" />
+										 		<h:outputText value="#{msg.label_confirmaExclusao}"/>
+									      	</h:panelGrid>
+									      	<h:panelGroup style="width=100%">
+									      		<a4j:commandButton action="#{moedaController.excluir}" value="#{msg.btn_sim}" reRender="listaDeMoedas" styleClass="botao" onclick="#{rich:component('mdExcluirMoeda')}.hide();">
+									      		</a4j:commandButton>
+									        	<a4j:commandButton value="#{msg.btn_nao}" styleClass="botao" onclick="#{rich:component('mdExcluirMoeda')}.hide();"/> 
+									     	</h:panelGroup>
+									   	</h:panelGrid>
+									</div>
+								</rich:modalPanel>		
+								<rich:modalPanel id="mdNovaMoeda" autosized="true">
+									<a4j:keepAlive beanName="moedaController" />
+						        	<f:facet name="header">
+						        		<h:outputText value="#{msg.label_cadastroDeMoedas}"/>
+						        	</f:facet>							
+									<div align="center">	
+										<rich:panel style="width:98%;">
+											
+											<h:panelGrid columns="2" columnClasses="colunaLabel,colunaInputGrande" >
+												
+												<h:outputText value="#{msg.label_sigla}" style="colunaLabel"/>
+												<h:inputText id="sigla" label="#{msg.label_tabela_sigla}" value="#{moedaController.parametrosDTO.sigla}" style="width:100%" styleClass="input_content"/>
+																				
+								            	<h:outputText value="#{msg.label_descricao}" style="colunaLabel"/>
+												<h:inputText id="moeda" label="#{msg.label_tabela_descricao}" value="#{moedaController.parametrosDTO.moeda}" style="width:100%" styleClass="input_content"/>
+											</h:panelGrid>
+											<br/>									
+											<h:panelGrid columns="2">
+								            	<a4j:commandButton value="#{msg.btn_gravar}" styleClass="botao"  action="#{moedaController.salvar}" onclick="#{rich:component('mdNovaMoeda')}.hide();" reRender="listaDeMoedas">
+								            	</a4j:commandButton>
+												<a4j:commandButton value="#{msg.btn_voltar}" styleClass="botao" onclick="#{rich:component('mdNovaMoeda')}.hide();" >
+												</a4j:commandButton>
+											</h:panelGrid>	
+										</rich:panel>
+									</div>
+								</rich:modalPanel>	
+					        </rich:tab>
+					        
+					        <rich:tab label="#{msg.label_cadastroDeTipoFechamento}">
+					        	<div class="boxBotaoNovo100" align="right">
+						        	<a4j:commandButton onclick="#{rich:component('mdNovoTipoFechamento')}.show();" value="#{msg.btn_novo}" styleClass="botao"/>
+								</div>
+					            <rich:spacer width="1" height="10" /> 		        
+								
+								<rich:dataTable value="#{tipoFechamentoController.listaDeTipoFechamento}" var="t" width="100%" rows="10" reRender="dsd" id="listaDeTipoFechamento">
+								
+									<rich:column sortBy="#{t.idioma}"  width="10%" filterBy="#{t.idioma}" filterEvent="onkeyup"> 
+						                <f:facet name="header">
+						                    <h:outputText value="#{msg.label_tabela_idioma}"/>
+						                </f:facet>
+						                <h:outputText value="#{t.idioma}" />
+						            </rich:column> 
+
+									<rich:column sortBy="#{t.tipoFechamento}"  width="75%" filterBy="#{t.tipoFechamento}" filterEvent="onkeyup"> 
+						                <f:facet name="header">
+						                    <h:outputText value="#{msg.label_tabela_descricao}"/>
+						                </f:facet>
+						                <h:outputText value="#{t.tipoFechamento}" />
+						            </rich:column> 
+						            
+						            <rich:column sortBy="#{t.periodo}"  width="10%" filterBy="#{t.periodo}" filterEvent="onkeyup"> 
+						                <f:facet name="header">
+						                    <h:outputText value="#{msg.label_tabela_periodo}"/>
+						                </f:facet>
+						                <h:outputText value="#{t.periodo}" />
+						            </rich:column>
+						        	
+						            <rich:column width="5%">
+						                <f:facet name="header">
+											<h:outputText value=""></h:outputText>
+										</f:facet>
+										<a4j:commandLink onclick="#{rich:component('mdExcluirTipoFechamento')}.show();">
+											<f:setPropertyActionListener target="#{tipoFechamentoController.parametrosDTO.codigo}" value="#{t.codigo}"/>
+											<h:graphicImage  url="/imagens/btn_deletar.gif" style="border: 0px" />
+										</a4j:commandLink>
+						            </rich:column>
+						            <f:facet name="footer">
+						                <rich:datascroller stepControls="hide" id="dsd" renderIfSinglePage="false">
+						                	<f:facet name="first" >
+						                        <h:graphicImage value="#{msg.first}" style="border:0px" onclick="#{rich:component('mdIndicatorD')}.show();" alt="#{msg.btn_first}" title="#{msg.btn_first}"/>
+						                    </f:facet>
+						                    <f:facet name="first_disabled"  >
+						                        <h:graphicImage value="#{msg.first_disabled}" style="border:0px" alt="#{msg.btn_first}" title="#{msg.btn_first}"/>
+						                    </f:facet>
+						                    <f:facet name="last">
+						                        <h:graphicImage value="#{msg.last}" style="border:0px" onclick="#{rich:component('mdIndicatorD')}.show();" alt="#{msg.btn_last}" title="#{msg.btn_last}"/>
+						                    </f:facet>     
+						                    <f:facet name="last_disabled">
+						                        <h:graphicImage value="#{msg.last_disabled}" style="border:0px" alt="#{msg.btn_last}" title="#{msg.btn_last}"/>
+						                    </f:facet>                       
+						                    <f:facet name="fastforward">
+						                        <h:graphicImage value="#{msg.next}" style="border:0px" onclick="#{rich:component('mdIndicatorD')}.show();" alt="#{msg.btn_fastforward}" title="#{msg.btn_fastforward}"/>
+						                    </f:facet>
+						                    <f:facet name="fastforward_disabled">
+						                        <h:graphicImage value="#{msg.next_disabled}" style="border:0px" alt="#{msg.btn_fastforward}" title="#{msg.btn_fastforward}"/>
+						                    </f:facet>
+						                    <f:facet name="fastrewind">
+						                        <h:graphicImage value="#{msg.previous}" style="border:0px" onclick="#{rich:component('mdIndicatorD')}.show();" alt="#{msg.btn_fastrewind}" title="#{msg.btn_fastforward}"/>
+						                    </f:facet>
+						                    <f:facet name="fastrewind_disabled" >
+						                        <h:graphicImage value="#{msg.previous_disabled}" style="border:0px" alt="#{msg.btn_fastrewind}" title="#{msg.btn_fastrewind}"/>
+						                    </f:facet>
+						                </rich:datascroller>
+						            </f:facet>
+						        </rich:dataTable>
+						        
+						        <rich:modalPanel id="mdExcluirTipoFechamento" width="280" height="150">
+						        	<a4j:keepAlive beanName="tipoFechamentoController" />
+						        	<f:facet name="header">
+						        		<h:outputText value="#{msg.label_tabela_confirmacao}"/>
+						        	</f:facet>
+						        	<div align="center">
+									   	<h:panelGrid>
+									      	<h:panelGrid columns="2">
+									         	<h:graphicImage url="/imagens/alert_g.gif" />
+										 		<h:outputText value="#{msg.label_confirmaExclusao}"/>
+									      	</h:panelGrid>
+									      	<h:panelGroup style="width=100%">
+									      		<a4j:commandButton action="#{tipoFechamentoController.excluir}" value="#{msg.btn_sim}" reRender="listaDeTipoFechamento" styleClass="botao" onclick="#{rich:component('mdExcluirTipoFechamento')}.hide();">
+									      		</a4j:commandButton>
+									        	<a4j:commandButton value="#{msg.btn_nao}" styleClass="botao" onclick="#{rich:component('mdExcluirTipoFechamento')}.hide();"/> 
+									     	</h:panelGroup>
+									   	</h:panelGrid>
+									</div>
+								</rich:modalPanel>		
+								<rich:modalPanel id="mdNovoTipoFechamento" autosized="true">
+									<a4j:keepAlive beanName="tipoFechamentoController" />
+						        	<f:facet name="header">
+						        		<h:outputText value="#{msg.label_cadastroDeTipoFechamento}"/>
+						        	</f:facet>							
+									<div align="center">	
+										<rich:panel style="width:98%;">
+											
+											<h:panelGrid columns="2"  columnClasses="colunaLabel,colunaInputMedio" >
+												
+												<h:outputText value="#{msg.label_idioma}" style="colunaLabelGrande"/>
+												<h:inputText id="idioma" label="#{msg.label_tabela_idioma}" value="#{tipoFechamentoController.parametrosDTO.idioma}" style="width:100%" styleClass="input_content"/>
+																				
+								            	<h:outputText value="#{msg.label_tipoFechamento}" style="colunaLabelGrande"/>
+												<h:inputText id="tipoFechamento" label="#{msg.label_tabela_descricao}" value="#{tipoFechamentoController.parametrosDTO.tipoFechamento}" style="width:100%" styleClass="input_content"/>
+												
+											</h:panelGrid>
+											<h:inputHidden id="periodo" label="#{msg.label_tabela_periodo}" readonly="true" value="#{tipoFechamentoController.parametrosDTO.periodo}" style="width:100%" styleClass="input_content"/>
+											<br/>									
+											<h:panelGrid columns="2">
+								            	<a4j:commandButton value="#{msg.btn_gravar}" styleClass="botao"  action="#{tipoFechamentoController.salvar}" onclick="#{rich:component('mdNovoTipoFechamento')}.hide();" reRender="listaDeTipoFechamento"/>
+												<a4j:commandButton value="#{msg.btn_voltar}" styleClass="botao" onclick="#{rich:component('mdNovoTipoFechamento')}.hide();" />
+											</h:panelGrid>	
+										</rich:panel>
+									</div>
+								</rich:modalPanel>	
+					        </rich:tab>
+					      
+					    </rich:tabPanel>					    
+					</div>
+            </ui:define>
+        </ui:composition>

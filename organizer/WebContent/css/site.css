@@ -1,0 +1,328 @@
+.site{
+	width: 99%;
+	height: 650px;
+	border: 0px dotted #000;
+}
+
+#menu {
+	width: 100%;
+	height: 45px;
+	margin: 0 auto;
+	border: 0px dotted #000;
+}
+
+#sidebar {
+	float: right;
+	width: 200px;
+	height: 470px;
+	border: 0px dotted #000;
+}
+
+/* Content > Main */
+
+#main {
+	float: left;
+	width: 78%;
+	height: 470px;
+	margin-left: -10px;
+	border: 0px dotted #000;
+	display:block;
+    position: relative;
+    z-index: 100;
+}
+
+#confirmaSenha {
+    z-index: 150;
+}
+
+#mainApp {
+	float: left;
+	width: 100%;
+	height: 470px;
+	border: 0px dotted #000;
+}
+
+#footer {
+	border: 0px dotted #000;
+	width: 1024px;
+	height: 30px;
+	position: absolute;
+	margin-left: -512px;
+	left: 50%;
+	top: 625px;
+}
+
+#contador{
+	left: 2%;
+	width: 150px;
+	height: 40px;
+	position: absolute;
+	top: 450px;
+}
+
+.fonteContador{
+	width: 150px;
+	padding: 0.25em 2em;
+	border: solid #BED6F8;
+	border-width: 1px 0;
+	font-style: italic;
+	text-align: center;
+	font-weight: bold;
+	font-size: 12px;
+}
+
+.welcome{
+	font-family:tahoma,verdana,arial;
+   	font-size: 15px;
+   	color:#000000;
+   	padding-right:1em;
+   	font-style: italic;
+}
+.margimMenu{
+	margin: 0 0 0 0;	
+}
+
+.input_content {
+	background-color: white; 
+	border-color: gray;
+	border-width:1px;	 
+	left: 0px;
+}
+
+.input_content_align_right {
+	background-color: white; 
+	border-color: gray;
+	border-width:1px;	 
+	left: 0px;
+	text-align: right;
+}
+
+.input_content_align_left {
+	background-color: white; 
+	border-color: gray;
+	border-width:1px;	 
+	left: 0px;
+	text-align: left;
+}
+
+.link {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-weight: bold;
+	text-align: center;
+}
+
+.botao{
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-weight: bold;
+	text-align: center;
+	width: 110px;
+	cursor: pointer;
+}
+
+.botaoGR{
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-weight: bold;
+	text-align: center;
+	width: 150px;
+	cursor: pointer;
+}
+
+.boxLogin{
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-weight: bold;
+	text-align: right;
+}
+
+.colunaLabelPequeno{
+	width: 80px;
+	text-align: right;
+}
+
+.colunaLabel{
+	width: 90px;
+	text-align: right;
+}
+
+.colunaLabel95{
+	width: 95px;
+	text-align: right;
+}
+
+.colunaLabel100{
+	width: 100px;
+	text-align: right;
+}
+
+.colunaLabelMedio{
+	width: 110px;
+	text-align: right;
+}
+
+.colunaLabelCenter{
+	width: 150px;
+	text-align: center;
+}
+
+.colunaLabelGrande{
+	width: 150px;
+	text-align: right;
+}
+
+.colunaInputGrande{
+	width: 300px;
+	text-align: left;	
+}
+
+.colunaInputMedio{
+	width: 150px;	
+	text-align: left;
+}
+
+.colunaInput250{
+	width: 250px;	
+	text-align: left;
+}
+
+
+.colunaInputPequeno{
+	width: 100px;	
+	text-align: left;
+}
+
+.colunaInputMicro{
+	width: 50px;	
+	text-align: left;
+}
+
+.formCadastro{
+	width: 500px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-weight: bold;
+	text-align: right;
+	padding-right: 10px;
+}
+
+.label{ 
+	font-family:tahoma,verdana,arial;
+   	font-size: 11px;
+   	color:#000000;
+   	text-align:right;
+   	padding-right:1em;
+}
+
+.alignRight{
+	text-align: right;
+}
+
+.input{
+	font-family:tahoma,verdana,arial;
+   	font-size: 11px;
+   	color:#000000;
+   	border:2px solid #333333;
+}
+
+.errorMessage {
+	color: #FF0000;
+	font-family:tahoma,verdana,arial;
+   	font-size: 11px;
+   	font-weight: bold;
+}
+
+.confirmacaoMessage {
+	color: #0033FF;
+	font-family:tahoma,verdana,arial;
+   	font-size: 11px;
+   	font-weight: bold;
+}
+
+.cabecalho{
+	width: 100%;	
+}
+
+.colunaLogo{
+	width: 98%;
+}
+.colunaBand{
+	width: 2%;
+	cursor: pointer;
+}
+
+.coluna50{
+	width: 50%;
+}
+
+.coluna100{
+	width: 100%;
+}
+
+.boxBodyTabPanel{
+   	width:100%;
+  	height:270px;
+}
+
+.boxTabPanel100{
+	border: 0px dotted #000;
+   	width:100%;
+	height:350px;
+	overflow: auto;
+}
+
+.boxTabPanel50{
+   	width:50%;
+   	height:330px;
+}
+
+.boxTabPanel70{
+   	width:70%;
+   	height:330px;
+}
+
+.boxBotaoNovo100{
+  	width:100%;
+}
+
+.boxBotaoNovo60{
+	border: 0px dotted #000;	
+  	width:60%;
+}
+
+.boxTotais{
+	vertical-align: bottom;
+	width: 100px;
+}
+
+.boxConsulta{
+	vertical-align: top;
+	width: 100px;
+}
+
+.efeitoUsuarioLogado{
+	width: 150px;
+	margin-left: -70px;
+	left: 78%;
+	margin: auto;
+	position: absolute;
+	font-style: italic;
+	text-align: center;
+	font-weight: bold;
+	font-size: 12px;
+	vertical-align: middle;	
+	color: #7C6240;
+	text-decoration: none;
+	padding: 0.25em 2em;
+	border: solid #eda;
+	border-width: 1px 0;
+}
+
+.boxCartao{
+	width: 300px;
+}
+
+.height200{
+	height: 60px;
+}
