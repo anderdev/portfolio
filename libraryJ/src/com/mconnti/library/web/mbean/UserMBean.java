@@ -60,6 +60,16 @@ public class UserMBean implements Serializable {
 	String host = null;
 	
 	String logoutURL = null;
+	
+	String locale;
+
+	public String getLocale() {
+		return locale;
+	}
+
+	public void setLocale(String locale) {
+		this.locale = locale;
+	}
 
 	public String getLogoutURL() {
 		return logoutURL;
@@ -77,6 +87,14 @@ public class UserMBean implements Serializable {
 			String[] str = ((HttpServletRequest) request).getRequestURL().toString().split("library");
 			host = str[0];
 			logoutURL = host+"libraryJ/index.jsf";
+		}
+		if(loggedUser == null){
+			locale = fc.getExternalContext().getRequestLocale().toString();
+			if(!locale.equals("pt_BR")){
+				locale = "en";
+			}
+		}else{
+			locale = loggedUser.getLanguage();
 		}
 	}
 	
