@@ -187,7 +187,9 @@ public class BookQueueBOImpl extends GenericBOImpl<BookQueue> implements BookQue
 			queryParams.put("renting", "= true");
 			bookQueue = findByParameter(BookQueue.class, queryParams);
 			
-			remove(bookQueue);
+			if(bookQueue != null){
+				remove(bookQueue);
+			}
 
 			queryParams.clear();
 			queryParams.put("book", "= " + book.getId());

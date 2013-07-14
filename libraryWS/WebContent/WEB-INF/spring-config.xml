@@ -18,9 +18,12 @@
 		<property name="jdbcUrl"><value>${jdbc.url}</value></property>  
 	    <property name="user"><value>${jdbc.username}</value></property>  
         <property name="password"><value>${jdbc.password}</value></property> 
-        <property name="maxPoolSize" value="10" />
-		<property name="maxStatements" value="0" />
-		<property name="minPoolSize" value="5" />  
+        
+        <property name="acquireIncrement" value="1" />
+        <property name="minPoolSize" value="5" />
+        <property name="maxPoolSize" value="30" />
+		<property name="maxStatements" value="50" />
+		<property name="maxIdleTime" value="1800" />
 	</bean>
 	
 	
