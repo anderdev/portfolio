@@ -92,8 +92,7 @@ public class UserBOImpl extends GenericBOImpl<User> implements UserBO, Serializa
 		try {
 			messageReturn = userDAO.getByEmail(user.getEmail());
 			if(messageReturn.getUser() == null){
-				messageReturn.setUser(null);
-				messageReturn.setMessage(messageReturn.getUser().getLanguage().equals("pt_BR") ? "Usuário não encontrado!" : "User not exists!");
+				messageReturn.setMessage(user.getLanguage().equals("pt_BR") ? "Usuário não encontrado!" : "User not exists!");
 			}else if (!messageReturn.getUser().getPassword().equals(user.getPassword())) {
 				messageReturn.setUser(null);
 				messageReturn.setMessage(messageReturn.getUser().getLanguage().equals("pt_BR") ? "Senha informada esta incorreta!" : "Informed password is no correct!");

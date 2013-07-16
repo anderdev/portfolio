@@ -104,7 +104,7 @@ public class UserMBean implements Serializable {
 		try {
 
 			WebResource webResource = client.resource(host + "libraryWS/user");
-
+			user.setLanguage(locale);
 			ClientResponse response = webResource.type(MediaType.APPLICATION_JSON).put(ClientResponse.class, user);
 
 			if (response.getStatus() != 201 && response.getStatus() != 200 && response.getStatus() != 500) {
