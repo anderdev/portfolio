@@ -17,10 +17,10 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.ForeignKey;
 
 @Entity
-@Table(name = "debit")
-public class Debit implements Serializable {
+@Table(name = "credit")
+public class Credit implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2013860239536512589L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,42 +33,30 @@ public class Debit implements Serializable {
 	@NotNull
 	private String description;
 
-	@NotNull
-	@Column(name = "groupp")
+	@Column(name="groupp")
 	private String group;
 
+	@NotNull
 	private String superGroup;
 
 	@NotNull
 	private String currency;
 
-	private String type;
-
 	@NotNull
 	@Column(length = 13, precision = 13, scale = 2)
 	private Double amount;
 
-	@Column(name = "parcel_id")
-	private Integer parcelId;
+	private Integer aux;
 
 	private Boolean closed;
 
-	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = CreditCard.class)
-	@JoinColumn(name = "creditcard_id")
-	@ForeignKey(name = "FK_DEBIT_CREDIT_CARD")
-	private CreditCard creditCard;
-
 	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = User.class)
 	@JoinColumn(name = "user_id")
-	@ForeignKey(name = "FK_DEBIT_USER")
+	@ForeignKey(name = "FK_CREDIT_USER")
 	private User user;
-
-	public Integer getParcelId() {
-		return parcelId;
-	}
-
-	public void setParcelId(Integer parcelId) {
-		this.parcelId = parcelId;
+	
+	public Credit() {
+		super();
 	}
 
 	public Long getId() {
@@ -95,6 +83,22 @@ public class Debit implements Serializable {
 		this.description = description;
 	}
 
+	public String getGroup() {
+		return group;
+	}
+
+	public void setGroup(String group) {
+		this.group = group;
+	}
+
+	public String getSuperGroup() {
+		return superGroup;
+	}
+
+	public void setSuperGroup(String superGroup) {
+		this.superGroup = superGroup;
+	}
+
 	public String getCurrency() {
 		return currency;
 	}
@@ -111,12 +115,12 @@ public class Debit implements Serializable {
 		this.amount = amount;
 	}
 
-	public User getUser() {
-		return user;
+	public Integer getAux() {
+		return aux;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setAux(Integer aux) {
+		this.aux = aux;
 	}
 
 	public Boolean getClosed() {
@@ -127,35 +131,12 @@ public class Debit implements Serializable {
 		this.closed = closed;
 	}
 
-	public String getGroup() {
-		return group;
+	public User getUser() {
+		return user;
 	}
 
-	public void setGroup(String group) {
-		this.group = group;
+	public void setUser(User user) {
+		this.user = user;
 	}
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
-
-	public CreditCard getCreditCard() {
-		return creditCard;
-	}
-
-	public void setCreditCard(CreditCard creditCard) {
-		this.creditCard = creditCard;
-	}
-
-	public String getSuperGroup() {
-		return superGroup;
-	}
-
-	public void setSuperGroup(String superGroup) {
-		this.superGroup = superGroup;
-	}
+	
 }

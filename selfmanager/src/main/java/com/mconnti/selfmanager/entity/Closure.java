@@ -7,13 +7,14 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.ForeignKey;
-import org.hibernate.validator.NotNull;
 
 @Entity
 @Table(name="closure")
@@ -49,7 +50,7 @@ public class Closure implements Serializable {
 	
 	@NotNull
 	@Column(length = 13, precision = 13, scale = 2)
-	private Double totalGeral;
+	private Double totalGeneral;
 
 	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = User.class)
 	@JoinColumn(name = "user_id")

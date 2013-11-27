@@ -11,8 +11,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name="currency")
-public class Currency implements Serializable {
+@Table(name="typeClosure")
+public class TypeClosure implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -22,14 +22,13 @@ public class Currency implements Serializable {
 	private Long id;
 	
 	@NotNull
-	private String name;
+	private String type;
 	
 	@NotNull
-	private String acronym;
+	private String language;
 	
-	public Currency() {
-		super();
-	}
+	@NotNull
+	private Integer period;
 
 	public Long getId() {
 		return id;
@@ -39,19 +38,28 @@ public class Currency implements Serializable {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getType() {
+		return type;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setType(String type) {
+		this.type = type;
 	}
 
-	public String getAcronym() {
-		return acronym;
+	public String getLanguage() {
+		return language;
 	}
 
-	public void setAcronym(String acronym) {
-		this.acronym = acronym;
+	public void setLanguage(String language) {
+		this.language = language;
 	}
+
+	public Integer getPeriod() {
+		return period;
+	}
+
+	public void setPeriod(Integer period) {
+		this.period = period;
+	}
+
 }

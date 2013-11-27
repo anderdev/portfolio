@@ -1,61 +1,75 @@
 package com.mconnti.selfmanager.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.ForeignKey;
 
 @Entity
 @Table(name = "user")
 @NamedQueries({@NamedQuery(name = "user.findByEmail", query = "SELECT us FROM User us WHERE us.email = :email")})
-public class User {
+public class User implements Serializable{
 
+	private static final long serialVersionUID = -5645425703632609531L;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(nullable = false, insertable = true, updatable = false)
 	private Long id;
-
-	@Column(length = 100, nullable = false)
+	
+	@Column(name="master_id")
+	private Integer masterId;
+	
+	@NotNull
 	private String name;
-
-	@Column(length = 100, nullable = false)
+	
+	@NotNull
 	private String email;
-
-	@Column(length = 300, nullable = false)
-	private String address;
 	
-	@Column(length = 20, nullable = false)
-	private String password;
+	@NotNull
+	@Column(name="born")
+	private String born;
 	
-	@Column(nullable = false)
+	@Column(name="register")
+	private Date register;
+	
 	private String language;
 	
-	public String getLanguage() {
-		return language;
-	}
-
-	public void setLanguage(String language) {
-		this.language = language;
-	}
-
-	@Column(nullable = false)
-	private Date birthDate;
+	private Boolean administrator;
 	
-	@Column(nullable = false)
-	private Boolean admin;
+	@Column(name="palavra_secreta")
+	private String secretPhrase;
 	
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("ID: "+getId()).append(" - ADMIN: "+getAdmin());
-		return sb.toString();
-	}
+	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = City.class)
+	@JoinColumn(name = "city_id")
+	@ForeignKey(name = "FK_USER_CITY")
+	private City city;
+	
+	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = Config.class)
+	@JoinColumn(name = "parameter_id")
+	@ForeignKey(name = "FK_USER_PARAMETER")
+	private Config config;
+	
+	@NotNull
+	private String username;
+	
+	@NotNull
+	private String password;
+	
+	private Boolean excluded;
 
 	public Long getId() {
 		return id;
@@ -63,6 +77,14 @@ public class User {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public Integer getMasterId() {
+		return masterId;
+	}
+
+	public void setMasterId(Integer masterId) {
+		this.masterId = masterId;
 	}
 
 	public String getName() {
@@ -81,28 +103,60 @@ public class User {
 		this.email = email;
 	}
 
-	public String getAddress() {
-		return address;
+	public String getBorn() {
+		return born;
 	}
 
-	public void setAddress(String address) {
-		this.address = address;
+	public void setBorn(String born) {
+		this.born = born;
 	}
 
-	public Date getBirthDate() {
-		return birthDate;
+	public Date getRegister() {
+		return register;
 	}
 
-	public void setBirthDate(Date birthDate) {
-		this.birthDate = birthDate;
+	public void setRegister(Date register) {
+		this.register = register;
 	}
 
-	public Boolean getAdmin() {
-		return admin;
+	public String getLanguage() {
+		return language;
 	}
 
-	public void setAdmin(Boolean admin) {
-		this.admin = admin;
+	public void setLanguage(String language) {
+		this.language = language;
+	}
+
+	public Boolean getAdministrator() {
+		return administrator;
+	}
+
+	public void setAdministrator(Boolean administrator) {
+		this.administrator = administrator;
+	}
+
+	public String getSecretPhrase() {
+		return secretPhrase;
+	}
+
+	public void setSecretPhrase(String secretPhrase) {
+		this.secretPhrase = secretPhrase;
+	}
+
+	public City getCity() {
+		return city;
+	}
+
+	public void setCity(City city) {
+		this.city = city;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getPassword() {
@@ -112,4 +166,21 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
+	public Boolean getExcluded() {
+		return excluded;
+	}
+
+	public void setExcluded(Boolean excluded) {
+		this.excluded = excluded;
+	}
+
+	public Config getConfig() {
+		return config;
+	}
+
+	public void setConfig(Config config) {
+		this.config = config;
+	}
+	
 }

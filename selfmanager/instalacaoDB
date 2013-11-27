@@ -1,13 +1,3 @@
-requisitos:
-
-* mysql rodando na maquina onde o sistema irá rodar.
-* criar banco de dados chamado "selfgmanager"
-* saber: 
-	* url de conex�o
-	* usuario e senha de conex�o
-
-###Dicas de instala��o do MySQL###
-
 * instala o mysql na porta 3306;
 * acessa o mysql com o usuario root;
 * cria o usuario smuser com a senha smpass;
@@ -17,5 +7,5 @@ requisitos:
 * acessa com o usuario lambscan
     mysql -u smuser -p
 
-cria o banco, library
+cria o banco, selfmanager
   create database selfmanager;
