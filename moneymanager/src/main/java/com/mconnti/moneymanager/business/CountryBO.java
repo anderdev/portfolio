@@ -1,11 +1,11 @@
-package com.mconnti.selfmanager.business;
+package com.mconnti.moneymanager.business;
 
 import java.util.List;
 
 import javax.ws.rs.PathParam;
 
-import com.mconnti.selfmanager.entity.Country;
-import com.mconnti.selfmanager.entity.xml.MessageReturn;
+import com.mconnti.moneymanager.entity.Country;
+import com.mconnti.moneymanager.entity.xml.MessageReturn;
 
 public interface CountryBO extends GenericBO<Country>{
 	

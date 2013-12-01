@@ -1,25 +1,17 @@
-package com.mconnti.selfmanager.business.impl;
+package com.mconnti.moneymanager.business.impl;
 
-import java.io.Serializable;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mconnti.selfmanager.business.CountryBO;
-import com.mconnti.selfmanager.entity.Country;
-import com.mconnti.selfmanager.entity.xml.MessageReturn;
-import com.mconnti.selfmanager.persistence.CountryDAO;
+import com.mconnti.moneymanager.business.CountryBO;
+import com.mconnti.moneymanager.entity.Country;
+import com.mconnti.moneymanager.entity.xml.MessageReturn;
+import com.mconnti.moneymanager.persistence.CountryDAO;
 
-//@Service("countryBO")
-//@Path("/country")
-//@XmlAccessorType(XmlAccessType.NONE)
-//@XmlRootElement(name = "country")
-//@Component
-public class CountryBOImpl extends GenericBOImpl<Country> implements CountryBO, Serializable {
+public class CountryBOImpl extends GenericBOImpl<Country> implements CountryBO {
 
-	private static final long serialVersionUID = -7181845834876407823L;
-	
 	@Autowired
 	private CountryDAO countryDAO;
 	
@@ -49,9 +41,6 @@ public class CountryBOImpl extends GenericBOImpl<Country> implements CountryBO, 
 		return libReturn;
 	}
 
-	@Override
-//	@GET
-//	@Produces({ "application/json" })
 	public List<Country> list() throws Exception {
 		return list(Country.class, null, null);
 	}

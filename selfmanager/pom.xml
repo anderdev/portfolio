@@ -30,15 +30,6 @@
 			<groupId>org.jboss.resteasy</groupId>
 			<artifactId>resteasy-jaxb-provider</artifactId>
 			<version>2.3.1.GA</version>
-			<scope>compile</scope>
-		</dependency>
-
-		<!-- multipart/form-data and multipart/mixed support -->
-		<dependency>
-			<groupId>org.jboss.resteasy</groupId>
-			<artifactId>resteasy-multipart-provider</artifactId>
-			<version>2.3.1.GA</version>
-			<scope>compile</scope>
 		</dependency>
 
 		<dependency>
@@ -47,6 +38,7 @@
 			<version>1.0.2</version>
 			<scope>compile</scope>
 		</dependency>
+		
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>

@@ -2,30 +2,17 @@
 	xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee 
 	http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
-	<display-name>Restful Web Application</display-name>
-
-	<!-- <context-param> <param-name>resteasy.scan</param-name> <param-value>true</param-value> 
-		</context-param> -->
-		
-		<context-param>
-		<param-name>contextConfigLocation</param-name>
-		<param-value>
-    				/WEB-INF/applicationContext.xml
-    	</param-value>
-	</context-param>
+	<display-name>MoneyManager Server</display-name>
 
 	<context-param>
 		<param-name>resteasy.resources</param-name>
-		<param-value>com.mconnti.selfmanager.web.rest.JaxRsActivator</param-value>
+		<param-value>com.mconnti.moneymanager.rest.RestService</param-value>
 	</context-param>
 
 	<listener>
 		<listener-class>
 			org.jboss.resteasy.plugins.server.servlet.ResteasyBootstrap</listener-class>
 	</listener>
-
-	<!-- <listener> <listener-class>org.jboss.resteasy.plugins.spring.SpringContextLoaderListener</listener-class> 
-		</listener> -->
 
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>

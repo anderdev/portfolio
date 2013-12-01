@@ -1,23 +1,41 @@
 package com.mconnti.selfmanager.web.rest;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.ws.rs.ApplicationPath;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
 import javax.ws.rs.core.Application;
+import javax.ws.rs.core.Response;
 
 import com.mconnti.selfmanager.business.impl.CountryBOImpl;
+import com.mconnti.selfmanager.entity.Country;
 
-@ApplicationPath("/rest")
+@Path("/rest")
 public class JaxRsActivator extends Application {
 	
-	public Set<Class<?>> getClasses() {
-        return new HashSet<Class<?>>(Arrays.asList(CountryBOImpl.class));
-    }
+//	public Set<Class<?>> getClasses() {
+//        return new HashSet<Class<?>>(Arrays.asList(CountryBOImpl.class));
+//    }
 	
 //	@Inject
-//	private CountryBOImpl countryBO;
+	private CountryBOImpl countryBO;
+	
+	@GET
+	@Path("/country")
+	public Response printMessage() {
+
+		
+		List<Country> list = new ArrayList<>();
+		try {
+			list = countryBO.list();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return Response.status(200).entity(list).build();
+
+	}
 //
 //	private Set<Object> singletons = new HashSet<Object>();
 //	private Set<Class<?>> classes = new HashSet<Class<?>>();
