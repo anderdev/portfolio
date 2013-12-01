@@ -15,12 +15,14 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.hibernate.annotations.ForeignKey;
 
 @Entity
 @Table(name = "user")
 @NamedQueries({@NamedQuery(name = "user.findByEmail", query = "SELECT us FROM User us WHERE us.email = :email")})
+@XmlRootElement
 public class User implements Serializable{
 
 	private static final long serialVersionUID = -5645425703632609531L;

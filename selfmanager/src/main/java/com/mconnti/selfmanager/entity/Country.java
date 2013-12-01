@@ -12,11 +12,16 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.hibernate.annotations.ForeignKey;
 
 @Entity
 @Table(name="country")
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Country implements Serializable {
 
 	private static final long serialVersionUID = 1L;

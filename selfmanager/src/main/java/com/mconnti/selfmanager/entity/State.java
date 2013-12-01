@@ -13,11 +13,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.hibernate.annotations.ForeignKey;
 
 @Entity
 @Table(name="state")
+@XmlRootElement
 public class State implements Serializable{
 
 	private static final long serialVersionUID = 1L;
