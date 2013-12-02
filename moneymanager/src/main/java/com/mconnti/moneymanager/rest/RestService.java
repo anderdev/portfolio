@@ -10,17 +10,14 @@ import javax.ws.rs.core.Response;
 
 import com.mconnti.moneymanager.business.CountryBO;
 import com.mconnti.moneymanager.context.SpringApplicationContext;
-import com.mconnti.moneymanager.customer.CustomerBo;
 import com.mconnti.moneymanager.entity.Country;
 
 @Path("/rest")
 public class RestService {
 	
-	CustomerBo customerBo;
 	CountryBO countryBO;
 	
 	public RestService() {
-		customerBo = (CustomerBo) SpringApplicationContext.getBean("customerBo");
 		countryBO = (CountryBO) SpringApplicationContext.getBean("countryBO");
 	}
 	

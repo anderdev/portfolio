@@ -161,6 +161,7 @@ public class GenericDAOImpl<T> implements GenericDAO<T> {
 
 			return query.getResultList();
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new Exception(e.getMessage(), e);
 		}
 	}
