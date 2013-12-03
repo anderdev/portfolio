@@ -9,6 +9,7 @@ import com.mconnti.moneymanager.business.CountryBO;
 import com.mconnti.moneymanager.entity.Country;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
 import com.mconnti.moneymanager.persistence.CountryDAO;
+import com.mconnti.moneymanager.utils.MessageFactory;
 
 public class CountryBOImpl extends GenericBOImpl<Country> implements CountryBO {
 
@@ -22,7 +23,7 @@ public class CountryBOImpl extends GenericBOImpl<Country> implements CountryBO {
 		Country c = null;
 		try {
 			String[] nameSplit = country.getName().split(";");
-			if (nameSplit.length > 0) {
+			if (nameSplit.length > 1) {
 				for (int x = 0; x < nameSplit.length; x++) {
 					c = new Country();
 					c.setName(nameSplit[x]);
@@ -42,14 +43,10 @@ public class CountryBOImpl extends GenericBOImpl<Country> implements CountryBO {
 			libReturn.setMessage(e.getMessage());
 		}
 		if (libReturn.getMessage() == null && country.getId() == null) {
-			libReturn
-					.setMessage(country.getLocale().equals("pt_BR") ? "País cadastrado com sucesso!"
-							: "Country registration successfully!");
+			libReturn.setMessage( MessageFactory.getMessage("lb_country_saved", country.getLocale()));
 			libReturn.setCountry(c);
 		} else if (libReturn.getMessage() == null && country.getId() != null) {
-			libReturn
-					.setMessage(country.getLocale().equals("pt_BR") ? "Páis alterado com sucesso!"
-							: "Country updated successfully!");
+			libReturn.setMessage( MessageFactory.getMessage("lb_country_updated", country.getLocale()));
 			libReturn.setCountry(c);
 		}
 		return libReturn;
@@ -66,7 +63,12 @@ public class CountryBOImpl extends GenericBOImpl<Country> implements CountryBO {
 		Country country = null;
 		try {
 			country = findById(Country.class, id);
-			remove(country);
+			if (country == null) {
+				libReturn.setMessage( MessageFactory.getMessage("lb_country_not_found", "en"));
+			} else {
+				remove(country);
+				libReturn.setMessage( MessageFactory.getMessage("lb_country_deleted", country.getLocale()));
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			libReturn.setMessage(e.getMessage());
