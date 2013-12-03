@@ -8,7 +8,7 @@
 		<param-name>resteasy.resources</param-name>
 		<param-value>com.mconnti.moneymanager.rest.RestService</param-value>
 	</context-param>
-
+	
 	<listener>
 		<listener-class>
 			org.jboss.resteasy.plugins.server.servlet.ResteasyBootstrap</listener-class>
