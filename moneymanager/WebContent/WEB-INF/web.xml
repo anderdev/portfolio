@@ -19,14 +19,14 @@
 	</listener>
 
 	<servlet>
-		<servlet-name>resteasy-servlet</servlet-name>
+		<servlet-name>Resteasy-servlet</servlet-name>
 		<servlet-class>
 			org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher</servlet-class>
 	</servlet>
 
 	<servlet-mapping>
-		<servlet-name>resteasy-servlet</servlet-name>
-		<url-pattern>/*</url-pattern>
+		<servlet-name>Resteasy-servlet</servlet-name>
+		<url-pattern>/rest/*</url-pattern>
 	</servlet-mapping>
 
 </web-app>

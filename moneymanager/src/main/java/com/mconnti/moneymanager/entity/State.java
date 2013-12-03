@@ -6,7 +6,6 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,13 +13,18 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.hibernate.annotations.ForeignKey;
 
 @Entity
 @Table(name="state")
 @XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class State implements Serializable{
 
 	private static final long serialVersionUID = 1L;
@@ -33,9 +37,11 @@ public class State implements Serializable{
 	@Column(length = 100, nullable = false)
 	private String name;
 	
-	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "state_id")
 	@ForeignKey(name = "FK_STATE_CITY")
+	@XmlTransient
+	@Transient
 	private Set<City> cityList;
 	
 	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = Country.class)
@@ -74,9 +80,4 @@ public class State implements Serializable{
 	public void setCityList(Set<City> cityList) {
 		this.cityList = cityList;
 	}
-
-	public State() {
-		super();
-	}
-
 }
