@@ -135,6 +135,7 @@ public class GenericDAOImpl<T> implements GenericDAO<T> {
 	@SuppressWarnings("unchecked")
 	public List<T> list(final Class<T> type, Map<String, String> queryParams, String orderByField) throws Exception {
 		try {
+			
 			StringBuilder sql = new StringBuilder();
 			sql.append(" select x from ");
 			sql.append(type.getSimpleName());
@@ -156,9 +157,7 @@ public class GenericDAOImpl<T> implements GenericDAO<T> {
 			}
 
 			Query query = em.createQuery(sql.toString());
-
 			query.setHint("toplink.refresh", "true");
-
 			return query.getResultList();
 		} catch (Exception e) {
 			e.printStackTrace();
