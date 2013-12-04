@@ -14,10 +14,12 @@ import javax.ws.rs.core.Response;
 import com.mconnti.moneymanager.business.CityBO;
 import com.mconnti.moneymanager.business.CountryBO;
 import com.mconnti.moneymanager.business.StateBO;
+import com.mconnti.moneymanager.business.UserBO;
 import com.mconnti.moneymanager.context.SpringApplicationContext;
 import com.mconnti.moneymanager.entity.City;
 import com.mconnti.moneymanager.entity.Country;
 import com.mconnti.moneymanager.entity.State;
+import com.mconnti.moneymanager.entity.User;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
 
 @Path("/rest")
@@ -25,12 +27,16 @@ public class RestService {
 	private CountryBO countryBO;
 	private StateBO stateBO;
 	private CityBO cityBO;
+	private UserBO userBO;
 
 	public RestService() {
 		countryBO = (CountryBO) SpringApplicationContext.getBean("countryBO");
 		stateBO = (StateBO) SpringApplicationContext.getBean("stateBO");
 		cityBO = (CityBO) SpringApplicationContext.getBean("cityBO");
+		userBO = (UserBO) SpringApplicationContext.getBean("userBO");
 	}
+	
+	//COUNTRY AREA
 
 	@GET
 	@Path("/country")
@@ -75,6 +81,8 @@ public class RestService {
 		return Response.status(200).entity(ret).build();
 	}
 	
+	//STATE AREA
+	
 	@GET
 	@Path("/state")
 	@Produces({ "application/json" })
@@ -89,7 +97,7 @@ public class RestService {
 
 		return Response.status(200).entity(state).build();
 	}
-
+	
 	@POST
 	@Path("/state")
 	@Consumes({ "application/json" })
@@ -117,6 +125,8 @@ public class RestService {
 		}
 		return Response.status(200).entity(ret).build();
 	}
+	
+	//CITY AREA
 	
 	@GET
 	@Path("/city")
@@ -155,6 +165,50 @@ public class RestService {
 		MessageReturn ret = new MessageReturn();
 		try {
 			ret = cityBO.delete(city.getId());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Response.status(200).entity(ret).build();
+	}
+	
+	//USER AREA
+	@GET
+	@Path("/user")
+	@Produces({ "application/json" })
+	public Response listUser() {
+
+		List<User> list = new ArrayList<>();
+		try {
+			list = userBO.list();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return Response.status(200).entity(list).build();
+	}
+
+	@POST
+	@Path("/user")
+	@Consumes({ "application/json" })
+	@Produces({ "application/json" })
+	public Response saveUser(User user) {
+		MessageReturn ret = new MessageReturn();
+		try {
+			ret = userBO.save(user);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Response.status(200).entity(ret).build();
+	}
+
+	@DELETE
+	@Path("/user")
+	@Consumes({ "application/json" })
+	@Produces({ "application/json" })
+	public Response deleteUser(User user) {
+		MessageReturn ret = new MessageReturn();
+		try {
+			ret = userBO.delete(user.getId());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

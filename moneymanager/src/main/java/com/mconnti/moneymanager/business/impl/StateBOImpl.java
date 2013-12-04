@@ -35,7 +35,6 @@ public class StateBOImpl extends GenericBOImpl<State> implements StateBO {
 	public MessageReturn save(State state) {
 		MessageReturn libReturn = new MessageReturn();
 		Country country = getCountry(state);
-		libReturn.setMessage(MessageFactory.getMessage("lb_country_not_found", "en"));
 		if (country != null) {
 			State c = null;
 			try {
@@ -66,6 +65,8 @@ public class StateBOImpl extends GenericBOImpl<State> implements StateBO {
 				libReturn.setMessage(MessageFactory.getMessage("lb_state_updated", country.getLocale()));
 				libReturn.setState(c);
 			}
+		} else{
+			libReturn.setMessage(MessageFactory.getMessage("lb_state_not_found", "en"));
 		}
 		return libReturn;
 	}

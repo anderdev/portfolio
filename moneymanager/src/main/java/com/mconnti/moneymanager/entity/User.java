@@ -39,7 +39,7 @@ public class User implements Serializable{
 	private String email;
 	
 	@Column(name="born")
-	private String born;
+	private Date born;
 	
 	@Column(name="register")
 	private Date register;
@@ -99,11 +99,11 @@ public class User implements Serializable{
 		this.email = email;
 	}
 
-	public String getBorn() {
+	public Date getBorn() {
 		return born;
 	}
 
-	public void setBorn(String born) {
+	public void setBorn(Date born) {
 		this.born = born;
 	}
 

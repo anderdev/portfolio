@@ -64,6 +64,8 @@ public class CityBOImpl extends GenericBOImpl<City> implements CityBO {
 				libReturn.setMessage( MessageFactory.getMessage("lb_city_updated", state.getCountry().getLocale()));
 				libReturn.setCity(c);
 			}
+		}else{
+			libReturn.setMessage(MessageFactory.getMessage("lb_city_not_found", "en"));
 		}
 		
 		return libReturn;

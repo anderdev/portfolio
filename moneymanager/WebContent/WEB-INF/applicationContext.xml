@@ -13,6 +13,7 @@
 	<bean id="countryBO" class="com.mconnti.moneymanager.business.impl.CountryBOImpl"/>
 	<bean id="stateBO" class="com.mconnti.moneymanager.business.impl.StateBOImpl"/>
 	<bean id="cityBO" class="com.mconnti.moneymanager.business.impl.CityBOImpl"/>
+	<bean id="userBO" class="com.mconnti.moneymanager.business.impl.UserBOImpl"/>
 
 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
 		<property name="entityManagerFactory" ref="entityManagerFactory" />
