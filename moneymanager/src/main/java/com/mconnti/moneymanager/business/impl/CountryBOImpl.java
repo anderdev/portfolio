@@ -66,8 +66,9 @@ public class CountryBOImpl extends GenericBOImpl<Country> implements CountryBO {
 			if (country == null) {
 				libReturn.setMessage( MessageFactory.getMessage("lb_country_not_found", "en"));
 			} else {
+				String locale = country.getLocale();
 				remove(country);
-				libReturn.setMessage( MessageFactory.getMessage("lb_country_deleted", country.getLocale()));
+				libReturn.setMessage( MessageFactory.getMessage("lb_country_deleted", locale));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

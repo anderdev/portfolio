@@ -50,6 +50,7 @@ public class CityBOImpl extends GenericBOImpl<City> implements CityBO {
 					c = new City();
 					c.setId(city.getId());
 					c.setName(city.getName());
+					c.setState(state);
 					saveGeneric(c);
 				}
 			} catch (Exception e) {
@@ -85,8 +86,9 @@ public class CityBOImpl extends GenericBOImpl<City> implements CityBO {
 			if (city == null) {
 				libReturn.setMessage( MessageFactory.getMessage("lb_city_not_found", "en"));
 			} else {
+				String locale = city.getState().getCountry().getLocale();
 				remove(city);
-				libReturn.setMessage( MessageFactory.getMessage("lb_city_deleted", city.getState().getCountry().getLocale()));
+				libReturn.setMessage( MessageFactory.getMessage("lb_city_deleted", locale));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

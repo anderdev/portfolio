@@ -69,8 +69,8 @@ public class City implements Serializable {
 		return state;
 	}
 
-	public void setState(State state) {
-		this.state = state;
+	public void setState(State st) {
+		this.state = st;
 	}
 
 	public Set<User> getUserList() {

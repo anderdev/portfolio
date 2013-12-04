@@ -85,8 +85,9 @@ public class StateBOImpl extends GenericBOImpl<State> implements StateBO {
 			if (state == null) {
 				libReturn.setMessage(MessageFactory.getMessage("lb_state_not_found", "en"));
 			} else {
+				String locale = state.getCountry().getLocale();
 				remove(state);
-				libReturn.setMessage(MessageFactory.getMessage("lb_state_deleted", state.getCountry().getLocale()));
+				libReturn.setMessage(MessageFactory.getMessage("lb_state_deleted", locale));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

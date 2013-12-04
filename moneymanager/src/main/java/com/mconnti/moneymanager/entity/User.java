@@ -14,9 +14,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.hibernate.annotations.ForeignKey;
+
+import com.mconnti.moneymanager.utils.Crypt;
 
 @Entity
 @Table(name = "user")
@@ -38,8 +41,11 @@ public class User implements Serializable{
 	
 	private String email;
 	
-	@Column(name="born")
-	private Date born;
+	@Column(name="birthdate")
+	private Date birthDate;
+	
+	@Transient
+	private String birth;
 	
 	@Column(name="register")
 	private Date register;
@@ -48,7 +54,7 @@ public class User implements Serializable{
 	
 	private Boolean administrator;
 	
-	@Column(name="palavra_secreta")
+	@Column(name="phrase")
 	private String secretPhrase;
 	
 	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = City.class)
@@ -64,6 +70,10 @@ public class User implements Serializable{
 	private String username;
 	
 	private String password;
+	
+	@Transient
+	//Rest password
+	private String pass;
 	
 	private Boolean excluded;
 
@@ -99,12 +109,12 @@ public class User implements Serializable{
 		this.email = email;
 	}
 
-	public Date getBorn() {
-		return born;
+	public Date getBirthDate() {
+		return birthDate;
 	}
 
-	public void setBorn(Date born) {
-		this.born = born;
+	public void setBirthDate(Date birthDate) {
+		this.birthDate = birthDate;
 	}
 
 	public Date getRegister() {
@@ -160,7 +170,11 @@ public class User implements Serializable{
 	}
 
 	public void setPassword(String password) {
-		this.password = password;
+		try {
+			this.password = Crypt.encrypt(password);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public Boolean getExcluded() {
@@ -177,6 +191,22 @@ public class User implements Serializable{
 
 	public void setConfig(Config config) {
 		this.config = config;
+	}
+
+	public String getBirth() {
+		return birth;
+	}
+
+	public void setBirth(String birth) {
+		this.birth = birth;
+	}
+
+	public String getPass() {
+		return pass;
+	}
+
+	public void setPass(String pass) {
+		this.pass = pass;
 	}
 	
 }
