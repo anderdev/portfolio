@@ -22,7 +22,7 @@ public class TypeClosure implements Serializable {
 	
 	private String type;
 	
-	private String language;
+	private String locale;
 	
 	private Integer period;
 
@@ -42,20 +42,20 @@ public class TypeClosure implements Serializable {
 		this.type = type;
 	}
 
-	public String getLanguage() {
-		return language;
-	}
-
-	public void setLanguage(String language) {
-		this.language = language;
-	}
-
 	public Integer getPeriod() {
 		return period;
 	}
 
 	public void setPeriod(Integer period) {
 		this.period = period;
+	}
+
+	public String getLocale() {
+		return locale;
+	}
+
+	public void setLocale(String locale) {
+		this.locale = locale;
 	}
 
 }

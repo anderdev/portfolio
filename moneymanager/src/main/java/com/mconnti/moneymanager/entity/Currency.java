@@ -24,10 +24,8 @@ public class Currency implements Serializable {
 	
 	private String acronym;
 	
-	public Currency() {
-		super();
-	}
-
+	private String locale;
+	
 	public Long getId() {
 		return id;
 	}
@@ -50,5 +48,13 @@ public class Currency implements Serializable {
 
 	public void setAcronym(String acronym) {
 		this.acronym = acronym;
+	}
+
+	public String getLocale() {
+		return locale;
+	}
+
+	public void setLocale(String locale) {
+		this.locale = locale;
 	}
 }

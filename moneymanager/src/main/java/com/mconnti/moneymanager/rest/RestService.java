@@ -11,14 +11,24 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
+import com.mconnti.moneymanager.business.AccountBO;
 import com.mconnti.moneymanager.business.CityBO;
 import com.mconnti.moneymanager.business.CountryBO;
+import com.mconnti.moneymanager.business.CreditCardBO;
+import com.mconnti.moneymanager.business.CurrencyBO;
+import com.mconnti.moneymanager.business.DescriptionBO;
 import com.mconnti.moneymanager.business.StateBO;
+import com.mconnti.moneymanager.business.TypeClosureBO;
 import com.mconnti.moneymanager.business.UserBO;
 import com.mconnti.moneymanager.context.SpringApplicationContext;
+import com.mconnti.moneymanager.entity.Account;
 import com.mconnti.moneymanager.entity.City;
 import com.mconnti.moneymanager.entity.Country;
+import com.mconnti.moneymanager.entity.CreditCard;
+import com.mconnti.moneymanager.entity.Currency;
+import com.mconnti.moneymanager.entity.Description;
 import com.mconnti.moneymanager.entity.State;
+import com.mconnti.moneymanager.entity.TypeClosure;
 import com.mconnti.moneymanager.entity.User;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
 
@@ -28,15 +38,25 @@ public class RestService {
 	private StateBO stateBO;
 	private CityBO cityBO;
 	private UserBO userBO;
+	private CurrencyBO currencyBO;
+	private AccountBO accountBO;
+	private TypeClosureBO typeClosureBO;
+	private DescriptionBO descriptionBO;
+	private CreditCardBO creditCardBO;
 
 	public RestService() {
 		countryBO = (CountryBO) SpringApplicationContext.getBean("countryBO");
 		stateBO = (StateBO) SpringApplicationContext.getBean("stateBO");
 		cityBO = (CityBO) SpringApplicationContext.getBean("cityBO");
 		userBO = (UserBO) SpringApplicationContext.getBean("userBO");
+		currencyBO = (CurrencyBO) SpringApplicationContext.getBean("currencyBO");
+		accountBO = (AccountBO) SpringApplicationContext.getBean("accountBO");
+		typeClosureBO = (TypeClosureBO) SpringApplicationContext.getBean("typeClosureBO");
+		descriptionBO = (DescriptionBO) SpringApplicationContext.getBean("descriptionBO");
+		creditCardBO = (CreditCardBO) SpringApplicationContext.getBean("creditCardBO");
 	}
-	
-	//COUNTRY AREA
+
+	// COUNTRY AREA
 
 	@GET
 	@Path("/country")
@@ -80,9 +100,9 @@ public class RestService {
 		}
 		return Response.status(200).entity(ret).build();
 	}
-	
-	//STATE AREA
-	
+
+	// STATE AREA
+
 	@GET
 	@Path("/state")
 	@Produces({ "application/json" })
@@ -97,7 +117,7 @@ public class RestService {
 
 		return Response.status(200).entity(state).build();
 	}
-	
+
 	@POST
 	@Path("/state")
 	@Consumes({ "application/json" })
@@ -125,9 +145,9 @@ public class RestService {
 		}
 		return Response.status(200).entity(ret).build();
 	}
-	
-	//CITY AREA
-	
+
+	// CITY AREA
+
 	@GET
 	@Path("/city")
 	@Produces({ "application/json" })
@@ -170,8 +190,8 @@ public class RestService {
 		}
 		return Response.status(200).entity(ret).build();
 	}
-	
-	//USER AREA
+
+	// USER AREA
 	@GET
 	@Path("/user")
 	@Produces({ "application/json" })
@@ -214,4 +234,229 @@ public class RestService {
 		}
 		return Response.status(200).entity(ret).build();
 	}
+
+	// CURRENCY AREA
+
+	@GET
+	@Path("/currency")
+	@Produces({ "application/json" })
+	public Response listCurrency() {
+
+		List<Currency> list = new ArrayList<>();
+		try {
+			list = currencyBO.list();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return Response.status(200).entity(list).build();
+	}
+
+	@POST
+	@Path("/currency")
+	@Consumes({ "application/json" })
+	@Produces({ "application/json" })
+	public Response saveCurrency(Currency currency) {
+		MessageReturn ret = new MessageReturn();
+		try {
+			ret = currencyBO.save(currency);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Response.status(200).entity(ret).build();
+	}
+
+	@DELETE
+	@Path("/currency")
+	@Consumes({ "application/json" })
+	@Produces({ "application/json" })
+	public Response deleteCurrency(Currency currency) {
+		MessageReturn ret = new MessageReturn();
+		try {
+			ret = currencyBO.delete(currency.getId());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Response.status(200).entity(ret).build();
+	}
+
+	// ACCOUNT AREA
+
+	@GET
+	@Path("/account")
+	@Produces({ "application/json" })
+	public Response listAccount() {
+
+		List<Account> list = new ArrayList<>();
+		try {
+			list = accountBO.list();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return Response.status(200).entity(list).build();
+	}
+
+	@POST
+	@Path("/account")
+	@Consumes({ "application/json" })
+	@Produces({ "application/json" })
+	public Response saveAccount(Account account) {
+		MessageReturn ret = new MessageReturn();
+		try {
+			ret = accountBO.save(account);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Response.status(200).entity(ret).build();
+	}
+
+	@DELETE
+	@Path("/account")
+	@Consumes({ "application/json" })
+	@Produces({ "application/json" })
+	public Response deleteAccount(Account account) {
+		MessageReturn ret = new MessageReturn();
+		try {
+			ret = accountBO.delete(account.getId());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Response.status(200).entity(ret).build();
+	}
+
+	// TYPE_CLOSURE AREA
+
+	@GET
+	@Path("/typeclosure")
+	@Produces({ "application/json" })
+	public Response listTypeClosure() {
+
+		List<TypeClosure> list = new ArrayList<>();
+		try {
+			list = typeClosureBO.list();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return Response.status(200).entity(list).build();
+	}
+
+	@POST
+	@Path("/typeclosure")
+	@Consumes({ "application/json" })
+	@Produces({ "application/json" })
+	public Response saveTypeClosure(TypeClosure typeClosure) {
+		MessageReturn ret = new MessageReturn();
+		try {
+			ret = typeClosureBO.save(typeClosure);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Response.status(200).entity(ret).build();
+	}
+
+	@DELETE
+	@Path("/typeclosure")
+	@Consumes({ "application/json" })
+	@Produces({ "application/json" })
+	public Response deleteTypeClosure(TypeClosure typeClosure) {
+		MessageReturn ret = new MessageReturn();
+		try {
+			ret = typeClosureBO.delete(typeClosure.getId());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Response.status(200).entity(ret).build();
+	}
+
+	// DESCRIPTION AREA
+
+	@GET
+	@Path("/description")
+	@Produces({ "application/json" })
+	public Response listDescription() {
+
+		List<Description> list = new ArrayList<>();
+		try {
+			list = descriptionBO.list();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return Response.status(200).entity(list).build();
+	}
+
+	@POST
+	@Path("/description")
+	@Consumes({ "application/json" })
+	@Produces({ "application/json" })
+	public Response saveDescription(Description description) {
+		MessageReturn ret = new MessageReturn();
+		try {
+			ret = descriptionBO.save(description);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Response.status(200).entity(ret).build();
+	}
+
+	@DELETE
+	@Path("/description")
+	@Consumes({ "application/json" })
+	@Produces({ "application/json" })
+	public Response deleteDescription(Description description) {
+		MessageReturn ret = new MessageReturn();
+		try {
+			ret = descriptionBO.delete(description.getId());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Response.status(200).entity(ret).build();
+	}
+	
+	// CREDIT_CARD AREA
+
+		@GET
+		@Path("/creditcard")
+		@Produces({ "application/json" })
+		public Response listCreditCard() {
+
+			List<CreditCard> list = new ArrayList<>();
+			try {
+				list = creditCardBO.list();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			return Response.status(200).entity(list).build();
+		}
+
+		@POST
+		@Path("/creditcard")
+		@Consumes({ "application/json" })
+		@Produces({ "application/json" })
+		public Response saveCreditCard(CreditCard creditCard) {
+			MessageReturn ret = new MessageReturn();
+			try {
+				ret = creditCardBO.save(creditCard);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return Response.status(200).entity(ret).build();
+		}
+
+		@DELETE
+		@Path("/creditcard")
+		@Consumes({ "application/json" })
+		@Produces({ "application/json" })
+		public Response deleteCreditCard(CreditCard creditCard) {
+			MessageReturn ret = new MessageReturn();
+			try {
+				ret = creditCardBO.delete(creditCard.getId());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return Response.status(200).entity(ret).build();
+		}
 }

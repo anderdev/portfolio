@@ -14,6 +14,11 @@
 	<bean id="stateBO" class="com.mconnti.moneymanager.business.impl.StateBOImpl"/>
 	<bean id="cityBO" class="com.mconnti.moneymanager.business.impl.CityBOImpl"/>
 	<bean id="userBO" class="com.mconnti.moneymanager.business.impl.UserBOImpl"/>
+	<bean id="currencyBO" class="com.mconnti.moneymanager.business.impl.CurrencyBOImpl"/>
+	<bean id="accountBO" class="com.mconnti.moneymanager.business.impl.AccountBOImpl"/>
+	<bean id="typeClosureBO" class="com.mconnti.moneymanager.business.impl.TypeClosureBOImpl"/>
+	<bean id="descriptionBO" class="com.mconnti.moneymanager.business.impl.DescriptionBOImpl"/>
+	<bean id="creditCardBO" class="com.mconnti.moneymanager.business.impl.CreditCardBOImpl"/>
 
 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
 		<property name="entityManagerFactory" ref="entityManagerFactory" />
