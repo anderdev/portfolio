@@ -6,13 +6,14 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.mconnti.moneymanager.entity.TypeAccount;
 import com.mconnti.moneymanager.entity.City;
+import com.mconnti.moneymanager.entity.Config;
 import com.mconnti.moneymanager.entity.Country;
 import com.mconnti.moneymanager.entity.CreditCard;
 import com.mconnti.moneymanager.entity.Currency;
 import com.mconnti.moneymanager.entity.Description;
 import com.mconnti.moneymanager.entity.State;
+import com.mconnti.moneymanager.entity.TypeAccount;
 import com.mconnti.moneymanager.entity.TypeClosure;
 import com.mconnti.moneymanager.entity.User;
 
@@ -47,6 +48,8 @@ public class MessageReturn {
 	private Description description;
 	
 	private CreditCard creditCard;
+	
+	private Config config;
 	
 	public String getMessage() {
 		return message;
@@ -158,6 +161,14 @@ public class MessageReturn {
 
 	public void setCreditCard(CreditCard creditCard) {
 		this.creditCard = creditCard;
+	}
+
+	public Config getConfig() {
+		return config;
+	}
+
+	public void setConfig(Config config) {
+		this.config = config;
 	}
 
 }

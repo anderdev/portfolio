@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.ForeignKey;
 
@@ -36,6 +37,9 @@ public class CreditCard implements Serializable {
 	
 	@Column(name="expireDate")
 	private Date expireDate;
+	
+	@Transient
+	private String expire;
 	
 	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = User.class)
 	@JoinColumn(name = "user_id")
@@ -101,6 +105,14 @@ public class CreditCard implements Serializable {
 
 	public void setMasterUser(User masterUser) {
 		this.masterUser = masterUser;
+	}
+
+	public String getExpire() {
+		return expire;
+	}
+
+	public void setExpire(String expire) {
+		this.expire = expire;
 	}
 
 }

@@ -22,21 +22,33 @@ public class TypeAccountBOImpl extends GenericBOImpl<TypeAccount> implements Typ
 		MessageReturn libReturn = new MessageReturn();
 		TypeAccount c = null;
 		try {
-			c = new TypeAccount();
-			c.setId(typeAccount.getId());
-			c.setDescription(typeAccount.getDescription());
-			c.setLocale(typeAccount.getLocale());
-			saveGeneric(c);
+			String[] nameSplit = typeAccount.getDescription().split(";");
+			if (nameSplit.length > 1) {
+				for (int x = 0; x < nameSplit.length; x++) {
+					c = new TypeAccount();
+					c.setId(typeAccount.getId());
+					c.setDescription(nameSplit[x]);
+					c.setLocale(typeAccount.getLocale());
+					saveGeneric(c);
+				}
+			} else {
+				c = new TypeAccount();
+				c.setId(typeAccount.getId());
+				c.setDescription(typeAccount.getDescription());
+				c.setLocale(typeAccount.getLocale());
+				saveGeneric(c);
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			libReturn.setAccount(c);
 			libReturn.setMessage(e.getMessage());
 		}
 		if (libReturn.getMessage() == null && typeAccount.getId() == null) {
-			libReturn.setMessage( MessageFactory.getMessage("lb_typeaccount_saved", typeAccount.getLocale()));
+			libReturn.setMessage(MessageFactory.getMessage("lb_typeaccount_saved", typeAccount.getLocale()));
 			libReturn.setAccount(c);
 		} else if (libReturn.getMessage() == null && typeAccount.getId() != null) {
-			libReturn.setMessage( MessageFactory.getMessage("lb_typeaccount_updated", typeAccount.getLocale()));
+			libReturn.setMessage(MessageFactory.getMessage("lb_typeaccount_updated", typeAccount.getLocale()));
 			libReturn.setAccount(c);
 		}
 		return libReturn;
@@ -54,11 +66,11 @@ public class TypeAccountBOImpl extends GenericBOImpl<TypeAccount> implements Typ
 		try {
 			typeAccount = findById(TypeAccount.class, id);
 			if (typeAccount == null) {
-				libReturn.setMessage( MessageFactory.getMessage("lb_typeaccount_not_found", "en"));
+				libReturn.setMessage(MessageFactory.getMessage("lb_typeaccount_not_found", "en"));
 			} else {
 				String locale = typeAccount.getLocale();
 				remove(typeAccount);
-				libReturn.setMessage( MessageFactory.getMessage("lb_typeaccount_deleted", locale));
+				libReturn.setMessage(MessageFactory.getMessage("lb_typeaccount_deleted", locale));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

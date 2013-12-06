@@ -12,6 +12,7 @@ import com.mconnti.moneymanager.entity.xml.MessageReturn;
 import com.mconnti.moneymanager.persistence.CreditCardDAO;
 import com.mconnti.moneymanager.persistence.UserDAO;
 import com.mconnti.moneymanager.utils.MessageFactory;
+import com.mconnti.moneymanager.utils.Utils;
 
 public class CreditCardBOImpl extends GenericBOImpl<CreditCard> implements CreditCardBO {
 
@@ -41,7 +42,7 @@ public class CreditCardBOImpl extends GenericBOImpl<CreditCard> implements Credi
 				c = new CreditCard();
 				c.setId(creditCard.getId());
 				c.setName(creditCard.getName());
-				c.setExpireDate(creditCard.getExpireDate());
+				c.setExpireDate(Utils.lastDayMonth(creditCard.getExpire()));
 				c.setLastDayToBuy(creditCard.getLastDayToBuy());
 				c.setMasterUser(creditCard.getMasterUser());
 				c.setPayday(creditCard.getPayday());

@@ -11,23 +11,25 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
-import com.mconnti.moneymanager.business.TypeAccountBO;
 import com.mconnti.moneymanager.business.CityBO;
+import com.mconnti.moneymanager.business.ConfigBO;
 import com.mconnti.moneymanager.business.CountryBO;
 import com.mconnti.moneymanager.business.CreditCardBO;
 import com.mconnti.moneymanager.business.CurrencyBO;
 import com.mconnti.moneymanager.business.DescriptionBO;
 import com.mconnti.moneymanager.business.StateBO;
+import com.mconnti.moneymanager.business.TypeAccountBO;
 import com.mconnti.moneymanager.business.TypeClosureBO;
 import com.mconnti.moneymanager.business.UserBO;
 import com.mconnti.moneymanager.context.SpringApplicationContext;
-import com.mconnti.moneymanager.entity.TypeAccount;
 import com.mconnti.moneymanager.entity.City;
+import com.mconnti.moneymanager.entity.Config;
 import com.mconnti.moneymanager.entity.Country;
 import com.mconnti.moneymanager.entity.CreditCard;
 import com.mconnti.moneymanager.entity.Currency;
 import com.mconnti.moneymanager.entity.Description;
 import com.mconnti.moneymanager.entity.State;
+import com.mconnti.moneymanager.entity.TypeAccount;
 import com.mconnti.moneymanager.entity.TypeClosure;
 import com.mconnti.moneymanager.entity.User;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
@@ -43,6 +45,7 @@ public class RestService {
 	private TypeClosureBO typeClosureBO;
 	private DescriptionBO descriptionBO;
 	private CreditCardBO creditCardBO;
+	private ConfigBO configBO;
 
 	public RestService() {
 		countryBO = (CountryBO) SpringApplicationContext.getBean("countryBO");
@@ -54,6 +57,7 @@ public class RestService {
 		typeClosureBO = (TypeClosureBO) SpringApplicationContext.getBean("typeClosureBO");
 		descriptionBO = (DescriptionBO) SpringApplicationContext.getBean("descriptionBO");
 		creditCardBO = (CreditCardBO) SpringApplicationContext.getBean("creditCardBO");
+		configBO = (ConfigBO) SpringApplicationContext.getBean("configBO");
 	}
 
 	// COUNTRY AREA
@@ -459,4 +463,49 @@ public class RestService {
 			}
 			return Response.status(200).entity(ret).build();
 		}
+		
+		// CONFIG AREA
+
+				@GET
+				@Path("/config")
+				@Produces({ "application/json" })
+				public Response listConfig() {
+
+					List<Config> list = new ArrayList<>();
+					try {
+						list = configBO.list();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+
+					return Response.status(200).entity(list).build();
+				}
+
+				@POST
+				@Path("/config")
+				@Consumes({ "application/json" })
+				@Produces({ "application/json" })
+				public Response saveConfig(Config config) {
+					MessageReturn ret = new MessageReturn();
+					try {
+						ret = configBO.save(config);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					return Response.status(200).entity(ret).build();
+				}
+
+				@DELETE
+				@Path("/config")
+				@Consumes({ "application/json" })
+				@Produces({ "application/json" })
+				public Response deleteConfig(Config config) {
+					MessageReturn ret = new MessageReturn();
+					try {
+						ret = configBO.delete(config.getId());
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					return Response.status(200).entity(ret).build();
+				}
 }
