@@ -37,7 +37,7 @@ public class DescriptionBOImpl extends GenericBOImpl<Description> implements Des
 	
 	private TypeAccount getAccount(Description description) {
 		try {
-			return accountDAO.findById(TypeAccount.class, description.getAccount().getId());
+			return accountDAO.findById(TypeAccount.class, description.getTypeAccount().getId());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -57,7 +57,7 @@ public class DescriptionBOImpl extends GenericBOImpl<Description> implements Des
 					c = new Description();
 					c.setId(description.getId());
 					c.setName(description.getName());
-					c.setAccount(account);
+					c.setTypeAccount(account);
 					c.setUser(user);
 					saveGeneric(c);
 				} catch (Exception e) {

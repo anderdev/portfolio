@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import com.mconnti.moneymanager.entity.TypeAccount;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
 
-@Service("accountBO")
+@Service("typeAccountBO")
 public interface TypeAccountBO extends GenericBO<TypeAccount>{
 	
 	public List<TypeAccount> list() throws Exception;

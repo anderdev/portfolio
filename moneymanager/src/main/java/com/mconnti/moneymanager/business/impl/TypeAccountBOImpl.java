@@ -14,29 +14,29 @@ import com.mconnti.moneymanager.utils.MessageFactory;
 public class TypeAccountBOImpl extends GenericBOImpl<TypeAccount> implements TypeAccountBO {
 
 	@Autowired
-	private TypeAccountDAO accountDAO;
+	private TypeAccountDAO typeAccountDAO;
 
 	@Override
 	@Transactional
-	public MessageReturn save(TypeAccount account) {
+	public MessageReturn save(TypeAccount typeAccount) {
 		MessageReturn libReturn = new MessageReturn();
 		TypeAccount c = null;
 		try {
 			c = new TypeAccount();
-			c.setId(account.getId());
-			c.setDescription(account.getDescription());
-			c.setLocale(account.getLocale());
+			c.setId(typeAccount.getId());
+			c.setDescription(typeAccount.getDescription());
+			c.setLocale(typeAccount.getLocale());
 			saveGeneric(c);
 		} catch (Exception e) {
 			e.printStackTrace();
 			libReturn.setAccount(c);
 			libReturn.setMessage(e.getMessage());
 		}
-		if (libReturn.getMessage() == null && account.getId() == null) {
-			libReturn.setMessage( MessageFactory.getMessage("lb_typeaccount_saved", account.getLocale()));
+		if (libReturn.getMessage() == null && typeAccount.getId() == null) {
+			libReturn.setMessage( MessageFactory.getMessage("lb_typeaccount_saved", typeAccount.getLocale()));
 			libReturn.setAccount(c);
-		} else if (libReturn.getMessage() == null && account.getId() != null) {
-			libReturn.setMessage( MessageFactory.getMessage("lb_typeaccount_updated", account.getLocale()));
+		} else if (libReturn.getMessage() == null && typeAccount.getId() != null) {
+			libReturn.setMessage( MessageFactory.getMessage("lb_typeaccount_updated", typeAccount.getLocale()));
 			libReturn.setAccount(c);
 		}
 		return libReturn;
@@ -50,14 +50,14 @@ public class TypeAccountBOImpl extends GenericBOImpl<TypeAccount> implements Typ
 	@Transactional
 	public MessageReturn delete(Long id) {
 		MessageReturn libReturn = new MessageReturn();
-		TypeAccount account = null;
+		TypeAccount typeAccount = null;
 		try {
-			account = findById(TypeAccount.class, id);
-			if (account == null) {
+			typeAccount = findById(TypeAccount.class, id);
+			if (typeAccount == null) {
 				libReturn.setMessage( MessageFactory.getMessage("lb_typeaccount_not_found", "en"));
 			} else {
-				String locale = account.getLocale();
-				remove(account);
+				String locale = typeAccount.getLocale();
+				remove(typeAccount);
 				libReturn.setMessage( MessageFactory.getMessage("lb_typeaccount_deleted", locale));
 			}
 		} catch (Exception e) {

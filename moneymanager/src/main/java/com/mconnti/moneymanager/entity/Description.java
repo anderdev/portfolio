@@ -30,19 +30,19 @@ public class Description implements Serializable {
 	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = TypeAccount.class)
 	@JoinColumn(name = "account_id")
 	@ForeignKey(name = "FK_DESCRIPTION_ACCOUNT")
-	private TypeAccount account;
+	private TypeAccount typeAccount;
 
 	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = User.class)
 	@JoinColumn(name = "user_id")
 	@ForeignKey(name = "FK_DESCRIPTION_USER")
 	private User user;
 
-	public TypeAccount getAccount() {
-		return account;
+	public TypeAccount getTypeAccount() {
+		return typeAccount;
 	}
 
-	public void setAccount(TypeAccount account) {
-		this.account = account;
+	public void setTypeAccount(TypeAccount typeAccount) {
+		this.typeAccount = typeAccount;
 	}
 
 	public User getUser() {

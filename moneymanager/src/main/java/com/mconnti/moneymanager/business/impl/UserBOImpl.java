@@ -55,7 +55,7 @@ public class UserBOImpl extends GenericBOImpl<User> implements UserBO {
 				u.setRegister(new Date());
 				u.setEmail(user.getEmail());
 				u.setLanguage(user.getLanguage());
-				u.setSecretPhrase(user.getPass());
+				u.setSecretPhrase(user.getSecretPhrase());
 				u.setCity(city);
 				u.setConfig(config);
 				u.setExcluded(false);
