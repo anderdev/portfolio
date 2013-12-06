@@ -6,11 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mconnti.moneymanager.business.DescriptionBO;
-import com.mconnti.moneymanager.entity.Account;
+import com.mconnti.moneymanager.entity.TypeAccount;
 import com.mconnti.moneymanager.entity.Description;
 import com.mconnti.moneymanager.entity.User;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
-import com.mconnti.moneymanager.persistence.AccountDAO;
+import com.mconnti.moneymanager.persistence.TypeAccountDAO;
 import com.mconnti.moneymanager.persistence.DescriptionDAO;
 import com.mconnti.moneymanager.persistence.UserDAO;
 import com.mconnti.moneymanager.utils.MessageFactory;
@@ -24,7 +24,7 @@ public class DescriptionBOImpl extends GenericBOImpl<Description> implements Des
 	private UserDAO userDAO;
 	
 	@Autowired
-	private AccountDAO accountDAO;
+	private TypeAccountDAO accountDAO;
 	
 	private User getUser(Description description) {
 		try {
@@ -35,9 +35,9 @@ public class DescriptionBOImpl extends GenericBOImpl<Description> implements Des
 		return null;
 	}
 	
-	private Account getAccount(Description description) {
+	private TypeAccount getAccount(Description description) {
 		try {
-			return accountDAO.findById(Account.class, description.getAccount().getId());
+			return accountDAO.findById(TypeAccount.class, description.getAccount().getId());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -50,7 +50,7 @@ public class DescriptionBOImpl extends GenericBOImpl<Description> implements Des
 		MessageReturn libReturn = new MessageReturn();
 		User user = getUser(description);
 		if (user != null){
-			Account account = getAccount(description);
+			TypeAccount account = getAccount(description);
 			if(account != null){
 				Description c = null;
 				try {
@@ -73,7 +73,7 @@ public class DescriptionBOImpl extends GenericBOImpl<Description> implements Des
 					libReturn.setDescription(c);
 				}
 			}else{
-				libReturn.setMessage(MessageFactory.getMessage("lb_account_not_found", "en"));
+				libReturn.setMessage(MessageFactory.getMessage("lb_typeaccount_not_found", "en"));
 			}
 		}else{
 			libReturn.setMessage(MessageFactory.getMessage("lb_description_not_found", "en"));

@@ -1,0 +1,113 @@
+exemplo de curl para cadastrar um usuário
+curl -X POST -H "Content-Type: application/json" -d '{
+"address": "Rua D, s/n",
+"admin": "true",
+"birth": "20/01/1980",
+"email": "vitorll@me.com",
+"password":"123456",
+"name": "Vitor Leonardi"
+}' http://192.241.132.106:8080/libraryWS/user
+
+
+Trabalhar com usuários
+* para cadastrar fazer POST na url http://192.241.132.106:8080/libraryWS/user se for editar adicione o id ao json
+* para excluir fazer DELETE com a url http://192.241.132.106:8080/libraryWS/user/"ID A SER DELETADO"
+* para listar todos fazer GET na url http://192.241.132.106:8080/libraryWS/user
+* para listar um fazer GET na url http://192.241.132.106:8080/libraryWS/user/"ID A SER BUSCADO"
+* listar com parametros na query use o objeto searchObject com PUT na url http://192.241.132.106:8080/libraryWS/user
+{
+"address": "Rua Ari Marinho, 48/102",
+"admin": "true",
+"birth": "20/04/1979",
+"email": "ander.dev@gmail.com",
+"password":"123456",
+"name": "Anderson Santos"
+}
+
+############################
+Trabalhar com Autor 
+* para cadastrar fazer POST na url http://192.241.132.106:8080/libraryWS/author se for editar adicione o id ao json
+* para excluir fazer DELETE com a url http://192.241.132.106:8080/libraryWS/author/"ID A SER DELETADO"
+* para listar todos fazer GET na url http://192.241.132.106:8080/libraryWS/author
+* para listar um fazer GET na url http://192.241.132.106:8080/libraryWS/author/"ID A SER BUSCADO"
+* listar com parametros na query use o objeto searchObject com PUT na url http://192.241.132.106:8080/libraryWS/author
+{
+"name": "Jorge Amado"
+}
+
+############################
+Trabalhar com Categoria 
+* para cadastrar fazer POST na url http://192.241.132.106:8080/libraryWS/category se for editar adicione o id ao json
+* para excluir fazer DELETE com a url http://192.241.132.106:8080/libraryWS/category/"ID A SER DELETADO"
+* para listar todos fazer GET na url http://192.241.132.106:8080/libraryWS/category
+* para listar um fazer GET na url http://192.241.132.106:8080/libraryWS/category/"ID A SER BUSCADO"
+* listar com parametros na query use o objeto searchObject com PUT na url http://192.241.132.106:8080/libraryWS/category
+{
+"type": "Ficção"
+}
+
+############################
+Trabalhar com Livro 
+* para cadastrar fazer POST na url http://192.241.132.106:8080/libraryWS/book se for editar adicione o id ao json
+* para excluir fazer DELETE com a url http://192.241.132.106:8080/libraryWS/book/"ID A SER DELETADO"
+* para listar todos fazer GET na url http://192.241.132.106:8080/libraryWS/book
+* para listar um fazer GET na url http://192.241.132.106:8080/libraryWS/book/"ID A SER BUSCADO"
+* listar com parametros na query use o objeto searchObject com PUT na url http://192.241.132.106:8080/libraryWS/book
+{
+"title":"Gerra nas estrelas - parte 1",
+"description":"Livro de ficção que fala sobre um gerra inter estelar....bobagem pura.",
+"yearOfPublished":"1999",
+"available":"true",
+"author":{
+                 "id":"1",
+                 "name": "Jorge Amado"
+               },
+"category":{
+                   "id":"1",
+                   "type": "Ficção"
+                 }
+}
+
+############################ Search Object, objeto usado no PUT's de consultas
+SearchObject passando somente o queryParams - atenção o parametro value do map tem que levar os sinais comparativos
+{
+"queryParams": { 
+        "entry":{"key":"author","value":"= 5"}
+     }
+}
+exemplo de queryParams usando like
+{
+"queryParams": { 
+        "entry":{"key":"upper(title)","value":"like '%MUSICA%'"}
+     }
+}
+
+############################
+Login 
+para fazer o login, passamos o email e o password do user
+* fazer PUT na url http://192.241.132.106:8080/libraryWS/user com o json abaixo, vai retornar a mensagem e o user no objeto MessageReturn.user
+{
+"email": "ander.dev@gmail.com",
+"password":"123456"
+}
+
+############################
+Para alugar um livro - PUT
+http://localhost:8080/libraryWS/bookQueue
+{
+"user": { 
+        "id":"3"
+     },
+"book":{
+         "id":"1"
+    }
+}
+se o livro estiver alugado sera retornado um MessageReturn com a menagem que o livro não esta disponível 
+Se o usuário quiser ir para a fila de espera é só fazer um POST na mesma url com o mesmo JSON
+
+Para saber o tamanho da fila de espera deste livro - PUT - URL http://localhost:8080/libraryWS/bookQueue/listSize
+{
+"queryParams": { 
+        "entry":{"key":"book","value":" = 2"}
+     }
+}

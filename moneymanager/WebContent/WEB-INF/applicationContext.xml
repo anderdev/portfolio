@@ -15,7 +15,7 @@
 	<bean id="cityBO" class="com.mconnti.moneymanager.business.impl.CityBOImpl"/>
 	<bean id="userBO" class="com.mconnti.moneymanager.business.impl.UserBOImpl"/>
 	<bean id="currencyBO" class="com.mconnti.moneymanager.business.impl.CurrencyBOImpl"/>
-	<bean id="accountBO" class="com.mconnti.moneymanager.business.impl.AccountBOImpl"/>
+	<bean id="typeAccountBO" class="com.mconnti.moneymanager.business.impl.TypeAccountBOImpl"/>
 	<bean id="typeClosureBO" class="com.mconnti.moneymanager.business.impl.TypeClosureBOImpl"/>
 	<bean id="descriptionBO" class="com.mconnti.moneymanager.business.impl.DescriptionBOImpl"/>
 	<bean id="creditCardBO" class="com.mconnti.moneymanager.business.impl.CreditCardBOImpl"/>

@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.mconnti.moneymanager.entity.Account;
+import com.mconnti.moneymanager.entity.TypeAccount;
 import com.mconnti.moneymanager.entity.City;
 import com.mconnti.moneymanager.entity.Country;
 import com.mconnti.moneymanager.entity.CreditCard;
@@ -40,7 +40,7 @@ public class MessageReturn {
 	
 	private List<Currency> currencyList;
 	
-	private Account account;
+	private TypeAccount account;
 	
 	private TypeClosure typeClosure;
 	
@@ -128,11 +128,11 @@ public class MessageReturn {
 		this.currencyList = currencyList;
 	}
 
-	public Account getAccount() {
+	public TypeAccount getAccount() {
 		return account;
 	}
 
-	public void setAccount(Account account) {
+	public void setAccount(TypeAccount account) {
 		this.account = account;
 	}
 

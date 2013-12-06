@@ -5,24 +5,24 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mconnti.moneymanager.business.AccountBO;
-import com.mconnti.moneymanager.entity.Account;
+import com.mconnti.moneymanager.business.TypeAccountBO;
+import com.mconnti.moneymanager.entity.TypeAccount;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
-import com.mconnti.moneymanager.persistence.AccountDAO;
+import com.mconnti.moneymanager.persistence.TypeAccountDAO;
 import com.mconnti.moneymanager.utils.MessageFactory;
 
-public class AccountBOImpl extends GenericBOImpl<Account> implements AccountBO {
+public class TypeAccountBOImpl extends GenericBOImpl<TypeAccount> implements TypeAccountBO {
 
 	@Autowired
-	private AccountDAO accountDAO;
+	private TypeAccountDAO accountDAO;
 
 	@Override
 	@Transactional
-	public MessageReturn save(Account account) {
+	public MessageReturn save(TypeAccount account) {
 		MessageReturn libReturn = new MessageReturn();
-		Account c = null;
+		TypeAccount c = null;
 		try {
-			c = new Account();
+			c = new TypeAccount();
 			c.setId(account.getId());
 			c.setDescription(account.getDescription());
 			c.setLocale(account.getLocale());
@@ -33,32 +33,32 @@ public class AccountBOImpl extends GenericBOImpl<Account> implements AccountBO {
 			libReturn.setMessage(e.getMessage());
 		}
 		if (libReturn.getMessage() == null && account.getId() == null) {
-			libReturn.setMessage( MessageFactory.getMessage("lb_account_saved", account.getLocale()));
+			libReturn.setMessage( MessageFactory.getMessage("lb_typeaccount_saved", account.getLocale()));
 			libReturn.setAccount(c);
 		} else if (libReturn.getMessage() == null && account.getId() != null) {
-			libReturn.setMessage( MessageFactory.getMessage("lb_account_updated", account.getLocale()));
+			libReturn.setMessage( MessageFactory.getMessage("lb_typeaccount_updated", account.getLocale()));
 			libReturn.setAccount(c);
 		}
 		return libReturn;
 	}
 
-	public List<Account> list() throws Exception {
-		return list(Account.class, null, null);
+	public List<TypeAccount> list() throws Exception {
+		return list(TypeAccount.class, null, null);
 	}
 
 	@Override
 	@Transactional
 	public MessageReturn delete(Long id) {
 		MessageReturn libReturn = new MessageReturn();
-		Account account = null;
+		TypeAccount account = null;
 		try {
-			account = findById(Account.class, id);
+			account = findById(TypeAccount.class, id);
 			if (account == null) {
-				libReturn.setMessage( MessageFactory.getMessage("lb_account_not_found", "en"));
+				libReturn.setMessage( MessageFactory.getMessage("lb_typeaccount_not_found", "en"));
 			} else {
 				String locale = account.getLocale();
 				remove(account);
-				libReturn.setMessage( MessageFactory.getMessage("lb_account_deleted", locale));
+				libReturn.setMessage( MessageFactory.getMessage("lb_typeaccount_deleted", locale));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -68,9 +68,9 @@ public class AccountBOImpl extends GenericBOImpl<Account> implements AccountBO {
 	}
 
 	@Override
-	public Account getById(Long id) {
+	public TypeAccount getById(Long id) {
 		try {
-			return findById(Account.class, id);
+			return findById(TypeAccount.class, id);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

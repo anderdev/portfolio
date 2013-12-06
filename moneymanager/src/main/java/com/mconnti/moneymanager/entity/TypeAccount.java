@@ -2,16 +2,21 @@ package com.mconnti.moneymanager.entity;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.ForeignKey;
+
 @Entity
-@Table(name="account")
-public class Account implements Serializable {
+@Table(name="typeaccount")
+public class TypeAccount implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -23,6 +28,11 @@ public class Account implements Serializable {
 	private String description;
 	
 	private String locale;
+	
+	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = User.class)
+	@JoinColumn(name = "user_id")
+	@ForeignKey(name = "FK_TYPEACCOUNT_USER")
+	private User user;
 
 	public Long getId() {
 		return id;
@@ -46,6 +56,14 @@ public class Account implements Serializable {
 
 	public void setLocale(String locale) {
 		this.locale = locale;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 	
 }

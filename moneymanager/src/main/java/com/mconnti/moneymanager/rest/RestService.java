@@ -11,7 +11,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
-import com.mconnti.moneymanager.business.AccountBO;
+import com.mconnti.moneymanager.business.TypeAccountBO;
 import com.mconnti.moneymanager.business.CityBO;
 import com.mconnti.moneymanager.business.CountryBO;
 import com.mconnti.moneymanager.business.CreditCardBO;
@@ -21,7 +21,7 @@ import com.mconnti.moneymanager.business.StateBO;
 import com.mconnti.moneymanager.business.TypeClosureBO;
 import com.mconnti.moneymanager.business.UserBO;
 import com.mconnti.moneymanager.context.SpringApplicationContext;
-import com.mconnti.moneymanager.entity.Account;
+import com.mconnti.moneymanager.entity.TypeAccount;
 import com.mconnti.moneymanager.entity.City;
 import com.mconnti.moneymanager.entity.Country;
 import com.mconnti.moneymanager.entity.CreditCard;
@@ -39,7 +39,7 @@ public class RestService {
 	private CityBO cityBO;
 	private UserBO userBO;
 	private CurrencyBO currencyBO;
-	private AccountBO accountBO;
+	private TypeAccountBO typeAccountBO;
 	private TypeClosureBO typeClosureBO;
 	private DescriptionBO descriptionBO;
 	private CreditCardBO creditCardBO;
@@ -50,7 +50,7 @@ public class RestService {
 		cityBO = (CityBO) SpringApplicationContext.getBean("cityBO");
 		userBO = (UserBO) SpringApplicationContext.getBean("userBO");
 		currencyBO = (CurrencyBO) SpringApplicationContext.getBean("currencyBO");
-		accountBO = (AccountBO) SpringApplicationContext.getBean("accountBO");
+		typeAccountBO = (TypeAccountBO) SpringApplicationContext.getBean("typeAccountBO");
 		typeClosureBO = (TypeClosureBO) SpringApplicationContext.getBean("typeClosureBO");
 		descriptionBO = (DescriptionBO) SpringApplicationContext.getBean("descriptionBO");
 		creditCardBO = (CreditCardBO) SpringApplicationContext.getBean("creditCardBO");
@@ -280,16 +280,16 @@ public class RestService {
 		return Response.status(200).entity(ret).build();
 	}
 
-	// ACCOUNT AREA
+	// TYPE ACCOUNT AREA
 
 	@GET
-	@Path("/account")
+	@Path("/typeaccount")
 	@Produces({ "application/json" })
 	public Response listAccount() {
 
-		List<Account> list = new ArrayList<>();
+		List<TypeAccount> list = new ArrayList<>();
 		try {
-			list = accountBO.list();
+			list = typeAccountBO.list();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -298,13 +298,13 @@ public class RestService {
 	}
 
 	@POST
-	@Path("/account")
+	@Path("/typeaccount")
 	@Consumes({ "application/json" })
 	@Produces({ "application/json" })
-	public Response saveAccount(Account account) {
+	public Response saveAccount(TypeAccount account) {
 		MessageReturn ret = new MessageReturn();
 		try {
-			ret = accountBO.save(account);
+			ret = typeAccountBO.save(account);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -312,13 +312,13 @@ public class RestService {
 	}
 
 	@DELETE
-	@Path("/account")
+	@Path("/typeaccount")
 	@Consumes({ "application/json" })
 	@Produces({ "application/json" })
-	public Response deleteAccount(Account account) {
+	public Response deleteAccount(TypeAccount account) {
 		MessageReturn ret = new MessageReturn();
 		try {
-			ret = accountBO.delete(account.getId());
+			ret = typeAccountBO.delete(account.getId());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

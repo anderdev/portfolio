@@ -5,7 +5,7 @@
 	<persistence-unit name="selfmanager_PU" transaction-type="RESOURCE_LOCAL">
 		<jta-data-source>java:jboss/datasources/selfmanagerDS</jta-data-source>
 		<class>com.mconnti.moneymanager.entity.AccessRegister</class>
-		<class>com.mconnti.moneymanager.entity.Account</class>
+		<class>com.mconnti.moneymanager.entity.TypeAccount</class>
 		<class>com.mconnti.moneymanager.entity.Closure</class>
 		<class>com.mconnti.moneymanager.entity.Config</class>
 		<class>com.mconnti.moneymanager.entity.Credit</class>
