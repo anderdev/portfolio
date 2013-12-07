@@ -2,19 +2,14 @@ package com.mconnti.moneymanager.business.impl;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mconnti.moneymanager.business.CountryBO;
 import com.mconnti.moneymanager.entity.Country;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
-import com.mconnti.moneymanager.persistence.CountryDAO;
 import com.mconnti.moneymanager.utils.MessageFactory;
 
 public class CountryBOImpl extends GenericBOImpl<Country> implements CountryBO {
-
-	@Autowired
-	private CountryDAO countryDAO;
 
 	@Override
 	@Transactional

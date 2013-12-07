@@ -7,51 +7,19 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mconnti.moneymanager.business.ConfigBO;
 import com.mconnti.moneymanager.entity.Config;
-import com.mconnti.moneymanager.entity.Currency;
-import com.mconnti.moneymanager.entity.TypeClosure;
 import com.mconnti.moneymanager.entity.User;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
-import com.mconnti.moneymanager.persistence.ConfigDAO;
-import com.mconnti.moneymanager.persistence.CurrencyDAO;
-import com.mconnti.moneymanager.persistence.TypeClosureDAO;
 import com.mconnti.moneymanager.persistence.UserDAO;
 import com.mconnti.moneymanager.utils.MessageFactory;
 
 public class ConfigBOImpl extends GenericBOImpl<Config> implements ConfigBO {
 
 	@Autowired
-	private ConfigDAO configDAO;
-
-	@Autowired
 	private UserDAO userDAO;
-
-	@Autowired
-	private CurrencyDAO currencyDAO;
-
-	@Autowired
-	private TypeClosureDAO typeClosureDAO;
 
 	private User getUser(Config config) {
 		try {
 			return userDAO.findById(User.class, config.getUser().getId());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	private Currency getCurrency(Config config) {
-		try {
-			return currencyDAO.findById(Currency.class, config.getCurrency().getId());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	private TypeClosure getTypeClosure(Config config) {
-		try {
-			return typeClosureDAO.findById(TypeClosure.class, config.getTypeClosure().getId());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -63,13 +31,8 @@ public class ConfigBOImpl extends GenericBOImpl<Config> implements ConfigBO {
 	public MessageReturn save(Config config) {
 		MessageReturn libReturn = new MessageReturn();
 		User user = getUser(config);
-		TypeClosure typeClosure = getTypeClosure(config);
-		Currency currency = getCurrency(config);
-		if (user != null || typeClosure != null || currency != null) {
+		if (user != null || config.getTypeClosure() != null || config.getCurrency() != null) {
 			try {
-				config.setCurrency(currency);
-				config.setTypeClosure(typeClosure);
-				config.setUser(user);
 				saveGeneric(config);
 			} catch (Exception e) {
 				e.printStackTrace();

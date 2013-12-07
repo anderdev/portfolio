@@ -12,6 +12,7 @@ import com.mconnti.moneymanager.entity.Country;
 import com.mconnti.moneymanager.entity.Credit;
 import com.mconnti.moneymanager.entity.CreditCard;
 import com.mconnti.moneymanager.entity.Currency;
+import com.mconnti.moneymanager.entity.Debit;
 import com.mconnti.moneymanager.entity.Description;
 import com.mconnti.moneymanager.entity.State;
 import com.mconnti.moneymanager.entity.TypeAccount;
@@ -53,6 +54,8 @@ public class MessageReturn {
 	private Config config;
 	
 	private Credit credit;
+	
+	private Debit debit;
 	
 	public String getMessage() {
 		return message;
@@ -180,6 +183,14 @@ public class MessageReturn {
 
 	public void setCredit(Credit credit) {
 		this.credit = credit;
+	}
+
+	public Debit getDebit() {
+		return debit;
+	}
+
+	public void setDebit(Debit debit) {
+		this.debit = debit;
 	}
 
 }

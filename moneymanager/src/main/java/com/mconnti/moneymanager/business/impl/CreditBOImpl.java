@@ -7,13 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mconnti.moneymanager.business.CreditBO;
 import com.mconnti.moneymanager.entity.Credit;
-import com.mconnti.moneymanager.entity.Currency;
-import com.mconnti.moneymanager.entity.Description;
 import com.mconnti.moneymanager.entity.User;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
-import com.mconnti.moneymanager.persistence.CreditDAO;
-import com.mconnti.moneymanager.persistence.CurrencyDAO;
-import com.mconnti.moneymanager.persistence.DescriptionDAO;
 import com.mconnti.moneymanager.persistence.UserDAO;
 import com.mconnti.moneymanager.utils.MessageFactory;
 import com.mconnti.moneymanager.utils.Utils;
@@ -21,38 +16,11 @@ import com.mconnti.moneymanager.utils.Utils;
 public class CreditBOImpl extends GenericBOImpl<Credit> implements CreditBO {
 
 	@Autowired
-	private CreditDAO creditDAO;
-
-	@Autowired
 	private UserDAO userDAO;
-
-	@Autowired
-	private CurrencyDAO currencyDAO;
-
-	@Autowired
-	private DescriptionDAO descriptionDAO;
 
 	private User getUser(Credit credit) {
 		try {
 			return userDAO.findById(User.class, credit.getUser().getId());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	private Currency getCurrency(Credit credit) {
-		try {
-			return currencyDAO.findById(Currency.class, credit.getCurrency().getId());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	private Description getSuperGroup(Credit credit) {
-		try {
-			return descriptionDAO.findById(Description.class, credit.getSuperGroup().getId());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -64,14 +32,9 @@ public class CreditBOImpl extends GenericBOImpl<Credit> implements CreditBO {
 	public MessageReturn save(Credit credit) {
 		MessageReturn libReturn = new MessageReturn();
 		User user = getUser(credit);
-		Currency currency = getCurrency(credit);
-		Description superGroup = getSuperGroup(credit);
-		if (user != null && currency != null && superGroup != null) {
+		if (user != null && credit.getCurrency() != null && credit.getSuperGroup() != null) {
 			try {
 				credit.setDate(Utils.stringToDate(credit.getStrDate(), false));
-				credit.setCurrency(currency);
-				credit.setSuperGroup(superGroup);
-				credit.setUser(user);
 				saveGeneric(credit);
 			} catch (Exception e) {
 				e.printStackTrace();

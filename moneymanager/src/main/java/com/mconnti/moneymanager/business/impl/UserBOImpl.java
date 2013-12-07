@@ -8,25 +8,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mconnti.moneymanager.business.UserBO;
 import com.mconnti.moneymanager.entity.City;
-import com.mconnti.moneymanager.entity.Config;
 import com.mconnti.moneymanager.entity.User;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
 import com.mconnti.moneymanager.persistence.CityDAO;
-import com.mconnti.moneymanager.persistence.ConfigDAO;
-import com.mconnti.moneymanager.persistence.UserDAO;
 import com.mconnti.moneymanager.utils.MessageFactory;
 import com.mconnti.moneymanager.utils.Utils;
 
 public class UserBOImpl extends GenericBOImpl<User> implements UserBO {
 
 	@Autowired
-	private UserDAO userDAO;
-
-	@Autowired
 	private CityDAO cityDAO;
-
-	@Autowired
-	private ConfigDAO configDAO;
 
 	private City getCity(User user) {
 		try {
@@ -42,13 +33,10 @@ public class UserBOImpl extends GenericBOImpl<User> implements UserBO {
 	public MessageReturn save(User user) {
 		MessageReturn libReturn = new MessageReturn();
 		City city = getCity(user);
-		Config config = getConfig(user);
 		if (city != null) {
 			try {
 				user.setBirthDate(Utils.stringToDate(user.getBirth(), false));
 				user.setRegister(new Date());
-				user.setCity(city);
-				user.setConfig(config);
 				user.setExcluded(false);
 				if (user.getPass() != null || !user.getPass().isEmpty()) {
 					user.setPassword(user.getPass());
@@ -71,15 +59,6 @@ public class UserBOImpl extends GenericBOImpl<User> implements UserBO {
 		}
 
 		return libReturn;
-	}
-
-	private Config getConfig(User user) {
-		try {
-			return configDAO.findById(Config.class, user.getConfig().getId());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
 	}
 
 	public List<User> list() throws Exception {

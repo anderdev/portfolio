@@ -9,14 +9,10 @@ import com.mconnti.moneymanager.business.CityBO;
 import com.mconnti.moneymanager.entity.City;
 import com.mconnti.moneymanager.entity.State;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
-import com.mconnti.moneymanager.persistence.CityDAO;
 import com.mconnti.moneymanager.persistence.StateDAO;
 import com.mconnti.moneymanager.utils.MessageFactory;
 
 public class CityBOImpl extends GenericBOImpl<City> implements CityBO {
-
-	@Autowired
-	private CityDAO cityDAO;
 
 	@Autowired
 	private StateDAO stateDAO;

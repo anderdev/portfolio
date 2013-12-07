@@ -2,19 +2,14 @@ package com.mconnti.moneymanager.business.impl;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mconnti.moneymanager.business.CurrencyBO;
 import com.mconnti.moneymanager.entity.Currency;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
-import com.mconnti.moneymanager.persistence.CurrencyDAO;
 import com.mconnti.moneymanager.utils.MessageFactory;
 
 public class CurrencyBOImpl extends GenericBOImpl<Currency> implements CurrencyBO {
-
-	@Autowired
-	private CurrencyDAO currencyDAO;
 
 	@Override
 	@Transactional

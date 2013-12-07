@@ -6,26 +6,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mconnti.moneymanager.business.DescriptionBO;
-import com.mconnti.moneymanager.entity.TypeAccount;
 import com.mconnti.moneymanager.entity.Description;
 import com.mconnti.moneymanager.entity.User;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
-import com.mconnti.moneymanager.persistence.TypeAccountDAO;
-import com.mconnti.moneymanager.persistence.DescriptionDAO;
 import com.mconnti.moneymanager.persistence.UserDAO;
 import com.mconnti.moneymanager.utils.MessageFactory;
 
 public class DescriptionBOImpl extends GenericBOImpl<Description> implements DescriptionBO {
 
 	@Autowired
-	private DescriptionDAO descriptionDAO;
-
-	@Autowired
 	private UserDAO userDAO;
-	
-	@Autowired
-	private TypeAccountDAO accountDAO;
-	
+
 	private User getUser(Description description) {
 		try {
 			return userDAO.findById(User.class, description.getUser().getId());
@@ -34,47 +25,31 @@ public class DescriptionBOImpl extends GenericBOImpl<Description> implements Des
 		}
 		return null;
 	}
-	
-	private TypeAccount getAccount(Description description) {
-		try {
-			return accountDAO.findById(TypeAccount.class, description.getTypeAccount().getId());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
+
 	@Override
 	@Transactional
 	public MessageReturn save(Description description) {
 		MessageReturn libReturn = new MessageReturn();
 		User user = getUser(description);
-		if (user != null){
-			TypeAccount account = getAccount(description);
-			if(account != null){
-				try {
-					description.setTypeAccount(account);
-					description.setUser(user);
-					saveGeneric(description);
-				} catch (Exception e) {
-					e.printStackTrace();
-					libReturn.setDescription(description);
-					libReturn.setMessage(e.getMessage());
-				}
-				if (libReturn.getMessage() == null && description.getId() == null) {
-					libReturn.setMessage( MessageFactory.getMessage("lb_description_saved", user.getCity().getState().getCountry().getLocale()));
-					libReturn.setDescription(description);
-				} else if (libReturn.getMessage() == null && description.getId() != null) {
-					libReturn.setMessage( MessageFactory.getMessage("lb_description_updated", user.getCity().getState().getCountry().getLocale()));
-					libReturn.setDescription(description);
-				}
-			}else{
-				libReturn.setMessage(MessageFactory.getMessage("lb_typeaccount_not_found", "en"));
+		if (user != null && description.getTypeAccount() != null) {
+			try {
+				saveGeneric(description);
+			} catch (Exception e) {
+				e.printStackTrace();
+				libReturn.setDescription(description);
+				libReturn.setMessage(e.getMessage());
 			}
-		}else{
+			if (libReturn.getMessage() == null && description.getId() == null) {
+				libReturn.setMessage(MessageFactory.getMessage("lb_description_saved", user.getCity().getState().getCountry().getLocale()));
+				libReturn.setDescription(description);
+			} else if (libReturn.getMessage() == null && description.getId() != null) {
+				libReturn.setMessage(MessageFactory.getMessage("lb_description_updated", user.getCity().getState().getCountry().getLocale()));
+				libReturn.setDescription(description);
+			}
+		} else {
 			libReturn.setMessage(MessageFactory.getMessage("lb_description_not_found", "en"));
 		}
-		
+
 		return libReturn;
 	}
 
@@ -90,11 +65,11 @@ public class DescriptionBOImpl extends GenericBOImpl<Description> implements Des
 		try {
 			description = findById(Description.class, id);
 			if (description == null) {
-				libReturn.setMessage( MessageFactory.getMessage("lb_description_not_found", "en"));
+				libReturn.setMessage(MessageFactory.getMessage("lb_description_not_found", "en"));
 			} else {
 				String locale = description.getUser().getCity().getState().getCountry().getLocale();
 				remove(description);
-				libReturn.setMessage( MessageFactory.getMessage("lb_description_deleted", locale));
+				libReturn.setMessage(MessageFactory.getMessage("lb_description_deleted", locale));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

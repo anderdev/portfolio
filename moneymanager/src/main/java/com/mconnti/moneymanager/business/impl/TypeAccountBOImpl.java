@@ -2,19 +2,14 @@ package com.mconnti.moneymanager.business.impl;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mconnti.moneymanager.business.TypeAccountBO;
 import com.mconnti.moneymanager.entity.TypeAccount;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
-import com.mconnti.moneymanager.persistence.TypeAccountDAO;
 import com.mconnti.moneymanager.utils.MessageFactory;
 
 public class TypeAccountBOImpl extends GenericBOImpl<TypeAccount> implements TypeAccountBO {
-
-	@Autowired
-	private TypeAccountDAO typeAccountDAO;
 
 	@Override
 	@Transactional

@@ -10,13 +10,9 @@ import com.mconnti.moneymanager.entity.Country;
 import com.mconnti.moneymanager.entity.State;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
 import com.mconnti.moneymanager.persistence.CountryDAO;
-import com.mconnti.moneymanager.persistence.StateDAO;
 import com.mconnti.moneymanager.utils.MessageFactory;
 
 public class StateBOImpl extends GenericBOImpl<State> implements StateBO {
-
-	@Autowired
-	private StateDAO stateDAO;
 
 	@Autowired
 	private CountryDAO countryDAO;
@@ -43,11 +39,9 @@ public class StateBOImpl extends GenericBOImpl<State> implements StateBO {
 					for (int x = 0; x < nameSplit.length; x++) {
 						c = new State();
 						c.setName(nameSplit[x]);
-						c.setCountry(country);
 						saveGeneric(c);
 					}
 				} else {
-					state.setCountry(country);
 					saveGeneric(state);
 				}
 			} catch (Exception e) {

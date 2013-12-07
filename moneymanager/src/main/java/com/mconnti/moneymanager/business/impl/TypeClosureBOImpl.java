@@ -2,19 +2,14 @@ package com.mconnti.moneymanager.business.impl;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mconnti.moneymanager.business.TypeClosureBO;
 import com.mconnti.moneymanager.entity.TypeClosure;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
-import com.mconnti.moneymanager.persistence.TypeClosureDAO;
 import com.mconnti.moneymanager.utils.MessageFactory;
 
 public class TypeClosureBOImpl extends GenericBOImpl<TypeClosure> implements TypeClosureBO {
-
-	@Autowired
-	private TypeClosureDAO typeClosureDAO;
 
 	@Override
 	@Transactional

@@ -9,15 +9,11 @@ import com.mconnti.moneymanager.business.CreditCardBO;
 import com.mconnti.moneymanager.entity.CreditCard;
 import com.mconnti.moneymanager.entity.User;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
-import com.mconnti.moneymanager.persistence.CreditCardDAO;
 import com.mconnti.moneymanager.persistence.UserDAO;
 import com.mconnti.moneymanager.utils.MessageFactory;
 import com.mconnti.moneymanager.utils.Utils;
 
 public class CreditCardBOImpl extends GenericBOImpl<CreditCard> implements CreditCardBO {
-
-	@Autowired
-	private CreditCardDAO creditCardDAO;
 
 	@Autowired
 	private UserDAO userDAO;
