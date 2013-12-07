@@ -52,25 +52,21 @@ public class DescriptionBOImpl extends GenericBOImpl<Description> implements Des
 		if (user != null){
 			TypeAccount account = getAccount(description);
 			if(account != null){
-				Description c = null;
 				try {
-					c = new Description();
-					c.setId(description.getId());
-					c.setName(description.getName());
-					c.setTypeAccount(account);
-					c.setUser(user);
-					saveGeneric(c);
+					description.setTypeAccount(account);
+					description.setUser(user);
+					saveGeneric(description);
 				} catch (Exception e) {
 					e.printStackTrace();
-					libReturn.setDescription(c);
+					libReturn.setDescription(description);
 					libReturn.setMessage(e.getMessage());
 				}
 				if (libReturn.getMessage() == null && description.getId() == null) {
 					libReturn.setMessage( MessageFactory.getMessage("lb_description_saved", user.getCity().getState().getCountry().getLocale()));
-					libReturn.setDescription(c);
+					libReturn.setDescription(description);
 				} else if (libReturn.getMessage() == null && description.getId() != null) {
 					libReturn.setMessage( MessageFactory.getMessage("lb_description_updated", user.getCity().getState().getCountry().getLocale()));
-					libReturn.setDescription(c);
+					libReturn.setDescription(description);
 				}
 			}else{
 				libReturn.setMessage(MessageFactory.getMessage("lb_typeaccount_not_found", "en"));

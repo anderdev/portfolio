@@ -42,7 +42,6 @@ public final class Crypt {
 		c.init(Cipher.ENCRYPT_MODE, key);
 		byte[] encValue = valueToEnc.getBytes();
 		String encryptedValue = Base64.encodeBase64String(encValue);
-		System.out.println("encryptedValue: " + encryptedValue);
 		return encryptedValue;
 	}
 
@@ -51,7 +50,6 @@ public final class Crypt {
 		byte[] enctVal = encryptedValue.getBytes();
 		byte[] decordedValue = new Base64().decode(enctVal);
 		String ret = new String(decordedValue);
-		System.out.println("decryptedValue: " + ret);
 		return ret;
 	}
 

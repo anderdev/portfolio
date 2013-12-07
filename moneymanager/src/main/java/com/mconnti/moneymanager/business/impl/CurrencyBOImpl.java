@@ -20,36 +20,19 @@ public class CurrencyBOImpl extends GenericBOImpl<Currency> implements CurrencyB
 	@Transactional
 	public MessageReturn save(Currency currency) {
 		MessageReturn libReturn = new MessageReturn();
-		Currency c = null;
 		try {
-			String[] nameSplit = currency.getName().split(";");
-			if (nameSplit.length > 1) {
-				for (int x = 0; x < nameSplit.length; x++) {
-					c = new Currency();
-					c.setName(nameSplit[x]);
-					c.setAcronym(currency.getAcronym());
-					c.setLocale(currency.getLocale());
-					saveGeneric(c);
-				}
-			} else {
-				c = new Currency();
-				c.setId(currency.getId());
-				c.setName(currency.getName());
-				c.setAcronym(currency.getAcronym());
-				c.setLocale(currency.getLocale());
-				saveGeneric(c);
-			}
+			saveGeneric(currency);
 		} catch (Exception e) {
 			e.printStackTrace();
-			libReturn.setCurrency(c);
+			libReturn.setCurrency(currency);
 			libReturn.setMessage(e.getMessage());
 		}
 		if (libReturn.getMessage() == null && currency.getId() == null) {
-			libReturn.setMessage( MessageFactory.getMessage("lb_currency_saved", currency.getLocale()));
-			libReturn.setCurrency(c);
+			libReturn.setMessage(MessageFactory.getMessage("lb_currency_saved", currency.getLocale()));
+			libReturn.setCurrency(currency);
 		} else if (libReturn.getMessage() == null && currency.getId() != null) {
-			libReturn.setMessage( MessageFactory.getMessage("lb_currency_updated", currency.getLocale()));
-			libReturn.setCurrency(c);
+			libReturn.setMessage(MessageFactory.getMessage("lb_currency_updated", currency.getLocale()));
+			libReturn.setCurrency(currency);
 		}
 		return libReturn;
 	}
@@ -66,11 +49,11 @@ public class CurrencyBOImpl extends GenericBOImpl<Currency> implements CurrencyB
 		try {
 			currency = findById(Currency.class, id);
 			if (currency == null) {
-				libReturn.setMessage( MessageFactory.getMessage("lb_currency_not_found", "en"));
+				libReturn.setMessage(MessageFactory.getMessage("lb_currency_not_found", "en"));
 			} else {
 				String locale = currency.getLocale();
 				remove(currency);
-				libReturn.setMessage( MessageFactory.getMessage("lb_currency_deleted", locale));
+				libReturn.setMessage(MessageFactory.getMessage("lb_currency_deleted", locale));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

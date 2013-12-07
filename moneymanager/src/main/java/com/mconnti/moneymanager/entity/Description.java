@@ -14,6 +14,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.ForeignKey;
 
+import com.mconnti.moneymanager.utils.Crypt;
+
 @Entity
 @Table(name = "description")
 public class Description implements Serializable {
@@ -25,7 +27,7 @@ public class Description implements Serializable {
 	@Column(nullable = false, insertable = true, updatable = false)
 	private Long id;
 
-	private String name;
+	private String description;
 
 	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = TypeAccount.class)
 	@JoinColumn(name = "account_id")
@@ -61,11 +63,20 @@ public class Description implements Serializable {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getDescription() {
+		try {
+			return Crypt.decrypt(description);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setDescription(String name) {
+		try {
+			this.description = Crypt.encrypt(name);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

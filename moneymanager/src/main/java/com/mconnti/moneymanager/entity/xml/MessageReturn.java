@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import com.mconnti.moneymanager.entity.City;
 import com.mconnti.moneymanager.entity.Config;
 import com.mconnti.moneymanager.entity.Country;
+import com.mconnti.moneymanager.entity.Credit;
 import com.mconnti.moneymanager.entity.CreditCard;
 import com.mconnti.moneymanager.entity.Currency;
 import com.mconnti.moneymanager.entity.Description;
@@ -50,6 +51,8 @@ public class MessageReturn {
 	private CreditCard creditCard;
 	
 	private Config config;
+	
+	private Credit credit;
 	
 	public String getMessage() {
 		return message;
@@ -169,6 +172,14 @@ public class MessageReturn {
 
 	public void setConfig(Config config) {
 		this.config = config;
+	}
+
+	public Credit getCredit() {
+		return credit;
+	}
+
+	public void setCredit(Credit credit) {
+		this.credit = credit;
 	}
 
 }

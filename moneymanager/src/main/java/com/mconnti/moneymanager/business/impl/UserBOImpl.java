@@ -44,37 +44,27 @@ public class UserBOImpl extends GenericBOImpl<User> implements UserBO {
 		City city = getCity(user);
 		Config config = getConfig(user);
 		if (city != null) {
-			User u = null;
 			try {
-				u = new User();
-				u.setId(user.getId());
-				u.setMasterId(user.getMasterId());
-				u.setName(user.getName());
-				u.setAdministrator(user.getAdministrator());
-				u.setBirthDate(Utils.stringToDate(user.getBirth(), false));
-				u.setRegister(new Date());
-				u.setEmail(user.getEmail());
-				u.setLanguage(user.getLanguage());
-				u.setSecretPhrase(user.getSecretPhrase());
-				u.setCity(city);
-				u.setConfig(config);
-				u.setExcluded(false);
-				u.setUsername(user.getUsername());
+				user.setBirthDate(Utils.stringToDate(user.getBirth(), false));
+				user.setRegister(new Date());
+				user.setCity(city);
+				user.setConfig(config);
+				user.setExcluded(false);
 				if (user.getPass() != null || !user.getPass().isEmpty()) {
-					u.setPassword(user.getPass());
+					user.setPassword(user.getPass());
 				}
-				saveGeneric(u);
+				saveGeneric(user);
 			} catch (Exception e) {
 				e.printStackTrace();
-				libReturn.setUser(u);
+				libReturn.setUser(user);
 				libReturn.setMessage(e.getMessage());
 			}
 			if (libReturn.getMessage() == null && user.getId() == null) {
 				libReturn.setMessage(MessageFactory.getMessage("lb_user_saved", city.getState().getCountry().getLocale()));
-				libReturn.setUser(u);
+				libReturn.setUser(user);
 			} else if (libReturn.getMessage() == null && user.getId() != null) {
 				libReturn.setMessage(MessageFactory.getMessage("lb_user_updated", city.getState().getCountry().getLocale()));
-				libReturn.setUser(u);
+				libReturn.setUser(user);
 			}
 		} else {
 			libReturn.setMessage(MessageFactory.getMessage("lb_city_not_found", "en"));

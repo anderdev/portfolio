@@ -32,24 +32,20 @@ public class TypeAccountBOImpl extends GenericBOImpl<TypeAccount> implements Typ
 					saveGeneric(c);
 				}
 			} else {
-				c = new TypeAccount();
-				c.setId(typeAccount.getId());
-				c.setDescription(typeAccount.getDescription());
-				c.setLocale(typeAccount.getLocale());
-				saveGeneric(c);
+				saveGeneric(typeAccount);
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			libReturn.setAccount(c);
+			libReturn.setAccount(typeAccount);
 			libReturn.setMessage(e.getMessage());
 		}
 		if (libReturn.getMessage() == null && typeAccount.getId() == null) {
 			libReturn.setMessage(MessageFactory.getMessage("lb_typeaccount_saved", typeAccount.getLocale()));
-			libReturn.setAccount(c);
+			libReturn.setAccount(typeAccount);
 		} else if (libReturn.getMessage() == null && typeAccount.getId() != null) {
 			libReturn.setMessage(MessageFactory.getMessage("lb_typeaccount_updated", typeAccount.getLocale()));
-			libReturn.setAccount(c);
+			libReturn.setAccount(typeAccount);
 		}
 		return libReturn;
 	}

@@ -20,25 +20,19 @@ public class TypeClosureBOImpl extends GenericBOImpl<TypeClosure> implements Typ
 	@Transactional
 	public MessageReturn save(TypeClosure typeClosure) {
 		MessageReturn libReturn = new MessageReturn();
-		TypeClosure c = null;
 		try {
-			c = new TypeClosure();
-			c.setId(typeClosure.getId());
-			c.setPeriod(typeClosure.getPeriod());
-			c.setType(typeClosure.getType());
-			c.setLocale(typeClosure.getLocale());
-			saveGeneric(c);
+			saveGeneric(typeClosure);
 		} catch (Exception e) {
 			e.printStackTrace();
-			libReturn.setTypeClosure(c);
+			libReturn.setTypeClosure(typeClosure);
 			libReturn.setMessage(e.getMessage());
 		}
 		if (libReturn.getMessage() == null && typeClosure.getId() == null) {
 			libReturn.setMessage( MessageFactory.getMessage("lb_typeClosure_saved", typeClosure.getLocale()));
-			libReturn.setTypeClosure(c);
+			libReturn.setTypeClosure(typeClosure);
 		} else if (libReturn.getMessage() == null && typeClosure.getId() != null) {
 			libReturn.setMessage( MessageFactory.getMessage("lb_typeClosure_updated", typeClosure.getLocale()));
-			libReturn.setTypeClosure(c);
+			libReturn.setTypeClosure(typeClosure);
 		}
 		return libReturn;
 	}

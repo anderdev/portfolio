@@ -47,23 +47,20 @@ public class CityBOImpl extends GenericBOImpl<City> implements CityBO {
 						saveGeneric(c);
 					}
 				} else {
-					c = new City();
-					c.setId(city.getId());
-					c.setName(city.getName());
-					c.setState(state);
-					saveGeneric(c);
+					city.setState(state);
+					saveGeneric(city);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
-				libReturn.setCity(c);
+				libReturn.setCity(city);
 				libReturn.setMessage(e.getMessage());
 			}
 			if (libReturn.getMessage() == null && city.getId() == null) {
 				libReturn.setMessage( MessageFactory.getMessage("lb_city_saved", state.getCountry().getLocale()));
-				libReturn.setCity(c);
+				libReturn.setCity(city);
 			} else if (libReturn.getMessage() == null && city.getId() != null) {
 				libReturn.setMessage( MessageFactory.getMessage("lb_city_updated", state.getCountry().getLocale()));
-				libReturn.setCity(c);
+				libReturn.setCity(city);
 			}
 		}else{
 			libReturn.setMessage(MessageFactory.getMessage("lb_city_not_found", "en"));

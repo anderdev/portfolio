@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.ForeignKey;
 
@@ -28,19 +29,26 @@ public class Credit implements Serializable {
 
 	private Date date;
 
-	private String description;
+	@Transient
+	private String strDate;
 
-	@Column(name="groupp")
-	private String group;
+	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = Description.class)
+	@JoinColumn(name = "description_id")
+	@ForeignKey(name = "FK_CREDIT_DESCRIPTION")
+	private Description description;
 
-	private String superGroup;
+	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = Description.class)
+	@JoinColumn(name = "supergroup_id")
+	@ForeignKey(name = "FK_CREDIT_TYPEACCOUNT")
+	private Description superGroup;
 
-	private String currency;
+	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = Currency.class)
+	@JoinColumn(name = "currency_id")
+	@ForeignKey(name = "FK_CREDIT_CURRENCY")
+	private Currency currency;
 
 	@Column(length = 13, precision = 13, scale = 2)
 	private Double amount;
-
-	private Integer aux;
 
 	private Boolean closed;
 
@@ -48,10 +56,6 @@ public class Credit implements Serializable {
 	@JoinColumn(name = "user_id")
 	@ForeignKey(name = "FK_CREDIT_USER")
 	private User user;
-	
-	public Credit() {
-		super();
-	}
 
 	public Long getId() {
 		return id;
@@ -69,35 +73,27 @@ public class Credit implements Serializable {
 		this.date = date;
 	}
 
-	public String getDescription() {
+	public Description getDescription() {
 		return description;
 	}
 
-	public void setDescription(String description) {
+	public void setDescription(Description description) {
 		this.description = description;
 	}
 
-	public String getGroup() {
-		return group;
-	}
-
-	public void setGroup(String group) {
-		this.group = group;
-	}
-
-	public String getSuperGroup() {
+	public Description getSuperGroup() {
 		return superGroup;
 	}
 
-	public void setSuperGroup(String superGroup) {
+	public void setSuperGroup(Description superGroup) {
 		this.superGroup = superGroup;
 	}
 
-	public String getCurrency() {
+	public Currency getCurrency() {
 		return currency;
 	}
 
-	public void setCurrency(String currency) {
+	public void setCurrency(Currency currency) {
 		this.currency = currency;
 	}
 
@@ -107,14 +103,6 @@ public class Credit implements Serializable {
 
 	public void setAmount(Double amount) {
 		this.amount = amount;
-	}
-
-	public Integer getAux() {
-		return aux;
-	}
-
-	public void setAux(Integer aux) {
-		this.aux = aux;
 	}
 
 	public Boolean getClosed() {
@@ -132,5 +120,13 @@ public class Credit implements Serializable {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	
+
+	public String getStrDate() {
+		return strDate;
+	}
+
+	public void setStrDate(String strDate) {
+		this.strDate = strDate;
+	}
+
 }

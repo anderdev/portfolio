@@ -31,23 +31,19 @@ public class CountryBOImpl extends GenericBOImpl<Country> implements CountryBO {
 					saveGeneric(c);
 				}
 			} else {
-				c = new Country();
-				c.setId(country.getId());
-				c.setName(country.getName());
-				c.setLocale(country.getLocale());
-				saveGeneric(c);
+				saveGeneric(country);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			libReturn.setCountry(c);
+			libReturn.setCountry(country);
 			libReturn.setMessage(e.getMessage());
 		}
 		if (libReturn.getMessage() == null && country.getId() == null) {
 			libReturn.setMessage( MessageFactory.getMessage("lb_country_saved", country.getLocale()));
-			libReturn.setCountry(c);
+			libReturn.setCountry(country);
 		} else if (libReturn.getMessage() == null && country.getId() != null) {
 			libReturn.setMessage( MessageFactory.getMessage("lb_country_updated", country.getLocale()));
-			libReturn.setCountry(c);
+			libReturn.setCountry(country);
 		}
 		return libReturn;
 	}

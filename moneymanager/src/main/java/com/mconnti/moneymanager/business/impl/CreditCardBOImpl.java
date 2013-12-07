@@ -30,36 +30,40 @@ public class CreditCardBOImpl extends GenericBOImpl<CreditCard> implements Credi
 		}
 		return null;
 	}
+	
+	private User getMasterUser(CreditCard creditCard) {
+		try {
+			return userDAO.findById(User.class, creditCard.getMasterUser().getId());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 	@Override
 	@Transactional
 	public MessageReturn save(CreditCard creditCard) {
 		MessageReturn libReturn = new MessageReturn();
 		User user = getUser(creditCard);
+		User masterUser = getMasterUser(creditCard);
 		if(user != null){
-			CreditCard c = null;
 			try {
-				c = new CreditCard();
-				c.setId(creditCard.getId());
-				c.setName(creditCard.getName());
-				c.setExpireDate(Utils.lastDayMonth(creditCard.getExpire()));
-				c.setLastDayToBuy(creditCard.getLastDayToBuy());
-				c.setMasterUser(creditCard.getMasterUser());
-				c.setPayday(creditCard.getPayday());
-				c.setUser(creditCard.getUser());
-				saveGeneric(c);
+				creditCard.setExpireDate(Utils.lastDayMonth(creditCard.getExpire()));
+				creditCard.setMasterUser(masterUser);
+				creditCard.setUser(user);
+				saveGeneric(creditCard);
 			} catch (Exception e) {
 				e.printStackTrace();
-				libReturn.setCreditCard(c);
+				libReturn.setCreditCard(creditCard);
 				libReturn.setMessage(e.getMessage());
 			}
 			
 			if (libReturn.getMessage() == null && creditCard.getId() == null) {
 				libReturn.setMessage( MessageFactory.getMessage("lb_creditCard_saved", user.getCity().getState().getCountry().getLocale()));
-				libReturn.setCreditCard(c);
+				libReturn.setCreditCard(creditCard);
 			} else if (libReturn.getMessage() == null && creditCard.getId() != null) {
 				libReturn.setMessage( MessageFactory.getMessage("lb_creditCard_updated", user.getCity().getState().getCountry().getLocale()));
-				libReturn.setCreditCard(c);
+				libReturn.setCreditCard(creditCard);
 			}
 		}else{
 			libReturn.setMessage(MessageFactory.getMessage("lb_user_not_found", "en"));

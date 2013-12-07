@@ -66,25 +66,22 @@ public class ConfigBOImpl extends GenericBOImpl<Config> implements ConfigBO {
 		TypeClosure typeClosure = getTypeClosure(config);
 		Currency currency = getCurrency(config);
 		if (user != null || typeClosure != null || currency != null) {
-			Config c = null;
 			try {
-				c = new Config();
-				c.setId(config.getId());
-				c.setCurrency(currency);
-				c.setTypeClosure(typeClosure);
-				c.setUser(user);
-				saveGeneric(c);
+				config.setCurrency(currency);
+				config.setTypeClosure(typeClosure);
+				config.setUser(user);
+				saveGeneric(config);
 			} catch (Exception e) {
 				e.printStackTrace();
-				libReturn.setConfig(c);
+				libReturn.setConfig(config);
 				libReturn.setMessage(e.getMessage());
 			}
 			if (libReturn.getMessage() == null && config.getId() == null) {
 				libReturn.setMessage(MessageFactory.getMessage("lb_config_saved", user.getCity().getState().getCountry().getLocale()));
-				libReturn.setConfig(c);
+				libReturn.setConfig(config);
 			} else if (libReturn.getMessage() == null && config.getId() != null) {
 				libReturn.setMessage(MessageFactory.getMessage("lb_config_updated", user.getCity().getState().getCountry().getLocale()));
-				libReturn.setConfig(c);
+				libReturn.setConfig(config);
 			}
 		} else {
 			libReturn.setMessage(MessageFactory.getMessage("lb_config_not_found", "en"));

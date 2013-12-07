@@ -47,23 +47,20 @@ public class StateBOImpl extends GenericBOImpl<State> implements StateBO {
 						saveGeneric(c);
 					}
 				} else {
-					c = new State();
-					c.setId(state.getId());
-					c.setName(state.getName());
-					c.setCountry(country);
-					saveGeneric(c);
+					state.setCountry(country);
+					saveGeneric(state);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
-				libReturn.setState(c);
+				libReturn.setState(state);
 				libReturn.setMessage(e.getMessage());
 			}
 			if (libReturn.getMessage() == null && state.getId() == null) {
 				libReturn.setMessage(MessageFactory.getMessage("lb_state_saved", country.getLocale()));
-				libReturn.setState(c);
+				libReturn.setState(state);
 			} else if (libReturn.getMessage() == null && state.getId() != null) {
 				libReturn.setMessage(MessageFactory.getMessage("lb_state_updated", country.getLocale()));
-				libReturn.setState(c);
+				libReturn.setState(state);
 			}
 		} else{
 			libReturn.setMessage(MessageFactory.getMessage("lb_state_not_found", "en"));
