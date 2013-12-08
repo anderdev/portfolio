@@ -29,8 +29,15 @@ public class Debit implements Serializable {
 
 	private Date date;
 
+	private Date currentDate;
+
 	@Transient
 	private String strDate;
+
+	@Column(length = 13, precision = 13, scale = 2)
+	private Double amount;
+
+	private Integer numberParcel;
 
 	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = Description.class)
 	@JoinColumn(name = "description_id")
@@ -56,9 +63,6 @@ public class Debit implements Serializable {
 	@JoinColumn(name = "typeclosure_id")
 	@ForeignKey(name = "FK_DEBIT_TYPECLOSURE")
 	private TypeClosure typeClosure;
-
-	@Column(length = 13, precision = 13, scale = 2)
-	private Double amount;
 
 	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = Parcel.class)
 	@JoinColumn(name = "parcel_id")
@@ -179,5 +183,21 @@ public class Debit implements Serializable {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public Integer getNumberParcel() {
+		return numberParcel;
+	}
+
+	public void setNumberParcel(Integer numberParcel) {
+		this.numberParcel = numberParcel;
+	}
+
+	public Date getCurrentDate() {
+		return currentDate;
+	}
+
+	public void setCurrentDate(Date currentDate) {
+		this.currentDate = currentDate;
 	}
 }

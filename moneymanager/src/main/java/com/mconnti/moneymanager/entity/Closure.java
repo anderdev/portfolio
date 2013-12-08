@@ -1,6 +1,7 @@
 package com.mconnti.moneymanager.entity;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
@@ -12,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.ForeignKey;
 
@@ -49,6 +51,12 @@ public class Closure implements Serializable {
 	@JoinColumn(name = "user_id")
 	@ForeignKey(name = "FK_CLOSURE_USER")
 	private User user;
+	
+	@Transient
+	private Collection<String> creditsAlreadyClosed;
+
+	@Transient
+	private Collection<String> debitsAlreadyClosed;
 
 	public Closure() {
 		super();
@@ -132,5 +140,21 @@ public class Closure implements Serializable {
 
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
+	}
+
+	public Collection<String> getCreditsAlreadyClosed() {
+		return creditsAlreadyClosed;
+	}
+
+	public void setCreditsAlreadyClosed(Collection<String> creditsAlreadyClosed) {
+		this.creditsAlreadyClosed = creditsAlreadyClosed;
+	}
+
+	public Collection<String> getDebitsAlreadyClosed() {
+		return debitsAlreadyClosed;
+	}
+
+	public void setDebitsAlreadyClosed(Collection<String> debitsAlreadyClosed) {
+		this.debitsAlreadyClosed = debitsAlreadyClosed;
 	}
 }

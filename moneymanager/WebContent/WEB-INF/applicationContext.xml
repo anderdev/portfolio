@@ -21,6 +21,8 @@
 	<bean id="creditCardBO" class="com.mconnti.moneymanager.business.impl.CreditCardBOImpl"/>
 	<bean id="configBO" class="com.mconnti.moneymanager.business.impl.ConfigBOImpl"/>
 	<bean id="creditBO" class="com.mconnti.moneymanager.business.impl.CreditBOImpl"/>
+	<bean id="debitBO" class="com.mconnti.moneymanager.business.impl.DebitBOImpl"/>
+	<bean id="closureBO" class="com.mconnti.moneymanager.business.impl.ClosureBOImpl"/>
 	
 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
 		<property name="entityManagerFactory" ref="entityManagerFactory" />

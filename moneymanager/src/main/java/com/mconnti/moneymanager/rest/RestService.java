@@ -17,6 +17,7 @@ import com.mconnti.moneymanager.business.CountryBO;
 import com.mconnti.moneymanager.business.CreditBO;
 import com.mconnti.moneymanager.business.CreditCardBO;
 import com.mconnti.moneymanager.business.CurrencyBO;
+import com.mconnti.moneymanager.business.DebitBO;
 import com.mconnti.moneymanager.business.DescriptionBO;
 import com.mconnti.moneymanager.business.StateBO;
 import com.mconnti.moneymanager.business.TypeAccountBO;
@@ -29,6 +30,7 @@ import com.mconnti.moneymanager.entity.Country;
 import com.mconnti.moneymanager.entity.Credit;
 import com.mconnti.moneymanager.entity.CreditCard;
 import com.mconnti.moneymanager.entity.Currency;
+import com.mconnti.moneymanager.entity.Debit;
 import com.mconnti.moneymanager.entity.Description;
 import com.mconnti.moneymanager.entity.State;
 import com.mconnti.moneymanager.entity.TypeAccount;
@@ -49,6 +51,7 @@ public class RestService {
 	private CreditCardBO creditCardBO;
 	private CreditBO creditBO;
 	private ConfigBO configBO;
+	private DebitBO debitBO;
 
 	public RestService() {
 		countryBO = (CountryBO) SpringApplicationContext.getBean("countryBO");
@@ -62,6 +65,7 @@ public class RestService {
 		creditCardBO = (CreditCardBO) SpringApplicationContext.getBean("creditCardBO");
 		configBO = (ConfigBO) SpringApplicationContext.getBean("configBO");
 		creditBO = (CreditBO) SpringApplicationContext.getBean("creditBO");
+		debitBO = (DebitBO) SpringApplicationContext.getBean("debitBO");
 	}
 
 	// COUNTRY AREA
@@ -557,4 +561,49 @@ public class RestService {
 		}
 		return Response.status(200).entity(ret).build();
 	}
+	
+	// DEBIT AREA
+
+		@GET
+		@Path("/debit")
+		@Produces({ "application/json" })
+		public Response listDebit() {
+
+			List<Debit> list = new ArrayList<>();
+			try {
+				list = debitBO.list();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			return Response.status(200).entity(list).build();
+		}
+
+		@POST
+		@Path("/debit")
+		@Consumes({ "application/json" })
+		@Produces({ "application/json" })
+		public Response saveDebit(Debit debit) {
+			MessageReturn ret = new MessageReturn();
+			try {
+				ret = debitBO.save(debit);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return Response.status(200).entity(ret).build();
+		}
+
+		@DELETE
+		@Path("/debit")
+		@Consumes({ "application/json" })
+		@Produces({ "application/json" })
+		public Response deleteDebit(Debit debit) {
+			MessageReturn ret = new MessageReturn();
+			try {
+				ret = debitBO.delete(debit.getId());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return Response.status(200).entity(ret).build();
+		}
 }

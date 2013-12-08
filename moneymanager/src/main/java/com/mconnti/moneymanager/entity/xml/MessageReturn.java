@@ -7,6 +7,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.mconnti.moneymanager.entity.City;
+import com.mconnti.moneymanager.entity.Closure;
 import com.mconnti.moneymanager.entity.Config;
 import com.mconnti.moneymanager.entity.Country;
 import com.mconnti.moneymanager.entity.Credit;
@@ -56,6 +57,8 @@ public class MessageReturn {
 	private Credit credit;
 	
 	private Debit debit;
+	
+	private Closure closure;
 	
 	public String getMessage() {
 		return message;
@@ -191,6 +194,14 @@ public class MessageReturn {
 
 	public void setDebit(Debit debit) {
 		this.debit = debit;
+	}
+
+	public Closure getClosure() {
+		return closure;
+	}
+
+	public void setClosure(Closure closure) {
+		this.closure = closure;
 	}
 
 }
