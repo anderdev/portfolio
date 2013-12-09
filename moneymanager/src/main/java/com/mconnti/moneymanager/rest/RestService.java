@@ -12,6 +12,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
 import com.mconnti.moneymanager.business.CityBO;
+import com.mconnti.moneymanager.business.ClosureBO;
 import com.mconnti.moneymanager.business.ConfigBO;
 import com.mconnti.moneymanager.business.CountryBO;
 import com.mconnti.moneymanager.business.CreditBO;
@@ -52,6 +53,7 @@ public class RestService {
 	private CreditBO creditBO;
 	private ConfigBO configBO;
 	private DebitBO debitBO;
+	private ClosureBO closureBO;
 
 	public RestService() {
 		countryBO = (CountryBO) SpringApplicationContext.getBean("countryBO");
@@ -66,6 +68,7 @@ public class RestService {
 		configBO = (ConfigBO) SpringApplicationContext.getBean("configBO");
 		creditBO = (CreditBO) SpringApplicationContext.getBean("creditBO");
 		debitBO = (DebitBO) SpringApplicationContext.getBean("debitBO");
+		closureBO = (ClosureBO) SpringApplicationContext.getBean("closureBO");
 	}
 
 	// COUNTRY AREA

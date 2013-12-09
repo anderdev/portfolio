@@ -17,5 +17,6 @@ public interface DescriptionBO extends GenericBO<Description>{
 	public MessageReturn delete (Long id);
 	
 	public Description getById(Long id);
+	
 }
 

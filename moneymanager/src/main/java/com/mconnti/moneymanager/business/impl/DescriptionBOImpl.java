@@ -9,6 +9,7 @@ import com.mconnti.moneymanager.business.DescriptionBO;
 import com.mconnti.moneymanager.entity.Description;
 import com.mconnti.moneymanager.entity.User;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
+import com.mconnti.moneymanager.persistence.DescriptionDAO;
 import com.mconnti.moneymanager.persistence.UserDAO;
 import com.mconnti.moneymanager.utils.MessageFactory;
 
@@ -17,6 +18,9 @@ public class DescriptionBOImpl extends GenericBOImpl<Description> implements Des
 	@Autowired
 	private UserDAO userDAO;
 
+	@Autowired
+	private DescriptionDAO descriptionDAO;
+	
 	private User getUser(Description description) {
 		try {
 			return userDAO.findById(User.class, description.getUser().getId());
@@ -87,5 +91,4 @@ public class DescriptionBOImpl extends GenericBOImpl<Description> implements Des
 		}
 		return null;
 	}
-
 }
