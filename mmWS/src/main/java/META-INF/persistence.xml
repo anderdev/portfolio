@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0"
+	xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+	<persistence-unit name="selfmanager_PU" transaction-type="RESOURCE_LOCAL">
+		<jta-data-source>java:jboss/datasources/selfmanagerDS</jta-data-source>
+		<class>com.mconnti.moneymanager.entity.AccessRegister</class>
+		<class>com.mconnti.moneymanager.entity.TypeAccount</class>
+		<class>com.mconnti.moneymanager.entity.Closure</class>
+		<class>com.mconnti.moneymanager.entity.Config</class>
+		<class>com.mconnti.moneymanager.entity.Credit</class>
+		<class>com.mconnti.moneymanager.entity.CreditCard</class>
+		<class>com.mconnti.moneymanager.entity.Currency</class>
+		<class>com.mconnti.moneymanager.entity.Debit</class>
+		<class>com.mconnti.moneymanager.entity.Description</class>
+		<class>com.mconnti.moneymanager.entity.Parcel</class>
+		<class>com.mconnti.moneymanager.entity.TypeClosure</class>
+		<class>com.mconnti.moneymanager.entity.User</class>
+		<class>com.mconnti.moneymanager.entity.Country</class>
+		<class>com.mconnti.moneymanager.entity.State</class>
+		<class>com.mconnti.moneymanager.entity.City</class>
+		<class>com.mconnti.moneymanager.entity.Planning</class>
+		<class>com.mconnti.moneymanager.entity.Publicity</class>
+		<properties>
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
+			<property name="hibernate.hbm2ddl.auto" value="update" />
+			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.cache.provider_class" value="org.hibernate.cache.HashtableCacheProvider" />
+			<property name="hibernate.transaction.jta.platform" value="org.hibernate.service.jta.platform.internal.JBossAppServerJtaPlatform" />
+		</properties>
+	</persistence-unit>
+</persistence>
+   
