@@ -9,10 +9,6 @@ import com.mconnti.moneymanager.entity.User;
 
 public interface ClosureDAO  extends GenericDAO<Closure>{
 
-	public Collection<String> getClosedCredits(User user, String startDate, String endDate);
-
-	public Collection<String> getClosedDebits(User user, String startDate, String endDate);
-
 	public Collection<Credit> getCredits(User user, String startDate, String endDate, boolean closed);
 
 	public Collection<Debit> getDebts(User user, String startDate, String endDate, boolean closed);

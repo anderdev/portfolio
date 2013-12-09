@@ -10,7 +10,7 @@ public abstract class Utils {
 
 	public static void main(String[] args) {
 		
-		String jsonString = "11/2015";
+		String jsonString = "2/2016";
 		Date today = new Date();
 
 		String strDate = "01/" + jsonString;
@@ -30,8 +30,10 @@ public abstract class Utils {
 		System.out.println("Today            : " + sdf.format(today));
 		System.out.println("Last Day of Month: " + sdf.format(lastDayOfMonth));
 		
-		Date d = lastDayMonth(jsonString);
+		Date d = getCreditCardExpiredDate(jsonString);
 		System.out.println("Mine Last Day of Month: " + sdf.format(d));
+		
+		System.out.println(getLastDayOfMonth(strDate));
 	}
 
 	public static Date stringToDate(String data, Boolean mostraHora) {
@@ -52,7 +54,7 @@ public abstract class Utils {
 		return (dtData == null || dtData.equals("")) ? "" : DtFormat.format(dtData);
 	}
 
-	public static Date lastDayMonth(String jsonString) {
+	public static Date getCreditCardExpiredDate(String jsonString) {
 		String strDate = "01/" + jsonString;
 
 		String[] tmpDate = strDate.split("/");
@@ -66,6 +68,19 @@ public abstract class Utils {
 		Date lastDayOfMonth = calendar.getTime();
 		
 		return lastDayOfMonth;
+	}
+	
+	public static Integer getLastDayOfMonth(String strDate) {
+
+		String[] tmpDate = strDate.split("/");
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Integer.valueOf(tmpDate[2]), Integer.valueOf(tmpDate[1]) - 1, Integer.valueOf(tmpDate[0]), 00, 00, 00);
+
+		calendar.add(Calendar.MONTH, 1);
+		calendar.set(Calendar.DAY_OF_MONTH, 1);
+		calendar.add(Calendar.DATE, -1);
+		
+		return calendar.get(Calendar.DAY_OF_MONTH);
 	}
 
 }

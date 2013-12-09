@@ -1,7 +1,10 @@
 package com.mconnti.moneymanager.business.impl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +26,7 @@ import com.mconnti.moneymanager.persistence.DebitDAO;
 import com.mconnti.moneymanager.persistence.DescriptionDAO;
 import com.mconnti.moneymanager.persistence.TypeAccountDAO;
 import com.mconnti.moneymanager.persistence.UserDAO;
+import com.mconnti.moneymanager.utils.Constants;
 import com.mconnti.moneymanager.utils.Crypt;
 import com.mconnti.moneymanager.utils.MessageFactory;
 import com.mconnti.moneymanager.utils.Utils;
@@ -304,9 +308,9 @@ public class ClosureBOImpl extends GenericBOImpl<Closure> implements ClosureBO {
 
 		Debit debitoBean = new Debit();
 
-		closure.setCreditsAlreadyClosed(closureDAO.getClosedCredits(closure.getUser(), startDate, endDate));
+//		closure.setCreditsAlreadyClosed(closureDAO.getCredits(closure.getUser(), startDate, endDate,true));
 		
-		closure.setDebitsAlreadyClosed(closureDAO.getClosedDebits(closure.getUser(), startDate, endDate));
+//		closure.setDebitsAlreadyClosed(closureDAO.getDebts(closure.getUser(), startDate, endDate,true));
 
 		Collection<Credit> collectionCredit = closureDAO.getCredits(closure.getUser(), startDate, endDate, false);
 
@@ -367,6 +371,82 @@ public class ClosureBOImpl extends GenericBOImpl<Closure> implements ClosureBO {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	@Override
+	public Closure getClosure(Closure closure) throws ParseException {
+		Date date = closure.getDate();
+
+		HashMap<String, String> ret = new HashMap<String, String>();
+
+		if (Constants.MENSAL.equalsIgnoreCase(closure.getType().toLowerCase()) || Constants.MONTHLY.equalsIgnoreCase(closure.getType().toLowerCase())) {
+
+			ret = loadDates(date, Calendar.DAY_OF_MONTH, -Utils.getLastDayOfMonth(Utils.dateToString(date)));
+
+		} else if (Constants.QUINZENAL.equalsIgnoreCase(closure.getType().toLowerCase()) || Constants.FORTNIGHTLY.equalsIgnoreCase(closure.getType().toLowerCase())) {
+
+			ret = loadDates(date, Calendar.DAY_OF_MONTH, -14);
+
+		} else if (Constants.SEMANAL.equalsIgnoreCase(closure.getType().toLowerCase()) || Constants.WEEKLY.equalsIgnoreCase(closure.getType().toLowerCase())) {
+
+			ret = loadDates(date, Calendar.DAY_OF_MONTH, -6);
+
+		} else if (Constants.DIARIO.equalsIgnoreCase(closure.getType().toLowerCase()) || Constants.DAYLY.equalsIgnoreCase(closure.getType().toLowerCase())) {
+
+			ret = loadDates(date, Calendar.DAY_OF_MONTH, 0);
+		}
+		
+		closure = getClosureValues(closure, ret.get(Constants.DATA_INICIAL), ret.get(Constants.DATA_FINAL));
+		
+		
+		//TODO setar messageReturn
+		return closure;
+	}
+	
+	private HashMap<String, String> loadDates(Date date, Integer type, Integer days) {
+		HashMap<String, String> map = new HashMap<String, String>();
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.add(type, days);
+		SimpleDateFormat dataFormatada = new SimpleDateFormat("dd/MM/yyyy");
+		String startDate = dataFormatada.format(calendar.getTime());
+		calendar.setTime(date);
+		String endDate = dataFormatada.format(calendar.getTime());
+
+		map.put(Constants.DATA_INICIAL, startDate);
+		map.put(Constants.DATA_FINAL, endDate);
+		return map;
+	}
+	
+	private Closure getClosureValues(Closure closure, String startDate, String endDate) {
+		Double somaCredito = 0.0;
+		Double somaDebito = 0.0;
+
+		closure.setCreditsAlreadyClosed(closureDAO.getCredits(closure.getUser(), startDate, endDate, true));
+
+		closure.setDebitsAlreadyClosed(closureDAO.getDebts(closure.getUser(), startDate, endDate, true));
+
+		Collection<Credit> collectionCredit = closureDAO.getCredits(closure.getUser(), startDate, endDate, false);
+
+		Collection<Debit> collectionDebit = closureDAO.getDebts(closure.getUser(), startDate, endDate, false);
+
+		for (Credit credit : collectionCredit) {
+			somaCredito += Crypt.decryptValor(credit.getAmount());
+		}
+
+		for (Debit debit : collectionDebit) {
+			somaDebito += Crypt.decryptValor(debit.getAmount());
+		}
+
+		Double totalGeral = somaCredito - somaDebito;
+		closure.setTotalCredit(somaCredito);
+		closure.setTotalDebit(somaDebito);
+		closure.setTotalGeneral(totalGeral);
+		closure.setStartDate(Utils.stringToDate(startDate, true));
+		closure.setEndDate(Utils.stringToDate(endDate, true));
+
+		return closure;
 	}
 
 }

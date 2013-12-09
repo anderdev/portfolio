@@ -2,6 +2,8 @@ package com.mconnti.moneymanager.persistence.impl;
 
 import java.util.Collection;
 
+import javax.persistence.Query;
+
 import org.springframework.stereotype.Repository;
 
 import com.mconnti.moneymanager.entity.Closure;
@@ -13,48 +15,39 @@ import com.mconnti.moneymanager.persistence.ClosureDAO;
 @Repository("closureDAO")
 public class ClosureDAOImpl extends GenericDAOImpl<Closure> implements ClosureDAO{
 
-	@Override
-	public Collection<String> getClosedCredits(User user, String startDate, String endDate) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Collection<String> getClosedDebits(User user, String startDate, String endDate) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	@SuppressWarnings("unchecked")
 	@Override
 	public Collection<Credit> getCredits(User user, String startDate, String endDate, boolean closed) {
-		Object[] obj = {user,closed,startDate,endDate};
 		
 		StringBuilder sql = new StringBuilder();
-		sql.append(" from Credit cred ");
-		sql.append(" where cred.usuario = ? ");
-		sql.append(" and cred.contabilizado = ? ");
-		sql.append(" and cred.data between ");
-		sql.append(" str_to_date(?, '%d/%m/%Y') and str_to_date(?, '%d/%m/%Y') ");
+		sql.append(" select from Credit cred ");
+		sql.append(" where cred.user = ").append(user);
+		sql.append(" and cred.closed = ").append(closed);
+		sql.append(" and cred.date between ");
+		sql.append(" str_to_date(").append(startDate).append(", '%d/%m/%Y') and str_to_date(").append(endDate).append(", '%d/%m/%Y') ");
 		
-		Collection<Credit> res = em.createQuery(sql.toString(),obj);
+		Query query = em.createQuery(sql.toString());
+		query.setHint("toplink.refresh", "true");
+		Collection<Credit> res = query.getResultList();
 		
-		return null;
+		return res;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Collection<Debit> getDebts(User user, String startDate, String endDate, boolean closed) {
-		Object[] obj = {user,closed,startDate,endDate};
-		
 		StringBuilder sql = new StringBuilder();
-		sql.append(" from Debito deb ");
-		sql.append(" where deb.usuario = ? ");
-		sql.append(" and deb.contabilizado = ? ");
-		sql.append(" and deb.data between ");
-		sql.append(" str_to_date(?, '%d/%m/%Y') and str_to_date(?, '%d/%m/%Y') ");
+		sql.append(" select from Debit d ");
+		sql.append(" where d.user = ").append(user);
+		sql.append(" and d.closed = ").append(closed);
+		sql.append(" and d.date between ");
+		sql.append(" str_to_date(").append(startDate).append(", '%d/%m/%Y') and str_to_date(").append(endDate).append(", '%d/%m/%Y') ");
 		
-//		Collection<Debito> res = getHibernateTemplate().find(sql.toString(),obj);
+		Query query = em.createQuery(sql.toString());
+		query.setHint("toplink.refresh", "true");
+		Collection<Debit> res = query.getResultList();
 		
-		return null;
+		return res;
 	}
 	
 

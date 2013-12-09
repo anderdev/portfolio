@@ -1,5 +1,6 @@
 package com.mconnti.moneymanager.business;
 
+import java.text.ParseException;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -17,5 +18,7 @@ public interface ClosureBO extends GenericBO<Closure>{
 	public MessageReturn delete (Long id);
 	
 	public Closure getById(Long id);
+
+	public Closure getClosure(Closure closure) throws ParseException;
 }
 

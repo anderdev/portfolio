@@ -7,6 +7,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
@@ -26,6 +27,7 @@ import com.mconnti.moneymanager.business.TypeClosureBO;
 import com.mconnti.moneymanager.business.UserBO;
 import com.mconnti.moneymanager.context.SpringApplicationContext;
 import com.mconnti.moneymanager.entity.City;
+import com.mconnti.moneymanager.entity.Closure;
 import com.mconnti.moneymanager.entity.Config;
 import com.mconnti.moneymanager.entity.Country;
 import com.mconnti.moneymanager.entity.Credit;
@@ -564,49 +566,109 @@ public class RestService {
 		}
 		return Response.status(200).entity(ret).build();
 	}
-	
+
 	// DEBIT AREA
 
-		@GET
-		@Path("/debit")
-		@Produces({ "application/json" })
-		public Response listDebit() {
+	@GET
+	@Path("/debit")
+	@Produces({ "application/json" })
+	public Response listDebit() {
 
-			List<Debit> list = new ArrayList<>();
-			try {
-				list = debitBO.list();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
-			return Response.status(200).entity(list).build();
+		List<Debit> list = new ArrayList<>();
+		try {
+			list = debitBO.list();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
-		@POST
-		@Path("/debit")
-		@Consumes({ "application/json" })
-		@Produces({ "application/json" })
-		public Response saveDebit(Debit debit) {
-			MessageReturn ret = new MessageReturn();
-			try {
-				ret = debitBO.save(debit);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			return Response.status(200).entity(ret).build();
+		return Response.status(200).entity(list).build();
+	}
+
+	@POST
+	@Path("/debit")
+	@Consumes({ "application/json" })
+	@Produces({ "application/json" })
+	public Response saveDebit(Debit debit) {
+		MessageReturn ret = new MessageReturn();
+		try {
+			ret = debitBO.save(debit);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Response.status(200).entity(ret).build();
+	}
+
+	@DELETE
+	@Path("/debit")
+	@Consumes({ "application/json" })
+	@Produces({ "application/json" })
+	public Response deleteDebit(Debit debit) {
+		MessageReturn ret = new MessageReturn();
+		try {
+			ret = debitBO.delete(debit.getId());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Response.status(200).entity(ret).build();
+	}
+
+	// CLOSURE AREA
+
+	@GET
+	@Path("/closure")
+	@Produces({ "application/json" })
+	public Response listClosure() {
+
+		List<Closure> list = new ArrayList<>();
+		try {
+			list = closureBO.list();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
-		@DELETE
-		@Path("/debit")
-		@Consumes({ "application/json" })
-		@Produces({ "application/json" })
-		public Response deleteDebit(Debit debit) {
-			MessageReturn ret = new MessageReturn();
-			try {
-				ret = debitBO.delete(debit.getId());
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			return Response.status(200).entity(ret).build();
+		return Response.status(200).entity(list).build();
+	}
+	
+	@PUT
+	@Path("/closure")
+	@Consumes({ "application/json" })
+	@Produces({ "application/json" })
+	public Response executeClosure(Closure closure) {
+		MessageReturn ret = new MessageReturn();
+		try {
+			ret = null;
+			closureBO.getClosure(closure);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+		return Response.status(200).entity(ret).build();
+	}
+
+	@POST
+	@Path("/closure")
+	@Consumes({ "application/json" })
+	@Produces({ "application/json" })
+	public Response saveClosure(Closure closure) {
+		MessageReturn ret = new MessageReturn();
+		try {
+			ret = closureBO.save(closure);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Response.status(200).entity(ret).build();
+	}
+
+	@DELETE
+	@Path("/closure")
+	@Consumes({ "application/json" })
+	@Produces({ "application/json" })
+	public Response deleteClosure(Closure closure) {
+		MessageReturn ret = new MessageReturn();
+		try {
+			ret = closureBO.delete(closure.getId());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Response.status(200).entity(ret).build();
+	}
 }
