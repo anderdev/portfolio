@@ -14,12 +14,12 @@
 		<class>com.mconnti.moneymanager.entity.Debit</class>
 		<class>com.mconnti.moneymanager.entity.Description</class>
 		<class>com.mconnti.moneymanager.entity.Parcel</class>
-		<class>com.mconnti.moneymanager.entity.Publicity</class>
 		<class>com.mconnti.moneymanager.entity.TypeClosure</class>
 		<class>com.mconnti.moneymanager.entity.User</class>
 		<class>com.mconnti.moneymanager.entity.Country</class>
 		<class>com.mconnti.moneymanager.entity.State</class>
 		<class>com.mconnti.moneymanager.entity.City</class>
+		<class>com.mconnti.moneymanager.entity.Planning</class>
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
 			<property name="hibernate.hbm2ddl.auto" value="update" />

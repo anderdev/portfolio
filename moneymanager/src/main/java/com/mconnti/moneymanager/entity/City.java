@@ -42,7 +42,7 @@ public class City implements Serializable {
 	@ForeignKey(name = "FK_CITY_STATE")
 	private State state;
 	
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "city_id")
 	@ForeignKey(name = "FK_CITY_USER")
 	@XmlTransient

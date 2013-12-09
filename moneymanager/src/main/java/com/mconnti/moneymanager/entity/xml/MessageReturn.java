@@ -15,6 +15,7 @@ import com.mconnti.moneymanager.entity.CreditCard;
 import com.mconnti.moneymanager.entity.Currency;
 import com.mconnti.moneymanager.entity.Debit;
 import com.mconnti.moneymanager.entity.Description;
+import com.mconnti.moneymanager.entity.Planning;
 import com.mconnti.moneymanager.entity.State;
 import com.mconnti.moneymanager.entity.TypeAccount;
 import com.mconnti.moneymanager.entity.TypeClosure;
@@ -59,6 +60,8 @@ public class MessageReturn {
 	private Debit debit;
 	
 	private Closure closure;
+	
+	private Planning planning;
 	
 	public String getMessage() {
 		return message;
@@ -202,6 +205,14 @@ public class MessageReturn {
 
 	public void setClosure(Closure closure) {
 		this.closure = closure;
+	}
+
+	public Planning getPlanning() {
+		return planning;
+	}
+
+	public void setPlanning(Planning planning) {
+		this.planning = planning;
 	}
 
 }

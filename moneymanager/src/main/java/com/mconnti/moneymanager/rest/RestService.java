@@ -21,6 +21,7 @@ import com.mconnti.moneymanager.business.CreditCardBO;
 import com.mconnti.moneymanager.business.CurrencyBO;
 import com.mconnti.moneymanager.business.DebitBO;
 import com.mconnti.moneymanager.business.DescriptionBO;
+import com.mconnti.moneymanager.business.PlanningBO;
 import com.mconnti.moneymanager.business.StateBO;
 import com.mconnti.moneymanager.business.TypeAccountBO;
 import com.mconnti.moneymanager.business.TypeClosureBO;
@@ -35,6 +36,7 @@ import com.mconnti.moneymanager.entity.CreditCard;
 import com.mconnti.moneymanager.entity.Currency;
 import com.mconnti.moneymanager.entity.Debit;
 import com.mconnti.moneymanager.entity.Description;
+import com.mconnti.moneymanager.entity.Planning;
 import com.mconnti.moneymanager.entity.State;
 import com.mconnti.moneymanager.entity.TypeAccount;
 import com.mconnti.moneymanager.entity.TypeClosure;
@@ -56,6 +58,7 @@ public class RestService {
 	private ConfigBO configBO;
 	private DebitBO debitBO;
 	private ClosureBO closureBO;
+	private PlanningBO planningBO;
 
 	public RestService() {
 		countryBO = (CountryBO) SpringApplicationContext.getBean("countryBO");
@@ -71,6 +74,7 @@ public class RestService {
 		creditBO = (CreditBO) SpringApplicationContext.getBean("creditBO");
 		debitBO = (DebitBO) SpringApplicationContext.getBean("debitBO");
 		closureBO = (ClosureBO) SpringApplicationContext.getBean("closureBO");
+		planningBO = (PlanningBO) SpringApplicationContext.getBean("planningBO");
 	}
 
 	// COUNTRY AREA
@@ -628,7 +632,7 @@ public class RestService {
 
 		return Response.status(200).entity(list).build();
 	}
-	
+
 	@PUT
 	@Path("/closure")
 	@Consumes({ "application/json" })
@@ -666,6 +670,51 @@ public class RestService {
 		MessageReturn ret = new MessageReturn();
 		try {
 			ret = closureBO.delete(closure.getId());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Response.status(200).entity(ret).build();
+	}
+
+	// PLANNING AREA
+
+	@GET
+	@Path("/planning")
+	@Produces({ "application/json" })
+	public Response listPlanning() {
+
+		List<Planning> list = new ArrayList<>();
+		try {
+			list = planningBO.list();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return Response.status(200).entity(list).build();
+	}
+
+	@POST
+	@Path("/planning")
+	@Consumes({ "application/json" })
+	@Produces({ "application/json" })
+	public Response savePlanning(Planning planning) {
+		MessageReturn ret = new MessageReturn();
+		try {
+			ret = planningBO.save(planning);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Response.status(200).entity(ret).build();
+	}
+
+	@DELETE
+	@Path("/planning")
+	@Consumes({ "application/json" })
+	@Produces({ "application/json" })
+	public Response deletePlanning(Planning planning) {
+		MessageReturn ret = new MessageReturn();
+		try {
+			ret = planningBO.delete(planning.getId());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
