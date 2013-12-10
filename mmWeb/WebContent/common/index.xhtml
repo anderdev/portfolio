@@ -1,0 +1,113 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui"
+        template="../template/templateAPP.xhtml" >
+        
+	<ui:define name="contentAPP">
+       	<h:form id="index" prependId="false" >
+        	<h:outputText value="#{messages['lb_book_list']}" styleClass="boxTitulo"/>
+        	
+        	<div align="center" style="width: 100%;" >
+        		<div id="messages" class="messages" style="width: 50%;">
+		       		<p:messages showDetail="true" showSummary="false"  autoUpdate="true" id="mensagem"/>
+		       	</div>
+        	
+        		<h:panelGrid columns="2" width="70%" border="0" columnClasses="alignLeft,alignRight" rendered="#{userMBean.loggedUser.admin}">
+	        		<p:commandButton value="#{messages['lb_delete']}" styleClass="button" onclick="confirmation.show()" />
+	        		<p:commandButton value="#{messages['lb_new']}" 
+	        			action="#{bookMBean.newBook}"  
+	        			styleClass="button" 
+	        			update=":newBook" 
+	        			id="newButton"
+	        			oncomplete="newBookModal.show()" >
+	        		</p:commandButton>
+			    </h:panelGrid>
+			   
+			    <p:dataTable var="cat" value="#{bookMBean.bookList}" style="width:70%" id="bookList"
+			    		paginatorAlwaysVisible="false" paginator="true" emptyMessage="#{messages['lb_empty_list']}"
+			    		rows="10" selection="#{bookMBean.selectedBooks}" rowKey="#{cat}" 
+			    		paginatorPosition="botton" >
+			    	
+			    	<p:column selectionMode="multiple" style="text-align:center;width:5%"  />
+			        
+			        <p:column sortBy="#{cat.title}" style="width:45%">
+			            <f:facet name="header">
+			                <h:outputText value="#{messages['lb_title_']}" />
+			            </f:facet>
+			            <h:outputText value="#{cat.title}" />
+			        </p:column>
+			        
+			        <p:column sortBy="#{cat.author.name}" style="width:25%">
+			            <f:facet name="header">
+			                <h:outputText value="#{messages['lb_author_']}" />
+			            </f:facet>
+			            <h:outputText value="#{cat.author.name}" />
+			        </p:column>
+			        
+			        <p:column sortBy="#{cat.category.type}" style="width:15%">
+			            <f:facet name="header">
+			                <h:outputText value="#{messages['lb_category_']}" />
+			            </f:facet>
+			            <h:outputText value="#{cat.category.type}" />
+			        </p:column>
+			        
+			        <p:column sortBy="#{cat.available}" style="text-align:center;width:10%">
+			            <f:facet name="header">
+			                <h:outputText value="#{messages['lb_status']}" />
+			            </f:facet>
+			            <p:commandLink action="#{bookMBean.rent}" update=":index" id="rentLink" rendered="#{cat.available}">
+			            	<f:setPropertyActionListener value="#{cat}" target="#{bookMBean.book}" />  
+				            <p:graphicImage value="#{messages['img_available']}" style="border: 0px"   title="#{messages['lb_hint_available']}"/>
+			            </p:commandLink>
+			            <p:commandLink action="#{bookMBean.getQueueSize}" update=":queue" oncomplete="queueModal.show();" id="queueLink" rendered="#{!cat.available}">
+			            	<f:setPropertyActionListener value="#{cat}" target="#{bookMBean.book}" />  
+				            <p:graphicImage value="#{messages['img_not_available']}" style="border: 0px"  title="#{messages['lb_hint_not_available']}"/>
+			            </p:commandLink> 
+			        </p:column>
+			        
+			        <p:column sortBy="#{cat.available}" style="text-align:center;width:10%" rendered="#{userMBean.loggedUser.admin}">
+			            <f:facet name="header" >
+			                <h:outputText value="#{messages['lb_devolution']}" />
+			            </f:facet>
+			            <p:commandLink action="#{bookMBean.release}" update=":index" id="releaseLink">
+			            	<f:setPropertyActionListener value="#{cat}" target="#{bookMBean.book}" />  
+				            <p:graphicImage value="#{messages['img_devolution']}" style="border: 0px" title="#{messages['lb_hint_devolution']}" rendered="#{!cat.available}"/>
+			            </p:commandLink>
+			        </p:column>
+			        
+			        <p:column rendered="#{userMBean.loggedUser.admin}" style="width:5%">
+			        	<p:commandLink action="#{bookMBean.edit}" update=":newBook" oncomplete="newBookModal.show();" id="editButton">
+			        		<f:setPropertyActionListener value="#{cat}" target="#{bookMBean.book}" />  
+							<p:graphicImage value="#{messages['img_update']}" style="border: 0px" />
+						</p:commandLink>
+			        </p:column>
+			    </p:dataTable>
+			</div>	
+			<p:confirmDialog message="#{messages['lb_multiple_exclusion']}" header="#{messages['lb_header_confirmation']}" severity="alert" widgetVar="confirmation">  
+            	<div align="center">
+			        <p:commandButton value="#{messages['lb_yes']}" update="bookList,mensagem" oncomplete="confirmation.hide()" action="#{bookMBean.delete}"/>  
+			        <p:commandButton value="#{messages['lb_no']}" onclick="confirmation.hide()" type="button" action="#{bookMBean.cancel}"/>   
+                </div> 
+    		</p:confirmDialog>  		
+		</h:form>  
+		<p:dialog header="#{messages['lb_book_registration']}" resizable="false" widgetVar="newBookModal" modal="true" appendToBody="true" height="400" width="500">  
+		    <ui:include src="/include/formBook.xhtml" />
+		</p:dialog>
+		
+		<p:dialog header="#{messages['lb_not_available']}" resizable="false" widgetVar="queueModal" modal="true" appendToBody="true" height="100" width="450">  
+			<h:form id="queue" prependId="false" >
+				<p:panel>
+					<div align="center">
+						<p><h:outputText value="#{bookMBean.queueTip}" styleClass="fontMessage"/></p>
+					</div>
+					<div align="center">
+				        <p:commandButton value="#{messages['lb_yes']}" oncomplete="queueModal.hide()" update=":index" action="#{bookMBean.insertOnQueue}" styleClass="button"/>  
+				        <p:commandButton value="#{messages['lb_no']}" oncomplete="queueModal.hide()" styleClass="button" action="#{bookMBean.cancel}"/>   
+	                </div>
+	            </p:panel> 
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

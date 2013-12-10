@@ -1,5 +1,6 @@
 package com.mconnti.moneymanager.web.mbean;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -10,18 +11,16 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 
+import org.apache.http.client.ClientProtocolException;
+import org.jboss.resteasy.client.ClientRequest;
 import org.jboss.resteasy.client.ClientResponse;
-import org.jboss.security.authorization.resources.WebResource;
+import org.jboss.resteasy.util.GenericType;
 
 import com.mconnti.moneymanager.entity.User;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
-import com.mconnti.moneymanager.util.FacesUtil;
 
 @SessionScoped
 @ManagedBean(name = "userMBean")
@@ -46,12 +45,10 @@ public class UserMBean implements Serializable {
 
 	private Boolean showPassword = true;
 
-	Client client = null;
-
 	String host = null;
-	
+
 	String logoutURL = null;
-	
+
 	String locale;
 
 	public String getLocale() {
@@ -71,58 +68,75 @@ public class UserMBean implements Serializable {
 	}
 
 	public UserMBean() {
-		client = Client.create();
 		this.user = new User();
-		Object request = FacesContext.getCurrentInstance().getExternalContext().getRequest();
-		if (request instanceof HttpServletRequest) {
-			String[] str = ((HttpServletRequest) request).getRequestURL().toString().split("library");
-			host = str[0];
-			logoutURL = host+"libraryJ/index.jsf";
-		}
-		if(loggedUser == null){
-			locale = fc.getExternalContext().getRequestLocale().toString();
-			if(!locale.equals("pt_BR")){
-				locale = "en";
-			}
-		}else{
-			locale = loggedUser.getLanguage();
-		}
+		loadList();
+//		Object request = FacesContext.getCurrentInstance().getExternalContext().getRequest();
+//		if (request instanceof HttpServletRequest) {
+//			String[] str = ((HttpServletRequest) request).getRequestURL().toString().split("library");
+//			host = str[0];
+//			logoutURL = host + "libraryJ/index.jsf";
+//		}
+//		if (loggedUser == null) {
+//			locale = fc.getExternalContext().getRequestLocale().toString();
+//			if (!locale.equals("pt_BR")) {
+//				locale = "en";
+//			}
+//		} else {
+//			locale = loggedUser.getLanguage();
+//		}
 	}
-	
+
 	public String login() {
 		MessageReturn ret = new MessageReturn();
-
-		try {
-
-			WebResource webResource = client.resource(host + "libraryWS/user");
-			user.setLanguage(locale);
-			ClientResponse response = webResource.type(MediaType.APPLICATION_JSON).put(ClientResponse.class, user);
-
-			if (response.getStatus() != 201 && response.getStatus() != 200 && response.getStatus() != 500) {
-				throw new Exception("Failed : HTTP error code : " + response.getStatus());
-			}
-
-			ret = response.getEntity(MessageReturn.class);
-
-			if (ret.getUser() == null) {
-				throw new Exception(ret.getMessage());
-			} else {
-				loggedUser = ret.getUser();
-				FacesUtil.showSuccessMessage(ret.getMessage());
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			FacesUtil.showAErrorMessage(e.getMessage());
-			return "";
-		}
+		loadList();
+//		try {
+//
+//			WebResource webResource = client.resource(host + "libraryWS/user");
+//			user.setLanguage(locale);
+//			ClientResponse response = webResource.type(MediaType.APPLICATION_JSON).put(ClientResponse.class, user);
+//
+//			if (response.getStatus() != 201 && response.getStatus() != 200 && response.getStatus() != 500) {
+//				throw new Exception("Failed : HTTP error code : " + response.getStatus());
+//			}
+//
+//			ret = response.getEntity(MessageReturn.class);
+//
+//			if (ret.getUser() == null) {
+//				throw new Exception(ret.getMessage());
+//			} else {
+//				loggedUser = ret.getUser();
+//				FacesUtil.showSuccessMessage(ret.getMessage());
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			FacesUtil.showAErrorMessage(e.getMessage());
+//			return "";
+//		}
 
 		return "/common/index.xhtml?faces-redirect=true";
 	}
 
 	private void loadList() {
-		WebResource webResource = client.resource(host + "libraryWS/user");
+		try {
 
-		userList = webResource.accept(MediaType.APPLICATION_JSON).get(new GenericType<List<User>>() {});
+			ClientRequest request = new ClientRequest("http://localhost:8080/mmanagerAPI/rest/user");
+			ClientResponse<User> response = request.get(User.class);
+			
+			userList = (List<User>) request.accept(MediaType.APPLICATION_JSON).get(new GenericType<List<User>>() {});
+
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+
+
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	public String list() {
@@ -164,66 +178,66 @@ public class UserMBean implements Serializable {
 
 	public String save() {
 		MessageReturn ret = new MessageReturn();
-		try {
-			WebResource webResource = client.resource(host + "libraryWS/user");
-
-			if (!isAdmin) {
-				user.setAdmin(false);
-			}
-
-			ClientResponse response = webResource.type(MediaType.APPLICATION_JSON).post(ClientResponse.class, user);
-
-			if (response.getStatus() != 201 && response.getStatus() != 200) {
-				ret.setMessage("Failed : HTTP error code : " + response.getStatus());
-				throw new Exception(ret.getMessage());
-			}
-
-			ret = response.getEntity(MessageReturn.class);
-
-			if (ret.getUser() == null) {
-				throw new Exception(ret.getMessage());
-			} else {
-				FacesUtil.showSuccessMessage(ret.getMessage());
-			}
-			if (isAdmin) {
-				loadList();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			FacesUtil.showAErrorMessage(ret.getMessage());
-		}
-		if (loggedUser != null) {
-			return "/common/listUser.xhtml?faces-redirect=true";
-		}
+//		try {
+//			WebResource webResource = client.resource(host + "libraryWS/user");
+//
+//			if (!isAdmin) {
+//				user.setAdmin(false);
+//			}
+//
+//			ClientResponse response = webResource.type(MediaType.APPLICATION_JSON).post(ClientResponse.class, user);
+//
+//			if (response.getStatus() != 201 && response.getStatus() != 200) {
+//				ret.setMessage("Failed : HTTP error code : " + response.getStatus());
+//				throw new Exception(ret.getMessage());
+//			}
+//
+//			ret = response.getEntity(MessageReturn.class);
+//
+//			if (ret.getUser() == null) {
+//				throw new Exception(ret.getMessage());
+//			} else {
+//				FacesUtil.showSuccessMessage(ret.getMessage());
+//			}
+//			if (isAdmin) {
+//				loadList();
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			FacesUtil.showAErrorMessage(ret.getMessage());
+//		}
+//		if (loggedUser != null) {
+//			return "/common/listUser.xhtml?faces-redirect=true";
+//		}
 		return "";
 	}
 
 	public void delete() {
 		MessageReturn ret = new MessageReturn();
-		try {
-			for (User user : selectedUsers) {
-				WebResource webResource = client.resource(host + "libraryWS/user/" + user.getId());
-
-				ClientResponse response = webResource.type(MediaType.APPLICATION_JSON).delete(ClientResponse.class);
-
-				if (response.getStatus() != 201 && response.getStatus() != 200) {
-					ret.setMessage("Failed : HTTP error code : " + response.getStatus());
-					throw new Exception(ret.getMessage());
-				}
-
-				ret = response.getEntity(MessageReturn.class);
-			}
-
-			if (selectedUsers.length > 1) {
-				FacesUtil.showSuccessMessage(loggedUser.getLanguage().equals("pt_BR") ? "Usu�rios excluidos com sucesso!" : "User successfully deleted!");
-			} else {
-				FacesUtil.showSuccessMessage(loggedUser.getLanguage().equals("pt_BR") ? "Removido com sucesso!" : "Successfully deleted!");
-			}
-			loadList();
-		} catch (Exception e) {
-			e.printStackTrace();
-			FacesUtil.showAErrorMessage(ret.getMessage());
-		}
+//		try {
+//			for (User user : selectedUsers) {
+//				WebResource webResource = client.resource(host + "libraryWS/user/" + user.getId());
+//
+//				ClientResponse response = webResource.type(MediaType.APPLICATION_JSON).delete(ClientResponse.class);
+//
+//				if (response.getStatus() != 201 && response.getStatus() != 200) {
+//					ret.setMessage("Failed : HTTP error code : " + response.getStatus());
+//					throw new Exception(ret.getMessage());
+//				}
+//
+//				ret = response.getEntity(MessageReturn.class);
+//			}
+//
+//			if (selectedUsers.length > 1) {
+//				FacesUtil.showSuccessMessage(loggedUser.getLanguage().equals("pt_BR") ? "Usu�rios excluidos com sucesso!" : "User successfully deleted!");
+//			} else {
+//				FacesUtil.showSuccessMessage(loggedUser.getLanguage().equals("pt_BR") ? "Removido com sucesso!" : "Successfully deleted!");
+//			}
+//			loadList();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			FacesUtil.showAErrorMessage(ret.getMessage());
+//		}
 	}
 
 	public void checkEmail() throws ValidatorException {
