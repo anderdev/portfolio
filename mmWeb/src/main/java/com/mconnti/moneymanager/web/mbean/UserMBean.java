@@ -2,6 +2,8 @@ package com.mconnti.moneymanager.web.mbean;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -10,17 +12,22 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 import javax.faces.validator.ValidatorException;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.ws.rs.core.MediaType;
 
 import org.apache.http.client.ClientProtocolException;
 import org.jboss.resteasy.client.ClientRequest;
 import org.jboss.resteasy.client.ClientResponse;
 import org.jboss.resteasy.util.GenericType;
 
+import com.mconnti.moneymanager.entity.City;
+import com.mconnti.moneymanager.entity.Country;
+import com.mconnti.moneymanager.entity.State;
 import com.mconnti.moneymanager.entity.User;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
+import com.mconnti.moneymanager.util.FacesUtil;
 
 @SessionScoped
 @ManagedBean(name = "userMBean")
@@ -34,22 +41,36 @@ public class UserMBean implements Serializable {
 	HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
 
 	private List<User> userList;
+	
+	private List<Country> countryList;
 
 	private User user;
 
 	private User loggedUser;
 
 	private User[] selectedUsers;
+	
+	private SelectItem[] countries;
+
+	private SelectItem[] states;
+
+	private SelectItem[] cities;
+
+	private Country country = new Country();
+
+	private State state = new State();
+
+	private City city = new City();
 
 	private Boolean isAdmin = false;
 
 	private Boolean showPassword = true;
 
-	String host = null;
+	private String host = null;
 
-	String logoutURL = null;
+	private String logoutURL = null;
 
-	String locale;
+	private String locale;
 
 	public String getLocale() {
 		return locale;
@@ -69,49 +90,67 @@ public class UserMBean implements Serializable {
 
 	public UserMBean() {
 		this.user = new User();
-		loadList();
-//		Object request = FacesContext.getCurrentInstance().getExternalContext().getRequest();
-//		if (request instanceof HttpServletRequest) {
-//			String[] str = ((HttpServletRequest) request).getRequestURL().toString().split("library");
-//			host = str[0];
-//			logoutURL = host + "libraryJ/index.jsf";
-//		}
-//		if (loggedUser == null) {
-//			locale = fc.getExternalContext().getRequestLocale().toString();
-//			if (!locale.equals("pt_BR")) {
-//				locale = "en";
-//			}
-//		} else {
-//			locale = loggedUser.getLanguage();
-//		}
+		Object request = FacesContext.getCurrentInstance().getExternalContext().getRequest();
+		if (request instanceof HttpServletRequest) {
+			String[] str = ((HttpServletRequest) request).getRequestURL().toString().split("mmanager");
+			host = str[0];
+			logoutURL = host + "mmanager/index.jsf";
+		}
+		if (loggedUser == null) {
+			locale = fc.getExternalContext().getRequestLocale().toString();
+			if (!locale.equals("pt_BR")) {
+				locale = "en";
+			}
+		} else {
+			locale = loggedUser.getLanguage();
+		}
+		
+		this.countries = getCountriesByLocale(locale);
+		this.states = new SelectItem[1];
+		states[0] = new SelectItem("0", locale.equals("pt_BR") ? "Selecione..." : "Select...");
+		this.cities = new SelectItem[1];
+		cities[0] = new SelectItem("0", locale.equals("pt_BR") ? "Selecione..." : "Select...");
+	}
+	
+	public SelectItem[] getCountriesByLocale(String locale) {
+		Collection<Country> countryList = loadCountryList(locale);
+		List<SelectItem> itens = new ArrayList<SelectItem>(countryList.size());
+
+		this.countries = new SelectItem[itens.size()];
+
+		itens.add(new SelectItem(0, locale.equals("pt_BR") ? "Selecione..." : "Select..."));
+		for (Country c : countryList) {
+			itens.add(new SelectItem(c.getId(), c.getName()));
+		}
+		return itens.toArray(new SelectItem[itens.size()]);
 	}
 
 	public String login() {
 		MessageReturn ret = new MessageReturn();
 		loadList();
-//		try {
-//
-//			WebResource webResource = client.resource(host + "libraryWS/user");
-//			user.setLanguage(locale);
-//			ClientResponse response = webResource.type(MediaType.APPLICATION_JSON).put(ClientResponse.class, user);
-//
-//			if (response.getStatus() != 201 && response.getStatus() != 200 && response.getStatus() != 500) {
-//				throw new Exception("Failed : HTTP error code : " + response.getStatus());
-//			}
-//
-//			ret = response.getEntity(MessageReturn.class);
-//
-//			if (ret.getUser() == null) {
-//				throw new Exception(ret.getMessage());
-//			} else {
-//				loggedUser = ret.getUser();
-//				FacesUtil.showSuccessMessage(ret.getMessage());
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			FacesUtil.showAErrorMessage(e.getMessage());
-//			return "";
-//		}
+		// try {
+		//
+		// WebResource webResource = client.resource(host + "libraryWS/user");
+		// user.setLanguage(locale);
+		// ClientResponse response = webResource.type(MediaType.APPLICATION_JSON).put(ClientResponse.class, user);
+		//
+		// if (response.getStatus() != 201 && response.getStatus() != 200 && response.getStatus() != 500) {
+		// throw new Exception("Failed : HTTP error code : " + response.getStatus());
+		// }
+		//
+		// ret = response.getEntity(MessageReturn.class);
+		//
+		// if (ret.getUser() == null) {
+		// throw new Exception(ret.getMessage());
+		// } else {
+		// loggedUser = ret.getUser();
+		// FacesUtil.showSuccessMessage(ret.getMessage());
+		// }
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// FacesUtil.showAErrorMessage(e.getMessage());
+		// return "";
+		// }
 
 		return "/common/index.xhtml?faces-redirect=true";
 	}
@@ -119,16 +158,15 @@ public class UserMBean implements Serializable {
 	private void loadList() {
 		try {
 
-			ClientRequest request = new ClientRequest("http://localhost:8080/mmanagerAPI/rest/user");
+			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/user");
 			ClientResponse<User> response = request.get(User.class);
-			
-			userList = (List<User>) request.accept(MediaType.APPLICATION_JSON).get(new GenericType<List<User>>() {});
 
 			if (response.getStatus() != 200) {
 				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
 			}
-
-
+			
+			userList = (List<User>) response.getEntity(new GenericType<List<User>>() {
+			});
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -136,7 +174,28 @@ public class UserMBean implements Serializable {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private Collection<Country> loadCountryList(String locale) {
+		try {
 
+			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/country");
+			request.body("application/json", locale);
+			ClientResponse<String> response = request.put(String.class);
+
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+			countryList = response.getEntity(new GenericType<List<Country>>() {
+			});
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return countryList;
 	}
 
 	public String list() {
@@ -153,6 +212,7 @@ public class UserMBean implements Serializable {
 
 	public void newUser() {
 		this.user = new User();
+		this.user.setAdministrator(true);
 		showPassword = true;
 	}
 
@@ -178,66 +238,70 @@ public class UserMBean implements Serializable {
 
 	public String save() {
 		MessageReturn ret = new MessageReturn();
-//		try {
-//			WebResource webResource = client.resource(host + "libraryWS/user");
-//
-//			if (!isAdmin) {
-//				user.setAdmin(false);
-//			}
-//
-//			ClientResponse response = webResource.type(MediaType.APPLICATION_JSON).post(ClientResponse.class, user);
-//
-//			if (response.getStatus() != 201 && response.getStatus() != 200) {
-//				ret.setMessage("Failed : HTTP error code : " + response.getStatus());
-//				throw new Exception(ret.getMessage());
-//			}
-//
-//			ret = response.getEntity(MessageReturn.class);
-//
-//			if (ret.getUser() == null) {
-//				throw new Exception(ret.getMessage());
-//			} else {
-//				FacesUtil.showSuccessMessage(ret.getMessage());
-//			}
-//			if (isAdmin) {
-//				loadList();
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			FacesUtil.showAErrorMessage(ret.getMessage());
-//		}
-//		if (loggedUser != null) {
-//			return "/common/listUser.xhtml?faces-redirect=true";
-//		}
-		return "";
+
+		try {
+
+			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/user");
+			
+			request.body("application/json", user);
+	 
+			ClientResponse<User> response = request.post(User.class);
+
+			ret = response.getEntity(MessageReturn.class);
+
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+
+			if (ret.getUser() == null) {
+				throw new Exception(ret.getMessage());
+			} else {
+				FacesUtil.showSuccessMessage(ret.getMessage());
+			}
+			if (isAdmin) {
+				loadList();
+			}
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+			FacesUtil.showAErrorMessage(e.getMessage());
+			return "/index.xhtml";
+		}
+		if (loggedUser != null) {
+			return "/common/listUser.xhtml?faces-redirect=true";
+		}
+		return "/common/listUser.xhtml?faces-redirect=true";
 	}
 
 	public void delete() {
 		MessageReturn ret = new MessageReturn();
-//		try {
-//			for (User user : selectedUsers) {
-//				WebResource webResource = client.resource(host + "libraryWS/user/" + user.getId());
-//
-//				ClientResponse response = webResource.type(MediaType.APPLICATION_JSON).delete(ClientResponse.class);
-//
-//				if (response.getStatus() != 201 && response.getStatus() != 200) {
-//					ret.setMessage("Failed : HTTP error code : " + response.getStatus());
-//					throw new Exception(ret.getMessage());
-//				}
-//
-//				ret = response.getEntity(MessageReturn.class);
-//			}
-//
-//			if (selectedUsers.length > 1) {
-//				FacesUtil.showSuccessMessage(loggedUser.getLanguage().equals("pt_BR") ? "Usu�rios excluidos com sucesso!" : "User successfully deleted!");
-//			} else {
-//				FacesUtil.showSuccessMessage(loggedUser.getLanguage().equals("pt_BR") ? "Removido com sucesso!" : "Successfully deleted!");
-//			}
-//			loadList();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			FacesUtil.showAErrorMessage(ret.getMessage());
-//		}
+		// try {
+		// for (User user : selectedUsers) {
+		// WebResource webResource = client.resource(host + "libraryWS/user/" + user.getId());
+		//
+		// ClientResponse response = webResource.type(MediaType.APPLICATION_JSON).delete(ClientResponse.class);
+		//
+		// if (response.getStatus() != 201 && response.getStatus() != 200) {
+		// ret.setMessage("Failed : HTTP error code : " + response.getStatus());
+		// throw new Exception(ret.getMessage());
+		// }
+		//
+		// ret = response.getEntity(MessageReturn.class);
+		// }
+		//
+		// if (selectedUsers.length > 1) {
+		// FacesUtil.showSuccessMessage(loggedUser.getLanguage().equals("pt_BR") ? "Usu�rios excluidos com sucesso!" : "User successfully deleted!");
+		// } else {
+		// FacesUtil.showSuccessMessage(loggedUser.getLanguage().equals("pt_BR") ? "Removido com sucesso!" : "Successfully deleted!");
+		// }
+		// loadList();
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// FacesUtil.showAErrorMessage(ret.getMessage());
+		// }
 	}
 
 	public void checkEmail() throws ValidatorException {
@@ -310,6 +374,54 @@ public class UserMBean implements Serializable {
 
 	public void setLoggedUser(User loggedUser) {
 		this.loggedUser = loggedUser;
+	}
+
+	public SelectItem[] getCountries() {
+		return countries;
+	}
+
+	public void setCountries(SelectItem[] countries) {
+		this.countries = countries;
+	}
+
+	public SelectItem[] getStates() {
+		return states;
+	}
+
+	public void setStates(SelectItem[] states) {
+		this.states = states;
+	}
+
+	public SelectItem[] getCities() {
+		return cities;
+	}
+
+	public void setCities(SelectItem[] cities) {
+		this.cities = cities;
+	}
+
+	public Country getCountry() {
+		return country;
+	}
+
+	public void setCountry(Country country) {
+		this.country = country;
+	}
+
+	public State getState() {
+		return state;
+	}
+
+	public void setState(State state) {
+		this.state = state;
+	}
+
+	public City getCity() {
+		return city;
+	}
+
+	public void setCity(City city) {
+		this.city = city;
 	}
 
 }

@@ -156,6 +156,7 @@ public class GenericDAOImpl<T> implements GenericDAO<T> {
 				sql.append(" order by ").append(orderByField);
 			}
 
+			System.out.println("sql.toString(): "+sql.toString());
 			Query query = em.createQuery(sql.toString());
 			query.setHint("toplink.refresh", "true");
 			return query.getResultList();

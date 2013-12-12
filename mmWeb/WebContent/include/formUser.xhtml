@@ -28,9 +28,6 @@
 						styleClass="width30px"
 						yearRange="1950:2020"/>
 						
-					<h:outputText value="#{messages['lb_address']}" />
-					<p:inputText id="address" label="#{messages['lb_address_']}" required="true"  value="#{userMBean.user.address}" style="width:100%" />
-					
 					<h:outputText value="#{messages['lb_email']}" />
 					<p:inputText id="email" label="#{messages['lb_email_']}" required="true" value="#{userMBean.user.email}" style="width:100%" >
 						<p:ajax event="blur" update="msg"  listener="#{userMBean.checkEmail}"  />  
@@ -48,7 +45,7 @@
 			        </p:selectOneMenu>
 			        
 					<h:outputText value="#{messages['lb_admin']}" rendered="#{userMBean.isAdmin}" />
-					<p:selectOneMenu value="#{userMBean.user.admin}" label="#{messages['lb_admin_']}" required="true" rendered="#{userMBean.isAdmin}">
+					<p:selectOneMenu value="#{userMBean.user.administrator}" label="#{messages['lb_admin_']}" required="true" rendered="#{userMBean.isAdmin}">
 			            <f:selectItem itemLabel="#{messages['lb_select']}" itemValue="" />
 			            <f:selectItem itemLabel="#{messages['lb_yes']}" itemValue="#{true}" />
 			            <f:selectItem itemLabel="#{messages['lb_no']}" itemValue="#{false}" />
@@ -61,7 +58,7 @@
 					<p:commandButton value="#{messages['lb_post']}" 
 						id="post" action="#{userMBean.save}" ajax="false" 
 						update="msg"
-						styleClass="button" 
+						styleClass="button"
 						oncomplete="if (#{not facesContext.validationFailed}) newUserModal.hide();">  
 					</p:commandButton>
 					<p:commandButton value="#{messages['lb_back']}" immediate="true" id="voltarAdmin" ajax="false"  styleClass="button" action="#{userMBean.cancelLogged}" rendered="#{userMBean.isAdmin}"/>

@@ -1,7 +1,9 @@
 package com.mconnti.moneymanager.rest;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -87,6 +89,23 @@ public class RestService {
 		List<Country> list = new ArrayList<>();
 		try {
 			list = countryBO.list();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return Response.status(200).entity(list).build();
+	}
+	
+	@PUT
+	@Path("/country")
+	@Produces({ "application/json" })
+	public Response listCountryByLocale(String locale) {
+
+		List<Country> list = new ArrayList<>();
+		try {
+			Map<String,String> queryParams = new HashMap<>();
+			queryParams.put("locale", "= '"+locale+"'");
+			list = countryBO.list(Country.class, queryParams, "x.name asc");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
