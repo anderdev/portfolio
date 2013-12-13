@@ -104,7 +104,7 @@ public class RestService {
 		List<Country> list = new ArrayList<>();
 		try {
 			Map<String,String> queryParams = new HashMap<>();
-			queryParams.put("locale", "= '"+locale+"'");
+			queryParams.put("x.locale", "= "+locale);
 			list = countryBO.list(Country.class, queryParams, "x.name asc");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -157,6 +157,23 @@ public class RestService {
 
 		return Response.status(200).entity(state).build();
 	}
+	
+	@PUT
+	@Path("/state")
+	@Produces({ "application/json" })
+	public Response listStateByCountry(Country country) {
+
+		List<State> list = new ArrayList<>();
+		try {
+			Map<String,String> queryParams = new HashMap<>();
+			queryParams.put("country", "= "+country.getId());
+			list = stateBO.list(State.class, queryParams, "x.name asc");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return Response.status(200).entity(list).build();
+	}
 
 	@POST
 	@Path("/state")
@@ -196,6 +213,23 @@ public class RestService {
 		List<City> list = new ArrayList<>();
 		try {
 			list = cityBO.list();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return Response.status(200).entity(list).build();
+	}
+	
+	@PUT
+	@Path("/city")
+	@Produces({ "application/json" })
+	public Response listCityByState(State state) {
+
+		List<City> list = new ArrayList<>();
+		try {
+			Map<String,String> queryParams = new HashMap<>();
+			queryParams.put("state", "= "+state.getId());
+			list = cityBO.list(City.class, queryParams, "x.name asc");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -39,9 +39,11 @@ public class StateBOImpl extends GenericBOImpl<State> implements StateBO {
 					for (int x = 0; x < nameSplit.length; x++) {
 						c = new State();
 						c.setName(nameSplit[x]);
+						c.setCountry(country);
 						saveGeneric(c);
 					}
 				} else {
+					state.setCountry(country);
 					saveGeneric(state);
 				}
 			} catch (Exception e) {
