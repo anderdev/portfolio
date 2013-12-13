@@ -24,7 +24,6 @@
 		        			id="newButton"
 		        			oncomplete="newUserModal.show()" >
 		        		</p:commandButton>
-		        		<p:commandButton value="#{messages['lb_print']}" styleClass="button"  actionListener="#{userMBean.print}" ajax="false" />
 				    </h:panelGrid>
 				   
 				    <p:dataTable var="cat" value="#{userMBean.userList}" style="width:50%" id="userList"

@@ -35,7 +35,6 @@ public class UserMBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	// captura a sess�o do contexto criado pelo JavaServer Faces
 	FacesContext fc = FacesContext.getCurrentInstance();
 
 	HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
@@ -43,6 +42,10 @@ public class UserMBean implements Serializable {
 	private List<User> userList;
 	
 	private List<Country> countryList;
+	
+	private List<State> stateList;
+	
+	private List<City> cityList;
 
 	private User user;
 
@@ -104,12 +107,6 @@ public class UserMBean implements Serializable {
 		} else {
 			locale = loggedUser.getLanguage();
 		}
-		
-		this.countries = getCountriesByLocale(locale);
-		this.states = new SelectItem[1];
-		states[0] = new SelectItem("0", locale.equals("pt_BR") ? "Selecione..." : "Select...");
-		this.cities = new SelectItem[1];
-		cities[0] = new SelectItem("0", locale.equals("pt_BR") ? "Selecione..." : "Select...");
 	}
 	
 	public SelectItem[] getCountriesByLocale(String locale) {
@@ -126,8 +123,8 @@ public class UserMBean implements Serializable {
 	}
 
 	public String login() {
-		MessageReturn ret = new MessageReturn();
-		loadList();
+//		MessageReturn ret = new MessageReturn();
+//		loadList();
 		// try {
 		//
 		// WebResource webResource = client.resource(host + "libraryWS/user");
@@ -180,7 +177,7 @@ public class UserMBean implements Serializable {
 		try {
 
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/country");
-			request.body("application/json", locale);
+			request.body("application/json", "'"+locale+"'");
 			ClientResponse<String> response = request.put(String.class);
 
 			if (response.getStatus() != 200) {
@@ -197,6 +194,50 @@ public class UserMBean implements Serializable {
 		}
 		return countryList;
 	}
+	
+	private Collection<State> loadStateListByCountry(Country country) {
+		try {
+
+			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/state");
+			request.body("application/json", country);
+			ClientResponse<Country> response = request.put(Country.class);
+
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+			stateList = response.getEntity(new GenericType<List<State>>() {
+			});
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return stateList;
+	}
+	
+	private Collection<City> loadCityListByState(State state) {
+		try {
+
+			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/state");
+			request.body("application/json", country);
+			ClientResponse<State> response = request.put(State.class);
+
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+			cityList = response.getEntity(new GenericType<List<City>>() {
+			});
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return cityList;
+	}
 
 	public String list() {
 
@@ -210,16 +251,26 @@ public class UserMBean implements Serializable {
 		return "/index.xhtml?faces-redirect=true";
 	}
 
+	private void loadDefaultCombos(){
+		this.countries = getCountriesByLocale(locale);
+		this.states = new SelectItem[1];
+		states[0] = new SelectItem("0", locale.equals("pt_BR") ? "Selecione..." : "Select...");
+		this.cities = new SelectItem[1];
+		cities[0] = new SelectItem("0", locale.equals("pt_BR") ? "Selecione..." : "Select...");
+	}
+	
 	public void newUser() {
 		this.user = new User();
 		this.user.setAdministrator(true);
 		showPassword = true;
+		loadDefaultCombos();
 	}
 
 	public void newAdminUser() {
 		this.user = new User();
 		isAdmin = true;
 		showPassword = true;
+		loadDefaultCombos();
 	}
 
 	public String cancel() {
@@ -277,7 +328,7 @@ public class UserMBean implements Serializable {
 	}
 
 	public void delete() {
-		MessageReturn ret = new MessageReturn();
+//		MessageReturn ret = new MessageReturn();
 		// try {
 		// for (User user : selectedUsers) {
 		// WebResource webResource = client.resource(host + "libraryWS/user/" + user.getId());
@@ -422,6 +473,30 @@ public class UserMBean implements Serializable {
 
 	public void setCity(City city) {
 		this.city = city;
+	}
+
+	public List<Country> getCountryList() {
+		return countryList;
+	}
+
+	public void setCountryList(List<Country> countryList) {
+		this.countryList = countryList;
+	}
+
+	public List<State> getStateList() {
+		return stateList;
+	}
+
+	public void setStateList(List<State> stateList) {
+		this.stateList = stateList;
+	}
+
+	public List<City> getCityList() {
+		return cityList;
+	}
+
+	public void setCityList(List<City> cityList) {
+		this.cityList = cityList;
 	}
 
 }
