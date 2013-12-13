@@ -186,7 +186,7 @@ div#register{
 }
 
 .boxNewUser{
-	width:400px;
+	width:465px;
 	position: absolute;
 	top:70px;
 	border: 0px dotted #000;
@@ -397,6 +397,11 @@ div#boxUsuarioLogado{
 
 .colunaLabel220{
 	width: 220px;
+	border: 0px dotted #000;
+}
+
+.colunaLabel260{
+	width: 260px;
 	border: 0px dotted #000;
 }
 

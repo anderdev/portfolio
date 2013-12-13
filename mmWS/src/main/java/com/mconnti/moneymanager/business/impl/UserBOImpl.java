@@ -35,10 +35,12 @@ public class UserBOImpl extends GenericBOImpl<User> implements UserBO {
 		City city = getCity(user);
 		if (city != null) {
 			try {
-				user.setBirthDate(Utils.stringToDate(user.getBirth(), false));
+				if(user.getBirth() != null && !user.getBirth().isEmpty()){
+					user.setBirthDate(Utils.stringToDate(user.getBirth(), false));
+				}
 				user.setRegister(new Date());
 				user.setExcluded(false);
-				if (user.getPass() != null || !user.getPass().isEmpty()) {
+				if (user.getPass() != null &&  !user.getPass().isEmpty()) {
 					user.setPassword(user.getPass());
 				}
 				saveGeneric(user);

@@ -228,7 +228,7 @@ public class RestService {
 		List<City> list = new ArrayList<>();
 		try {
 			Map<String,String> queryParams = new HashMap<>();
-			queryParams.put("state", "= "+state.getId());
+			queryParams.put("state_id", "= "+state.getId());
 			list = cityBO.list(City.class, queryParams, "x.name asc");
 		} catch (Exception e) {
 			e.printStackTrace();

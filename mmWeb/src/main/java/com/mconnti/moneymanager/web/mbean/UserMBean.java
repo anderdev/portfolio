@@ -93,6 +93,9 @@ public class UserMBean implements Serializable {
 
 	public UserMBean() {
 		this.user = new User();
+		this.country = new Country();
+		this.state = new State();
+		this.city = new City();
 		Object request = FacesContext.getCurrentInstance().getExternalContext().getRequest();
 		if (request instanceof HttpServletRequest) {
 			String[] str = ((HttpServletRequest) request).getRequestURL().toString().split("mmanager");
@@ -115,8 +118,41 @@ public class UserMBean implements Serializable {
 
 		this.countries = new SelectItem[itens.size()];
 
-		itens.add(new SelectItem(0, locale.equals("pt_BR") ? "Selecione..." : "Select..."));
 		for (Country c : countryList) {
+			itens.add(new SelectItem(c.getId(), c.getName()));
+		}
+		return itens.toArray(new SelectItem[itens.size()]);
+	}
+	
+	public void loadStates() {
+		this.cities = new SelectItem[1];
+
+		this.states = getStateByCountry(country);
+	}
+	
+	public void loadCities() {
+		this.cities = getCityByState(state);
+	}
+	
+	public SelectItem[] getStateByCountry(Country country) {
+		Collection<State> stateList = loadStateListByCountry(country);
+		List<SelectItem> itens = new ArrayList<SelectItem>(countryList.size());
+
+		this.states = new SelectItem[itens.size()];
+
+		for (State c : stateList) {
+			itens.add(new SelectItem(c.getId(), c.getName()));
+		}
+		return itens.toArray(new SelectItem[itens.size()]);
+	}
+	
+	public SelectItem[] getCityByState(State state) {
+		Collection<City> cityList = loadCityListByState(state);
+		List<SelectItem> itens = new ArrayList<SelectItem>(countryList.size());
+
+		this.cities = new SelectItem[itens.size()];
+
+		for (City c : cityList) {
 			itens.add(new SelectItem(c.getId(), c.getName()));
 		}
 		return itens.toArray(new SelectItem[itens.size()]);
@@ -220,8 +256,8 @@ public class UserMBean implements Serializable {
 	private Collection<City> loadCityListByState(State state) {
 		try {
 
-			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/state");
-			request.body("application/json", country);
+			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/city");
+			request.body("application/json", state);
 			ClientResponse<State> response = request.put(State.class);
 
 			if (response.getStatus() != 200) {
@@ -253,21 +289,21 @@ public class UserMBean implements Serializable {
 
 	private void loadDefaultCombos(){
 		this.countries = getCountriesByLocale(locale);
-		this.states = new SelectItem[1];
-		states[0] = new SelectItem("0", locale.equals("pt_BR") ? "Selecione..." : "Select...");
-		this.cities = new SelectItem[1];
-		cities[0] = new SelectItem("0", locale.equals("pt_BR") ? "Selecione..." : "Select...");
 	}
 	
 	public void newUser() {
-		this.user = new User();
+		this.country = new Country();
+		this.state = new State();
+		this.city = new City();
 		this.user.setAdministrator(true);
 		showPassword = true;
 		loadDefaultCombos();
 	}
 
 	public void newAdminUser() {
-		this.user = new User();
+		this.country = new Country();
+		this.state = new State();
+		this.city = new City();
 		isAdmin = true;
 		showPassword = true;
 		loadDefaultCombos();
@@ -293,7 +329,7 @@ public class UserMBean implements Serializable {
 		try {
 
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/user");
-			
+			user.setCity(city);
 			request.body("application/json", user);
 	 
 			ClientResponse<User> response = request.post(User.class);
@@ -319,12 +355,11 @@ public class UserMBean implements Serializable {
 		} catch (Exception e) {
 			e.printStackTrace();
 			FacesUtil.showAErrorMessage(e.getMessage());
-			return "/index.xhtml";
 		}
 		if (loggedUser != null) {
 			return "/common/listUser.xhtml?faces-redirect=true";
 		}
-		return "/common/listUser.xhtml?faces-redirect=true";
+		return "/index.xhtml";
 	}
 
 	public void delete() {
