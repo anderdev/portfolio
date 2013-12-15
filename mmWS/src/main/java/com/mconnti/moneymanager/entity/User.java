@@ -23,7 +23,7 @@ import com.mconnti.moneymanager.utils.Crypt;
 
 @Entity
 @Table(name = "user")
-@NamedQueries({@NamedQuery(name = "user.findByEmail", query = "SELECT us FROM User us WHERE us.email = :email")})
+@NamedQueries({@NamedQuery(name = "user.findByUsername", query = "SELECT us FROM User us WHERE us.username = :username")})
 @XmlRootElement
 public class User implements Serializable{
 
@@ -70,6 +70,11 @@ public class User implements Serializable{
 	private String username;
 	
 	private String password;
+	
+	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = Role.class)
+	@JoinColumn(name = "role_id")
+	@ForeignKey(name = "FK_USER_ROLE")
+	private Role role;
 	
 	@Transient
 	//Rest password
@@ -207,6 +212,14 @@ public class User implements Serializable{
 
 	public void setPass(String pass) {
 		this.pass = pass;
+	}
+
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
 	}
 	
 }

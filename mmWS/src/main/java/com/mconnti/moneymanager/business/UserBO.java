@@ -17,5 +17,7 @@ public interface UserBO extends GenericBO<User>{
 	public MessageReturn delete (Long id);
 	
 	public User getById(Long id);
+
+	public MessageReturn login(User user);
 }
 

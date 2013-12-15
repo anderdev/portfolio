@@ -24,6 +24,7 @@ import com.mconnti.moneymanager.business.CurrencyBO;
 import com.mconnti.moneymanager.business.DebitBO;
 import com.mconnti.moneymanager.business.DescriptionBO;
 import com.mconnti.moneymanager.business.PlanningBO;
+import com.mconnti.moneymanager.business.RoleBO;
 import com.mconnti.moneymanager.business.StateBO;
 import com.mconnti.moneymanager.business.TypeAccountBO;
 import com.mconnti.moneymanager.business.TypeClosureBO;
@@ -39,6 +40,7 @@ import com.mconnti.moneymanager.entity.Currency;
 import com.mconnti.moneymanager.entity.Debit;
 import com.mconnti.moneymanager.entity.Description;
 import com.mconnti.moneymanager.entity.Planning;
+import com.mconnti.moneymanager.entity.Role;
 import com.mconnti.moneymanager.entity.State;
 import com.mconnti.moneymanager.entity.TypeAccount;
 import com.mconnti.moneymanager.entity.TypeClosure;
@@ -61,6 +63,7 @@ public class RestService {
 	private DebitBO debitBO;
 	private ClosureBO closureBO;
 	private PlanningBO planningBO;
+	private RoleBO roleBO;
 
 	public RestService() {
 		countryBO = (CountryBO) SpringApplicationContext.getBean("countryBO");
@@ -77,6 +80,7 @@ public class RestService {
 		debitBO = (DebitBO) SpringApplicationContext.getBean("debitBO");
 		closureBO = (ClosureBO) SpringApplicationContext.getBean("closureBO");
 		planningBO = (PlanningBO) SpringApplicationContext.getBean("planningBO");
+		roleBO = (RoleBO) SpringApplicationContext.getBean("roleBO");
 	}
 
 	// COUNTRY AREA
@@ -95,7 +99,7 @@ public class RestService {
 
 		return Response.status(200).entity(list).build();
 	}
-	
+
 	@PUT
 	@Path("/country")
 	@Produces({ "application/json" })
@@ -103,8 +107,8 @@ public class RestService {
 
 		List<Country> list = new ArrayList<>();
 		try {
-			Map<String,String> queryParams = new HashMap<>();
-			queryParams.put("x.locale", "= "+locale);
+			Map<String, String> queryParams = new HashMap<>();
+			queryParams.put("x.locale", "= " + locale);
 			list = countryBO.list(Country.class, queryParams, "x.name asc");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -157,7 +161,7 @@ public class RestService {
 
 		return Response.status(200).entity(state).build();
 	}
-	
+
 	@PUT
 	@Path("/state")
 	@Produces({ "application/json" })
@@ -165,8 +169,8 @@ public class RestService {
 
 		List<State> list = new ArrayList<>();
 		try {
-			Map<String,String> queryParams = new HashMap<>();
-			queryParams.put("country", "= "+country.getId());
+			Map<String, String> queryParams = new HashMap<>();
+			queryParams.put("country", "= " + country.getId());
 			list = stateBO.list(State.class, queryParams, "x.name asc");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -219,7 +223,7 @@ public class RestService {
 
 		return Response.status(200).entity(list).build();
 	}
-	
+
 	@PUT
 	@Path("/city")
 	@Produces({ "application/json" })
@@ -227,8 +231,8 @@ public class RestService {
 
 		List<City> list = new ArrayList<>();
 		try {
-			Map<String,String> queryParams = new HashMap<>();
-			queryParams.put("state_id", "= "+state.getId());
+			Map<String, String> queryParams = new HashMap<>();
+			queryParams.put("state_id", "= " + state.getId());
 			list = cityBO.list(City.class, queryParams, "x.name asc");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -303,6 +307,20 @@ public class RestService {
 		MessageReturn ret = new MessageReturn();
 		try {
 			ret = userBO.delete(user.getId());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Response.status(200).entity(ret).build();
+	}
+	
+	@PUT
+	@Path("/user")
+	@Consumes({ "application/json" })
+	@Produces({ "application/json" })
+	public Response login(User user) {
+		MessageReturn ret = new MessageReturn();
+		try {
+			ret = userBO.login(user);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -768,6 +786,51 @@ public class RestService {
 		MessageReturn ret = new MessageReturn();
 		try {
 			ret = planningBO.delete(planning.getId());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Response.status(200).entity(ret).build();
+	}
+
+	// ROLE AREA
+
+	@GET
+	@Path("/role")
+	@Produces({ "application/json" })
+	public Response listRole() {
+
+		List<Role> list = new ArrayList<>();
+		try {
+			list = roleBO.list();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return Response.status(200).entity(list).build();
+	}
+
+	@POST
+	@Path("/role")
+	@Consumes({ "application/json" })
+	@Produces({ "application/json" })
+	public Response saveRole(Role role) {
+		MessageReturn ret = new MessageReturn();
+		try {
+			ret = roleBO.save(role);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Response.status(200).entity(ret).build();
+	}
+
+	@DELETE
+	@Path("/role")
+	@Consumes({ "application/json" })
+	@Produces({ "application/json" })
+	public Response deleteRole(Role role) {
+		MessageReturn ret = new MessageReturn();
+		try {
+			ret = roleBO.delete(role.getId());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

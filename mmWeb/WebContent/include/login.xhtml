@@ -9,8 +9,8 @@
        			<p:focus context="panel"/>  
        			<p:panel header="#{messages['lb_login_info']}" id="panel">
        				<h:panelGrid styleClass="boxLogin" columns="2" border="0" columnClasses="width80,width200">
-						<h:outputText value="#{messages['lb_email']}"/>
-						<h:inputText tabindex="1" label="#{messages['lb_email_']}" required="true" value="#{userMBean.user.email}" size="30"/>
+						<h:outputText value="#{messages['lb_username']}"/>
+						<h:inputText tabindex="1" label="#{messages['lb_username_']}" required="true" value="#{userMBean.user.username}" size="30"/>
 						
 						<h:outputText value="#{messages['lb_password']}"/>
 						<h:inputSecret tabindex="2" label="#{messages['lb_password_']}" required="true"  value="#{userMBean.user.password}" size="30"/>

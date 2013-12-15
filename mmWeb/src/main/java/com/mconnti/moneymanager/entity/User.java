@@ -42,6 +42,8 @@ public class User implements Serializable{
 	
 	private String password;
 	
+	private Role role;
+	
 	@Transient
 	//Rest password
 	private String pass;
@@ -174,6 +176,14 @@ public class User implements Serializable{
 
 	public void setPass(String pass) {
 		this.pass = pass;
+	}
+
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
 	}
 	
 }
