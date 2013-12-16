@@ -16,7 +16,7 @@ import com.mconnti.moneymanager.utils.MessageFactory;
 import com.mconnti.moneymanager.utils.Utils;
 
 public class UserBOImpl extends GenericBOImpl<User> implements UserBO {
-	
+
 	@Autowired
 	private UserDAO userDAO;
 
@@ -39,13 +39,13 @@ public class UserBOImpl extends GenericBOImpl<User> implements UserBO {
 		City city = getCity(user);
 		if (city != null) {
 			try {
-				if (user.getId() == null){
-					if(user.getBirth() != null && !user.getBirth().isEmpty()){
+				if (user.getId() == null) {
+					if (user.getBirth() != null && !user.getBirth().isEmpty()) {
 						user.setBirthDate(Utils.stringToDate(user.getBirth(), false));
 					}
 					user.setRegister(new Date());
 					user.setExcluded(false);
-					if (user.getPass() != null &&  !user.getPass().isEmpty()) {
+					if (user.getPass() != null && !user.getPass().isEmpty()) {
 						user.setPassword(user.getPass());
 					}
 				}
@@ -69,8 +69,14 @@ public class UserBOImpl extends GenericBOImpl<User> implements UserBO {
 		return libReturn;
 	}
 
+	@Override
 	public List<User> list() throws Exception {
 		return list(User.class, null, null);
+	}
+
+	@Override
+	public List<User> listByParameter(User user) throws Exception {
+		return list(User.class, user.getQueryParams(), user.getOrderBy());
 	}
 
 	@Override
@@ -109,12 +115,12 @@ public class UserBOImpl extends GenericBOImpl<User> implements UserBO {
 		MessageReturn messageReturn = null;
 		try {
 			messageReturn = userDAO.getByUsername(user.getUsername());
-			if(messageReturn.getUser() == null){
+			if (messageReturn.getUser() == null) {
 				messageReturn.setMessage(MessageFactory.getMessage("lb_user_not_found", "en"));
-			}else if (!messageReturn.getUser().getPassword().equals(user.getPassword())) {
+			} else if (!messageReturn.getUser().getPassword().equals(user.getPassword())) {
 				messageReturn.setUser(null);
 				messageReturn.setMessage(MessageFactory.getMessage("lb_user_incorrect_password", messageReturn.getUser().getLanguage()));
-			}else{
+			} else {
 				messageReturn.setMessage(MessageFactory.getMessage("lb_login_success", messageReturn.getUser().getLanguage()));
 			}
 		} catch (Exception e) {

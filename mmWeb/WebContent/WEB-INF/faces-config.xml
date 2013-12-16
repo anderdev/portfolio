@@ -10,6 +10,7 @@
 			<supported-locale>en</supported-locale>
 		</locale-config>
 
+ 		<message-bundle>com.mconnti.moneymanager.web.bundle.resources</message-bundle>
 
 		<resource-bundle>
 			<base-name>com.mconnti.moneymanager.web.bundle.messages</base-name>

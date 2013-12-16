@@ -8,15 +8,17 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.mconnti.moneymanager.entity.xml.SearchObject;
+
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class User implements Serializable{
+public class User extends SearchObject implements Serializable{
 
 	private static final long serialVersionUID = -5645425703632609531L;
 	
 	private Long id;
 	
-	private User masterUser;
+	private User superUser;
 	
 	private String name;
 	
@@ -49,7 +51,7 @@ public class User implements Serializable{
 	private String pass;
 	
 	private Boolean excluded;
-
+	
 	public Long getId() {
 		return id;
 	}
@@ -178,12 +180,11 @@ public class User implements Serializable{
 		this.role = role;
 	}
 
-	public User getMasterUser() {
-		return masterUser;
+	public User getSuperUser() {
+		return superUser;
 	}
 
-	public void setMasterUser(User masterUser) {
-		this.masterUser = masterUser;
+	public void setSuperUser(User superUser) {
+		this.superUser = superUser;
 	}
-	
 }

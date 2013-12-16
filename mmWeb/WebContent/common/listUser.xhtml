@@ -8,7 +8,7 @@
         
         <ui:define name="contentAPP">
 	        <h:form prependId="false" target="_blank">
-	        	<h:outputText value="#{messages['lb_user_list']}" styleClass="boxTitulo"/>
+	        	<h:outputText value="#{messages['lb_user_list_']}" styleClass="boxTitulo"/>
 	        	
 	        	<div align="center" style="width: 100%;" >
 	        		<div id="messages" class="messages" style="width: 50%;">
@@ -40,11 +40,11 @@
 				            <h:outputText value="#{cat.name}" />
 				        </p:column>
 				        
-				        <p:column sortBy="#{cat.userName}" >
+				        <p:column sortBy="#{cat.username}" >
 				            <f:facet name="header">
 				                <h:outputText value="#{messages['lb_username_']}" />
 				            </f:facet>
-				            <h:outputText value="#{cat.userName}" />
+				            <h:outputText value="#{cat.username}" />
 				        </p:column>
 				        
 				        <p:column sortBy="#{cat.email}" >
@@ -54,14 +54,14 @@
 				            <h:outputText value="#{cat.email}" />
 				        </p:column>
 				        
-				        <p:column sortBy="#{cat.admin}" >
+				        <p:column sortBy="#{cat.administrator}"  >
 				            <f:facet name="header">
 				                <h:outputText value="#{messages['lb_admin_']}" />
 				            </f:facet>
-				            <h:outputText value="#{cat.admin}" />
+				            <h:outputText value="#{cat.administrator}" />
 				        </p:column>
 				
-				        <p:column style="width:5%">
+				        <p:column style="width:5% ; align:center">
 				        	<p:commandLink action="#{userMBean.edit}" update=":newUser" oncomplete="newUserModal.show();" id="editButton">
 				        		<f:setPropertyActionListener value="#{cat}" target="#{userMBean.user}" />  
 								<p:graphicImage value="#{messages['img_update']}" style="border: 0px" />

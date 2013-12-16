@@ -19,13 +19,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.hibernate.annotations.ForeignKey;
 
+import com.mconnti.moneymanager.entity.xml.SearchObject;
 import com.mconnti.moneymanager.utils.Crypt;
 
 @Entity
 @Table(name = "user")
 @NamedQueries({@NamedQuery(name = "user.findByUsername", query = "SELECT us FROM User us WHERE us.username = :username")})
 @XmlRootElement
-public class User implements Serializable{
+public class User extends SearchObject implements Serializable{
 
 	private static final long serialVersionUID = -5645425703632609531L;
 	
@@ -37,7 +38,7 @@ public class User implements Serializable{
 	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = User.class)
 	@JoinColumn(name = "master_id")
 	@ForeignKey(name = "FK_USER_USER")
-	private User masterUser;
+	private User superUser;
 	
 	private String name;
 	
@@ -216,12 +217,12 @@ public class User implements Serializable{
 		this.role = role;
 	}
 
-	public User getMasterUser() {
-		return masterUser;
+	public User getSuperUser() {
+		return superUser;
 	}
 
-	public void setMasterUser(User masterUser) {
-		this.masterUser = masterUser;
+	public void setSuperUser(User superUser) {
+		this.superUser = superUser;
 	}
-	
+
 }

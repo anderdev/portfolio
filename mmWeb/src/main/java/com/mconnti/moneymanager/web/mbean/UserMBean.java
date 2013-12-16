@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -30,6 +32,7 @@ import com.mconnti.moneymanager.entity.State;
 import com.mconnti.moneymanager.entity.User;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
 import com.mconnti.moneymanager.util.FacesUtil;
+import com.mconnti.moneymanager.util.MessageFactory;
 
 @SessionScoped
 @ManagedBean(name = "userMBean")
@@ -172,7 +175,7 @@ public class UserMBean implements Serializable {
 		MessageReturn ret = new MessageReturn();
 		try {
 
-			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/user");
+			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/user/login");
 			request.body(MediaType.APPLICATION_JSON, user);
 			ClientResponse<User> response = request.put(User.class);
 
@@ -220,12 +223,34 @@ public class UserMBean implements Serializable {
 			e.printStackTrace();
 		}
 	}
+	
+	private void loadListByParameter() {
+		try {
+
+			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/user");
+			request.body(MediaType.APPLICATION_JSON, loggedUser);
+			ClientResponse<User> response = request.put(User.class);
+
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+
+			userList = (List<User>) response.getEntity(new GenericType<List<User>>() {
+			});
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	private Collection<Country> loadCountryList(String locale) {
 		try {
 
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/country");
-			request.body("application/json", "'" + locale + "'");
+			request.body(MediaType.APPLICATION_JSON, "'" + locale + "'");
 			ClientResponse<String> response = request.put(String.class);
 
 			if (response.getStatus() != 200) {
@@ -247,7 +272,7 @@ public class UserMBean implements Serializable {
 		try {
 
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/state");
-			request.body("application/json", country);
+			request.body(MediaType.APPLICATION_JSON, country);
 			ClientResponse<Country> response = request.put(Country.class);
 
 			if (response.getStatus() != 200) {
@@ -269,7 +294,7 @@ public class UserMBean implements Serializable {
 		try {
 
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/city");
-			request.body("application/json", state);
+			request.body(MediaType.APPLICATION_JSON, state);
 			ClientResponse<State> response = request.put(State.class);
 
 			if (response.getStatus() != 200) {
@@ -293,6 +318,17 @@ public class UserMBean implements Serializable {
 
 		return "/common/listUser.xhtml?faces-redirect=true";
 	}
+	
+	public String listSuperUser() {
+		Map<String, String> queryParams = new HashMap<String, String>();
+		queryParams.put("x.superUser", "= "+loggedUser.getId());
+		loggedUser.setOrderBy("x.name asc");
+		loggedUser.setQueryParams(queryParams);
+
+		loadListByParameter();
+
+		return "/common/listUser.xhtml?faces-redirect=true";
+	}
 
 	public String logout() {
 		this.loggedUser = null;
@@ -304,6 +340,7 @@ public class UserMBean implements Serializable {
 	}
 
 	public void newUser() {
+		this.user = new User();
 		this.country = new Country();
 		this.state = new State();
 		this.city = new City();
@@ -316,6 +353,7 @@ public class UserMBean implements Serializable {
 	}
 
 	public void newParentUser() {
+		this.user = new User();
 		this.country = new Country();
 		this.state = new State();
 		this.city = new City();
@@ -323,6 +361,7 @@ public class UserMBean implements Serializable {
 		this.role = new Role();
 		role.setId(USER);
 		user.setRole(role);
+		user.setSuperUser(loggedUser);
 		showPassword = false;
 		loadDefaultCombos();
 	}
@@ -347,7 +386,7 @@ public class UserMBean implements Serializable {
 
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/user");
 			user.setCity(city);
-			request.body("application/json", user);
+			request.body(MediaType.APPLICATION_JSON, user);
 
 			ClientResponse<User> response = request.post(User.class);
 
@@ -380,31 +419,27 @@ public class UserMBean implements Serializable {
 	}
 
 	public void delete() {
-		// MessageReturn ret = new MessageReturn();
-		// try {
-		// for (User user : selectedUsers) {
-		// WebResource webResource = client.resource(host + "libraryWS/user/" + user.getId());
-		//
-		// ClientResponse response = webResource.type(MediaType.APPLICATION_JSON).delete(ClientResponse.class);
-		//
-		// if (response.getStatus() != 201 && response.getStatus() != 200) {
-		// ret.setMessage("Failed : HTTP error code : " + response.getStatus());
-		// throw new Exception(ret.getMessage());
-		// }
-		//
-		// ret = response.getEntity(MessageReturn.class);
-		// }
-		//
-		// if (selectedUsers.length > 1) {
-		// FacesUtil.showSuccessMessage(loggedUser.getLanguage().equals("pt_BR") ? "Usu�rios excluidos com sucesso!" : "User successfully deleted!");
-		// } else {
-		// FacesUtil.showSuccessMessage(loggedUser.getLanguage().equals("pt_BR") ? "Removido com sucesso!" : "Successfully deleted!");
-		// }
-		// loadList();
-		// } catch (Exception e) {
-		// e.printStackTrace();
-		// FacesUtil.showAErrorMessage(ret.getMessage());
-		// }
+		MessageReturn ret = new MessageReturn();
+		try {
+			for (User user : selectedUsers) {
+				ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/user");
+				request.body(MediaType.APPLICATION_JSON, user);
+
+				ClientResponse<User> response = request.delete(User.class);
+
+				ret = response.getEntity(MessageReturn.class);
+			}
+
+			if (selectedUsers.length > 1) {
+				FacesUtil.showSuccessMessage(MessageFactory.getMessage("lb_user_deleted_successfully_mult", loggedUser.getLanguage()));
+			} else {
+				FacesUtil.showSuccessMessage(MessageFactory.getMessage("lb_deleted_successfully", loggedUser.getLanguage()));
+			}
+			loadList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			FacesUtil.showAErrorMessage(ret.getMessage());
+		}
 	}
 
 	public void checkEmail() throws ValidatorException {

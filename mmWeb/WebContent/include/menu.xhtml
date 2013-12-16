@@ -8,31 +8,31 @@
         	
         	<div class="menu">
 		       	<p:menubar autoSubmenuDisplay="true" rendered="#{userMBean.loggedUser != null}">
-		       		<p:submenu label="#{messages['lb_inputs_']}">  
-		       			<p:menuitem value="#{messages['lb_credit_']}" action="#{creditMBean.new}" ajax="true" styleClass="menuItem"/>
-						<p:menuitem value="#{messages['lb_debit_']}" action="#{debitMBean.new}"   ajax="true" styleClass="menuItem"/>
+		       		<p:submenu label="#{messages['lb_inputs_']}" styleClass="menuItem">  
+		       			<p:menuitem value="#{messages['lb_credit_']}" action="#{creditMBean.new}" ajax="true" />
+						<p:menuitem value="#{messages['lb_debit_']}" action="#{debitMBean.new}"   ajax="true"/>
 					</p:submenu>
-					<p:submenu label="#{messages['lb_search_']}">
-						<p:menuitem value="#{messages['lb_credit_']}" action="#{creditMBean.list}" ajax="true" styleClass="menuItem"/>
-						<p:menuitem value="#{messages['lb_debit_']}" action="#{debitMBean.list}"   ajax="true" styleClass="menuItem"/>
-						<p:menuitem value="#{messages['lb_closure_']}" action="#{debitMBean.list}"   ajax="true" styleClass="menuItem"/>
+					<p:submenu label="#{messages['lb_search_']}" styleClass="menuItem">
+						<p:menuitem value="#{messages['lb_credit_']}" action="#{creditMBean.list}" ajax="true" />
+						<p:menuitem value="#{messages['lb_debit_']}" action="#{debitMBean.list}"   ajax="true" />
+						<p:menuitem value="#{messages['lb_closure_']}" action="#{debitMBean.list}"   ajax="true" />
 					</p:submenu>
-					<p:submenu label="#{messages['lb_tools_']}">
-						<p:menuitem value="#{messages['lb_closure_']}" action="#{closureMBean.close}" ajax="true" styleClass="menuItem"/>
-						<p:menuitem value="#{messages['lb_planning_']}" action="#{planningMBean.list}"   ajax="true" styleClass="menuItem"/>
+					<p:submenu label="#{messages['lb_tools_']}" styleClass="menuItem">
+						<p:menuitem value="#{messages['lb_closure_']}" action="#{closureMBean.close}" ajax="true"/>
+						<p:menuitem value="#{messages['lb_planning_']}" action="#{planningMBean.list}"   ajax="true" />
 					</p:submenu>
-					<p:submenu label="#{messages['lb_configuration_']}">
-						<p:menuitem value="#{messages['lb_user_list_']}" action="#{userMBean.list}" ajax="true" styleClass="menuItem"/>  
-						<p:menuitem value="#{messages['lb_description_']}" action="#{descriptionMBean.list}" ajax="true" styleClass="menuItem"/>
-						<p:menuitem value="#{messages['lb_creditcard_']}" action="#{creditCardMBean.list}"   ajax="true" styleClass="menuItem"/>
-						<p:menuitem value="#{messages['lb_default_values_']}" action="#{configMBean.edit}"   ajax="true" styleClass="menuItem"/>
+					<p:submenu label="#{messages['lb_configuration_']}" styleClass="menuItem">
+						<p:menuitem value="#{messages['lb_user_list_']}" action="#{userMBean.listSuperUser}" ajax="true" />  
+						<p:menuitem value="#{messages['lb_description_']}" action="#{descriptionMBean.list}" />
+						<p:menuitem value="#{messages['lb_creditcard_']}" action="#{creditCardMBean.list}"   />
+						<p:menuitem value="#{messages['lb_default_values_']}" action="#{configMBean.edit}" />
 					</p:submenu>
-					<p:submenu label="#{messages['lb_administration_']}">
-						<p:menuitem value="#{messages['lb_user_list_']}" action="#{userMBean.listAdm}" ajax="true" styleClass="menuItem"/>
-						<p:menuitem value="#{messages['lb_locale_']}" action="#{localeMBean.list}"   ajax="true" styleClass="menuItem"/>
-						<p:menuitem value="#{messages['lb_default_values_']}" action="#{configMBean.list}"   ajax="true" styleClass="menuItem"/>
+					<p:submenu label="#{messages['lb_administration_']}" styleClass="menuItem">
+						<p:menuitem value="#{messages['lb_user_list_']}" action="#{userMBean.listAdm}" ajax="true" />
+						<p:menuitem value="#{messages['lb_locale_']}" action="#{localeMBean.list}"   ajax="true" />
+						<p:menuitem value="#{messages['lb_default_values_']}" action="#{configMBean.list}"   ajax="true" />
 					</p:submenu>
-					<p:menuitem value="#{messages['lb_logout']}" action="#{userMBean.logout}" ajax="false" styleClass="menuItem"/>
+					<p:menuitem value="#{messages['lb_logout']}" action="#{userMBean.logout}" ajax="false" />
 				</p:menubar>
 			</div>
 			

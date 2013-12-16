@@ -284,6 +284,21 @@ public class RestService {
 
 		return Response.status(200).entity(list).build();
 	}
+	
+	@PUT
+	@Path("/user")
+	@Produces({ "application/json" })
+	public Response listUserByParameter(User user) {
+
+		List<User> list = new ArrayList<>();
+		try {
+			list = userBO.listByParameter(user);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return Response.status(200).entity(list).build();
+	}
 
 	@POST
 	@Path("/user")
@@ -314,7 +329,7 @@ public class RestService {
 	}
 	
 	@PUT
-	@Path("/user")
+	@Path("/user/login")
 	@Consumes({ "application/json" })
 	@Produces({ "application/json" })
 	public Response login(User user) {
