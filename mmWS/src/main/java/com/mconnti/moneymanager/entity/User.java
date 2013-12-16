@@ -34,8 +34,10 @@ public class User implements Serializable{
 	@Column(nullable = false, insertable = true, updatable = false)
 	private Long id;
 	
-	@Column(name="master_id")
-	private Integer masterId;
+	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = User.class)
+	@JoinColumn(name = "master_id")
+	@ForeignKey(name = "FK_USER_USER")
+	private User masterUser;
 	
 	private String name;
 	
@@ -88,14 +90,6 @@ public class User implements Serializable{
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public Integer getMasterId() {
-		return masterId;
-	}
-
-	public void setMasterId(Integer masterId) {
-		this.masterId = masterId;
 	}
 
 	public String getName() {
@@ -220,6 +214,14 @@ public class User implements Serializable{
 
 	public void setRole(Role role) {
 		this.role = role;
+	}
+
+	public User getMasterUser() {
+		return masterUser;
+	}
+
+	public void setMasterUser(User masterUser) {
+		this.masterUser = masterUser;
 	}
 	
 }

@@ -18,7 +18,7 @@
 	        		<h:panelGrid columns="3" width="50%" border="0" columnClasses="alignLeft,alignRight,alignRight">
 		        		<p:commandButton value="#{messages['lb_delete']}" styleClass="button" onclick="confirmation.show()" />
 		        		<p:commandButton value="#{messages['lb_new']}" 
-		        			action="#{userMBean.newAdminUser}"  
+		        			action="#{userMBean.newParentUser}"  
 		        			styleClass="button" 
 		        			update=":newUser" 
 		        			id="newButton"
@@ -38,6 +38,13 @@
 				                <h:outputText value="#{messages['lb_name_']}" />
 				            </f:facet>
 				            <h:outputText value="#{cat.name}" />
+				        </p:column>
+				        
+				        <p:column sortBy="#{cat.userName}" >
+				            <f:facet name="header">
+				                <h:outputText value="#{messages['lb_username_']}" />
+				            </f:facet>
+				            <h:outputText value="#{cat.userName}" />
 				        </p:column>
 				        
 				        <p:column sortBy="#{cat.email}" >
@@ -69,7 +76,7 @@
 	                 </div> 
 	    		</p:confirmDialog>  		
 			</h:form>  
-			<p:dialog header="#{messages['lb_user_registration']}" resizable="false" widgetVar="newUserModal" modal="true" appendToBody="true" height="300" width="480">  
+			<p:dialog header="#{messages['lb_user_registration']}" resizable="false" widgetVar="newUserModal" modal="true" appendToBody="true" height="460" width="500"> 
 			    <ui:include src="/include/formUser.xhtml" />
 			</p:dialog>
         </ui:define>

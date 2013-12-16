@@ -16,7 +16,7 @@ public class User implements Serializable{
 	
 	private Long id;
 	
-	private Integer masterId;
+	private User masterUser;
 	
 	private String name;
 	
@@ -56,14 +56,6 @@ public class User implements Serializable{
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public Integer getMasterId() {
-		return masterId;
-	}
-
-	public void setMasterId(Integer masterId) {
-		this.masterId = masterId;
 	}
 
 	public String getName() {
@@ -184,6 +176,14 @@ public class User implements Serializable{
 
 	public void setRole(Role role) {
 		this.role = role;
+	}
+
+	public User getMasterUser() {
+		return masterUser;
+	}
+
+	public void setMasterUser(User masterUser) {
+		this.masterUser = masterUser;
 	}
 	
 }

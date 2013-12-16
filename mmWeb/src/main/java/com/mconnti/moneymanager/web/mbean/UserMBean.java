@@ -287,7 +287,7 @@ public class UserMBean implements Serializable {
 		return cityList;
 	}
 
-	public String list() {
+	public String listAdm() {
 
 		loadList();
 
@@ -315,12 +315,15 @@ public class UserMBean implements Serializable {
 		loadDefaultCombos();
 	}
 
-	public void newAdminUser() {
+	public void newParentUser() {
 		this.country = new Country();
 		this.state = new State();
 		this.city = new City();
-		isAdmin = true;
-		showPassword = true;
+		this.user.setAdministrator(false);
+		this.role = new Role();
+		role.setId(USER);
+		user.setRole(role);
+		showPassword = false;
 		loadDefaultCombos();
 	}
 
@@ -334,7 +337,6 @@ public class UserMBean implements Serializable {
 	}
 
 	public void edit() {
-		isAdmin = true;
 		showPassword = false;
 	}
 
