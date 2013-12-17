@@ -43,6 +43,8 @@ public class UserMBean implements Serializable {
 	public static Long SUPER_USER = 2L;
 
 	public static Long USER = 3L;
+	
+	public static String DEFAUL_PASSWORD = "123456";
 
 	private static final long serialVersionUID = 1L;
 
@@ -365,6 +367,7 @@ public class UserMBean implements Serializable {
 		this.role.setId(USER);
 		this.user.setRole(role);
 		this.user.setSuperUser(loggedUser);
+		this.user.setPassword(DEFAUL_PASSWORD);
 		this.showPassword = false;
 		this.refreshList = true;
 		loadDefaultCombos();

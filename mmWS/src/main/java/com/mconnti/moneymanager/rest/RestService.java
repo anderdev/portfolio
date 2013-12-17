@@ -12,6 +12,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.mconnti.moneymanager.business.CityBO;
@@ -87,7 +88,7 @@ public class RestService {
 
 	@GET
 	@Path("/country")
-	@Produces({ "application/json" })
+	@Produces({ MediaType.APPLICATION_JSON })
 	public Response listCountry() {
 
 		List<Country> list = new ArrayList<>();
@@ -102,13 +103,13 @@ public class RestService {
 
 	@PUT
 	@Path("/country")
-	@Produces({ "application/json" })
+	@Produces({ MediaType.APPLICATION_JSON })
 	public Response listCountryByLocale(String locale) {
 
 		List<Country> list = new ArrayList<>();
 		try {
 			Map<String, String> queryParams = new HashMap<>();
-			queryParams.put("x.locale", "= " + locale);
+			queryParams.put(" where x.locale", "= " + locale);
 			list = countryBO.list(Country.class, queryParams, "x.name asc");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -119,8 +120,8 @@ public class RestService {
 
 	@POST
 	@Path("/country")
-	@Consumes({ "application/json" })
-	@Produces({ "application/json" })
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
 	public Response saveCountry(Country country) {
 		MessageReturn ret = new MessageReturn();
 		try {
@@ -133,8 +134,8 @@ public class RestService {
 
 	@DELETE
 	@Path("/country")
-	@Consumes({ "application/json" })
-	@Produces({ "application/json" })
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
 	public Response deleteCountry(Country country) {
 		MessageReturn ret = new MessageReturn();
 		try {
@@ -149,7 +150,7 @@ public class RestService {
 
 	@GET
 	@Path("/state")
-	@Produces({ "application/json" })
+	@Produces({ MediaType.APPLICATION_JSON })
 	public Response listState() {
 
 		List<State> state = new ArrayList<>();
@@ -164,13 +165,13 @@ public class RestService {
 
 	@PUT
 	@Path("/state")
-	@Produces({ "application/json" })
+	@Produces({ MediaType.APPLICATION_JSON })
 	public Response listStateByCountry(Country country) {
 
 		List<State> list = new ArrayList<>();
 		try {
 			Map<String, String> queryParams = new HashMap<>();
-			queryParams.put("country", "= " + country.getId());
+			queryParams.put(" where x.country", "= " + country.getId());
 			list = stateBO.list(State.class, queryParams, "x.name asc");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -181,8 +182,8 @@ public class RestService {
 
 	@POST
 	@Path("/state")
-	@Consumes({ "application/json" })
-	@Produces({ "application/json" })
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
 	public Response saveState(State state) {
 		MessageReturn ret = new MessageReturn();
 		try {
@@ -195,8 +196,8 @@ public class RestService {
 
 	@DELETE
 	@Path("/state")
-	@Consumes({ "application/json" })
-	@Produces({ "application/json" })
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
 	public Response deleteState(State state) {
 		MessageReturn ret = new MessageReturn();
 		try {
@@ -211,7 +212,7 @@ public class RestService {
 
 	@GET
 	@Path("/city")
-	@Produces({ "application/json" })
+	@Produces({ MediaType.APPLICATION_JSON })
 	public Response listCity() {
 
 		List<City> list = new ArrayList<>();
@@ -226,13 +227,13 @@ public class RestService {
 
 	@PUT
 	@Path("/city")
-	@Produces({ "application/json" })
+	@Produces({ MediaType.APPLICATION_JSON })
 	public Response listCityByState(State state) {
 
 		List<City> list = new ArrayList<>();
 		try {
 			Map<String, String> queryParams = new HashMap<>();
-			queryParams.put("state_id", "= " + state.getId());
+			queryParams.put(" where x.state", "= " + state.getId());
 			list = cityBO.list(City.class, queryParams, "x.name asc");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -243,8 +244,8 @@ public class RestService {
 
 	@POST
 	@Path("/city")
-	@Consumes({ "application/json" })
-	@Produces({ "application/json" })
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
 	public Response saveCity(City city) {
 		MessageReturn ret = new MessageReturn();
 		try {
@@ -257,8 +258,8 @@ public class RestService {
 
 	@DELETE
 	@Path("/city")
-	@Consumes({ "application/json" })
-	@Produces({ "application/json" })
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
 	public Response deleteCity(City city) {
 		MessageReturn ret = new MessageReturn();
 		try {
@@ -272,7 +273,7 @@ public class RestService {
 	// USER AREA
 	@GET
 	@Path("/user")
-	@Produces({ "application/json" })
+	@Produces({ MediaType.APPLICATION_JSON })
 	public Response listUser() {
 
 		List<User> list = new ArrayList<>();
@@ -287,7 +288,7 @@ public class RestService {
 	
 	@PUT
 	@Path("/user")
-	@Produces({ "application/json" })
+	@Produces({ MediaType.APPLICATION_JSON })
 	public Response listUserByParameter(User user) {
 
 		List<User> list = new ArrayList<>();
@@ -302,8 +303,8 @@ public class RestService {
 
 	@POST
 	@Path("/user")
-	@Consumes({ "application/json" })
-	@Produces({ "application/json" })
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
 	public Response saveUser(User user) {
 		MessageReturn ret = new MessageReturn();
 		try {
@@ -316,8 +317,8 @@ public class RestService {
 
 	@DELETE
 	@Path("/user")
-	@Consumes({ "application/json" })
-	@Produces({ "application/json" })
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
 	public Response deleteUser(User user) {
 		MessageReturn ret = new MessageReturn();
 		try {
@@ -330,8 +331,8 @@ public class RestService {
 	
 	@PUT
 	@Path("/user/login")
-	@Consumes({ "application/json" })
-	@Produces({ "application/json" })
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
 	public Response login(User user) {
 		MessageReturn ret = new MessageReturn();
 		try {
@@ -346,7 +347,7 @@ public class RestService {
 
 	@GET
 	@Path("/currency")
-	@Produces({ "application/json" })
+	@Produces({ MediaType.APPLICATION_JSON })
 	public Response listCurrency() {
 
 		List<Currency> list = new ArrayList<>();
@@ -361,8 +362,8 @@ public class RestService {
 
 	@POST
 	@Path("/currency")
-	@Consumes({ "application/json" })
-	@Produces({ "application/json" })
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
 	public Response saveCurrency(Currency currency) {
 		MessageReturn ret = new MessageReturn();
 		try {
@@ -375,8 +376,8 @@ public class RestService {
 
 	@DELETE
 	@Path("/currency")
-	@Consumes({ "application/json" })
-	@Produces({ "application/json" })
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
 	public Response deleteCurrency(Currency currency) {
 		MessageReturn ret = new MessageReturn();
 		try {
@@ -391,7 +392,7 @@ public class RestService {
 
 	@GET
 	@Path("/typeaccount")
-	@Produces({ "application/json" })
+	@Produces({ MediaType.APPLICATION_JSON })
 	public Response listAccount() {
 
 		List<TypeAccount> list = new ArrayList<>();
@@ -406,8 +407,8 @@ public class RestService {
 
 	@POST
 	@Path("/typeaccount")
-	@Consumes({ "application/json" })
-	@Produces({ "application/json" })
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
 	public Response saveAccount(TypeAccount account) {
 		MessageReturn ret = new MessageReturn();
 		try {
@@ -420,8 +421,8 @@ public class RestService {
 
 	@DELETE
 	@Path("/typeaccount")
-	@Consumes({ "application/json" })
-	@Produces({ "application/json" })
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
 	public Response deleteAccount(TypeAccount account) {
 		MessageReturn ret = new MessageReturn();
 		try {
@@ -436,7 +437,7 @@ public class RestService {
 
 	@GET
 	@Path("/typeclosure")
-	@Produces({ "application/json" })
+	@Produces({ MediaType.APPLICATION_JSON })
 	public Response listTypeClosure() {
 
 		List<TypeClosure> list = new ArrayList<>();
@@ -451,8 +452,8 @@ public class RestService {
 
 	@POST
 	@Path("/typeclosure")
-	@Consumes({ "application/json" })
-	@Produces({ "application/json" })
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
 	public Response saveTypeClosure(TypeClosure typeClosure) {
 		MessageReturn ret = new MessageReturn();
 		try {
@@ -465,8 +466,8 @@ public class RestService {
 
 	@DELETE
 	@Path("/typeclosure")
-	@Consumes({ "application/json" })
-	@Produces({ "application/json" })
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
 	public Response deleteTypeClosure(TypeClosure typeClosure) {
 		MessageReturn ret = new MessageReturn();
 		try {
@@ -481,7 +482,7 @@ public class RestService {
 
 	@GET
 	@Path("/description")
-	@Produces({ "application/json" })
+	@Produces({ MediaType.APPLICATION_JSON })
 	public Response listDescription() {
 
 		List<Description> list = new ArrayList<>();
@@ -496,8 +497,8 @@ public class RestService {
 
 	@POST
 	@Path("/description")
-	@Consumes({ "application/json" })
-	@Produces({ "application/json" })
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
 	public Response saveDescription(Description description) {
 		MessageReturn ret = new MessageReturn();
 		try {
@@ -510,8 +511,8 @@ public class RestService {
 
 	@DELETE
 	@Path("/description")
-	@Consumes({ "application/json" })
-	@Produces({ "application/json" })
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
 	public Response deleteDescription(Description description) {
 		MessageReturn ret = new MessageReturn();
 		try {
@@ -526,7 +527,7 @@ public class RestService {
 
 	@GET
 	@Path("/creditcard")
-	@Produces({ "application/json" })
+	@Produces({ MediaType.APPLICATION_JSON })
 	public Response listCreditCard() {
 
 		List<CreditCard> list = new ArrayList<>();
@@ -541,8 +542,8 @@ public class RestService {
 
 	@POST
 	@Path("/creditcard")
-	@Consumes({ "application/json" })
-	@Produces({ "application/json" })
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
 	public Response saveCreditCard(CreditCard creditCard) {
 		MessageReturn ret = new MessageReturn();
 		try {
@@ -555,8 +556,8 @@ public class RestService {
 
 	@DELETE
 	@Path("/creditcard")
-	@Consumes({ "application/json" })
-	@Produces({ "application/json" })
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
 	public Response deleteCreditCard(CreditCard creditCard) {
 		MessageReturn ret = new MessageReturn();
 		try {
@@ -571,7 +572,7 @@ public class RestService {
 
 	@GET
 	@Path("/config")
-	@Produces({ "application/json" })
+	@Produces({ MediaType.APPLICATION_JSON })
 	public Response listConfig() {
 
 		List<Config> list = new ArrayList<>();
@@ -586,8 +587,8 @@ public class RestService {
 
 	@POST
 	@Path("/config")
-	@Consumes({ "application/json" })
-	@Produces({ "application/json" })
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
 	public Response saveConfig(Config config) {
 		MessageReturn ret = new MessageReturn();
 		try {
@@ -600,8 +601,8 @@ public class RestService {
 
 	@DELETE
 	@Path("/config")
-	@Consumes({ "application/json" })
-	@Produces({ "application/json" })
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
 	public Response deleteConfig(Config config) {
 		MessageReturn ret = new MessageReturn();
 		try {
@@ -616,7 +617,7 @@ public class RestService {
 
 	@GET
 	@Path("/credit")
-	@Produces({ "application/json" })
+	@Produces({ MediaType.APPLICATION_JSON })
 	public Response listCredit() {
 
 		List<Credit> list = new ArrayList<>();
@@ -631,8 +632,8 @@ public class RestService {
 
 	@POST
 	@Path("/credit")
-	@Consumes({ "application/json" })
-	@Produces({ "application/json" })
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
 	public Response saveCredit(Credit credit) {
 		MessageReturn ret = new MessageReturn();
 		try {
@@ -645,8 +646,8 @@ public class RestService {
 
 	@DELETE
 	@Path("/credit")
-	@Consumes({ "application/json" })
-	@Produces({ "application/json" })
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
 	public Response deleteCredit(Credit credit) {
 		MessageReturn ret = new MessageReturn();
 		try {
@@ -661,7 +662,7 @@ public class RestService {
 
 	@GET
 	@Path("/debit")
-	@Produces({ "application/json" })
+	@Produces({ MediaType.APPLICATION_JSON })
 	public Response listDebit() {
 
 		List<Debit> list = new ArrayList<>();
@@ -676,8 +677,8 @@ public class RestService {
 
 	@POST
 	@Path("/debit")
-	@Consumes({ "application/json" })
-	@Produces({ "application/json" })
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
 	public Response saveDebit(Debit debit) {
 		MessageReturn ret = new MessageReturn();
 		try {
@@ -690,8 +691,8 @@ public class RestService {
 
 	@DELETE
 	@Path("/debit")
-	@Consumes({ "application/json" })
-	@Produces({ "application/json" })
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
 	public Response deleteDebit(Debit debit) {
 		MessageReturn ret = new MessageReturn();
 		try {
@@ -706,7 +707,7 @@ public class RestService {
 
 	@GET
 	@Path("/closure")
-	@Produces({ "application/json" })
+	@Produces({ MediaType.APPLICATION_JSON })
 	public Response listClosure() {
 
 		List<Closure> list = new ArrayList<>();
@@ -721,8 +722,8 @@ public class RestService {
 
 	@PUT
 	@Path("/closure")
-	@Consumes({ "application/json" })
-	@Produces({ "application/json" })
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
 	public Response executeClosure(Closure closure) {
 		MessageReturn ret = new MessageReturn();
 		try {
@@ -736,8 +737,8 @@ public class RestService {
 
 	@POST
 	@Path("/closure")
-	@Consumes({ "application/json" })
-	@Produces({ "application/json" })
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
 	public Response saveClosure(Closure closure) {
 		MessageReturn ret = new MessageReturn();
 		try {
@@ -750,8 +751,8 @@ public class RestService {
 
 	@DELETE
 	@Path("/closure")
-	@Consumes({ "application/json" })
-	@Produces({ "application/json" })
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
 	public Response deleteClosure(Closure closure) {
 		MessageReturn ret = new MessageReturn();
 		try {
@@ -766,7 +767,7 @@ public class RestService {
 
 	@GET
 	@Path("/planning")
-	@Produces({ "application/json" })
+	@Produces({ MediaType.APPLICATION_JSON })
 	public Response listPlanning() {
 
 		List<Planning> list = new ArrayList<>();
@@ -781,8 +782,8 @@ public class RestService {
 
 	@POST
 	@Path("/planning")
-	@Consumes({ "application/json" })
-	@Produces({ "application/json" })
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
 	public Response savePlanning(Planning planning) {
 		MessageReturn ret = new MessageReturn();
 		try {
@@ -795,8 +796,8 @@ public class RestService {
 
 	@DELETE
 	@Path("/planning")
-	@Consumes({ "application/json" })
-	@Produces({ "application/json" })
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
 	public Response deletePlanning(Planning planning) {
 		MessageReturn ret = new MessageReturn();
 		try {
@@ -811,7 +812,7 @@ public class RestService {
 
 	@GET
 	@Path("/role")
-	@Produces({ "application/json" })
+	@Produces({ MediaType.APPLICATION_JSON })
 	public Response listRole() {
 
 		List<Role> list = new ArrayList<>();
@@ -826,8 +827,8 @@ public class RestService {
 
 	@POST
 	@Path("/role")
-	@Consumes({ "application/json" })
-	@Produces({ "application/json" })
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
 	public Response saveRole(Role role) {
 		MessageReturn ret = new MessageReturn();
 		try {
@@ -840,8 +841,8 @@ public class RestService {
 
 	@DELETE
 	@Path("/role")
-	@Consumes({ "application/json" })
-	@Produces({ "application/json" })
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
 	public Response deleteRole(Role role) {
 		MessageReturn ret = new MessageReturn();
 		try {

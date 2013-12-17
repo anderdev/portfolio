@@ -12,6 +12,7 @@ import com.mconnti.moneymanager.entity.User;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
 import com.mconnti.moneymanager.persistence.CityDAO;
 import com.mconnti.moneymanager.persistence.UserDAO;
+import com.mconnti.moneymanager.utils.Crypt;
 import com.mconnti.moneymanager.utils.MessageFactory;
 import com.mconnti.moneymanager.utils.Utils;
 
@@ -48,6 +49,8 @@ public class UserBOImpl extends GenericBOImpl<User> implements UserBO {
 					if (user.getPass() != null && !user.getPass().isEmpty()) {
 						user.setPassword(user.getPass());
 					}
+				} else {
+					user.setPassword(Crypt.decrypt(Crypt.decrypt(user.getPassword())));
 				}
 				saveGeneric(user);
 			} catch (Exception e) {

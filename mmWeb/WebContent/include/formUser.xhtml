@@ -70,12 +70,12 @@
 					<h:outputText value="#{messages['lb_secret_phrase']}" />
 					<p:inputText id="secret_phrase" label="#{messages['lb_secret_phrase_']}" required="true"  value="#{userMBean.user.secretPhrase}" style="width:100%" />
 					
-					<h:outputText value="#{messages['lb_admin']}" rendered="#{userMBean.loggedUser.administrator}" />
+					<!-- <h:outputText value="#{messages['lb_admin']}" rendered="#{userMBean.loggedUser.administrator}" />
 					<p:selectOneMenu value="#{userMBean.user.role}" label="#{messages['lb_admin_']}" required="true" rendered="#{userMBean.loggedUser.administrator}">
 			            <f:selectItem itemLabel="#{messages['lb_select']}" itemValue="" />
 			            <f:selectItem itemLabel="#{messages['lb_yes']}" itemValue="#{true}" />
 			            <f:selectItem itemLabel="#{messages['lb_no']}" itemValue="#{false}" />
-			        </p:selectOneMenu>
+			        </p:selectOneMenu> -->
 				</h:panelGrid>
 				
 				<br />
