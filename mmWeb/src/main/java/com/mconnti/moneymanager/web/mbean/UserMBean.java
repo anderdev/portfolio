@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -78,9 +78,11 @@ public class UserMBean implements Serializable {
 
 	private Role role = new Role();
 
-	private Boolean isAdmin = false;
+	private Boolean refreshList = false;
 
 	private Boolean showPassword = true;
+	
+	private Boolean showEditNewButton = true;
 
 	private String host = null;
 
@@ -313,18 +315,19 @@ public class UserMBean implements Serializable {
 	}
 
 	public String listAdm() {
-
+		showEditNewButton = false;
 		loadList();
-
 		return "/common/listUser.xhtml?faces-redirect=true";
 	}
 	
 	public String listSuperUser() {
-		Map<String, String> queryParams = new HashMap<String, String>();
-		queryParams.put("x.superUser", "= "+loggedUser.getId());
+		Map<String, String> queryParams = new LinkedHashMap<String, String>();
+		queryParams.put(" where x.superUser", "= "+loggedUser.getId());
+		queryParams.put(" or x.id", "= "+loggedUser.getId());
+		
 		loggedUser.setOrderBy("x.name asc");
 		loggedUser.setQueryParams(queryParams);
-
+		showEditNewButton = true;
 		loadListByParameter();
 
 		return "/common/listUser.xhtml?faces-redirect=true";
@@ -344,11 +347,11 @@ public class UserMBean implements Serializable {
 		this.country = new Country();
 		this.state = new State();
 		this.city = new City();
-		this.user.setAdministrator(true);
+		this.user.setAdministrator(false);
 		this.role = new Role();
-		role.setId(SUPER_USER);
-		user.setRole(role);
-		showPassword = true;
+		this.role.setId(SUPER_USER);
+		this.user.setRole(role);
+		this.showPassword = true;
 		loadDefaultCombos();
 	}
 
@@ -359,10 +362,11 @@ public class UserMBean implements Serializable {
 		this.city = new City();
 		this.user.setAdministrator(false);
 		this.role = new Role();
-		role.setId(USER);
-		user.setRole(role);
-		user.setSuperUser(loggedUser);
-		showPassword = false;
+		this.role.setId(USER);
+		this.user.setRole(role);
+		this.user.setSuperUser(loggedUser);
+		this.showPassword = false;
+		this.refreshList = true;
 		loadDefaultCombos();
 	}
 
@@ -371,15 +375,11 @@ public class UserMBean implements Serializable {
 		return "index.xhtml\faces-redirect=true";
 	}
 
-	public String cancelLogged() {
-		return "/common/listUser.xhtml?faces-redirect=true";
-	}
-
 	public void edit() {
 		showPassword = false;
 	}
 
-	public String save() {
+	public void save() {
 		MessageReturn ret = new MessageReturn();
 
 		try {
@@ -401,8 +401,8 @@ public class UserMBean implements Serializable {
 			} else {
 				FacesUtil.showSuccessMessage(ret.getMessage());
 			}
-			if (isAdmin) {
-				loadList();
+			if (refreshList) {
+				loadListByParameter();
 			}
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
@@ -412,10 +412,10 @@ public class UserMBean implements Serializable {
 			e.printStackTrace();
 			FacesUtil.showAErrorMessage(e.getMessage());
 		}
-		if (loggedUser != null) {
-			return "/common/listUser.xhtml?faces-redirect=true";
-		}
-		return "/index.xhtml";
+//		if (loggedUser != null) {
+//			return "/common/listUser.xhtml?faces-redirect=true";
+//		}
+//		return "/index.xhtml";
 	}
 
 	public void delete() {
@@ -472,14 +472,6 @@ public class UserMBean implements Serializable {
 
 	public void setUser(User user) {
 		this.user = user;
-	}
-
-	public Boolean getIsAdmin() {
-		return isAdmin;
-	}
-
-	public void setIsAdmin(Boolean isAdmin) {
-		this.isAdmin = isAdmin;
 	}
 
 	public User[] getSelectedUsers() {
@@ -584,6 +576,22 @@ public class UserMBean implements Serializable {
 
 	public void setCityList(List<City> cityList) {
 		this.cityList = cityList;
+	}
+
+	public Boolean getRefreshList() {
+		return refreshList;
+	}
+
+	public void setRefreshList(Boolean refreshList) {
+		this.refreshList = refreshList;
+	}
+
+	public Boolean getShowEditNewButton() {
+		return showEditNewButton;
+	}
+
+	public void setShowEditNewButton(Boolean showEditNewButton) {
+		this.showEditNewButton = showEditNewButton;
 	}
 
 }

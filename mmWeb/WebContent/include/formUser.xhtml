@@ -70,8 +70,8 @@
 					<h:outputText value="#{messages['lb_secret_phrase']}" />
 					<p:inputText id="secret_phrase" label="#{messages['lb_secret_phrase_']}" required="true"  value="#{userMBean.user.secretPhrase}" style="width:100%" />
 					
-					<h:outputText value="#{messages['lb_admin']}" rendered="#{userMBean.isAdmin}" />
-					<p:selectOneMenu value="#{userMBean.user.administrator}" label="#{messages['lb_admin_']}" required="true" rendered="#{userMBean.isAdmin}">
+					<h:outputText value="#{messages['lb_admin']}" rendered="#{userMBean.loggedUser.administrator}" />
+					<p:selectOneMenu value="#{userMBean.user.role}" label="#{messages['lb_admin_']}" required="true" rendered="#{userMBean.loggedUser.administrator}">
 			            <f:selectItem itemLabel="#{messages['lb_select']}" itemValue="" />
 			            <f:selectItem itemLabel="#{messages['lb_yes']}" itemValue="#{true}" />
 			            <f:selectItem itemLabel="#{messages['lb_no']}" itemValue="#{false}" />
@@ -83,12 +83,11 @@
 				<div class="messages" align="center">
 					<p:commandButton value="#{messages['lb_post']}" 
 						id="post" action="#{userMBean.save}" ajax="false" 
-						update="msg"
+						update="msg,userList,mensagem"
 						styleClass="button"
 						oncomplete="if (#{not facesContext.validationFailed}) newUserModal.hide();">  
 					</p:commandButton>
-					<p:commandButton value="#{messages['lb_back']}" immediate="true" id="voltarAdmin" ajax="false"  styleClass="button" action="#{userMBean.cancelLogged}" rendered="#{userMBean.isAdmin}"/>
-					<p:commandButton value="#{messages['lb_back']}" immediate="true" id="voltar" ajax="false"  styleClass="button" oncomplete="newUserModal.hide();" rendered="#{!userMBean.isAdmin}"/>
+					<p:commandButton value="#{messages['lb_back']}" immediate="true" id="voltar" ajax="false"  styleClass="button" oncomplete="newUserModal.hide();"/>
 				</div>
 	       	</div>
 		</h:form>

@@ -22,7 +22,8 @@
 		        			styleClass="button" 
 		        			update=":newUser" 
 		        			id="newButton"
-		        			oncomplete="newUserModal.show()" >
+		        			oncomplete="newUserModal.show()" 
+		        			rendered="#{userMBean.showEditNewButton}">
 		        		</p:commandButton>
 				    </h:panelGrid>
 				   
@@ -61,7 +62,7 @@
 				            <h:outputText value="#{cat.administrator}" />
 				        </p:column>
 				
-				        <p:column style="width:5% ; align:center">
+				        <p:column style="width:5% ; align:center" rendered="#{userMBean.showEditNewButton}">
 				        	<p:commandLink action="#{userMBean.edit}" update=":newUser" oncomplete="newUserModal.show();" id="editButton">
 				        		<f:setPropertyActionListener value="#{cat}" target="#{userMBean.user}" />  
 								<p:graphicImage value="#{messages['img_update']}" style="border: 0px" />

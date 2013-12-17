@@ -142,13 +142,10 @@ public class GenericDAOImpl<T> implements GenericDAO<T> {
 			sql.append(" x ");
 
 			if (queryParams != null) {
-				int x = 0;
 				Iterator<Entry<String, String>> iterator = queryParams.entrySet().iterator();
 				while (iterator.hasNext()) {
 					Map.Entry<String, String> element = iterator.next();
-					String whereAnd = x == 0 ? " where " : " and ";
-					sql.append(whereAnd).append(element.getKey()).append(" " +element.getValue());
-					x++;
+					sql.append(element.getKey()).append(" " +element.getValue());
 				}
 			}
 
