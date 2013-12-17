@@ -44,16 +44,12 @@ public class GenericDAOImpl<T> implements GenericDAO<T> {
 			sql.append(type.getSimpleName());
 			sql.append(" x ");
 
-			int x = 0;
 			Iterator<Entry<String, String>> iterator = queryParams.entrySet().iterator();
 			while (iterator.hasNext()) {
 				Map.Entry<String, String> element = iterator.next();
-				String whereAnd = x == 0 ? " where " : " and ";
-				sql.append(whereAnd).append(element.getKey()).append(element.getValue());
-				x++;
+				sql.append(element.getKey()).append(element.getValue());
 			}
 			Query query = em.createQuery(sql.toString());
-			query.setHint("toplink.refresh", "true");
 			obj = (T) query.getSingleResult();
 		} catch (NoResultException nre) {
 			obj = null;
@@ -103,13 +99,10 @@ public class GenericDAOImpl<T> implements GenericDAO<T> {
 			sql.append(type.getSimpleName());
 			sql.append(" x ");
 
-			int x = 0;
 			Iterator<Entry<String, Object>> iterator = queryParans.entrySet().iterator();
 			while (iterator.hasNext()) {
 				Map.Entry<String, Object> element = iterator.next();
-				String whereAnd = x == 0 ? " where " : " and ";
-				sql.append(whereAnd).append(element.getKey()).append(element.getValue());
-				x++;
+				sql.append(element.getKey()).append(element.getValue());
 			}
 
 			if (orderBy != null && orderBy) {

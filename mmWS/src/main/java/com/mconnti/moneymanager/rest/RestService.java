@@ -2,6 +2,7 @@ package com.mconnti.moneymanager.rest;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -289,11 +290,14 @@ public class RestService {
 	@PUT
 	@Path("/user")
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response listUserByParameter(User user) {
+	public Response listUserSuperUser(User user) {
+		Map<String, String> queryParams = new LinkedHashMap<String, String>();
+		queryParams.put(" where x.superUser", "= " + user.getId());
+		queryParams.put(" or x.id", "= " + user.getId());
 
 		List<User> list = new ArrayList<>();
 		try {
-			list = userBO.listByParameter(user);
+			list = userBO.list(User.class, queryParams, "x.name asc");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -337,6 +341,40 @@ public class RestService {
 		MessageReturn ret = new MessageReturn();
 		try {
 			ret = userBO.login(user);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Response.status(200).entity(ret).build();
+	}
+	
+	@PUT
+	@Path("/user/emailcheck")
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response emailCheck(User user) {
+		MessageReturn ret = new MessageReturn();
+		try {
+			Map<String, String> queryParams = new LinkedHashMap<String, String>();
+			queryParams.put(" where x.email", "= '" + user.getEmail()+"'");
+			
+			ret.setUser(userBO.findByParameter(User.class, queryParams));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Response.status(200).entity(ret).build();
+	}
+	
+	@PUT
+	@Path("/user/usernamecheck")
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response usernameCheck(User user) {
+		MessageReturn ret = new MessageReturn();
+		try {
+			Map<String, String> queryParams = new LinkedHashMap<String, String>();
+			queryParams.put(" where x.username", "= '" + user.getUsername()+"'");
+			
+			ret.setUser(userBO.findByParameter(User.class, queryParams));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

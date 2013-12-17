@@ -36,7 +36,7 @@ public class User extends SearchObject implements Serializable{
 	private Long id;
 	
 	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = User.class)
-	@JoinColumn(name = "master_id")
+	@JoinColumn(name = "super_user_id")
 	@ForeignKey(name = "FK_USER_USER")
 	private User superUser;
 	

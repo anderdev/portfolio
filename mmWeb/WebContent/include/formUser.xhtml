@@ -62,7 +62,9 @@
 			        </p:selectOneMenu>
 			        
 			        <h:outputText value="#{messages['lb_username']}" />
-					<p:inputText id="username" label="#{messages['lb_username_']}" required="true"  value="#{userMBean.user.username}" style="width:100%" />
+					<p:inputText id="username" label="#{messages['lb_username_']}" required="true"  value="#{userMBean.user.username}" style="width:100%" >
+						<p:ajax event="blur" update="msg"  listener="#{userMBean.existsUsername}" /> 
+					</p:inputText>
 					
 					<h:outputText value="#{messages['lb_password']}" rendered="#{userMBean.showPassword}"/>
 					<p:password id="senha" label="#{messages['lb_password_']}" required="true"  value="#{userMBean.user.password}"  size="27"  rendered="#{userMBean.showPassword}" style="width:100%"/>
@@ -70,12 +72,11 @@
 					<h:outputText value="#{messages['lb_secret_phrase']}" />
 					<p:inputText id="secret_phrase" label="#{messages['lb_secret_phrase_']}" required="true"  value="#{userMBean.user.secretPhrase}" style="width:100%" />
 					
-					<!-- <h:outputText value="#{messages['lb_admin']}" rendered="#{userMBean.loggedUser.administrator}" />
+					<h:outputText value="#{messages['lb_admin']}" rendered="#{userMBean.loggedUser.administrator}" />
 					<p:selectOneMenu value="#{userMBean.user.role}" label="#{messages['lb_admin_']}" required="true" rendered="#{userMBean.loggedUser.administrator}">
 			            <f:selectItem itemLabel="#{messages['lb_select']}" itemValue="" />
-			            <f:selectItem itemLabel="#{messages['lb_yes']}" itemValue="#{true}" />
-			            <f:selectItem itemLabel="#{messages['lb_no']}" itemValue="#{false}" />
-			        </p:selectOneMenu> -->
+			            <f:selectItems value="#{userMBean.roles}" var="role" itemLabel="#{role.role}" itemValue="#{role}"/>  
+			        </p:selectOneMenu>
 				</h:panelGrid>
 				
 				<br />

@@ -4,9 +4,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -43,7 +41,7 @@ public class UserMBean implements Serializable {
 	public static Long SUPER_USER = 2L;
 
 	public static Long USER = 3L;
-	
+
 	public static String DEFAUL_PASSWORD = "123456";
 
 	private static final long serialVersionUID = 1L;
@@ -59,6 +57,8 @@ public class UserMBean implements Serializable {
 	private List<State> stateList;
 
 	private List<City> cityList;
+	
+	private List<Role> roleList;
 
 	private User user;
 
@@ -71,6 +71,8 @@ public class UserMBean implements Serializable {
 	private SelectItem[] states;
 
 	private SelectItem[] cities;
+	
+	private SelectItem[] roles;
 
 	private Country country = new Country();
 
@@ -83,7 +85,7 @@ public class UserMBean implements Serializable {
 	private Boolean refreshList = false;
 
 	private Boolean showPassword = true;
-	
+
 	private Boolean showEditNewButton = true;
 
 	private String host = null;
@@ -139,6 +141,22 @@ public class UserMBean implements Serializable {
 			itens.add(new SelectItem(c.getId(), c.getName()));
 		}
 		return itens.toArray(new SelectItem[itens.size()]);
+	}
+	
+	public SelectItem[] getRolesSI() {
+		loadRoleList();
+		List<SelectItem> itens = new ArrayList<SelectItem>(roleList.size());
+
+		this.roles = new SelectItem[itens.size()];
+
+		for (Role c : roleList) {
+			itens.add(new SelectItem(c.getId(), c.getRole()));
+		}
+		return itens.toArray(new SelectItem[itens.size()]);
+	}
+	
+	public void loadRoles(){
+		this.roles = getRolesSI();
 	}
 
 	public void loadStates() {
@@ -228,6 +246,28 @@ public class UserMBean implements Serializable {
 		}
 	}
 	
+	private void loadRoleList() {
+		try {
+
+			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/role");
+			ClientResponse<Role> response = request.get(Role.class);
+
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+
+			roleList = (List<Role>) response.getEntity(new GenericType<List<Role>>() {
+			});
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+
 	private void loadListByParameter() {
 		try {
 
@@ -321,14 +361,8 @@ public class UserMBean implements Serializable {
 		loadList();
 		return "/common/listUser.xhtml?faces-redirect=true";
 	}
-	
+
 	public String listSuperUser() {
-		Map<String, String> queryParams = new LinkedHashMap<String, String>();
-		queryParams.put(" where x.superUser", "= "+loggedUser.getId());
-		queryParams.put(" or x.id", "= "+loggedUser.getId());
-		
-		loggedUser.setOrderBy("x.name asc");
-		loggedUser.setQueryParams(queryParams);
 		showEditNewButton = true;
 		loadListByParameter();
 
@@ -380,6 +414,7 @@ public class UserMBean implements Serializable {
 
 	public void edit() {
 		showPassword = false;
+		loadRoles();
 	}
 
 	public void save() {
@@ -415,10 +450,10 @@ public class UserMBean implements Serializable {
 			e.printStackTrace();
 			FacesUtil.showAErrorMessage(e.getMessage());
 		}
-//		if (loggedUser != null) {
-//			return "/common/listUser.xhtml?faces-redirect=true";
-//		}
-//		return "/index.xhtml";
+		// if (loggedUser != null) {
+		// return "/common/listUser.xhtml?faces-redirect=true";
+		// }
+		// return "/index.xhtml";
 	}
 
 	public void delete() {
@@ -452,18 +487,83 @@ public class UserMBean implements Serializable {
 		boolean matchFound = m.matches();
 
 		if (!matchFound) {
-			FacesMessage message = new FacesMessage("Invalid email address, please check!");
+			FacesMessage message = new FacesMessage(MessageFactory.getMessage("error_invalid_email", "en"));
 			message.setSeverity(FacesMessage.SEVERITY_ERROR);
 			FacesContext.getCurrentInstance().addMessage("", message);
 		}
 	}
 
+	private Boolean verifyEmailExists() {
+		MessageReturn ret = new MessageReturn();
+		try {
+
+			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/user/emailcheck");
+			request.body(MediaType.APPLICATION_JSON, user);
+			ClientResponse<User> response = request.put(User.class);
+
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+
+			ret = response.getEntity(MessageReturn.class);
+
+			if (ret.getUser() != null) {
+				return true;
+			}
+
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	private Boolean verifyUsernameExists() {
+		MessageReturn ret = new MessageReturn();
+		try {
+
+			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/user/usernamecheck");
+			request.body(MediaType.APPLICATION_JSON, user);
+			ClientResponse<User> response = request.put(User.class);
+
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+
+			ret = response.getEntity(MessageReturn.class);
+
+			if (ret.getUser() != null) {
+				return true;
+			}
+
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
 	public void existsEmail() throws ValidatorException {
-		String email = this.user.getEmail();
-		this.user.setEmail(email);
-		Boolean exists = false; // userBO.existsEmail(this.user);
+		this.user.setPassword("");
+		Boolean exists = verifyEmailExists();
 		if (this.user.getId() == null && exists) {
-			FacesMessage message = new FacesMessage("Thos email is already been used in our database!");
+			FacesMessage message = new FacesMessage(MessageFactory.getMessage("error_email_in_use", "en"));
+			message.setSeverity(FacesMessage.SEVERITY_ERROR);
+			FacesContext.getCurrentInstance().addMessage("", message);
+		}
+	}
+	
+	public void existsUsername() throws ValidatorException {
+		Boolean exists = verifyUsernameExists();
+		this.user.setPassword("");
+		if (this.user.getId() == null && exists) {
+			FacesMessage message = new FacesMessage(MessageFactory.getMessage("error_username_in_use", "en"));
 			message.setSeverity(FacesMessage.SEVERITY_ERROR);
 			FacesContext.getCurrentInstance().addMessage("", message);
 		}
@@ -595,6 +695,22 @@ public class UserMBean implements Serializable {
 
 	public void setShowEditNewButton(Boolean showEditNewButton) {
 		this.showEditNewButton = showEditNewButton;
+	}
+
+	public List<Role> getRoleList() {
+		return roleList;
+	}
+
+	public void setRoleList(List<Role> roleList) {
+		this.roleList = roleList;
+	}
+
+	public SelectItem[] getRoles() {
+		return roles;
+	}
+
+	public void setRoles(SelectItem[] roles) {
+		this.roles = roles;
 	}
 
 }
