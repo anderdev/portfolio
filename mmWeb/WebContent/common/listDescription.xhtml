@@ -8,7 +8,7 @@
         
         <ui:define name="contentAPP">
 	        <h:form prependId="false">
-	        	<h:outputText value="#{messages['lb_category_list']}" styleClass="boxTitulo"/>
+	        	<h:outputText value="#{messages['lb_description_list']}" styleClass="boxTitulo"/>
 	        	
 	        	<div align="center" style="width: 100%;" >
 	        		<div id="messages" class="messages" style="width: 50%;">
@@ -18,17 +18,17 @@
 	        		<h:panelGrid columns="2" width="50%" border="0" columnClasses="alignLeft,alignRight">
 		        		<p:commandButton value="#{messages['lb_delete']}" styleClass="button" onclick="confirmation.show()" />
 		        		<p:commandButton value="#{messages['lb_new']}" 
-		        			action="#{categoryMBean.newCategory}"  
+		        			action="#{descriptionMBean.newDescription}"  
 		        			styleClass="button" 
-		        			update=":newCategory" 
+		        			update=":newDescription" 
 		        			id="newButton"
-		        			oncomplete="newCategoryModal.show()" >
+		        			oncomplete="newDescriptionModal.show()" >
 		        		</p:commandButton>
 				    </h:panelGrid>
 				   
-				    <p:dataTable var="cat" value="#{categoryMBean.categoryList}" style="width:50%" id="categoryList"
+				    <p:dataTable var="cat" value="#{descriptionMBean.descriptionList}" style="width:50%" id="descriptionList"
 				    		paginatorAlwaysVisible="false" paginator="true" emptyMessage="#{messages['lb_empty_list']}"
-				    		rows="10" selection="#{categoryMBean.selectedCategorys}" rowKey="#{cat}" 
+				    		rows="10" selection="#{descriptionMBean.selectedDescriptions}" rowKey="#{cat}" 
 				    		paginatorPosition="botton" >
 				    	
 				    	<p:column selectionMode="multiple" style="text-align:center; width:5%"  />
@@ -41,8 +41,8 @@
 				        </p:column>
 				        
 				        <p:column style="width:5%">
-				        	<p:commandLink action="#{categoryMBean.edit}" update=":newCategory" oncomplete="newCategoryModal.show();" id="editButton">
-				        		<f:setPropertyActionListener value="#{cat}" target="#{categoryMBean.category}" />  
+				        	<p:commandLink action="#{descriptionMBean.edit}" update=":newDescription" oncomplete="newDescriptionModal.show();" id="editButton">
+				        		<f:setPropertyActionListener value="#{cat}" target="#{descriptionMBean.description}" />  
 								<p:graphicImage value="#{messages['img_update']}" style="border: 0px" />
 							</p:commandLink>
 				        </p:column>
@@ -50,13 +50,13 @@
 				</div>	
 				<p:confirmDialog message="#{messages['lb_multiple_exclusion']}" header="#{messages['lb_header_confirmation']}" severity="alert" widgetVar="confirmation">  
                   	<div align="center">
-				        <p:commandButton value="#{messages['lb_yes']}" update="categoryList,mensagem" oncomplete="confirmation.hide()" action="#{categoryMBean.delete}"/>  
-				        <p:commandButton value="#{messages['lb_no']}" onclick="confirmation.hide()" type="button" action="#{categoryMBean.cancel}"/>   
+				        <p:commandButton value="#{messages['lb_yes']}" update="descriptionList,mensagem" oncomplete="confirmation.hide()" action="#{descriptionMBean.delete}"/>  
+				        <p:commandButton value="#{messages['lb_no']}" onclick="confirmation.hide()" type="button" action="#{descriptionMBean.cancel}"/>   
 	                 </div> 
 	    		</p:confirmDialog>  		
 			</h:form>  
-			<p:dialog header="#{messages['lb_category_registration']}" resizable="false" widgetVar="newCategoryModal" modal="true" appendToBody="true" height="150" width="420">  
-			    <ui:include src="/include/formCategory.xhtml" />
+			<p:dialog header="#{messages['lb_description_registration']}" resizable="false" widgetVar="newDescriptionModal" modal="true" appendToBody="true" height="150" width="420">  
+			    <ui:include src="/include/formDescription.xhtml" />
 			</p:dialog>
         </ui:define>
 </ui:composition>

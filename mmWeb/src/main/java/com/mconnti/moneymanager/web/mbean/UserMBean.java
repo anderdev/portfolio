@@ -459,10 +459,6 @@ public class UserMBean implements Serializable {
 			e.printStackTrace();
 			FacesUtil.showAErrorMessage(e.getMessage());
 		}
-		// if (loggedUser != null) {
-		// return "/common/listUser.xhtml?faces-redirect=true";
-		// }
-		// return "/index.xhtml";
 	}
 
 	public void delete() {
