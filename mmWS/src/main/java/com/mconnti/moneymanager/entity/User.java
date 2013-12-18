@@ -55,6 +55,7 @@ public class User extends SearchObject implements Serializable{
 	
 	private String language;
 	
+	@Transient
 	private Boolean administrator;
 	
 	@Column(name="phrase")

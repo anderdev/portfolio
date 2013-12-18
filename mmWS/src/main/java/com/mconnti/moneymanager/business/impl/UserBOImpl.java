@@ -124,6 +124,9 @@ public class UserBOImpl extends GenericBOImpl<User> implements UserBO {
 				messageReturn.setUser(null);
 				messageReturn.setMessage(MessageFactory.getMessage("lb_user_incorrect_password", "en"));
 			} else {
+				if("ADMIN".equals(messageReturn.getUser().getRole().getRole())){
+					messageReturn.getUser().setAdministrator(true);
+				}
 				messageReturn.setMessage(MessageFactory.getMessage("lb_login_success", messageReturn.getUser().getLanguage()));
 			}
 		} catch (Exception e) {

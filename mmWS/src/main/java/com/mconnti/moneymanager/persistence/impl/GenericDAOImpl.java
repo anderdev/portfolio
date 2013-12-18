@@ -49,6 +49,9 @@ public class GenericDAOImpl<T> implements GenericDAO<T> {
 				Map.Entry<String, String> element = iterator.next();
 				sql.append(element.getKey()).append(element.getValue());
 			}
+			
+			System.out.println("Query: "+sql.toString());
+			
 			Query query = em.createQuery(sql.toString());
 			obj = (T) query.getSingleResult();
 		} catch (NoResultException nre) {
@@ -109,11 +112,12 @@ public class GenericDAOImpl<T> implements GenericDAO<T> {
 				sql.append(" order by ").append(orderByField);
 			}
 
+			System.out.println("Query: "+sql.toString());
+			
 			Query query = em.createQuery(sql.toString());
 			query.setFirstResult(startRow);
 			query.setMaxResults(pageSize);
 
-			query.setHint("toplink.refresh", "true");
 			return query.getResultList();
 		} catch (Exception e) {
 			throw new Exception(e.getMessage(), e);
@@ -146,9 +150,9 @@ public class GenericDAOImpl<T> implements GenericDAO<T> {
 				sql.append(" order by ").append(orderByField);
 			}
 
-			System.out.println("sql.toString(): "+sql.toString());
+			System.out.println("Query: "+sql.toString());
+			
 			Query query = em.createQuery(sql.toString());
-			query.setHint("toplink.refresh", "true");
 			return query.getResultList();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -173,6 +177,9 @@ public class GenericDAOImpl<T> implements GenericDAO<T> {
 				sql.append(whereAnd).append(element.getKey()).append(element.getValue());
 				x++;
 			}
+			
+			System.out.println("Query: "+sql.toString());
+			
 			Query query = em.createQuery(sql.toString());
 			ret = (Long) query.getSingleResult();
 		} catch (Exception e) {

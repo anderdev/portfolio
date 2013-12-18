@@ -57,7 +57,7 @@ public class UserMBean implements Serializable {
 	private List<State> stateList;
 
 	private List<City> cityList;
-	
+
 	private List<Role> roleList;
 
 	private User user;
@@ -71,7 +71,7 @@ public class UserMBean implements Serializable {
 	private SelectItem[] states;
 
 	private SelectItem[] cities;
-	
+
 	private SelectItem[] roles;
 
 	private Country country = new Country();
@@ -112,9 +112,11 @@ public class UserMBean implements Serializable {
 
 	public UserMBean() {
 		this.user = new User();
+		this.user.setRole(new Role());
 		this.country = new Country();
 		this.state = new State();
 		this.city = new City();
+		this.role = new Role();
 		Object request = FacesContext.getCurrentInstance().getExternalContext().getRequest();
 		if (request instanceof HttpServletRequest) {
 			String[] str = ((HttpServletRequest) request).getRequestURL().toString().split("mmanager");
@@ -142,9 +144,9 @@ public class UserMBean implements Serializable {
 		}
 		return itens.toArray(new SelectItem[itens.size()]);
 	}
-	
+
 	public SelectItem[] getRolesSI() {
-		loadRoleList();
+		Collection<Role> roleList = loadRoleList();
 		List<SelectItem> itens = new ArrayList<SelectItem>(roleList.size());
 
 		this.roles = new SelectItem[itens.size()];
@@ -154,8 +156,8 @@ public class UserMBean implements Serializable {
 		}
 		return itens.toArray(new SelectItem[itens.size()]);
 	}
-	
-	public void loadRoles(){
+
+	public void loadRoles() {
 		this.roles = getRolesSI();
 	}
 
@@ -245,8 +247,8 @@ public class UserMBean implements Serializable {
 			e.printStackTrace();
 		}
 	}
-	
-	private void loadRoleList() {
+
+	private Collection<Role> loadRoleList() {
 		try {
 
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/role");
@@ -265,8 +267,9 @@ public class UserMBean implements Serializable {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
 
+		return roleList;
+	}
 
 	private void loadListByParameter() {
 		try {
@@ -413,6 +416,12 @@ public class UserMBean implements Serializable {
 	}
 
 	public void edit() {
+		loadDefaultCombos();
+		this.city = user.getCity();
+		this.state = city.getState();
+		this.country = state.getCountry();
+		this.states = getStateByCountry(country);
+		this.cities = getCityByState(state);
 		showPassword = false;
 		loadRoles();
 	}
@@ -520,7 +529,7 @@ public class UserMBean implements Serializable {
 		}
 		return false;
 	}
-	
+
 	private Boolean verifyUsernameExists() {
 		MessageReturn ret = new MessageReturn();
 		try {
@@ -558,7 +567,7 @@ public class UserMBean implements Serializable {
 			FacesContext.getCurrentInstance().addMessage("", message);
 		}
 	}
-	
+
 	public void existsUsername() throws ValidatorException {
 		Boolean exists = verifyUsernameExists();
 		this.user.setPassword("");

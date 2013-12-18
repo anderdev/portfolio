@@ -73,9 +73,9 @@
 					<p:inputText id="secret_phrase" label="#{messages['lb_secret_phrase_']}" required="true"  value="#{userMBean.user.secretPhrase}" style="width:100%" />
 					
 					<h:outputText value="#{messages['lb_admin']}" rendered="#{userMBean.loggedUser.administrator}" />
-					<p:selectOneMenu value="#{userMBean.user.role}" label="#{messages['lb_admin_']}" required="true" rendered="#{userMBean.loggedUser.administrator}">
+					<p:selectOneMenu value="#{userMBean.user.role.id}" label="#{messages['lb_admin_']}" required="true" rendered="#{userMBean.loggedUser.administrator}">
 			            <f:selectItem itemLabel="#{messages['lb_select']}" itemValue="" />
-			            <f:selectItems value="#{userMBean.roles}" var="role" itemLabel="#{role.role}" itemValue="#{role}"/>  
+			            <f:selectItems value="#{userMBean.roles}" var="r" itemLabel="#{r.role}" itemValue="#{r}"/>  
 			        </p:selectOneMenu>
 				</h:panelGrid>
 				
