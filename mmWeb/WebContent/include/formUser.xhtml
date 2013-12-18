@@ -5,6 +5,7 @@
         xmlns:p="http://primefaces.org/ui">
         	
       	<h:form id="newUser" prependId="false" >
+      	    <h:inputHidden value="#{userMBean.user.password}" rendered="#{!userMBean.showPassword}"/>
 		    <div id="messagesUser" class="messages">
 		   	 	<p:messages showDetail="true" showSummary="false" autoUpdate="true" id="msg" />
 	       	</div>
