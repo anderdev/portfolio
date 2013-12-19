@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.ForeignKey;
 
@@ -38,6 +39,18 @@ public class Description implements Serializable {
 	@JoinColumn(name = "user_id")
 	@ForeignKey(name = "FK_DESCRIPTION_USER")
 	private User user;
+	
+	@Transient
+	private Boolean isCredit;
+	
+	@Transient
+	private Boolean isDebit;
+	
+	@Transient
+	private Boolean isGroup;
+	
+	@Transient
+	private Boolean isSuperGroup;
 
 	public TypeAccount getTypeAccount() {
 		return typeAccount;
@@ -78,5 +91,37 @@ public class Description implements Serializable {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public Boolean getIsCredit() {
+		return isCredit;
+	}
+
+	public void setIsCredit(Boolean isCredit) {
+		this.isCredit = isCredit;
+	}
+
+	public Boolean getIsDebit() {
+		return isDebit;
+	}
+
+	public void setIsDebit(Boolean isDebit) {
+		this.isDebit = isDebit;
+	}
+
+	public Boolean getIsGroup() {
+		return isGroup;
+	}
+
+	public void setIsGroup(Boolean isGroup) {
+		this.isGroup = isGroup;
+	}
+
+	public Boolean getIsSuperGroup() {
+		return isSuperGroup;
+	}
+
+	public void setIsSuperGroup(Boolean isSuperGroup) {
+		this.isSuperGroup = isSuperGroup;
 	}
 }

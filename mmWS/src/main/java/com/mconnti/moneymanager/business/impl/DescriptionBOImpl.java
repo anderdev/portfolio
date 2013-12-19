@@ -1,15 +1,19 @@
 package com.mconnti.moneymanager.business.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mconnti.moneymanager.business.DescriptionBO;
 import com.mconnti.moneymanager.entity.Description;
+import com.mconnti.moneymanager.entity.TypeAccount;
 import com.mconnti.moneymanager.entity.User;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
 import com.mconnti.moneymanager.persistence.DescriptionDAO;
+import com.mconnti.moneymanager.persistence.TypeAccountDAO;
 import com.mconnti.moneymanager.persistence.UserDAO;
 import com.mconnti.moneymanager.utils.MessageFactory;
 
@@ -21,6 +25,9 @@ public class DescriptionBOImpl extends GenericBOImpl<Description> implements Des
 	@Autowired
 	private DescriptionDAO descriptionDAO;
 	
+	@Autowired
+	private TypeAccountDAO typeAccountDAO;
+
 	private User getUser(Description description) {
 		try {
 			return userDAO.findById(User.class, description.getUser().getId());
@@ -37,7 +44,14 @@ public class DescriptionBOImpl extends GenericBOImpl<Description> implements Des
 		User user = getUser(description);
 		if (user != null && description.getTypeAccount() != null) {
 			try {
-				saveGeneric(description);
+				for (int x = 0; x < 4; x++) {
+					if (description.getIsCredit()) {
+						Map<String, String> queryParams = new HashMap<>();
+						queryParams.put(" where x.locale", "= " + locale);
+						TypeAccount typeAccount = typeAccountDAO.findByParameter(TypeAccount.class, queryParans);					
+					}
+					saveGeneric(description);
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 				libReturn.setDescription(description);

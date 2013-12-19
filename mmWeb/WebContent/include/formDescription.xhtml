@@ -10,6 +10,20 @@
 	       	</div>
 	       	
 	       	<div id="boxNewDescription" class="boxNewDescription">
+	       	    <h:panelGrid columns="4" style="margin-bottom:10px" cellpadding="5">  
+	       	    	<h:outputText value="#{messages['lb_credit_']}" />
+	       	    	<p:selectBooleanCheckbox value="#{descriptionBean.isCredit}" />
+	       	    	
+	       	    	<h:outputText value="#{messages['lb_debit_']}" />
+	       	    	<p:selectBooleanCheckbox value="#{descriptionBean.isDebit}" />
+	       	    	
+	       	    	<h:outputText value="#{messages['lb_group_']}" />
+	       	    	<p:selectBooleanCheckbox value="#{descriptionBean.isGroup}" />
+	       	    	
+	       	    	<h:outputText value="#{messages['lb_super_group_']}" />
+	       	    	<p:selectBooleanCheckbox value="#{descriptionBean.isSuperGroup}" /> 
+	       	    </h:panelGrid>
+	       	
 	       		<h:panelGrid columns="2" columnClasses="colunaLabel60,coluna290" styleClass="formCadastroDescription" border="0">
 					<h:outputText value="#{messages['lb_type']}" />
 					<p:inputText id="name" label="#{messages['lb_type_']}" required="true"  value="#{descriptionMBean.description.description}" style="width:100%" />

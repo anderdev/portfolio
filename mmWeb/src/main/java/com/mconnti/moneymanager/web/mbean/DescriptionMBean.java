@@ -46,7 +46,7 @@ public class DescriptionMBean implements Serializable {
 	private Description[] selectedDescription;
 
 	private Boolean refreshList = false;
-
+	
 	private String host = null;
 
 	private String locale;
@@ -110,9 +110,13 @@ public class DescriptionMBean implements Serializable {
 		MessageReturn ret = new MessageReturn();
 
 		try {
-
+			
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/description");
 			request.body(MediaType.APPLICATION_JSON, description);
+			
+			for(int x=0; x<4; x++){
+				
+			}
 
 			ClientResponse<Description> response = request.post(Description.class);
 

@@ -19,6 +19,14 @@ public class Description implements Serializable {
 	private TypeAccount typeAccount;
 
 	private User user;
+	
+    private Boolean isCredit;
+	
+	private Boolean isDebit;
+	
+	private Boolean isGroup;
+	
+	private Boolean isSuperGroup;
 
 	public TypeAccount getTypeAccount() {
 		return typeAccount;
@@ -50,5 +58,37 @@ public class Description implements Serializable {
 
 	public void setDescription(String description) {
 		this.description =  description;
+	}
+
+	public Boolean getIsCredit() {
+		return isCredit;
+	}
+
+	public void setIsCredit(Boolean isCredit) {
+		this.isCredit = isCredit;
+	}
+
+	public Boolean getIsDebit() {
+		return isDebit;
+	}
+
+	public void setIsDebit(Boolean isDebit) {
+		this.isDebit = isDebit;
+	}
+
+	public Boolean getIsGroup() {
+		return isGroup;
+	}
+
+	public void setIsGroup(Boolean isGroup) {
+		this.isGroup = isGroup;
+	}
+
+	public Boolean getIsSuperGroup() {
+		return isSuperGroup;
+	}
+
+	public void setIsSuperGroup(Boolean isSuperGroup) {
+		this.isSuperGroup = isSuperGroup;
 	}
 }
