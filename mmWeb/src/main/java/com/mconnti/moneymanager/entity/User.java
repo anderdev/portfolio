@@ -3,6 +3,8 @@ package com.mconnti.moneymanager.entity;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -12,6 +14,8 @@ import com.mconnti.moneymanager.entity.xml.SearchObject;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
+@ManagedBean(name="loggedUser")  
+@SessionScoped  
 public class User extends SearchObject implements Serializable{
 
 	private static final long serialVersionUID = -5645425703632609531L;

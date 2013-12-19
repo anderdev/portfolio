@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -47,6 +48,7 @@ public class UserMBean implements Serializable {
 
 	private User user;
 
+	@ManagedProperty(value = "#{loggedUser}")
 	private User loggedUser;
 
 	private User[] selectedUsers;
@@ -116,7 +118,7 @@ public class UserMBean implements Serializable {
 			if (ret.getUser() == null) {
 				throw new Exception(ret.getMessage());
 			} else {
-				loggedUser = ret.getUser();
+				setLoggedUser(ret.getUser());
 				FacesUtil.showSuccessMessage(ret.getMessage());
 			}
 		} catch (Exception e) {

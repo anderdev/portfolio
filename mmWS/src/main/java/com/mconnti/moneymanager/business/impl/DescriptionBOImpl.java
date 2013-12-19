@@ -24,7 +24,7 @@ public class DescriptionBOImpl extends GenericBOImpl<Description> implements Des
 
 	@Autowired
 	private DescriptionDAO descriptionDAO;
-	
+
 	@Autowired
 	private TypeAccountDAO typeAccountDAO;
 
@@ -42,15 +42,33 @@ public class DescriptionBOImpl extends GenericBOImpl<Description> implements Des
 	public MessageReturn save(Description description) {
 		MessageReturn libReturn = new MessageReturn();
 		User user = getUser(description);
-		if (user != null && description.getTypeAccount() != null) {
+		if (user != null) {
 			try {
-				for (int x = 0; x < 4; x++) {
-					if (description.getIsCredit()) {
-						Map<String, String> queryParams = new HashMap<>();
-						queryParams.put(" where x.locale", "= " + locale);
-						TypeAccount typeAccount = typeAccountDAO.findByParameter(TypeAccount.class, queryParans);					
+				Map<String, String> queryParams = new HashMap<>();
+
+				if (description.getUser().getSuperUser() != null) {
+					queryParams.put(" where x.locale = ", description.getUser().getSuperUser().getLanguage());
+					description.setUser(description.getUser().getSuperUser());
+				} else {
+					queryParams.put(" where x.locale = ", description.getUser().getLanguage());
+				}
+
+				List<TypeAccount> typeAccountList = typeAccountDAO.list(TypeAccount.class, queryParams, "");
+				
+				for (TypeAccount typeAccount : typeAccountList) {
+					if(description.getIsCredit() && typeAccount.getDescription().startsWith("C")){
+						description.setTypeAccount(typeAccount);
+						saveGeneric(description);
+					} else if(description.getIsDebit() && typeAccount.getDescription().startsWith("D")){
+						description.setTypeAccount(typeAccount);
+						saveGeneric(description);
+					} else if(description.getIsGroup() && typeAccount.getDescription().startsWith("G")){
+						description.setTypeAccount(typeAccount);
+						saveGeneric(description);
+					}else {
+						description.setTypeAccount(typeAccount);
+						saveGeneric(description);
 					}
-					saveGeneric(description);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
@@ -37,16 +38,15 @@ public class DescriptionMBean implements Serializable {
 
 	private List<TypeAccount> typeAccountList;
 
+	@ManagedProperty(value = "#{loggedUser}")
 	private User loggedUser;
-	
-	private Description description;
-	
-	private TypeAccount typeAccount;
 
-	private Description[] selectedDescription;
+	private Description description;
+
+	private Description[] selectedDescriptions;
 
 	private Boolean refreshList = false;
-	
+
 	private String host = null;
 
 	private String locale;
@@ -110,13 +110,10 @@ public class DescriptionMBean implements Serializable {
 		MessageReturn ret = new MessageReturn();
 
 		try {
-			
+
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/description");
+			description.setUser(loggedUser);
 			request.body(MediaType.APPLICATION_JSON, description);
-			
-			for(int x=0; x<4; x++){
-				
-			}
 
 			ClientResponse<Description> response = request.post(Description.class);
 
@@ -147,7 +144,7 @@ public class DescriptionMBean implements Serializable {
 	public void delete() {
 		MessageReturn ret = new MessageReturn();
 		try {
-			for (Description description : selectedDescription) {
+			for (Description description : selectedDescriptions) {
 				ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/description");
 				request.body(MediaType.APPLICATION_JSON, description);
 
@@ -156,7 +153,7 @@ public class DescriptionMBean implements Serializable {
 				ret = response.getEntity(MessageReturn.class);
 			}
 
-			if (selectedDescription.length > 1) {
+			if (selectedDescriptions.length > 1) {
 				FacesUtil.showSuccessMessage(MessageFactory.getMessage("lb_description_deleted_successfully_mult", loggedUser.getLanguage()));
 			} else {
 				FacesUtil.showSuccessMessage(MessageFactory.getMessage("lb_deleted_successfully", loggedUser.getLanguage()));
@@ -200,20 +197,12 @@ public class DescriptionMBean implements Serializable {
 		this.description = description;
 	}
 
-	public TypeAccount getTypeAccount() {
-		return typeAccount;
+	public Description[] getSelectedDescriptions() {
+		return selectedDescriptions;
 	}
 
-	public void setTypeAccount(TypeAccount typeAccount) {
-		this.typeAccount = typeAccount;
-	}
-
-	public Description[] getSelectedDescription() {
-		return selectedDescription;
-	}
-
-	public void setSelectedDescription(Description[] selectedDescription) {
-		this.selectedDescription = selectedDescription;
+	public void setSelectedDescriptions(Description[] selectedDescriptions) {
+		this.selectedDescriptions = selectedDescriptions;
 	}
 
 	public Boolean getRefreshList() {

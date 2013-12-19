@@ -27,7 +27,7 @@
 						<p:menuitem value="#{messages['lb_creditcard_']}" action="#{creditCardMBean.list}"   />
 						<p:menuitem value="#{messages['lb_default_values_']}" action="#{configMBean.edit}" />
 					</p:submenu>
-					<p:submenu label="#{messages['lb_administration_']}" styleClass="menuItem">
+					<p:submenu label="#{messages['lb_administration_']}" styleClass="menuItem" rendered="#{userMBean.loggedUser.administrator}">
 						<p:menuitem value="#{messages['lb_user_list_']}" action="#{userMBean.listAdm}" ajax="true" />
 						<p:menuitem value="#{messages['lb_locale_']}" action="#{localeMBean.list}"   ajax="true" />
 						<p:menuitem value="#{messages['lb_default_values_']}" action="#{configMBean.list}"   ajax="true" />
