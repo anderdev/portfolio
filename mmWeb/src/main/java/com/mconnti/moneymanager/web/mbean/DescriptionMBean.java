@@ -5,7 +5,6 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
@@ -33,12 +32,13 @@ public class DescriptionMBean implements Serializable {
 	FacesContext fc = FacesContext.getCurrentInstance();
 
 	HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+	
+	HttpServletRequest request = (HttpServletRequest) fc.getExternalContext().getRequest();
 
 	private List<Description> descriptionList;
 
 	private List<TypeAccount> typeAccountList;
 
-	@ManagedProperty(value = "#{loggedUser}")
 	private User loggedUser;
 
 	private Description description;
@@ -53,6 +53,7 @@ public class DescriptionMBean implements Serializable {
 
 	public DescriptionMBean() {
 		this.description = new Description();
+		loggedUser = (User) session.getAttribute("loggedUser");
 		Object request = FacesContext.getCurrentInstance().getExternalContext().getRequest();
 		if (request instanceof HttpServletRequest) {
 			String[] str = ((HttpServletRequest) request).getRequestURL().toString().split("mmanager");
