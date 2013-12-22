@@ -47,25 +47,25 @@ public class DescriptionBOImpl extends GenericBOImpl<Description> implements Des
 				Map<String, String> queryParams = new HashMap<>();
 
 				if (description.getUser().getSuperUser() != null) {
-					queryParams.put(" where x.locale = ", description.getUser().getSuperUser().getLanguage());
+					queryParams.put(" where x.locale = ", "'" + description.getUser().getSuperUser().getLanguage() + "'");
 					description.setUser(description.getUser().getSuperUser());
 				} else {
-					queryParams.put(" where x.locale = ", description.getUser().getLanguage());
+					queryParams.put(" where x.locale = ", "'" + description.getUser().getLanguage() + "'");
 				}
 
 				List<TypeAccount> typeAccountList = typeAccountDAO.list(TypeAccount.class, queryParams, "");
-				
+
 				for (TypeAccount typeAccount : typeAccountList) {
-					if(description.getIsCredit() && typeAccount.getDescription().startsWith("C")){
+					if (description.getIsCredit() && typeAccount.getDescription().startsWith("C")) {
 						description.setTypeAccount(typeAccount);
 						saveGeneric(description);
-					} else if(description.getIsDebit() && typeAccount.getDescription().startsWith("D")){
+					} else if (description.getIsDebit() && typeAccount.getDescription().startsWith("D")) {
 						description.setTypeAccount(typeAccount);
 						saveGeneric(description);
-					} else if(description.getIsGroup() && typeAccount.getDescription().startsWith("G")){
+					} else if (description.getIsGroup() && typeAccount.getDescription().startsWith("G")) {
 						description.setTypeAccount(typeAccount);
 						saveGeneric(description);
-					}else {
+					} else if (description.getIsGroup() && typeAccount.getDescription().startsWith("S")) {
 						description.setTypeAccount(typeAccount);
 						saveGeneric(description);
 					}
@@ -90,7 +90,19 @@ public class DescriptionBOImpl extends GenericBOImpl<Description> implements Des
 	}
 
 	public List<Description> list() throws Exception {
-		return list(Description.class, null, null);
+		List<Description> descriptionList = list(Description.class, null, null);
+		for (Description description : descriptionList) {
+			if(description.getTypeAccount().getDescription().startsWith("C")){
+				description.setIsCredit(true);
+			}else if(description.getTypeAccount().getDescription().startsWith("D")){
+				description.setIsDebit(true);
+			}else if(description.getTypeAccount().getDescription().startsWith("G")){
+				description.setIsGroup(true);
+			}else if(description.getTypeAccount().getDescription().startsWith("S")){
+				description.setIsSuperGroup(true);
+			}
+		}
+		return descriptionList;
 	}
 
 	@Override

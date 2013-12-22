@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +19,6 @@ import org.jboss.resteasy.util.GenericType;
 
 import com.mconnti.moneymanager.entity.Description;
 import com.mconnti.moneymanager.entity.TypeAccount;
-import com.mconnti.moneymanager.entity.User;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
 import com.mconnti.moneymanager.util.FacesUtil;
 import com.mconnti.moneymanager.util.MessageFactory;
@@ -38,34 +38,22 @@ public class DescriptionMBean implements Serializable {
 	private List<Description> descriptionList;
 
 	private List<TypeAccount> typeAccountList;
-
-	private User loggedUser;
+	
+	@ManagedProperty(value = "#{userMBean}")  
+	private UserMBean userMBean;
 
 	private Description description;
 
 	private Description[] selectedDescriptions;
 
-	private Boolean refreshList = false;
-
 	private String host = null;
-
-	private String locale;
 
 	public DescriptionMBean() {
 		this.description = new Description();
-		loggedUser = (User) session.getAttribute("loggedUser");
 		Object request = FacesContext.getCurrentInstance().getExternalContext().getRequest();
 		if (request instanceof HttpServletRequest) {
 			String[] str = ((HttpServletRequest) request).getRequestURL().toString().split("mmanager");
 			host = str[0];
-		}
-		if (loggedUser == null) {
-			locale = fc.getExternalContext().getRequestLocale().toString();
-			if (!locale.equals("pt_BR")) {
-				locale = "en";
-			}
-		} else {
-			locale = loggedUser.getLanguage();
 		}
 	}
 
@@ -105,6 +93,7 @@ public class DescriptionMBean implements Serializable {
 	}
 
 	public void edit() {
+		
 	}
 
 	public void save() {
@@ -113,9 +102,9 @@ public class DescriptionMBean implements Serializable {
 		try {
 
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/description");
-			description.setUser(loggedUser);
+			description.setUser(userMBean.getLoggedUser());
 			request.body(MediaType.APPLICATION_JSON, description);
-
+			
 			ClientResponse<Description> response = request.post(Description.class);
 
 			ret = response.getEntity(MessageReturn.class);
@@ -129,9 +118,7 @@ public class DescriptionMBean implements Serializable {
 			} else {
 				FacesUtil.showSuccessMessage(ret.getMessage());
 			}
-			if (refreshList) {
-				loadList();
-			}
+			loadList();
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -155,9 +142,9 @@ public class DescriptionMBean implements Serializable {
 			}
 
 			if (selectedDescriptions.length > 1) {
-				FacesUtil.showSuccessMessage(MessageFactory.getMessage("lb_description_deleted_successfully_mult", loggedUser.getLanguage()));
+				FacesUtil.showSuccessMessage(MessageFactory.getMessage("lb_description_deleted_successfully_mult", userMBean.getLoggedUser().getLanguage()));
 			} else {
-				FacesUtil.showSuccessMessage(MessageFactory.getMessage("lb_deleted_successfully", loggedUser.getLanguage()));
+				FacesUtil.showSuccessMessage(MessageFactory.getMessage("lb_deleted_successfully", userMBean.getLoggedUser().getLanguage()));
 			}
 			loadList();
 		} catch (Exception e) {
@@ -182,14 +169,6 @@ public class DescriptionMBean implements Serializable {
 		this.typeAccountList = typeAccountList;
 	}
 
-	public User getLoggedUser() {
-		return loggedUser;
-	}
-
-	public void setLoggedUser(User loggedUser) {
-		this.loggedUser = loggedUser;
-	}
-
 	public Description getDescription() {
 		return description;
 	}
@@ -206,12 +185,12 @@ public class DescriptionMBean implements Serializable {
 		this.selectedDescriptions = selectedDescriptions;
 	}
 
-	public Boolean getRefreshList() {
-		return refreshList;
+	public UserMBean getUserMBean() {
+		return userMBean;
 	}
 
-	public void setRefreshList(Boolean refreshList) {
-		this.refreshList = refreshList;
+	public void setUserMBean(UserMBean userMBean) {
+		this.userMBean = userMBean;
 	}
 
 }

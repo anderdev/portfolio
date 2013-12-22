@@ -33,11 +33,18 @@
 				    	
 				    	<p:column selectionMode="multiple" style="text-align:center; width:5%"  />
 				        
-				        <p:column sortBy="#{cat.type}" >
+				        <p:column sortBy="#{cat.description}" >
+				            <f:facet name="header">
+				                <h:outputText value="#{messages['lb_description_']}" />
+				            </f:facet>
+				            <h:outputText value="#{cat.description}" />
+				        </p:column>
+				        
+				        <p:column sortBy="#{cat.typeAccount.description}" >
 				            <f:facet name="header">
 				                <h:outputText value="#{messages['lb_type_']}" />
 				            </f:facet>
-				            <h:outputText value="#{cat.type}" />
+				            <h:outputText value="#{cat.typeAccount.description}" />
 				        </p:column>
 				        
 				        <p:column style="width:5%">
