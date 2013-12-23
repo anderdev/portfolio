@@ -1,0 +1,49 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui">
+        	
+      	<h:form id="newCreditCard" prependId="false" >
+		    <div id="messages" class="messages">
+	       		<p:messages showDetail="false"  id="msg"/>
+	       	</div>
+	       	
+	       	<div id="boxNewCreditCard" class="boxNewCreditCard">
+	       	
+	       		<h:panelGrid columns="2" columnClasses="colunaLabel60,coluna290" styleClass="formCadastroCreditCard" border="0">
+					<h:outputText value="#{messages['lb_name']}" />
+					<p:inputText id="name" label="#{messages['lb_name_']}" required="true"  value="#{creditCardMBean.creditCard.name}" style="width:100%" />
+					
+					<h:outputText value="#{msg.label_dtExpira}" style="colunaLabel"/>
+					<h:inputText id="dtExpira" label="#{msg.label_tabela_dtExpira}" value="#{cartaoController.cartaoDTO.dtExpira}" size="4" styleClass="input_content"
+								onkeydown="Mascara(this,DataCartao);"
+								    onkeypress="Mascara(this,DataCartao);" 
+								    onkeyup="Mascara(this,DataCartao);"  
+								    maxlength="7"
+								    required="true"/>
+					<h:outputText style="color: #0033FF;font-family:tahoma,verdana,arial;font-size: 11px;font-weight: bold;" value="#{msg.info_expiraCartao}"/>
+					
+					<h:outputText value="#{msg.label_diaVencimento}" style="colunaLabel"/>
+					<h:inputText id="diaVencimento" required="true" label="#{msg.label_tabela_diaVencimento}" value="#{cartaoController.cartaoDTO.diaVencimento}" style="width:13px" maxlength="2" onkeypress="return somente_numeros(event);" styleClass="input_content"/>
+					<h:outputText style="color: #0033FF;font-family:tahoma,verdana,arial;font-size: 11px;font-weight: bold;" value="#{msg.info_vencimento}"/>
+					
+					<h:outputText value="#{msg.label_diaCompra}" style="colunaLabel"/>
+					<h:inputText id="diaCompra" required="true" label="#{msg.label_tabela_diaCompra}" value="#{cartaoController.cartaoDTO.diaCompra}" style="width:13px" maxlength="2" onkeypress="return somente_numeros(event);" styleClass="input_content"/>
+					<h:outputText style="color: #0033FF;font-family:tahoma,verdana,arial;font-size: 11px;font-weight: bold;" value="#{msg.info_diaBom}"/>
+				</h:panelGrid>
+				
+				<br />
+			
+				<div class="messages" align="center">
+					<p:commandButton value="#{messages['lb_post']}" 
+						id="gravar" action="#{creditCardMBean.save}" ajax="false" 
+						styleClass="button" 
+						oncomplete="newCreditCardModal.hide();">  
+					</p:commandButton>
+					<p:commandButton value="#{messages['lb_back']}" immediate="true" id="voltar" ajax="false"  styleClass="button" >
+					</p:commandButton>
+				</div>
+	       	</div>
+		</h:form>
+</ui:composition>

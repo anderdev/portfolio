@@ -9,7 +9,6 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.http.client.ClientProtocolException;
@@ -18,7 +17,6 @@ import org.jboss.resteasy.client.ClientResponse;
 import org.jboss.resteasy.util.GenericType;
 
 import com.mconnti.moneymanager.entity.Description;
-import com.mconnti.moneymanager.entity.TypeAccount;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
 import com.mconnti.moneymanager.util.FacesUtil;
 import com.mconnti.moneymanager.util.MessageFactory;
@@ -28,19 +26,11 @@ import com.mconnti.moneymanager.util.MessageFactory;
 public class DescriptionMBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
-	FacesContext fc = FacesContext.getCurrentInstance();
-
-	HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
-	
-	HttpServletRequest request = (HttpServletRequest) fc.getExternalContext().getRequest();
-
-	private List<Description> descriptionList;
-
-	private List<TypeAccount> typeAccountList;
 	
 	@ManagedProperty(value = "#{userMBean}")  
 	private UserMBean userMBean;
+
+	private List<Description> descriptionList;
 
 	private Description description;
 
@@ -93,7 +83,6 @@ public class DescriptionMBean implements Serializable {
 	}
 
 	public void edit() {
-		
 	}
 
 	public void save() {
@@ -159,14 +148,6 @@ public class DescriptionMBean implements Serializable {
 
 	public void setDescriptionList(List<Description> descriptionList) {
 		this.descriptionList = descriptionList;
-	}
-
-	public List<TypeAccount> getTypeAccountList() {
-		return typeAccountList;
-	}
-
-	public void setTypeAccountList(List<TypeAccount> typeAccountList) {
-		this.typeAccountList = typeAccountList;
 	}
 
 	public Description getDescription() {

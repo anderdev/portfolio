@@ -5,10 +5,10 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.http.client.ClientProtocolException;
@@ -17,7 +17,6 @@ import org.jboss.resteasy.client.ClientResponse;
 import org.jboss.resteasy.util.GenericType;
 
 import com.mconnti.moneymanager.entity.CreditCard;
-import com.mconnti.moneymanager.entity.User;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
 import com.mconnti.moneymanager.util.FacesUtil;
 import com.mconnti.moneymanager.util.MessageFactory;
@@ -27,24 +26,17 @@ import com.mconnti.moneymanager.util.MessageFactory;
 public class CreditCardMBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
-	FacesContext fc = FacesContext.getCurrentInstance();
-
-	HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+	
+	@ManagedProperty(value = "#{userMBean}")
+	private UserMBean userMBean;
 
 	private List<CreditCard> creditCardList;
 
-	private User loggedUser;
-	
 	private CreditCard creditCard;
-	
+
 	private CreditCard[] selectedCreditCard;
 
-	private Boolean refreshList = false;
-
 	private String host = null;
-
-	private String locale;
 
 	public CreditCardMBean() {
 		this.creditCard = new CreditCard();
@@ -52,14 +44,6 @@ public class CreditCardMBean implements Serializable {
 		if (request instanceof HttpServletRequest) {
 			String[] str = ((HttpServletRequest) request).getRequestURL().toString().split("mmanager");
 			host = str[0];
-		}
-		if (loggedUser == null) {
-			locale = fc.getExternalContext().getRequestLocale().toString();
-			if (!locale.equals("pt_BR")) {
-				locale = "en";
-			}
-		} else {
-			locale = loggedUser.getLanguage();
 		}
 	}
 
@@ -89,12 +73,11 @@ public class CreditCardMBean implements Serializable {
 		return "/common/listCreditCard.xhtml?faces-redirect=true";
 	}
 
-	public void newDesc() {
+	public void newCreditCard() {
 		this.creditCard = new CreditCard();
 	}
 
 	public String cancel() {
-		this.creditCard = new CreditCard();
 		return "index.xhtml\faces-redirect=true";
 	}
 
@@ -107,6 +90,7 @@ public class CreditCardMBean implements Serializable {
 		try {
 
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/creditcard");
+			creditCard.setUser(userMBean.getLoggedUser());
 			request.body(MediaType.APPLICATION_JSON, creditCard);
 
 			ClientResponse<CreditCard> response = request.post(CreditCard.class);
@@ -122,9 +106,7 @@ public class CreditCardMBean implements Serializable {
 			} else {
 				FacesUtil.showSuccessMessage(ret.getMessage());
 			}
-			if (refreshList) {
-				loadList();
-			}
+			loadList();
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -148,9 +130,9 @@ public class CreditCardMBean implements Serializable {
 			}
 
 			if (selectedCreditCard.length > 1) {
-				FacesUtil.showSuccessMessage(MessageFactory.getMessage("lb_creditcard_deleted_successfully_mult", loggedUser.getLanguage()));
+				FacesUtil.showSuccessMessage(MessageFactory.getMessage("lb_creditcard_deleted_successfully_mult", userMBean.getLoggedUser().getLanguage()));
 			} else {
-				FacesUtil.showSuccessMessage(MessageFactory.getMessage("lb_deleted_successfully", loggedUser.getLanguage()));
+				FacesUtil.showSuccessMessage(MessageFactory.getMessage("lb_deleted_successfully", userMBean.getLoggedUser().getLanguage()));
 			}
 			loadList();
 		} catch (Exception e) {
@@ -165,14 +147,6 @@ public class CreditCardMBean implements Serializable {
 
 	public void setCreditCardList(List<CreditCard> creditCardList) {
 		this.creditCardList = creditCardList;
-	}
-
-	public User getLoggedUser() {
-		return loggedUser;
-	}
-
-	public void setLoggedUser(User loggedUser) {
-		this.loggedUser = loggedUser;
 	}
 
 	public CreditCard getCreditCard() {
@@ -190,13 +164,4 @@ public class CreditCardMBean implements Serializable {
 	public void setSelectedCreditCard(CreditCard[] selectedCreditCard) {
 		this.selectedCreditCard = selectedCreditCard;
 	}
-
-	public Boolean getRefreshList() {
-		return refreshList;
-	}
-
-	public void setRefreshList(Boolean refreshList) {
-		this.refreshList = refreshList;
-	}
-
 }

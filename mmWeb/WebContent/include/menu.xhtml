@@ -9,8 +9,8 @@
         	<div class="menu">
 		       	<p:menubar autoSubmenuDisplay="true" rendered="#{userMBean.loggedUser != null}">
 		       		<p:submenu label="#{messages['lb_inputs_']}" styleClass="menuItem">  
-		       			<p:menuitem value="#{messages['lb_credit_']}" action="#{creditMBean.new}" ajax="true" />
-						<p:menuitem value="#{messages['lb_debit_']}" action="#{debitMBean.new}"   ajax="true"/>
+		       			<p:menuitem value="#{messages['lb_credit_']}" action="#{creditMBean.newCredit}" ajax="true" />
+						<p:menuitem value="#{messages['lb_debit_']}" action="#{debitMBean.newDebit}"   ajax="true"/>
 					</p:submenu>
 					<p:submenu label="#{messages['lb_search_']}" styleClass="menuItem">
 						<p:menuitem value="#{messages['lb_credit_']}" action="#{creditMBean.list}" ajax="true" />
@@ -25,7 +25,7 @@
 						<p:menuitem value="#{messages['lb_user_list_']}" action="#{userMBean.listSuperUser}" ajax="true" />  
 						<p:menuitem value="#{messages['lb_description_']}" action="#{descriptionMBean.list}" />
 						<p:menuitem value="#{messages['lb_creditcard_']}" action="#{creditCardMBean.list}"   />
-						<p:menuitem value="#{messages['lb_default_values_']}" action="#{configMBean.edit}" />
+						<p:menuitem value="#{messages['lb_default_values_']}" action="#{configMBean.newConfig}" />
 					</p:submenu>
 					<p:submenu label="#{messages['lb_administration_']}" styleClass="menuItem" rendered="#{userMBean.loggedUser.administrator}">
 						<p:menuitem value="#{messages['lb_user_list_']}" action="#{userMBean.listAdm}" ajax="true" />
