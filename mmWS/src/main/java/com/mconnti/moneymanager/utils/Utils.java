@@ -53,6 +53,11 @@ public abstract class Utils {
 		SimpleDateFormat DtFormat = new SimpleDateFormat("dd/MM/yyyy");
 		return (dtData == null || dtData.equals("")) ? "" : DtFormat.format(dtData);
 	}
+	
+	public static String dateToStringCreditCard(Date dtData) {
+		SimpleDateFormat DtFormat = new SimpleDateFormat("MM/yyyy");
+		return (dtData == null || dtData.equals("")) ? "" : DtFormat.format(dtData);
+	}
 
 	public static Date getCreditCardExpiredDate(String jsonString) {
 		String strDate = "01/" + jsonString;

@@ -55,17 +55,39 @@ public class DescriptionBOImpl extends GenericBOImpl<Description> implements Des
 
 				List<TypeAccount> typeAccountList = typeAccountDAO.list(TypeAccount.class, queryParams, "");
 
+				Long descriptionId = description.getId();
+
 				for (TypeAccount typeAccount : typeAccountList) {
 					if (description.getIsCredit() && typeAccount.getDescription().startsWith("C")) {
+						if (description.getIsCreditOriginal() == null || !description.getIsCreditOriginal()) {
+							description.setId(null);
+						} else {
+							description.setId(descriptionId);
+						}
 						description.setTypeAccount(typeAccount);
 						saveGeneric(description);
 					} else if (description.getIsDebit() && typeAccount.getDescription().startsWith("D")) {
+						if (description.getIsDebitOriginal() == null || !description.getIsDebitOriginal()) {
+							description.setId(null);
+						} else {
+							description.setId(descriptionId);
+						}
 						description.setTypeAccount(typeAccount);
 						saveGeneric(description);
 					} else if (description.getIsGroup() && typeAccount.getDescription().startsWith("G")) {
+						if (description.getIsGroupOriginal() == null || !description.getIsGroupOriginal()) {
+							description.setId(null);
+						} else {
+							description.setId(descriptionId);
+						}
 						description.setTypeAccount(typeAccount);
 						saveGeneric(description);
 					} else if (description.getIsGroup() && typeAccount.getDescription().startsWith("S")) {
+						if (description.getIsSuperGroupOriginal() == null || !description.getIsSuperGroupOriginal()) {
+							description.setId(null);
+						} else {
+							description.setId(descriptionId);
+						}
 						description.setTypeAccount(typeAccount);
 						saveGeneric(description);
 					}
@@ -92,14 +114,18 @@ public class DescriptionBOImpl extends GenericBOImpl<Description> implements Des
 	public List<Description> list() throws Exception {
 		List<Description> descriptionList = list(Description.class, null, null);
 		for (Description description : descriptionList) {
-			if(description.getTypeAccount().getDescription().startsWith("C")){
+			if (description.getTypeAccount().getDescription().startsWith("C")) {
 				description.setIsCredit(true);
-			}else if(description.getTypeAccount().getDescription().startsWith("D")){
+				description.setIsCreditOriginal(true);
+			} else if (description.getTypeAccount().getDescription().startsWith("D")) {
 				description.setIsDebit(true);
-			}else if(description.getTypeAccount().getDescription().startsWith("G")){
+				description.setIsDebitOriginal(true);
+			} else if (description.getTypeAccount().getDescription().startsWith("G")) {
 				description.setIsGroup(true);
-			}else if(description.getTypeAccount().getDescription().startsWith("S")){
+				description.setIsGroupOriginal(true);
+			} else if (description.getTypeAccount().getDescription().startsWith("S")) {
 				description.setIsSuperGroup(true);
+				description.setIsSuperGroupOriginal(true);
 			}
 		}
 		return descriptionList;

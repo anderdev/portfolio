@@ -21,12 +21,21 @@ public class Description implements Serializable {
 	private User user;
 	
     private Boolean isCredit;
+    
+    private Boolean isCreditOriginal;
 	
 	private Boolean isDebit;
 	
+	private Boolean isDebitOriginal;
+	
 	private Boolean isGroup;
 	
+	private Boolean isGroupOriginal;
+	
 	private Boolean isSuperGroup;
+	
+	private Boolean isSuperGroupOriginal;
+
 
 	public TypeAccount getTypeAccount() {
 		return typeAccount;
@@ -90,5 +99,37 @@ public class Description implements Serializable {
 
 	public void setIsSuperGroup(Boolean isSuperGroup) {
 		this.isSuperGroup = isSuperGroup;
+	}
+
+	public Boolean getIsCreditOriginal() {
+		return isCreditOriginal;
+	}
+
+	public void setIsCreditOriginal(Boolean isCreditOriginal) {
+		this.isCreditOriginal = isCreditOriginal;
+	}
+
+	public Boolean getIsDebitOriginal() {
+		return isDebitOriginal;
+	}
+
+	public void setIsDebitOriginal(Boolean isDebitOriginal) {
+		this.isDebitOriginal = isDebitOriginal;
+	}
+
+	public Boolean getIsGroupOriginal() {
+		return isGroupOriginal;
+	}
+
+	public void setIsGroupOriginal(Boolean isGroupOriginal) {
+		this.isGroupOriginal = isGroupOriginal;
+	}
+
+	public Boolean getIsSuperGroupOriginal() {
+		return isSuperGroupOriginal;
+	}
+
+	public void setIsSuperGroupOriginal(Boolean isSuperGroupOriginal) {
+		this.isSuperGroupOriginal = isSuperGroupOriginal;
 	}
 }

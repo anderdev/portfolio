@@ -69,7 +69,7 @@
 	                 </div> 
 	    		</p:confirmDialog>  		
 			</h:form>  
-			<p:dialog header="#{messages['lb_creditCard_registration']}" resizable="false" widgetVar="newCreditCardModal" modal="true" appendToBody="true" height="250" width="420">  
+			<p:dialog header="#{messages['lb_creditCard_registration']}" resizable="false" widgetVar="newCreditCardModal" modal="true" appendTo="@(body)" height="250" width="420">  
 			    <ui:include src="/include/formCreditCard.xhtml"/>
 			</p:dialog>
         </ui:define>

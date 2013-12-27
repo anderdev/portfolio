@@ -164,4 +164,12 @@ public class CreditCardMBean implements Serializable {
 	public void setSelectedCreditCard(CreditCard[] selectedCreditCard) {
 		this.selectedCreditCard = selectedCreditCard;
 	}
+
+	public UserMBean getUserMBean() {
+		return userMBean;
+	}
+
+	public void setUserMBean(UserMBean userMBean) {
+		this.userMBean = userMBean;
+	}
 }

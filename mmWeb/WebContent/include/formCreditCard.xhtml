@@ -14,24 +14,21 @@
 	       		<h:panelGrid columns="2" columnClasses="colunaLabel60,coluna290" styleClass="formCadastroCreditCard" border="0">
 					<h:outputText value="#{messages['lb_name']}" />
 					<p:inputText id="name" label="#{messages['lb_name_']}" required="true"  value="#{creditCardMBean.creditCard.name}" style="width:100%" />
-					
-					<h:outputText value="#{msg.label_dtExpira}" style="colunaLabel"/>
-					<h:inputText id="dtExpira" label="#{msg.label_tabela_dtExpira}" value="#{cartaoController.cartaoDTO.dtExpira}" size="4" styleClass="input_content"
-								onkeydown="Mascara(this,DataCartao);"
-								    onkeypress="Mascara(this,DataCartao);" 
-								    onkeyup="Mascara(this,DataCartao);"  
-								    maxlength="7"
-								    required="true"/>
-					<h:outputText style="color: #0033FF;font-family:tahoma,verdana,arial;font-size: 11px;font-weight: bold;" value="#{msg.info_expiraCartao}"/>
-					
-					<h:outputText value="#{msg.label_diaVencimento}" style="colunaLabel"/>
-					<h:inputText id="diaVencimento" required="true" label="#{msg.label_tabela_diaVencimento}" value="#{cartaoController.cartaoDTO.diaVencimento}" style="width:13px" maxlength="2" onkeypress="return somente_numeros(event);" styleClass="input_content"/>
-					<h:outputText style="color: #0033FF;font-family:tahoma,verdana,arial;font-size: 11px;font-weight: bold;" value="#{msg.info_vencimento}"/>
-					
-					<h:outputText value="#{msg.label_diaCompra}" style="colunaLabel"/>
-					<h:inputText id="diaCompra" required="true" label="#{msg.label_tabela_diaCompra}" value="#{cartaoController.cartaoDTO.diaCompra}" style="width:13px" maxlength="2" onkeypress="return somente_numeros(event);" styleClass="input_content"/>
-					<h:outputText style="color: #0033FF;font-family:tahoma,verdana,arial;font-size: 11px;font-weight: bold;" value="#{msg.info_diaBom}"/>
 				</h:panelGrid>
+				
+				<h:panelGrid columns="3" columnClasses="colunaLabel60,colunaInputMicro,colunaInputGrande" border="0">
+						<h:outputText value="#{messages['lb_expired_date']}" style="colunaLabel"/>
+						<p:inputText id="expiredDate" label="#{messages['lb_expired_date_']}" value="#{creditCardMBean.creditCard.expire}" size="4" required="true"/>  
+						<h:outputText style="color: #0033FF;font-family:tahoma,verdana,arial;font-size: 11px;font-weight: bold;" value="#{messages['lb_info_expired_date']}"/>
+						
+						<h:outputText value="#{messages['lb_payday']}" style="colunaLabel"/>
+						<p:inputText id="payday" required="true" label="#{messages['lb_payday_']}" value="#{creditCardMBean.creditCard.payday}" style="width:13px" maxlength="2" onkeypress="return somente_numeros(event);" styleClass="input_content"/>
+						<h:outputText style="color: #0033FF;font-family:tahoma,verdana,arial;font-size: 11px;font-weight: bold;" value="#{messages['lb_info_payday']}"/>
+						
+						<h:outputText value="#{messages['lb_lastDayToBuy']}" style="colunaLabel"/>
+						<p:inputText id="lastDay" required="true" label="#{messages['lb_lastDayToBuy_']}" value="#{creditCardMBean.creditCard.lastDayToBuy}" style="width:13px" maxlength="2" onkeypress="return somente_numeros(event);" styleClass="input_content"/>
+						<h:outputText style="color: #0033FF;font-family:tahoma,verdana,arial;font-size: 11px;font-weight: bold;" value="#{messages['lb_info_lastDayToBuy']}"/>
+					</h:panelGrid>
 				
 				<br />
 			

@@ -16,6 +16,8 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.ForeignKey;
 
+import com.mconnti.moneymanager.utils.Utils;
+
 @Entity
 @Table(name="creditCard")
 public class CreditCard implements Serializable {
@@ -84,6 +86,7 @@ public class CreditCard implements Serializable {
 	}
 
 	public Date getExpireDate() {
+		setExpire(Utils.dateToStringCreditCard(expireDate));
 		return expireDate;
 	}
 
