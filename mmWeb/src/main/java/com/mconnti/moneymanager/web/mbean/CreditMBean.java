@@ -89,8 +89,10 @@ public class CreditMBean implements Serializable {
 		return "/common/listCredit.xhtml?faces-redirect=true";
 	}
 
-	public void newDesc() {
+	public String newCredit() {
 		this.credit = new Credit();
+		loadList();
+		return "/common/formCredit.xhtml?faces-redirect=true";
 	}
 
 	public String cancel() {

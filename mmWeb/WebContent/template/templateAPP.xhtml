@@ -10,7 +10,7 @@
 	<h:head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 		<link rel="shortcut icon" href="#{facesContext.externalContext.request.contextPath}/resources/images/logo.ico" type="image/x-icon" />
-		<link rel="stylesheet" href="#{facesContext.externalContext.request.contextPath}/resources/css/default.css" type="text/css" />
+		<link rel="stylesheet" href="#{facesContext.externalContext.request.contextPath}/resources/css/style.css" type="text/css" />
 		<script type="text/javascript" src="#{facesContext.externalContext.request.contextPath}/resources/js/formaters.js"></script>
 		<script type="text/javascript" src="#{facesContext.externalContext.request.contextPath}/resources/js/functions.js"></script>
 		<h:outputScript name="calendar.js" library="js" />
@@ -18,16 +18,18 @@
 	</h:head>
 
 	<h:body>
-		<div id="container">
-			<ui:include src="/include/menu.xhtml"/>
-
-			<div id="boxUsuarioLogado">
+		
+			<div class="topcontent">
+				<ui:include src="/include/menu.xhtml"/>
+			</div>
+			<div id="boxLoggedUser">
 				<h:panelGrid columns="2" width="300" rendered="#{userMBean.loggedUser != null}">
 					<h:outputText value="#{messages['lb_logged_user']}" />
 					<h:outputText value="#{userMBean.loggedUser.name}" style="text-align:left"/>
 				</h:panelGrid>
 			</div>
-			
+		
+		<div id="container">	
 			<h:panelGrid  styleClass="notLoggedMessage" rendered="#{userMBean.loggedUser == null}">
 				<h:outputText value="#{messages['lb_not_logged_message']}" />
 				<h:outputLink value="#{userMBean.logoutURL}">#{messages['lb_back']}</h:outputLink>

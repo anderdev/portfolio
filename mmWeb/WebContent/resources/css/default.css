@@ -192,11 +192,31 @@ div#register{
 	border: 0px dotted #000;
 }
 
-.boxNewBook{
-	width:462px;
-	position: absolute;
-	top:40px;
-	border: 0px dotted #000;
+.boxInput{
+    width: 100%;
+    border: 1px dotted #000;
+}
+
+.boxForm{
+	float:left;
+    margin:10px 10px 10px 10px;
+	width: 30%;
+	border: 1px dotted #000;
+}
+
+.box-middle {   
+    background-color:#676767;
+}
+
+#box2{
+    margin-left:0;
+}
+
+.boxList{
+	float:left;
+    margin:10px 10px 10px 10px;
+	width: 70%;
+	border: 1px dotted #000;
 }
 
 .buttonNewBook{

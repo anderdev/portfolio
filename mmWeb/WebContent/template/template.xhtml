@@ -9,24 +9,38 @@
 	<h:head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 		<link rel="shortcut icon" href="#{facesContext.externalContext.request.contextPath}/resources/images/logo.ico" type="image/x-icon" />
-		<link rel="stylesheet" href="#{facesContext.externalContext.request.contextPath}/resources/css/default.css" type="text/css" />
+		<link rel="stylesheet" href="#{facesContext.externalContext.request.contextPath}/resources/css/style.css" type="text/css" />
 		<script type="text/javascript" src="#{facesContext.externalContext.request.contextPath}/resources/js/formaters.js"></script>
 		<script type="text/javascript" src="#{facesContext.externalContext.request.contextPath}/resources/js/functions.js"></script>
 		<h:outputScript name="calendar.js" library="js" />
 		<title>#{messages['lb_title_site']}</title>
 	</h:head>
 
-	<h:body>
+	<h:body styleClass="body" >
+		
 		<div id="container">
 			<h:panelGrid styleClass="boxLoginMessage" >
 				<p:messages showDetail="true" showSummary="false" autoUpdate="true" id="msgLogin" />
 			</h:panelGrid>
 			<ui:include src="/include/login.xhtml" />
+		</div>
+		
+		<div id="footer" >
+			<p:panel>
+				#{messages['lb_footer']}
+			</p:panel>
+		</div>
+	
+		<!-- <div id="container">
+			<h:panelGrid styleClass="boxLoginMessage" >
+				<p:messages showDetail="true" showSummary="false" autoUpdate="true" id="msgLogin" />
+			</h:panelGrid>
+			<ui:include src="/include/login.xhtml" />
 			
-			<div id="footer">
+			<div class="mainFooter">
 				#{messages['lb_footer']}
 			</div>
-		</div>
+		</div> -->
 		<p:dialog header="#{messages['lb_user_registration']}" resizable="false" widgetVar="newUserModal" modal="true" height="460" width="500">  
 		    <ui:include src="/include/formUser.xhtml" />
 		</p:dialog>  
