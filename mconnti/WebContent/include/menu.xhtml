@@ -1,0 +1,17 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui"> 
+        
+        <h:form prependId="false">
+        	<div class="menu">
+		       	<p:menubar >
+		       		<p:menuitem value="Home" action="/index.jsf" ajax="false" styleClass="menuItem" />
+					<p:menuitem value="Portfolio" action="/portfolio.jsf" ajax="false" styleClass="menuItem"/>
+					<p:menuitem value="Curriculum" action="/curriculum.jsf" ajax="false" styleClass="menuItem"/>
+					<p:menuitem value="Contact" action="/contact.jsf" ajax="false" styleClass="menuItem"/>
+				</p:menubar>
+			</div>
+		</h:form>
+</ui:composition>

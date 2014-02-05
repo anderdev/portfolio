@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<f:view id="view" contentType="text/html">
+	<h:head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		
+		<!-- viewport meta to reset iPhone inital scale -->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta content="Senior Java Developer, here I will keep my updated resume, portfolio and a brief talk about myself." name="keywords"/>
+		<meta content="Senior Java Developer, here I will keep my updated resume, portfolio and a brief talk about myself." name="description"/>
+		
+		<link rel="shortcut icon" href="#{facesContext.externalContext.request.contextPath}/resources/img/globe-icon.png" type="image/x-icon" />
+		<link rel="stylesheet" href="#{facesContext.externalContext.request.contextPath}/resources/css/style.css" type="text/css" />
+		 <script>
+			$( document ).ready(function() {
+				$('.menu li').click(function(e) {
+					$(this)
+					.addClass( 'active')
+					.siblings()
+					.removeClass('active');
+				});
+			});
+   		</script>
+		<title>#{messages['lb_title_site']}</title>
+	</h:head>
+
+	<h:body styleClass="body" >
+		<h:inputHidden value="#{contactMBean.counter}"></h:inputHidden>
+		<div style="font-family:Times New Roman, Times, serif;text-align: center;">
+			<span style="font-size:60px">#{messages['lb_header_title']}</span>
+			<br/>
+			<span style="font-size:30px">#{messages['lb_header_sub_title']}</span>
+			<br/>
+			<h:outputLink target="_blank" value="https://github.com/anderdev/portfolio">
+	            <p:graphicImage value="#{messages['img_git']}" style="border: 0px"   title="#{messages['lb_hint_git']}"/>
+            </h:outputLink>
+            <h:outputLink target="_blank" value="http://br.linkedin.com/in/anderdev/">
+	            <p:graphicImage value="#{messages['img_linkedin']}" style="border: 0px"   title="#{messages['lb_hint_linkedin']}"/>
+            </h:outputLink>
+			<br/>
+		</div>
+		<div class="mainHeader" id="header">
+			<ui:include src="/include/menu.xhtml" />
+		</div>
+		
+		<div id="mainContent">
+			<ui:insert name="content"/>		
+		</div>
+		
+		<div class="mainFooter">
+			<p:panel>
+				#{messages['lb_footer']}
+			</p:panel>
+		</div>
+	</h:body>
+</f:view>
+</html>

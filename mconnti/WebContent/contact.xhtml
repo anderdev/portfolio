@@ -1,0 +1,41 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui"
+        template="template/template.xhtml" >
+        
+        <ui:define name="content">
+	        <h:form id="contactForm">
+	        	<div class="contentHome" align="center">	
+					<p:panel styleClass="topcontent">
+						<p:messages showDetail="true" showSummary="false" autoUpdate="true" id="msg" />
+						
+						<h:panelGrid columns="1" styleClass="formContant" border="0" id="messagePanel">
+							<h:outputText value="#{messages['lb_name']}" />
+							<p:inputText id="name" label="#{messages['lb_name_']}" required="true" styleClass="input" value="#{contactMBean.contactDTO.name}"  />
+							<h:outputText value="#{messages['lb_email']}" />
+							<p:inputText id="email" label="#{messages['lb_email_']}" required="true" styleClass="input" value="#{contactMBean.contactDTO.email}">
+								<p:ajax event="blur" update="msg"  listener="#{contactMBean.checkEmail}"  />  
+							</p:inputText>
+							
+							<h:outputText value="#{messages['lb_message']}" />
+							
+							<textarea  style="height:120px;width: 99%" id="text"></textarea>
+						</h:panelGrid>	
+		                			
+						<br />
+						
+						<div class="messages" align="center">
+							<p:commandButton value="#{messages['lb_send']}" 
+								id="post" action="#{contactMBean.send}" ajax="false" 
+								update="msg"
+								styleClass="button">  
+							</p:commandButton>
+							<p:commandButton id="cancelButton" value="#{messages['lb_cancel']}" update="msg" process="@this" immediate="true" ajax="false"  styleClass="button" action="#{contactMBean.cancel}"/>
+						</div>
+					</p:panel>
+	        	</div>
+			</h:form>  
+        </ui:define>
+</ui:composition>

@@ -1,0 +1,99 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui"
+        template="template/template.xhtml" >
+        
+        
+        <ui:define name="content">
+        	<div class="content">	
+				<div class="topcontent">	
+					<h3><strong>Organizer, financial helper.</strong></h3>
+					
+					<div style="color: #333333; font-family: Arial, sans-serif; font-size: 13px; line-height: 17px;">
+						<p>
+							I had first developed this application using Delphi 7 when I was living in Australia, because excel wasn't enough to maintain my expenses. Then during my Java course I changed it to use Struts 1.2, 
+								Hibernate and Servlets and during the years I've been changing it to use frameworks that I want to learn, SEAM, SPRING, JSF.....
+							<br />
+							<br />
+							Currently this application is deployed using Spring 2.5, Hibernate JSF 1.2 with richfaces, but I'm already working on an upgrade to Spring 3 and JSF2 with Primefaces.
+							<br />
+							<br />
+							I use this application as my stage area.
+							<br />
+							<br />
+							Its code is on my public repository: <h:outputLink value="https://github.com/anderdev/portfolio/tree/master/organizer" target="_blank">https://github.com/anderdev/portfolio</h:outputLink>
+							<br />
+							<br />
+							To access, you can simple create a new user or use my test user.
+							<br />
+							<strong>user: test</strong>
+							<br />
+							<strong>password: test</strong>
+							<br/>
+							<strong>URL: </strong><h:outputLink value="http://mconnti.com/organizer" target="_blank">http://mconnti.com/organizer</h:outputLink>
+						</p>		
+					</div>
+				</div>
+			</div>
+			<div class="top-sidebar-carousel">
+				<p:carousel autoPlayInterval="4000" numVisible="1" effect="easeInStrong" circular="true" itemStyle="border:none;height:140px;width:275px;" headerText="Organizer" >  
+				    <p:graphicImage value="resources/img/organizer/img_01_small.png"/>
+				    <p:graphicImage value="resources/img/organizer/img_02_small.png"/>
+				    <p:graphicImage value="resources/img/organizer/img_03_small.png"/>  
+				    <p:graphicImage value="resources/img/organizer/img_04_small.png"/>  
+				    <p:graphicImage value="resources/img/organizer/img_05_small.png"/>  
+				    <p:graphicImage value="resources/img/organizer/img_06_small.png"/>  
+				    <p:graphicImage value="resources/img/organizer/img_07_small.png"/>  
+				    <p:graphicImage value="resources/img/organizer/img_08_small.png"/>  
+				    <p:graphicImage value="resources/img/organizer/img_09_small.png"/>    
+				</p:carousel>  
+			</div>
+			
+			<div class="content">	
+				<div class="topcontent">	
+					<h3><strong>LibraryJ, onLine library.</strong></h3>
+					<div style="color: #333333; font-family: Arial, sans-serif; font-size: 13px; line-height: 17px;">
+						<p>
+							Library onLine is a web application developed using JSF2 with Primefaces and Jersey. <br />
+							I developed this application to learn how to have an web application consuming data from a server application.
+							<br />
+							<br />
+							I have developed the ServerApplication as well, that uses Spring3, Hibernate and Jersey.<br /> 
+							This application consumes json's from web application and returns json to the web application.
+							<br />
+							<br />
+							Its code is on my public repository: <h:outputLink value="https://github.com/anderdev/portfolio/tree/master/libraryJ" target="_blank">https://github.com/anderdev/portfolio</h:outputLink>
+							<br />
+							<br />
+							To access, you can simple create a new user or use my test user.
+							<br />
+							<strong>email: test@gmail.com</strong>
+							<br />
+							<strong>password: test</strong>
+							<br/>
+							<strong>URL: </strong><h:outputLink value="http://mconnti.com/libraryJ" target="_blank">http://mconnti.com/libraryJ</h:outputLink>
+						</p>		
+					</div>		
+				</div>
+			</div>
+			<div class="top-sidebar-carousel">
+				<p:carousel autoPlayInterval="4000" numVisible="1" effect="easeInStrong" circular="true" itemStyle="border:none;height:135px;width:275px;" headerText="Library" >  
+				    <p:graphicImage value="resources/img/libraryJ/img_01_small.png"/>
+				    <p:graphicImage value="resources/img/libraryJ/img_02_small.png"/>
+				    <p:graphicImage value="resources/img/libraryJ/img_03_small.png"/>
+				    <p:graphicImage value="resources/img/libraryJ/img_03_1_small.png"/>
+				    <p:graphicImage value="resources/img/libraryJ/img_03_2_small.png"/>
+				    <p:graphicImage value="resources/img/libraryJ/img_04_small.png"/>  
+				</p:carousel>  
+			</div>
+			
+
+			<div class="contentHome">	
+				<div align="center">	
+					<h3><strong>Still some work to do...</strong></h3>				
+				</div>
+			</div>
+        </ui:define>
+</ui:composition>

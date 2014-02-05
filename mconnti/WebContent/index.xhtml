@@ -1,0 +1,40 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui"
+        template="template/template.xhtml" >
+        
+        <ui:define name="content">
+	        <h:form prependId="false">
+	        	<div class="contentHome">	
+					<div class="topcontent">	
+						<p>Hi there<br /><br />
+						I am Anderson Santos a dedicated and knowledgeable JavaEE programmer.<br /><br />
+						I have been working as a developer for the last six years with medium and large Companies in Brazil, and have also been doing some development for self learning and applying this knowledge on projects in my own company, MConnTI.<br /><br />
+						I am constantly studying and keeping abreast of new technologies such as HTML5, CSS3, JSF2, Spring3 and Restfull Webservices giving me an up-to-date knowledge of new features of programming matters.<br /><br />
+						Because maintenance on code legacy is part of my everyday work, I can guarantee you will always find my services of the highest quality and standard.<BR /><br />
+						
+						I invite you to look at the other sections on this site:</p>
+						<ul>
+							<li>Portfolio: presentation of works that I have done to test and learn current technologies being used in the market, with a small explanation about the projects on which I have worked.</li>
+						</ul>
+						<ul>
+							<li>Curriculum: pdf version of my updated resume</li>
+						</ul>
+						<ul>
+							<li>Contact: The easiest way to contact me</li>
+						</ul>
+						<p><br />Thank you for visiting my website.  If I can be of assistance please do not hesitate to contact me.<br /><BR />
+						
+						Anderson Santos<BR />
+						Senior Java Developer</p>		
+						<h:outputText value="Visitor: "></h:outputText>
+						<h:outputText value="#{contactMBean.counter}">
+							<f:convertNumber pattern="000000" />
+						</h:outputText>				
+					</div>
+				</div>
+			</h:form>  
+        </ui:define>
+</ui:composition>
