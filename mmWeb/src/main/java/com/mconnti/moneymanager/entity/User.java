@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.faces.bean.SessionScoped;
-import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -48,7 +47,6 @@ public class User extends SearchObject implements Serializable{
 	
 	private Role role;
 	
-	@Transient
 	//Rest password
 	private String pass;
 	

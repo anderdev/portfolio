@@ -3,7 +3,6 @@ package com.mconnti.moneymanager.entity;
 import java.io.Serializable;
 import java.util.Set;
 
-import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -20,7 +19,6 @@ public class State implements Serializable{
 	private String name;
 	
 	@XmlTransient
-	@Transient
 	private Set<City> cityList;
 	
 	private Country country;

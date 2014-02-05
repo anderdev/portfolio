@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Classe utilit�ria para desenvolvimento JSF
+ * Utility class to JSF development
  */
 public class FacesUtil {
 
