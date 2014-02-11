@@ -40,7 +40,7 @@
 
 	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
 		<property name="jndiName">
-			<value>java:jboss/datasources/selfmanagerDS</value>
+			<value>java:jboss/datasources/MmanagerDS</value>
 		</property>
 	</bean>
 

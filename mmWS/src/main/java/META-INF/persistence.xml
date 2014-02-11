@@ -2,8 +2,8 @@
 <persistence version="2.0"
 	xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
-	<persistence-unit name="selfmanager_PU" transaction-type="RESOURCE_LOCAL">
-		<jta-data-source>java:jboss/datasources/selfmanagerDS</jta-data-source>
+	<persistence-unit name="mmanager_PU" transaction-type="RESOURCE_LOCAL">
+		<jta-data-source>java:jboss/datasources/MmanagerDS</jta-data-source>
 		<class>com.mconnti.moneymanager.entity.AccessRegister</class>
 		<class>com.mconnti.moneymanager.entity.TypeAccount</class>
 		<class>com.mconnti.moneymanager.entity.Closure</class>

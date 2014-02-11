@@ -18,7 +18,7 @@ import com.mconnti.moneymanager.persistence.GenericDAO;
 @Repository("genericDAO")
 public class GenericDAOImpl<T> implements GenericDAO<T> {
 
-	@PersistenceContext(unitName = "selfmanager_PU" )
+	@PersistenceContext(unitName = "mmanager_PU" )
 	protected EntityManager em;
 
 	@SuppressWarnings("hiding")
