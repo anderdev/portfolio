@@ -1,6 +1,8 @@
 package com.mconnti.moneymanager.business.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -105,6 +107,14 @@ public class CreditCardBOImpl extends GenericBOImpl<CreditCard> implements Credi
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	@Override
+	public List<CreditCard> listByParameter(CreditCard creditCard) throws Exception {
+		Map<String, String> queryParams = new HashMap<>();
+		queryParams.put(" where x.user.id = ", creditCard.getUser().getId()+"");
+
+		return list(CreditCard.class, queryParams, "x.name");
 	}
 
 }

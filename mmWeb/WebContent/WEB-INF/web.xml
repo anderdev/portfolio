@@ -34,11 +34,15 @@
 	</context-param>
 	<context-param>
 		<param-name>org.apache.myfaces.NUMBER_OF_VIEWS_IN_SESSION</param-name>
-		<param-value>40</param-value>
+		<param-value>200</param-value>
 	</context-param>
 	<servlet-mapping>
 		<servlet-name>Faces Servlet</servlet-name>
 		<url-pattern>*.jsf</url-pattern>
 	</servlet-mapping>
-	
+	<servlet-mapping>
+		<servlet-name>Faces Servlet</servlet-name>
+		<url-pattern>*.xhtml</url-pattern>
+	</servlet-mapping>
+
 </web-app>

@@ -37,6 +37,8 @@ public class DescriptionMBean implements Serializable {
 	private Description[] selectedDescriptions;
 
 	private String host = null;
+	
+	private Boolean showFormDescription = false;
 
 	public DescriptionMBean() {
 		this.description = new Description();
@@ -70,19 +72,22 @@ public class DescriptionMBean implements Serializable {
 
 	public String list() {
 		loadList();
+		showFormDescription = false;
 		return "/common/listDescription.xhtml?faces-redirect=true";
 	}
 
 	public void newDescription() {
+		showFormDescription = true;
 		this.description = new Description();
 	}
 
-	public String cancel() {
+	public void cancel() {
+		showFormDescription = false;
 		this.description = new Description();
-		return "index.xhtml\faces-redirect=true";
 	}
 
 	public void edit() {
+		showFormDescription = false;
 	}
 
 	public void save() {
@@ -107,6 +112,7 @@ public class DescriptionMBean implements Serializable {
 			} else {
 				FacesUtil.showSuccessMessage(ret.getMessage());
 			}
+			showFormDescription = false;
 			loadList();
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
@@ -172,6 +178,14 @@ public class DescriptionMBean implements Serializable {
 
 	public void setUserMBean(UserMBean userMBean) {
 		this.userMBean = userMBean;
+	}
+
+	public Boolean getShowFormDescription() {
+		return showFormDescription;
+	}
+
+	public void setShowFormDescription(Boolean showFormDescription) {
+		this.showFormDescription = showFormDescription;
 	}
 
 }

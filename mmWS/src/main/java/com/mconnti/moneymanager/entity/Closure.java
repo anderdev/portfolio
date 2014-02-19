@@ -53,10 +53,7 @@ public class Closure implements Serializable {
 	private User user;
 	
 	@Transient
-	private Collection<Credit> creditsAlreadyClosed;
-
-	@Transient
-	private Collection<Debit> debitsAlreadyClosed;
+	private Collection<Register> registersAlreadyClosed;
 
 	public Closure() {
 		super();
@@ -142,19 +139,11 @@ public class Closure implements Serializable {
 		this.endDate = endDate;
 	}
 
-	public Collection<Credit> getCreditsAlreadyClosed() {
-		return creditsAlreadyClosed;
+	public Collection<Register> getDebitsAlreadyClosed() {
+		return registersAlreadyClosed;
 	}
 
-	public void setCreditsAlreadyClosed(Collection<Credit> creditsAlreadyClosed) {
-		this.creditsAlreadyClosed = creditsAlreadyClosed;
-	}
-
-	public Collection<Debit> getDebitsAlreadyClosed() {
-		return debitsAlreadyClosed;
-	}
-
-	public void setDebitsAlreadyClosed(Collection<Debit> debitsAlreadyClosed) {
-		this.debitsAlreadyClosed = debitsAlreadyClosed;
+	public void setDebitsAlreadyClosed(Collection<Register> debitsAlreadyClosed) {
+		this.registersAlreadyClosed = debitsAlreadyClosed;
 	}
 }

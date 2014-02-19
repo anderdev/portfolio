@@ -33,7 +33,7 @@ public class User extends SearchObject implements Serializable{
 	
 	private String language;
 	
-	private Boolean administrator;
+	private Boolean admin;
 	
 	private String secretPhrase;
 	
@@ -100,12 +100,12 @@ public class User extends SearchObject implements Serializable{
 		this.language = language;
 	}
 
-	public Boolean getAdministrator() {
-		return administrator;
+	public Boolean getAdmin() {
+		return admin;
 	}
 
-	public void setAdministrator(Boolean administrator) {
-		this.administrator = administrator;
+	public void setAdmin(Boolean admin) {
+		this.admin = admin;
 	}
 
 	public String getSecretPhrase() {

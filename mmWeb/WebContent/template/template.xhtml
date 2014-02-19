@@ -19,31 +19,22 @@
 	<h:body styleClass="body" >
 		
 		<div id="container">
-			<h:panelGrid styleClass="boxLoginMessage" >
-				<p:messages showDetail="true" showSummary="false" autoUpdate="true" id="msgLogin" />
-			</h:panelGrid>
-			<ui:include src="/include/login.xhtml" />
+			<h:form prependId="false" id="formTemplate">
+			<!-- 
+				<h:panelGrid styleClass="boxLoginMessage" >
+					<p:messages showDetail="true" showSummary="false" autoUpdate="true" id="msg" />
+				</h:panelGrid>
+			 
+			 	<p:panel footer="#{messages['lb_footer']}">
+			 	
+			 -->
+					<div id="messages" class="messages">
+				   	 	<p:messages showDetail="true" showSummary="false" autoUpdate="true" id="msg" />
+			       	</div>
+			       	
+					<ui:include src="/include/login.xhtml" />
+			</h:form>
 		</div>
-		
-		<div id="footer" >
-			<p:panel>
-				#{messages['lb_footer']}
-			</p:panel>
-		</div>
-	
-		<!-- <div id="container">
-			<h:panelGrid styleClass="boxLoginMessage" >
-				<p:messages showDetail="true" showSummary="false" autoUpdate="true" id="msgLogin" />
-			</h:panelGrid>
-			<ui:include src="/include/login.xhtml" />
-			
-			<div class="mainFooter">
-				#{messages['lb_footer']}
-			</div>
-		</div> -->
-		<p:dialog header="#{messages['lb_user_registration']}" resizable="false" widgetVar="newUserModal" modal="true" height="460" width="500">  
-		    <ui:include src="/include/formUser.xhtml" />
-		</p:dialog>  
 	</h:body>
 </f:view>
 </html>

@@ -17,5 +17,7 @@ public interface CreditCardBO extends GenericBO<CreditCard>{
 	public MessageReturn delete (Long id);
 	
 	public CreditCard getById(Long id);
+
+	public List<CreditCard> listByParameter(CreditCard creditCard) throws Exception;
 }
 

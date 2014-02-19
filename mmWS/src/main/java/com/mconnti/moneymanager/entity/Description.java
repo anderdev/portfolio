@@ -90,16 +90,20 @@ public class Description implements Serializable {
 
 	public String getDescription() {
 		try {
-			return Crypt.decrypt(description);
+			if(description != null){
+				return Crypt.decrypt(description);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
 
-	public void setDescription(String name) {
+	public void setDescription(String description) {
 		try {
-			this.description = Crypt.encrypt(name);
+			if(description != null){
+				this.description = Crypt.encrypt(description);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

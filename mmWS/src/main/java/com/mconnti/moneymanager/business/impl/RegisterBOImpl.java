@@ -7,16 +7,16 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mconnti.moneymanager.business.DebitBO;
+import com.mconnti.moneymanager.business.RegisterBO;
 import com.mconnti.moneymanager.entity.CreditCard;
-import com.mconnti.moneymanager.entity.Debit;
+import com.mconnti.moneymanager.entity.Register;
 import com.mconnti.moneymanager.entity.Parcel;
 import com.mconnti.moneymanager.entity.TypeClosure;
 import com.mconnti.moneymanager.entity.User;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
 import com.mconnti.moneymanager.persistence.CreditCardDAO;
 import com.mconnti.moneymanager.persistence.CurrencyDAO;
-import com.mconnti.moneymanager.persistence.DebitDAO;
+import com.mconnti.moneymanager.persistence.RegisterDAO;
 import com.mconnti.moneymanager.persistence.DescriptionDAO;
 import com.mconnti.moneymanager.persistence.ParcelDAO;
 import com.mconnti.moneymanager.persistence.TypeClosureDAO;
@@ -25,10 +25,10 @@ import com.mconnti.moneymanager.utils.Constants;
 import com.mconnti.moneymanager.utils.MessageFactory;
 import com.mconnti.moneymanager.utils.Utils;
 
-public class DebitBOImpl extends GenericBOImpl<Debit> implements DebitBO {
+public class RegisterBOImpl extends GenericBOImpl<Register> implements RegisterBO {
 
 	@Autowired
-	private DebitDAO debitDAO;
+	private RegisterDAO registerDAO;
 
 	@Autowired
 	private UserDAO userDAO;
@@ -48,7 +48,7 @@ public class DebitBOImpl extends GenericBOImpl<Debit> implements DebitBO {
 	@Autowired
 	private CreditCardDAO creditCardDAO;
 
-	private User getUser(Debit debit) {
+	private User getUser(Register debit) {
 		try {
 			return userDAO.findById(User.class, debit.getUser().getId());
 		} catch (Exception e) {
@@ -57,7 +57,7 @@ public class DebitBOImpl extends GenericBOImpl<Debit> implements DebitBO {
 		return null;
 	}
 
-	private CreditCard getCreditCard(Debit debit) {
+	private CreditCard getCreditCard(Register debit) {
 		try {
 			return creditCardDAO.findById(CreditCard.class, debit.getCreditCard().getId());
 		} catch (Exception e) {
@@ -75,7 +75,7 @@ public class DebitBOImpl extends GenericBOImpl<Debit> implements DebitBO {
 		return null;
 	}
 
-	private void setCreditCardDate(Debit debit) {
+	private void setCreditCardDate(Register debit) {
 		CreditCard creditCard = getCreditCard(debit);
 		if (debit.getId() != null) {
 			if (debit.getCurrentDate().getTime() != debit.getDate().getTime()) {
@@ -88,7 +88,7 @@ public class DebitBOImpl extends GenericBOImpl<Debit> implements DebitBO {
 		}
 	}
 
-	private void setupDate(Debit debit, CreditCard creditCard) {
+	private void setupDate(Register debit, CreditCard creditCard) {
 		String[] temp = Utils.dateToString(debit.getDate()).split("/");
 		Integer dayOfBuy = Integer.parseInt(temp[0]);
 		Integer monthOfBuy = Integer.parseInt(temp[1]);
@@ -100,7 +100,7 @@ public class DebitBOImpl extends GenericBOImpl<Debit> implements DebitBO {
 		}
 	}
 
-	private void setParcel(Debit debit, Date currentDate, Integer interval, Integer x) {
+	private void setParcel(Register debit, Date currentDate, Integer interval, Integer x) {
 		Date minhaData = currentDate;
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(minhaData);
@@ -110,7 +110,7 @@ public class DebitBOImpl extends GenericBOImpl<Debit> implements DebitBO {
 
 	@Override
 	@Transactional
-	public MessageReturn save(Debit debit) {
+	public MessageReturn save(Register debit) {
 		MessageReturn libReturn = new MessageReturn();
 		User user = getUser(debit);
 		if (user != null && debit.getCurrency() != null && debit.getSuperGroup() != null) {
@@ -149,15 +149,15 @@ public class DebitBOImpl extends GenericBOImpl<Debit> implements DebitBO {
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
-				libReturn.setDebit(debit);
+				libReturn.setRegister(debit);
 				libReturn.setMessage(e.getMessage());
 			}
 			if (libReturn.getMessage() == null && debit.getId() == null) {
 				libReturn.setMessage(MessageFactory.getMessage("lb_debit_saved", user.getCity().getState().getCountry().getLocale()));
-				libReturn.setDebit(debit);
+				libReturn.setRegister(debit);
 			} else if (libReturn.getMessage() == null && debit.getId() != null) {
 				libReturn.setMessage(MessageFactory.getMessage("lb_debit_updated", user.getCity().getState().getCountry().getLocale()));
-				libReturn.setDebit(debit);
+				libReturn.setRegister(debit);
 			}
 		} else {
 			libReturn.setMessage(MessageFactory.getMessage("lb_debit_not_found", "en"));
@@ -166,17 +166,17 @@ public class DebitBOImpl extends GenericBOImpl<Debit> implements DebitBO {
 		return libReturn;
 	}
 
-	public List<Debit> list() throws Exception {
-		return list(Debit.class, null, null);
+	public List<Register> list() throws Exception {
+		return list(Register.class, null, null);
 	}
 
 	@Override
 	@Transactional
 	public MessageReturn delete(Long id) {
 		MessageReturn libReturn = new MessageReturn();
-		Debit debit = null;
+		Register debit = null;
 		try {
-			debit = findById(Debit.class, id);
+			debit = findById(Register.class, id);
 			if (debit == null) {
 				libReturn.setMessage(MessageFactory.getMessage("lb_debit_not_found", "en"));
 			} else {
@@ -192,9 +192,9 @@ public class DebitBOImpl extends GenericBOImpl<Debit> implements DebitBO {
 	}
 
 	@Override
-	public Debit getById(Long id) {
+	public Register getById(Long id) {
 		try {
-			return findById(Debit.class, id);
+			return findById(Register.class, id);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

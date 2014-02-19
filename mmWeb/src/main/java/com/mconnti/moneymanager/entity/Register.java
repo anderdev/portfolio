@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Debit implements Serializable {
+public class Register implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -32,6 +32,8 @@ public class Debit implements Serializable {
 	private Description superGroup;
 
 	private Currency currency;
+	
+	private TypeAccount typeAccount;
 
 	private TypeClosure typeClosure;
 
@@ -161,5 +163,13 @@ public class Debit implements Serializable {
 
 	public void setCurrentDate(Date currentDate) {
 		this.currentDate = currentDate;
+	}
+
+	public TypeAccount getTypeAccount() {
+		return typeAccount;
+	}
+
+	public void setTypeAccount(TypeAccount typeAccount) {
+		this.typeAccount = typeAccount;
 	}
 }

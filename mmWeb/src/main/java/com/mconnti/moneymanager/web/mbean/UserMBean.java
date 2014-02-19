@@ -9,13 +9,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.faces.validator.ValidatorException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.http.client.ClientProtocolException;
@@ -32,7 +31,7 @@ import com.mconnti.moneymanager.entity.xml.MessageReturn;
 import com.mconnti.moneymanager.util.FacesUtil;
 import com.mconnti.moneymanager.util.MessageFactory;
 
-@SessionScoped
+@ApplicationScoped
 @ManagedBean(name = "userMBean")
 public class UserMBean implements Serializable {
 
@@ -47,10 +46,6 @@ public class UserMBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	FacesContext fc = FacesContext.getCurrentInstance();
-
-	HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
-	
-	HttpServletRequest request = (HttpServletRequest) fc.getExternalContext().getRequest();
 
 	private List<User> userList;
 
@@ -89,28 +84,14 @@ public class UserMBean implements Serializable {
 	private Boolean showPassword = true;
 
 	private Boolean showEditNewButton = true;
+	
+	private Boolean showFormUser = false;
 
 	private String host = null;
 
 	private String logoutURL = null;
 
 	private String locale;
-
-	public String getLocale() {
-		return locale;
-	}
-
-	public void setLocale(String locale) {
-		this.locale = locale;
-	}
-
-	public String getLogoutURL() {
-		return logoutURL;
-	}
-
-	public void setLogoutURL(String logoutURL) {
-		this.logoutURL = logoutURL;
-	}
 
 	public UserMBean() {
 		this.user = new User();
@@ -200,7 +181,6 @@ public class UserMBean implements Serializable {
 	public String login() {
 		MessageReturn ret = new MessageReturn();
 		try {
-
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/user/login");
 			request.body(MediaType.APPLICATION_JSON, user);
 			ClientResponse<User> response = request.put(User.class);
@@ -363,12 +343,14 @@ public class UserMBean implements Serializable {
 
 	public String listAdm() {
 		showEditNewButton = false;
+		this.showFormUser = false;
 		loadList();
 		return "/common/listUser.xhtml?faces-redirect=true";
 	}
 
 	public String listSuperUser() {
-		showEditNewButton = true;
+		this.showEditNewButton = true;
+		this.showFormUser = false;
 		loadListByParameter();
 
 		return "/common/listUser.xhtml?faces-redirect=true";
@@ -376,6 +358,7 @@ public class UserMBean implements Serializable {
 
 	public String logout() {
 		this.loggedUser = null;
+		this.showFormUser = false;
 		return "/index.xhtml?faces-redirect=true";
 	}
 
@@ -388,11 +371,12 @@ public class UserMBean implements Serializable {
 		this.country = new Country();
 		this.state = new State();
 		this.city = new City();
-		this.user.setAdministrator(false);
+		this.user.setAdmin(false);
 		this.role = new Role();
 		this.role.setId(SUPER_USER);
 		this.user.setRole(role);
 		this.showPassword = true;
+		this.showFormUser = true;
 		loadDefaultCombos();
 	}
 
@@ -401,7 +385,7 @@ public class UserMBean implements Serializable {
 		this.country = new Country();
 		this.state = new State();
 		this.city = new City();
-		this.user.setAdministrator(false);
+		this.user.setAdmin(false);
 		this.role = new Role();
 		this.role.setId(USER);
 		this.user.setRole(role);
@@ -409,14 +393,26 @@ public class UserMBean implements Serializable {
 		this.user.setPassword(DEFAUL_PASSWORD);
 		this.showPassword = false;
 		this.refreshList = true;
+		this.showFormUser = true;
 		loadDefaultCombos();
+		loadRoles();
 	}
 
-	public String cancel() {
+	public void cancel() {
+		System.out.println("UserMBean.cancel triggered");
 		this.user = new User();
-		return "index.xhtml\faces-redirect=true";
+		this.showFormUser = false;
+		System.out.println("UserMBean.cancel exited");
 	}
 
+	public void cancelApp(){
+		System.out.println("UserMBean.cancelApp triggered");
+		this.user = new User();
+		this.showFormUser = false;
+		this.showEditNewButton = true;
+		System.out.println("UserMBean.cancelApp exited");
+	}
+	
 	public void edit() {
 		loadDefaultCombos();
 		this.city = user.getCity();
@@ -425,6 +421,7 @@ public class UserMBean implements Serializable {
 		this.states = getStateByCountry(country);
 		this.cities = getCityByState(state);
 		showPassword = false;
+		this.showFormUser = true;
 		loadRoles();
 	}
 
@@ -438,7 +435,8 @@ public class UserMBean implements Serializable {
 			request.body(MediaType.APPLICATION_JSON, user);
 
 			ClientResponse<User> response = request.post(User.class);
-
+			this.showFormUser = false;
+			
 			ret = response.getEntity(MessageReturn.class);
 
 			if (response.getStatus() != 200) {
@@ -720,4 +718,27 @@ public class UserMBean implements Serializable {
 		this.roles = roles;
 	}
 
+	public Boolean getShowFormUser() {
+		return showFormUser;
+	}
+
+	public void setShowFormUser(Boolean showFormUser) {
+		this.showFormUser = showFormUser;
+	}
+
+	public String getLocale() {
+		return locale;
+	}
+
+	public void setLocale(String locale) {
+		this.locale = locale;
+	}
+
+	public String getLogoutURL() {
+		return logoutURL;
+	}
+
+	public void setLogoutURL(String logoutURL) {
+		this.logoutURL = logoutURL;
+	}
 }

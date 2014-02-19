@@ -50,7 +50,9 @@ public class UserBOImpl extends GenericBOImpl<User> implements UserBO {
 						user.setPassword(user.getPass());
 					}
 				} else {
-					user.setPassword(Crypt.decrypt(Crypt.decrypt(user.getPassword())));
+					if(user.getPassword() != null && !user.getPassword().isEmpty()){
+						user.setPassword(Crypt.decrypt(Crypt.decrypt(user.getPassword())));
+					}
 				}
 				saveGeneric(user);
 			} catch (Exception e) {
@@ -125,7 +127,7 @@ public class UserBOImpl extends GenericBOImpl<User> implements UserBO {
 				messageReturn.setMessage(MessageFactory.getMessage("lb_user_incorrect_password", "en"));
 			} else {
 				if("ADMIN".equals(messageReturn.getUser().getRole().getRole())){
-					messageReturn.getUser().setAdministrator(true);
+					messageReturn.getUser().setAdmin(true);
 				}
 				messageReturn.setMessage(MessageFactory.getMessage("lb_login_success", messageReturn.getUser().getLanguage()));
 			}

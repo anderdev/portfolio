@@ -4,27 +4,22 @@
         xmlns:ui="http://java.sun.com/jsf/facelets"
         xmlns:p="http://primefaces.org/ui">
         	
-      	<h:form id="newDescription" prependId="false" >
-		    <div id="messages" class="messages">
-	       		<p:messages showDetail="false"  id="msg"/>
-	       	</div>
-	       	
-	       	<div id="boxNewDescription" class="boxNewDescription">
-	       	    <h:panelGrid columns="4" style="margin-bottom:10px" cellpadding="5">  
-	       	    	<h:outputText value="#{messages['lb_credit_']}" />
+	       	<div class="contentCenterSmall">
+	       	    <h:panelGrid columns="4" style="margin-bottom:10px" cellpadding="5" border="0" columnClasses="column85,column85,column120,column85" styleClass="boldFont">  
+	       	    	<h:outputText value="#{messages['lb_credit_']}" styleClass="alignRight"/>
 	       	    	<p:selectBooleanCheckbox value="#{descriptionMBean.description.isCredit}" />
 	       	    	
-	       	    	<h:outputText value="#{messages['lb_debit_']}" />
+	       	    	<h:outputText value="#{messages['lb_debit_']}" styleClass="alignRight"/>
 	       	    	<p:selectBooleanCheckbox value="#{descriptionMBean.description.isDebit}" />
 	       	    	
-	       	    	<h:outputText value="#{messages['lb_group_']}" />
+	       	    	<h:outputText value="#{messages['lb_group_']}" styleClass="alignRight"/>
 	       	    	<p:selectBooleanCheckbox value="#{descriptionMBean.description.isGroup}" />
 	       	    	
-	       	    	<h:outputText value="#{messages['lb_super_group_']}" />
+	       	    	<h:outputText value="#{messages['lb_super_group_']}" styleClass="alignRight"/>
 	       	    	<p:selectBooleanCheckbox value="#{descriptionMBean.description.isSuperGroup}" /> 
 	       	    </h:panelGrid>
 	       	
-	       		<h:panelGrid columns="2" columnClasses="colunaLabel60,coluna290" styleClass="formCadastroDescription" border="0">
+	       		<h:panelGrid columns="2" columnClasses="column85,column100percent"  border="0" styleClass="boldFont">
 					<h:outputText value="#{messages['lb_type']}" />
 					<p:inputText id="name" label="#{messages['lb_type_']}" required="true"  value="#{descriptionMBean.description.description}" style="width:100%" />
 				</h:panelGrid>
@@ -33,13 +28,12 @@
 			
 				<div class="messages" align="center">
 					<p:commandButton value="#{messages['lb_post']}" 
-						id="gravar" action="#{descriptionMBean.save}" ajax="false" 
-						styleClass="button" 
-						oncomplete="newDescriptionModal.hide();">  
+						update=":formDescription"
+						id="gravar" action="#{descriptionMBean.save}" ajax="true" 
+						styleClass="button" >  
 					</p:commandButton>
-					<p:commandButton value="#{messages['lb_back']}" immediate="true" id="voltar" ajax="false"  styleClass="button" >
+					<p:commandButton value="#{messages['lb_back']}" immediate="true" id="voltar" ajax="true" update=":formDescription" styleClass="button"  action="#{descriptionMBean.cancel}" >
 					</p:commandButton>
 				</div>
 	       	</div>
-		</h:form>
 </ui:composition>

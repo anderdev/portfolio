@@ -4,14 +4,10 @@
         xmlns:ui="http://java.sun.com/jsf/facelets"
         xmlns:p="http://primefaces.org/ui">
         	
-      	<h:form id="newUser" prependId="false" >
+        <div class="contentCenter">	
       	    <h:inputHidden value="#{userMBean.user.password}" rendered="#{!userMBean.showPassword}"/>
-		    <div id="messagesUser" class="messages">
-		   	 	<p:messages showDetail="true" showSummary="false" autoUpdate="true" id="msg" />
-	       	</div>
 	       	
-	       	<div id="boxNewUser" class="boxNewUser">
-	       		<h:panelGrid columns="2" columnClasses="coluna120RightWithPaddingRigth,colunaLabel260" styleClass="formCadastroUser" border="0">
+	       		<h:panelGrid columns="2" columnClasses="column120RightWithPaddingRigth,column260" styleClass="boldFont" border="0">
 					<h:outputText value="#{messages['lb_name']}" />
 					<p:inputText id="name" label="#{messages['lb_name_']}" required="true"  value="#{userMBean.user.name}" style="width:100%" />
 
@@ -20,18 +16,18 @@
 						value="#{userMBean.user.birthDate}"  label="#{messages['lb_birth_']}"
 						required="true" 
 						id="calendar"
-						readonlyInput="true"
+						readonlyInput="false"
 						oninputkeydown="Mascara(this,date);"
 					    oninputkeypress="Mascara(this,date);" 
 					    oninputkeyup="Mascara(this,date);"  
 					    maxlength="10"
 						pattern="dd/MM/yyyy"
-						styleClass="width30px"
+						size="5"
 						yearRange="1950:2020"/>
 						
 					<h:outputText value="#{messages['lb_email']}" />
 					<p:inputText id="email" label="#{messages['lb_email_']}" required="true" value="#{userMBean.user.email}" style="width:100%" >
-						<p:ajax event="blur" update="msg"  listener="#{userMBean.checkEmail}"  />  
+						<p:ajax event="blur" update="msg"  listener="#{userMBean.checkEmail}" />  
 						<p:ajax event="blur" update="msg"  listener="#{userMBean.existsEmail}" /> 
 					</p:inputText>
 					
@@ -73,8 +69,8 @@
 					<h:outputText value="#{messages['lb_secret_phrase']}" />
 					<p:inputText id="secret_phrase" label="#{messages['lb_secret_phrase_']}" required="true"  value="#{userMBean.user.secretPhrase}" style="width:100%" />
 					
-					<h:outputText value="#{messages['lb_admin']}" rendered="#{userMBean.loggedUser.administrator}" />
-					<p:selectOneMenu value="#{userMBean.user.role.id}" label="#{messages['lb_admin_']}" required="true" rendered="#{userMBean.loggedUser.administrator}">
+					<h:outputText value="#{messages['lb_admin']}" rendered="#{userMBean.loggedUser.admin}" />
+					<p:selectOneMenu value="#{userMBean.user.role.id}" label="#{messages['lb_admin_']}" required="true" rendered="#{userMBean.loggedUser.admin}">
 			            <f:selectItem itemLabel="#{messages['lb_select']}" itemValue="" />
 			            <f:selectItems value="#{userMBean.roles}" var="r" itemLabel="#{r.role}" itemValue="#{r}"/>  
 			        </p:selectOneMenu>
@@ -83,14 +79,14 @@
 				<br />
 			
 				<div class="messages" align="center">
-					<p:commandButton value="#{messages['lb_post']}" 
-						id="post" action="#{userMBean.save}" ajax="false" 
-						update="msg,userList,mensagem"
-						styleClass="button"
-						oncomplete="if (#{not facesContext.validationFailed}) newUserModal.hide();">  
-					</p:commandButton>
-					<p:commandButton value="#{messages['lb_back']}" immediate="true" id="voltar" ajax="true"  styleClass="button" oncomplete="newUserModal.hide();"/>
+					<p:commandButton value="#{messages['lb_post']}" action="#{userMBean.save}" ajax="false" update=":formTemplate" styleClass="button" rendered="#{userMBean.loggedUser eq null}"/>
+					
+					<p:commandButton value="#{messages['lb_post']}" action="#{userMBean.save}" ajax="false" update=":formUser" styleClass="button" rendered="#{userMBean.loggedUser ne null}"/>  
+					
+					<p:commandButton value="#{messages['lb_back']}" rendered="#{userMBean.loggedUser eq null}" update=":formTemplate" immediate="true" id="back" ajax="true" styleClass="button" action="#{userMBean.cancel}"/>
+					
+					<p:commandButton value="#{messages['lb_back']}" rendered="#{userMBean.loggedUser ne null}" update=":formUser" immediate="true" id="backLogged" ajax="true" styleClass="button" action="#{userMBean.cancelApp}"/>
+					
 				</div>
-	       	</div>
-		</h:form>
+		</div>
 </ui:composition>

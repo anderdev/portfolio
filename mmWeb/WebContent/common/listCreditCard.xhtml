@@ -7,70 +7,73 @@
         
         
         <ui:define name="contentAPP">
-	        <h:form prependId="false">
-	        	<h:outputText value="#{messages['lb_creditCard_list']}" styleClass="boxTitulo"/>
+        
+	        <h:form prependId="false" id="formCreditCard">
+	        	<h:outputText value="#{messages['lb_creditCard_list']}" styleClass="boxTitle" rendered="#{!creditCardMBean.showCreditCardForm}"/>
+	        	<h:outputText value="#{messages['lb_creditCard_registration']}" styleClass="boxTitle" rendered="#{creditCardMBean.showCreditCardForm}"/>
 	        	
-	        	<div align="center" style="width: 100%;" >
-	        		<div id="messages" class="messages" style="width: 50%;">
-			       		<p:messages showDetail="true" showSummary="false"  autoUpdate="true" id="mensagem"/>
-			       	</div>
+		       	<p:growl id="msg" showDetail="true" showSummary="false" autoUpdate="true" sticky="true" /> 
+		       	
+	        	<h:panelGroup rendered="#{!creditCardMBean.showCreditCardForm}" styleClass="content">
+	        		<div align="center" >
+		        		<h:panelGrid columns="2" width="50%" border="0" columnClasses="alignLeft,alignRight">
+			        		<p:commandButton value="#{messages['lb_delete']}" styleClass="button" onclick="confirmation.show()" />
+			        		<p:commandButton value="#{messages['lb_new']}" 
+			        			action="#{creditCardMBean.newCreditCard}"  
+			        			styleClass="button" 
+			        			update=":formCreditCard" 
+			        			id="newButton" >
+			        		</p:commandButton>
+					    </h:panelGrid>
+					   
+					    <p:dataTable var="cat" value="#{creditCardMBean.creditCardList}" style="width:50%" id="creditCardList"
+					    		paginatorAlwaysVisible="false" paginator="true" emptyMessage="#{messages['lb_empty_list']}"
+					    		rows="10" selection="#{creditCardMBean.selectedCreditCard}" rowKey="#{cat}" 
+					    		paginatorPosition="botton" >
+					    	
+					    	<p:column selectionMode="multiple" style="text-align:center; width:5%"  />
+					        
+					        <p:column sortBy="#{cat.name}" >
+					            <f:facet name="header">
+					                <h:outputText value="#{messages['lb_name_']}" />
+					            </f:facet>
+					            <h:outputText value="#{cat.name}" />
+					        </p:column>
+					        
+					        <p:column sortBy="#{cat.lastDayToBuy}" >
+					            <f:facet name="header">
+					                <h:outputText value="#{messages['lb_lastDayToBuy_']}" />
+					            </f:facet>
+					            <h:outputText value="#{cat.lastDayToBuy}" />
+					        </p:column>
+					        
+					        <p:column sortBy="#{cat.payday}" >
+					            <f:facet name="header">
+					                <h:outputText value="#{messages['lb_payday_']}" />
+					            </f:facet>
+					            <h:outputText value="#{cat.payday}" />
+					        </p:column>
+					        
+					        <p:column style="width:5%">
+					        	<p:commandLink action="#{creditCardMBean.edit}" update=":formCreditCard" id="editButton">
+					        		<f:setPropertyActionListener value="#{cat}" target="#{creditCardMBean.creditCard}" />  
+									<p:graphicImage value="#{messages['img_update']}" style="border: 0px" />
+								</p:commandLink>
+					        </p:column>
+					    </p:dataTable>
+					</div>	
+	        	</h:panelGroup>
 	        	
-	        		<h:panelGrid columns="2" width="50%" border="0" columnClasses="alignLeft,alignRight">
-		        		<p:commandButton value="#{messages['lb_delete']}" styleClass="button" onclick="confirmation.show()" />
-		        		<p:commandButton value="#{messages['lb_new']}" 
-		        			action="#{creditCardMBean.newCreditCard}"  
-		        			styleClass="button" 
-		        			update=":newCreditCard" 
-		        			id="newButton"
-		        			oncomplete="newCreditCardModal.show()" >
-		        		</p:commandButton>
-				    </h:panelGrid>
-				   
-				    <p:dataTable var="cat" value="#{creditCardMBean.creditCardList}" style="width:50%" id="creditCardList"
-				    		paginatorAlwaysVisible="false" paginator="true" emptyMessage="#{messages['lb_empty_list']}"
-				    		rows="10" selection="#{creditCardMBean.selectedCreditCard}" rowKey="#{cat}" 
-				    		paginatorPosition="botton" >
-				    	
-				    	<p:column selectionMode="multiple" style="text-align:center; width:5%"  />
-				        
-				        <p:column sortBy="#{cat.name}" >
-				            <f:facet name="header">
-				                <h:outputText value="#{messages['lb_name_']}" />
-				            </f:facet>
-				            <h:outputText value="#{cat.name}" />
-				        </p:column>
-				        
-				        <p:column sortBy="#{cat.lastDayToBuy}" >
-				            <f:facet name="header">
-				                <h:outputText value="#{messages['lb_lastDayToBuy_']}" />
-				            </f:facet>
-				            <h:outputText value="#{cat.lastDayToBuy}" />
-				        </p:column>
-				        
-				        <p:column sortBy="#{cat.payday}" >
-				            <f:facet name="header">
-				                <h:outputText value="#{messages['lb_payday_']}" />
-				            </f:facet>
-				            <h:outputText value="#{cat.payday}" />
-				        </p:column>
-				        
-				        <p:column style="width:5%">
-				        	<p:commandLink action="#{creditCardMBean.edit}" update=":newCreditCard" oncomplete="newCreditCardModal.show();" id="editButton">
-				        		<f:setPropertyActionListener value="#{cat}" target="#{creditCardMBean.creditCard}" />  
-								<p:graphicImage value="#{messages['img_update']}" style="border: 0px" />
-							</p:commandLink>
-				        </p:column>
-				    </p:dataTable>
-				</div>	
+				<h:panelGroup rendered="#{creditCardMBean.showCreditCardForm}" styleClass="content">
+					<ui:include src="/include/formCreditCard.xhtml"/>
+				</h:panelGroup>
+				
 				<p:confirmDialog message="#{messages['lb_multiple_exclusion']}" header="#{messages['lb_header_confirmation']}" severity="alert" widgetVar="confirmation">  
                   	<div align="center">
-				        <p:commandButton value="#{messages['lb_yes']}" update="creditCardList,mensagem" oncomplete="confirmation.hide()" action="#{creditCardMBean.delete}"/>  
+				        <p:commandButton value="#{messages['lb_yes']}" update=":formCreditCard" oncomplete="confirmation.hide()" action="#{creditCardMBean.delete}"/>  
 				        <p:commandButton value="#{messages['lb_no']}" onclick="confirmation.hide()" type="button" action="#{creditCardMBean.cancel}"/>   
 	                 </div> 
 	    		</p:confirmDialog>  		
 			</h:form>  
-			<p:dialog header="#{messages['lb_creditCard_registration']}" resizable="false" widgetVar="newCreditCardModal" modal="true" appendTo="@(body)" height="250" width="420">  
-			    <ui:include src="/include/formCreditCard.xhtml"/>
-			</p:dialog>
         </ui:define>
 </ui:composition>

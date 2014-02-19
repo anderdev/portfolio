@@ -7,78 +7,80 @@
         
         
         <ui:define name="contentAPP">
-	        <h:form prependId="false" target="_blank">
-	        	<h:outputText value="#{messages['lb_user_list_']}" styleClass="boxTitle"/>
-	        	
-	        	<div class="mainContent">
-	        		<div id="messages" class="messages" style="width: 50%;">
-			       		<p:messages showDetail="true" showSummary="false"  autoUpdate="true" id="mensagem"/>
-			       	</div>
-	        	
-	        		<h:panelGrid columns="3" width="50%" border="0" columnClasses="alignLeft,alignRight,alignRight">
-		        		<p:commandButton value="#{messages['lb_delete']}" styleClass="button" onclick="confirmation.show()" />
-		        		<p:commandButton value="#{messages['lb_new']}" 
-		        			action="#{userMBean.newParentUser}"  
-		        			styleClass="button" 
-		        			update=":newUser" 
-		        			id="newButton"
-		        			oncomplete="newUserModal.show()" 
-		        			rendered="#{userMBean.showEditNewButton}">
-		        		</p:commandButton>
-				    </h:panelGrid>
-				   
-				    <p:dataTable var="cat" value="#{userMBean.userList}" style="width:50%" id="userList"
-				    		paginatorAlwaysVisible="false" paginator="true" emptyMessage="#{messages['lb_empty_list']}"
-				    		rows="10" selection="#{userMBean.selectedUsers}" rowKey="#{cat}" 
-				    		paginatorPosition="botton" >
-				    	
-				    	<p:column selectionMode="multiple" style="text-align:center;width:5%"  />
-				        
-				        <p:column sortBy="#{cat.name}" >
-				            <f:facet name="header">
-				                <h:outputText value="#{messages['lb_name_']}" />
-				            </f:facet>
-				            <h:outputText value="#{cat.name}" />
-				        </p:column>
-				        
-				        <p:column sortBy="#{cat.username}" >
-				            <f:facet name="header">
-				                <h:outputText value="#{messages['lb_username_']}" />
-				            </f:facet>
-				            <h:outputText value="#{cat.username}" />
-				        </p:column>
-				        
-				        <p:column sortBy="#{cat.email}" >
-				            <f:facet name="header">
-				                <h:outputText value="#{messages['lb_email_']}" />
-				            </f:facet>
-				            <h:outputText value="#{cat.email}" />
-				        </p:column>
-				        
-				        <p:column sortBy="#{cat.administrator}"  >
-				            <f:facet name="header">
-				                <h:outputText value="#{messages['lb_admin_']}" />
-				            </f:facet>
-				            <h:outputText value="#{cat.administrator}" />
-				        </p:column>
-				
-				        <p:column style="width:5% ; align:center" rendered="#{userMBean.showEditNewButton}">
-				        	<p:commandLink action="#{userMBean.edit}" update=":newUser" oncomplete="newUserModal.show();" id="editButton">
-				        		<f:setPropertyActionListener value="#{cat}" target="#{userMBean.user}" />  
-								<p:graphicImage value="#{messages['img_update']}" style="border: 0px" />
-							</p:commandLink>
-				        </p:column>
-				    </p:dataTable>
-				</div>	
+        	<h:form prependId="false" id="formUser">
+		       	<h:outputText value="#{messages['lb_user_list_']}" styleClass="boxTitle" rendered="#{!userMBean.showFormUser}"/>
+		       	<h:outputText value="#{messages['lb_user_registration']}" styleClass="boxTitle" rendered="#{userMBean.showFormUser}"/>
+		       	
+		       	<p:growl id="msg" showDetail="true" showSummary="false" autoUpdate="true" sticky="true" /> 
+		       	
+		       	<h:panelGroup rendered="#{!userMBean.showFormUser}" styleClass="content">
+		       		<div align="center" >
+		        		<h:panelGrid columns="2" width="50%" border="0" columnClasses="alignLeft,alignRight">
+			        		<p:commandButton value="#{messages['lb_delete']}" styleClass="button" onclick="confirmation.show()" />
+			        		<p:commandButton value="#{messages['lb_new']}" 
+			        			action="#{userMBean.newParentUser}"  
+			        			styleClass="button" 
+			        			update=":formUser" 
+			        			id="newButton"
+			        			rendered="#{userMBean.showEditNewButton}">
+			        		</p:commandButton>
+					    </h:panelGrid>
+					   
+					    <p:dataTable var="cat" value="#{userMBean.userList}" style="width:50%" id="userList"
+					    		paginatorAlwaysVisible="false" paginator="true" emptyMessage="#{messages['lb_empty_list']}"
+					    		rows="10" selection="#{userMBean.selectedUsers}" rowKey="#{cat}" 
+					    		paginatorPosition="botton" >
+					    	
+					    	<p:column selectionMode="multiple" style="text-align:center;width:5%"  />
+					        
+					        <p:column sortBy="#{cat.name}" >
+					            <f:facet name="header">
+					                <h:outputText value="#{messages['lb_name_']}" />
+					            </f:facet>
+					            <h:outputText value="#{cat.name}" />
+					        </p:column>
+					        
+					        <p:column sortBy="#{cat.username}" >
+					            <f:facet name="header">
+					                <h:outputText value="#{messages['lb_username_']}" />
+					            </f:facet>
+					            <h:outputText value="#{cat.username}" />
+					        </p:column>
+					        
+					        <p:column sortBy="#{cat.email}" >
+					            <f:facet name="header">
+					                <h:outputText value="#{messages['lb_email_']}" />
+					            </f:facet>
+					            <h:outputText value="#{cat.email}" />
+					        </p:column>
+					        
+					        <p:column sortBy="#{cat.admin}"  >
+					            <f:facet name="header">
+					                <h:outputText value="#{messages['lb_admin_']}" />
+					            </f:facet>
+					            <h:outputText value="#{cat.admin}" />
+					        </p:column>
+					
+					        <p:column style="width:5% ; align:center" rendered="#{userMBean.showEditNewButton}">
+					        	<p:commandLink action="#{userMBean.edit}" update=":formUser" id="editButton">
+					        		<f:setPropertyActionListener value="#{cat}" target="#{userMBean.user}" />  
+									<p:graphicImage value="#{messages['img_update']}" style="border: 0px" />
+								</p:commandLink>
+					        </p:column>
+					    </p:dataTable>
+					</div>	
+		       	</h:panelGroup>
+		       	
+		       	<h:panelGroup rendered="#{userMBean.showFormUser}" styleClass="content">
+		       		<ui:include src="/include/formUser.xhtml" />
+		       	</h:panelGroup>
+		       	
 				<p:confirmDialog message="#{messages['lb_multiple_exclusion']}" header="#{messages['lb_header_confirmation']}" severity="alert" widgetVar="confirmation">  
-                  	<div align="center">
-				        <p:commandButton value="#{messages['lb_yes']}" update="userList,mensagem" oncomplete="confirmation.hide()" action="#{userMBean.delete}"/>  
+	            	<div align="center">
+				        <p:commandButton value="#{messages['lb_yes']}" update="userList,msg" oncomplete="confirmation.hide()" action="#{userMBean.delete}"/>  
 				        <p:commandButton value="#{messages['lb_no']}" onclick="confirmation.hide()" type="button" />   
-	                 </div> 
-	    		</p:confirmDialog>  		
-			</h:form>  
-			<p:dialog header="#{messages['lb_user_registration']}" resizable="false" widgetVar="newUserModal" modal="true" appendTo="@(body)" height="460" width="500"> 
-			    <ui:include src="/include/formUser.xhtml" />
-			</p:dialog>
+	                </div> 
+	    		</p:confirmDialog>  
+	    	</h:form>
         </ui:define>
 </ui:composition>

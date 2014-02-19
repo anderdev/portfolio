@@ -29,7 +29,7 @@ body {
 .boxLoginMessage{
 	width: 500px;
 	left: 50%;
-	top: 20%;
+	top: 10%;
 	position: absolute;
 	margin-left: -250px;
 	font-family: Verdana, Arial, Helvetica, sans-serif;
@@ -176,20 +176,99 @@ a:hover, a:active {
 }
 
 .content {
-	width: 75%;
-	float: left;
+	width:100%;
+	margin-left: -50%;
+	position: absolute;
+	left: 50%;
+	top: 190px;
 	border-radius: 5px;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;	
+	border: 0px dotted #000 !important;
 }
 
-.contentHome {
-	width: 100%;
-	float: left;
+.contentCenter{
+	width:450px;
+	margin-left: -225px;
+	position: absolute;
+	left: 50%;
+	top: 50px;
 	border-radius: 5px;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;	
+	border: 0px dotted #000 !important;
 }
+
+.contentCenterSmall{
+	width:300px;
+	margin-left: -150px;
+	position: absolute;
+	left: 50%;
+	top: 50px;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;	
+/*	border-style:solid;
+border-width:5px;*/
+}
+
+.boldFont{
+	font-weight: bold;
+}
+
+.column80{
+	width: 80px;
+	border: 1px dotted #000;
+}
+
+.column85{
+	width: 85px;
+}
+.column90{
+	width: 90px;
+}
+
+.column100percent{
+	width: 100%;
+}
+
+.column120{
+	width: 120px;
+}
+
+.column200{
+	width: 200px;
+}
+
+.column260{
+	width: 260px;
+}
+
+
+.column290{
+	width: 290px;
+}
+
+.column300{
+	width: 300px;
+}
+
+.column300peddingLeft{
+	width: 300px;
+	padding-left: 10px;
+	border: 0px dotted #000;
+}
+
+.column350{
+	width: 350px;
+}
+
+.column120RightWithPaddingRigth{
+	width: 120px;
+	text-align: right;
+	padding-right: 5px;
+}
+
 
 .button{
 	width: 100px;
@@ -199,10 +278,95 @@ a:hover, a:active {
 	cursor: pointer;
 }
 
+.paddingLeft10px{
+	padding-left: 10px;
+}
+
+
 .post-info {
 	font-style: italic;
 	color: #999;
 	font-size: 85%;
+}
+
+.ui-editor {
+        width: 100% !important;
+    }
+
+input{
+		width: 99%;
+	}
+
+.editor{
+	width: 100%;
+}
+
+.alignCenter{
+	text-align: centrer;
+}
+.alignLeftWithPadding{
+	text-align: left;
+	padding-left: 10px;
+}
+
+.alignLef{float:left !important;}
+.alignRight{float:right !important;}
+
+div#boxLoggedUser{
+	width: 300px;
+	margin-left: -150px;
+	left: 85%;
+	position: absolute;
+	font-style: italic;
+	text-align: center;
+	font-weight: bold;
+	font-size: 12px;
+	vertical-align: middle;	
+	text-decoration: none;
+	border: solid #dfedf8;
+	border-width: 0px 0;
+	top: 23px;
+	padding-right: 10px;
+}
+
+.menu {
+	width: 98%;
+	position: absolute;
+	left: 1%;
+	height: 10px;
+	border: 0px dotted #000;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	top: 10px;
+}
+
+.boxTitle{
+	border: 0px dotted #000;
+	width:30%;
+	margin-left: -15%;
+	position: absolute;
+	left: 50%;
+	top: 120px;
+	font-family: sans-serif;
+	font-weight: bold;
+	font-size: 25px;
+	padding-left:10px;
+	padding-right:10px;
+	text-align: center;
+}
+
+.messages{
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	border: 0px dotted #000;
+	width:450px;
+	margin-left: -225px;
+	position: absolute;
+	left: 50%;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;	
+	border: 0px dotted #000 !important;
 }
 
 /* ===========================
@@ -255,97 +419,6 @@ a:hover, a:active {
 	-webkit-border-radius: 5px;	
 	background-color: #FFF;	
 	padding: 2% 3%;
-}
-
-.ui-editor {
-        width: 100% !important;
-    }
-
-/* ===========================
-   ========= Footer ========== 
-   =========================== */
-
-.mainFooter {
-	width: 100%;
-	float: left;
-	margin-bottom: 2%;
-	padding-left: 0;
-	border-radius: 5px;
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;	
-	color: #FFF;
-	text-align: center;	
-	bottom:0; /* stick to bottom */	
-}
-
-div#footer {
-	width: 98%;
-	position: absolute;
-	left: 1%;
-	height:45px;
-	bottom:0; /* stick to bottom */
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 10px;
-	font-weight: bold;
-	text-align: center;
-}
-
-.mainFooter p {
-	width: 91%;
-	margin: 2% auto;
-}
-
-.input{
-		width: 99%;
-	}
-
-.editor{
-	width: 100%;
-}
-
-div#boxLoggedUser{
-	width: 300px;
-	margin-left: -150px;
-	left: 85%;
-	position: absolute;
-	font-style: italic;
-	text-align: center;
-	font-weight: bold;
-	font-size: 12px;
-	vertical-align: middle;	
-	text-decoration: none;
-	border: solid #dfedf8;
-	border-width: 0px 0;
-	top: 23px;
-	padding-right: 10px;
-}
-
-.menu {
-	width: 98%;
-	position: absolute;
-	left: 1%;
-	height: 10px;
-	border: 0px dotted #000;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	top: 10px;
-}
-
-.boxTitle{
-	border: 0px dotted #000;
-	margin-left: -100px;
-	position: absolute;
-	left: 50%;
-	top: 125px;
-	font-family: sans-serif;
-	font-weight: bold;
-	font-size: 20px;
-}
-
-.messages{
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 12px;
-	font-weight: bold;
-	border: 0px dotted #000;
 }
 
 /* ===========================

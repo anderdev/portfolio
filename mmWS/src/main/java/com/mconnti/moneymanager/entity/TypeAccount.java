@@ -24,6 +24,8 @@ public class TypeAccount implements Serializable {
 	
 	private String locale;
 	
+	private Boolean showType;
+	
 	public Long getId() {
 		return id;
 	}
@@ -48,4 +50,11 @@ public class TypeAccount implements Serializable {
 		this.locale = locale;
 	}
 
+	public Boolean getShowType() {
+		return showType;
+	}
+
+	public void setShowType(Boolean showType) {
+		this.showType = showType;
+	}
 }

@@ -10,12 +10,11 @@ import com.mconnti.moneymanager.entity.City;
 import com.mconnti.moneymanager.entity.Closure;
 import com.mconnti.moneymanager.entity.Config;
 import com.mconnti.moneymanager.entity.Country;
-import com.mconnti.moneymanager.entity.Credit;
 import com.mconnti.moneymanager.entity.CreditCard;
 import com.mconnti.moneymanager.entity.Currency;
-import com.mconnti.moneymanager.entity.Debit;
 import com.mconnti.moneymanager.entity.Description;
 import com.mconnti.moneymanager.entity.Planning;
+import com.mconnti.moneymanager.entity.Register;
 import com.mconnti.moneymanager.entity.Role;
 import com.mconnti.moneymanager.entity.State;
 import com.mconnti.moneymanager.entity.TypeAccount;
@@ -56,9 +55,7 @@ public class MessageReturn {
 	
 	private Config config;
 	
-	private Credit credit;
-	
-	private Debit debit;
+	private Register register;
 	
 	private Closure closure;
 	
@@ -186,20 +183,12 @@ public class MessageReturn {
 		this.config = config;
 	}
 
-	public Credit getCredit() {
-		return credit;
+	public Register getRegister() {
+		return register;
 	}
 
-	public void setCredit(Credit credit) {
-		this.credit = credit;
-	}
-
-	public Debit getDebit() {
-		return debit;
-	}
-
-	public void setDebit(Debit debit) {
-		this.debit = debit;
+	public void setRegister(Register register) {
+		this.register = register;
 	}
 
 	public Closure getClosure() {

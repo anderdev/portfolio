@@ -20,12 +20,11 @@ import com.mconnti.moneymanager.business.CityBO;
 import com.mconnti.moneymanager.business.ClosureBO;
 import com.mconnti.moneymanager.business.ConfigBO;
 import com.mconnti.moneymanager.business.CountryBO;
-import com.mconnti.moneymanager.business.CreditBO;
 import com.mconnti.moneymanager.business.CreditCardBO;
 import com.mconnti.moneymanager.business.CurrencyBO;
-import com.mconnti.moneymanager.business.DebitBO;
 import com.mconnti.moneymanager.business.DescriptionBO;
 import com.mconnti.moneymanager.business.PlanningBO;
+import com.mconnti.moneymanager.business.RegisterBO;
 import com.mconnti.moneymanager.business.RoleBO;
 import com.mconnti.moneymanager.business.StateBO;
 import com.mconnti.moneymanager.business.TypeAccountBO;
@@ -36,12 +35,11 @@ import com.mconnti.moneymanager.entity.City;
 import com.mconnti.moneymanager.entity.Closure;
 import com.mconnti.moneymanager.entity.Config;
 import com.mconnti.moneymanager.entity.Country;
-import com.mconnti.moneymanager.entity.Credit;
 import com.mconnti.moneymanager.entity.CreditCard;
 import com.mconnti.moneymanager.entity.Currency;
-import com.mconnti.moneymanager.entity.Debit;
 import com.mconnti.moneymanager.entity.Description;
 import com.mconnti.moneymanager.entity.Planning;
+import com.mconnti.moneymanager.entity.Register;
 import com.mconnti.moneymanager.entity.Role;
 import com.mconnti.moneymanager.entity.State;
 import com.mconnti.moneymanager.entity.TypeAccount;
@@ -60,9 +58,8 @@ public class RestService {
 	private TypeClosureBO typeClosureBO;
 	private DescriptionBO descriptionBO;
 	private CreditCardBO creditCardBO;
-	private CreditBO creditBO;
 	private ConfigBO configBO;
-	private DebitBO debitBO;
+	private RegisterBO registerBO;
 	private ClosureBO closureBO;
 	private PlanningBO planningBO;
 	private RoleBO roleBO;
@@ -78,8 +75,7 @@ public class RestService {
 		descriptionBO = (DescriptionBO) SpringApplicationContext.getBean("descriptionBO");
 		creditCardBO = (CreditCardBO) SpringApplicationContext.getBean("creditCardBO");
 		configBO = (ConfigBO) SpringApplicationContext.getBean("configBO");
-		creditBO = (CreditBO) SpringApplicationContext.getBean("creditBO");
-		debitBO = (DebitBO) SpringApplicationContext.getBean("debitBO");
+		registerBO = (RegisterBO) SpringApplicationContext.getBean("registerBO");
 		closureBO = (ClosureBO) SpringApplicationContext.getBean("closureBO");
 		planningBO = (PlanningBO) SpringApplicationContext.getBean("planningBO");
 		roleBO = (RoleBO) SpringApplicationContext.getBean("roleBO");
@@ -272,6 +268,7 @@ public class RestService {
 	}
 
 	// USER AREA
+	
 	@GET
 	@Path("/user")
 	@Produces({ MediaType.APPLICATION_JSON })
@@ -532,6 +529,22 @@ public class RestService {
 
 		return Response.status(200).entity(list).build();
 	}
+	
+	@PUT
+	@Path("/description")
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response listDescriptionByParameter(Description description) {
+
+		List<Description> list = new ArrayList<>();
+		try {
+			list = descriptionBO.listByParameter(description);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return Response.status(200).entity(list).build();
+	}
 
 	@POST
 	@Path("/description")
@@ -571,6 +584,22 @@ public class RestService {
 		List<CreditCard> list = new ArrayList<>();
 		try {
 			list = creditCardBO.list();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return Response.status(200).entity(list).build();
+	}
+	
+	@PUT
+	@Path("/creditcard")
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response listCreditCardByParameter(CreditCard creditCard) {
+
+		List<CreditCard> list = new ArrayList<>();
+		try {
+			list = creditCardBO.listByParameter(creditCard);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -651,16 +680,16 @@ public class RestService {
 		return Response.status(200).entity(ret).build();
 	}
 
-	// CREDIT AREA
+	// REGISTER AREA
 
 	@GET
-	@Path("/credit")
+	@Path("/register")
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response listCredit() {
+	public Response listRegister() {
 
-		List<Credit> list = new ArrayList<>();
+		List<Register> list = new ArrayList<>();
 		try {
-			list = creditBO.list();
+			list = registerBO.list();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -669,13 +698,13 @@ public class RestService {
 	}
 
 	@POST
-	@Path("/credit")
+	@Path("/register")
 	@Consumes({ MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response saveCredit(Credit credit) {
+	public Response saveRegister(Register register) {
 		MessageReturn ret = new MessageReturn();
 		try {
-			ret = creditBO.save(credit);
+			ret = registerBO.save(register);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -683,58 +712,13 @@ public class RestService {
 	}
 
 	@DELETE
-	@Path("/credit")
+	@Path("/register")
 	@Consumes({ MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response deleteCredit(Credit credit) {
+	public Response deleteRegister(Register register) {
 		MessageReturn ret = new MessageReturn();
 		try {
-			ret = creditBO.delete(credit.getId());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return Response.status(200).entity(ret).build();
-	}
-
-	// DEBIT AREA
-
-	@GET
-	@Path("/debit")
-	@Produces({ MediaType.APPLICATION_JSON })
-	public Response listDebit() {
-
-		List<Debit> list = new ArrayList<>();
-		try {
-			list = debitBO.list();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return Response.status(200).entity(list).build();
-	}
-
-	@POST
-	@Path("/debit")
-	@Consumes({ MediaType.APPLICATION_JSON })
-	@Produces({ MediaType.APPLICATION_JSON })
-	public Response saveDebit(Debit debit) {
-		MessageReturn ret = new MessageReturn();
-		try {
-			ret = debitBO.save(debit);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return Response.status(200).entity(ret).build();
-	}
-
-	@DELETE
-	@Path("/debit")
-	@Consumes({ MediaType.APPLICATION_JSON })
-	@Produces({ MediaType.APPLICATION_JSON })
-	public Response deleteDebit(Debit debit) {
-		MessageReturn ret = new MessageReturn();
-		try {
-			ret = debitBO.delete(debit.getId());
+			ret = registerBO.delete(register.getId());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -37,6 +37,8 @@ public class CreditCardMBean implements Serializable {
 	private CreditCard[] selectedCreditCard;
 
 	private String host = null;
+	
+	private Boolean showCreditCardForm = false;
 
 	public CreditCardMBean() {
 		this.creditCard = new CreditCard();
@@ -51,6 +53,7 @@ public class CreditCardMBean implements Serializable {
 		try {
 
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/creditcard");
+			creditCard.setUser(userMBean.getLoggedUser().getSuperUser() == null ? userMBean.getLoggedUser() : userMBean.getLoggedUser().getSuperUser() );
 			ClientResponse<CreditCard> response = request.get(CreditCard.class);
 
 			if (response.getStatus() != 200) {
@@ -69,24 +72,27 @@ public class CreditCardMBean implements Serializable {
 	}
 
 	public String list() {
+		showCreditCardForm = false;
 		loadList();
 		return "/common/listCreditCard.xhtml?faces-redirect=true";
 	}
 
 	public void newCreditCard() {
 		this.creditCard = new CreditCard();
+		showCreditCardForm = true;
 	}
 
-	public String cancel() {
-		return "index.xhtml\faces-redirect=true";
+	public void cancel() {
+		showCreditCardForm = false;
 	}
 
 	public void edit() {
+		showCreditCardForm = true;
 	}
 
 	public void save() {
 		MessageReturn ret = new MessageReturn();
-
+		showCreditCardForm = false;
 		try {
 
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/creditcard");
@@ -171,5 +177,13 @@ public class CreditCardMBean implements Serializable {
 
 	public void setUserMBean(UserMBean userMBean) {
 		this.userMBean = userMBean;
+	}
+
+	public Boolean getShowCreditCardForm() {
+		return showCreditCardForm;
+	}
+
+	public void setShowCreditCardForm(Boolean showCreditCardForm) {
+		this.showCreditCardForm = showCreditCardForm;
 	}
 }

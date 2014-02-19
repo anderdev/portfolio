@@ -12,6 +12,8 @@ public interface DescriptionBO extends GenericBO<Description>{
 	
 	public List<Description> list() throws Exception;
 	
+	public List<Description> listByParameter(Description description) throws Exception;
+	
 	public MessageReturn save(final Description description) throws Exception;
 	
 	public MessageReturn delete (Long id);

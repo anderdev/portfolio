@@ -1,6 +1,7 @@
 package com.mconnti.moneymanager.business.impl;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -160,5 +161,18 @@ public class DescriptionBOImpl extends GenericBOImpl<Description> implements Des
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	@Override
+	public List<Description> listByParameter(Description description) throws Exception {
+		Map<String, String> queryParams = new LinkedHashMap<>();
+		queryParams.put(" where "," 1=1 ");
+		queryParams.put(" and x.user.id = ", description.getUser().getId()+"");
+		queryParams.put(" and x.typeAccount.id = ", description.getTypeAccount().getId()+ "");
+		
+		
+		List<Description> list = list(Description.class, queryParams, "x.description");
+
+		return list;
 	}
 }

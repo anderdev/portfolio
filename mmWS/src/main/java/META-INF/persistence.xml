@@ -8,10 +8,9 @@
 		<class>com.mconnti.moneymanager.entity.TypeAccount</class>
 		<class>com.mconnti.moneymanager.entity.Closure</class>
 		<class>com.mconnti.moneymanager.entity.Config</class>
-		<class>com.mconnti.moneymanager.entity.Credit</class>
 		<class>com.mconnti.moneymanager.entity.CreditCard</class>
 		<class>com.mconnti.moneymanager.entity.Currency</class>
-		<class>com.mconnti.moneymanager.entity.Debit</class>
+		<class>com.mconnti.moneymanager.entity.Register</class>
 		<class>com.mconnti.moneymanager.entity.Description</class>
 		<class>com.mconnti.moneymanager.entity.Parcel</class>
 		<class>com.mconnti.moneymanager.entity.TypeClosure</class>
