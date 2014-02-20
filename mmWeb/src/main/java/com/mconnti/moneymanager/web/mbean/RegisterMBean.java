@@ -103,7 +103,7 @@ public class RegisterMBean implements Serializable {
 	private void loadCombos() {
 		this.descriptions = loadDescriptions();
 		this.groups = loadGroups();
-		this.superGroups = loadGroups();
+		this.superGroups = loadSuperGroups();
 		this.creditCards = loadCreditCards();
 		this.typeClosures = loadTypeClosures();
 		this.currencies = loadCurrencies();
@@ -151,11 +151,11 @@ public class RegisterMBean implements Serializable {
 
 		superGroupList = loadDescriptionList(typeAccount);
 
-		List<SelectItem> itens = new ArrayList<SelectItem>(groupList.size());
+		List<SelectItem> itens = new ArrayList<SelectItem>(superGroupList.size());
 
-		this.groups = new SelectItem[itens.size()];
+		this.superGroups = new SelectItem[itens.size()];
 
-		for (Description desc : groupList) {
+		for (Description desc : superGroupList) {
 			itens.add(new SelectItem(desc.getId(), desc.getDescription()));
 		}
 		return itens.toArray(new SelectItem[itens.size()]);
@@ -324,9 +324,7 @@ public class RegisterMBean implements Serializable {
 		register.setGroup(new Description());
 		register.setSuperGroup(new Description());
 		register.setCurrency(new Currency());
-		register.setCreditCard(new CreditCard());
 		register.setTypeClosure(new TypeClosure());
-		register.setTypeAccount(new TypeAccount());
 	}
 
 	public String newCredit() {
@@ -336,9 +334,16 @@ public class RegisterMBean implements Serializable {
 		loadCombos();
 		return "/common/formRegister.xhtml?faces-redirect=true";
 	}
+	
+	private void createTypeAccount(final Long type){
+		TypeAccount typeAccount = new TypeAccount();
+		typeAccount.setId(type);
+		register.setTypeAccount(typeAccount);
+	}
 
 	public String newDebit() {
 		createRegister();
+		register.setCreditCard(new CreditCard());
 		loadDebits = true;
 		loadCredits = false;
 		loadCombos();
@@ -359,10 +364,15 @@ public class RegisterMBean implements Serializable {
 		MessageReturn ret = new MessageReturn();
 
 		try {
-
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/register");
-			register.setUser(userMBean.getLoggedUser().getSuperUser() == null ? userMBean.getLoggedUser() : userMBean.getLoggedUser().getSuperUser());
 			
+			if(loadDebits){
+				createTypeAccount(2L);//debit
+			} else {
+				createTypeAccount(1L);//credit
+			}
+			
+			register.setUser(userMBean.getLoggedUser().getSuperUser() == null ? userMBean.getLoggedUser() : userMBean.getLoggedUser().getSuperUser());
 			request.body(MediaType.APPLICATION_JSON, register);
 
 			ClientResponse<Register> response = request.post(Register.class);
@@ -381,6 +391,7 @@ public class RegisterMBean implements Serializable {
 			// if (refreshList) {
 			// loadList();
 			// }
+			createRegister();
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

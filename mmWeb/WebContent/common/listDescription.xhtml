@@ -9,8 +9,8 @@
         <ui:define name="contentAPP">
         	<h:form prependId="false" id="formDescription">
         	
-        		<h:outputText value="#{messages['lb_description_list']}" styleClass="boxTitle" rendered="#{!creditCardMBean.showCreditCardForm}"/>
-	        	<h:outputText value="#{messages['lb_description_registration']}" styleClass="boxTitle" rendered="#{creditCardMBean.showCreditCardForm}"/>
+        		<h:outputText value="#{messages['lb_description_list']}" styleClass="boxTitle" rendered="#{!descriptionMBean.showFormDescription}"/>
+	        	<h:outputText value="#{messages['lb_description_registration']}" styleClass="boxTitle" rendered="#{descriptionMBean.showFormDescription}"/>
 
 				<p:growl id="msg" showDetail="true" showSummary="false" autoUpdate="true" sticky="true" /> 
 				

@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
+@XmlAccessorType(XmlAccessType.PROPERTY)
 public class Register implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -33,11 +33,9 @@ public class Register implements Serializable {
 
 	private Currency currency;
 	
-	private TypeAccount typeAccount;
-
 	private TypeClosure typeClosure;
-
-	private Parcel parcel;
+	
+	private TypeAccount typeAccount;
 
 	private Boolean closed;
 
@@ -115,14 +113,6 @@ public class Register implements Serializable {
 
 	public void setAmount(Double amount) {
 		this.amount = amount;
-	}
-
-	public Parcel getParcel() {
-		return parcel;
-	}
-
-	public void setParcel(Parcel parcel) {
-		this.parcel = parcel;
 	}
 
 	public Boolean getClosed() {

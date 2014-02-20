@@ -9,16 +9,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mconnti.moneymanager.business.RegisterBO;
 import com.mconnti.moneymanager.entity.CreditCard;
-import com.mconnti.moneymanager.entity.Register;
 import com.mconnti.moneymanager.entity.Parcel;
+import com.mconnti.moneymanager.entity.Register;
 import com.mconnti.moneymanager.entity.TypeClosure;
 import com.mconnti.moneymanager.entity.User;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
 import com.mconnti.moneymanager.persistence.CreditCardDAO;
 import com.mconnti.moneymanager.persistence.CurrencyDAO;
-import com.mconnti.moneymanager.persistence.RegisterDAO;
 import com.mconnti.moneymanager.persistence.DescriptionDAO;
 import com.mconnti.moneymanager.persistence.ParcelDAO;
+import com.mconnti.moneymanager.persistence.RegisterDAO;
 import com.mconnti.moneymanager.persistence.TypeClosureDAO;
 import com.mconnti.moneymanager.persistence.UserDAO;
 import com.mconnti.moneymanager.utils.Constants;
@@ -27,6 +27,8 @@ import com.mconnti.moneymanager.utils.Utils;
 
 public class RegisterBOImpl extends GenericBOImpl<Register> implements RegisterBO {
 
+	private static final Long MONTHLY = 1L;
+	
 	@Autowired
 	private RegisterDAO registerDAO;
 
@@ -110,54 +112,55 @@ public class RegisterBOImpl extends GenericBOImpl<Register> implements RegisterB
 
 	@Override
 	@Transactional
-	public MessageReturn save(Register debit) {
+	public MessageReturn save(Register register) {
 		MessageReturn libReturn = new MessageReturn();
-		User user = getUser(debit);
-		if (user != null && debit.getCurrency() != null && debit.getSuperGroup() != null) {
+		User user = getUser(register);
+		if (user != null && register.getCurrency() != null && register.getSuperGroup() != null) {
 			try {
-				if (debit.getCreditCard() != null) {
-					TypeClosure typeClosure = getTypeClosure(1L);
-					debit.setTypeClosure(typeClosure);
-					setCreditCardDate(debit);
+				if (register.getCreditCard() != null) {
+					TypeClosure typeClosure = getTypeClosure(MONTHLY); //Monthly
+					register.setTypeClosure(typeClosure);
+					setCreditCardDate(register);
 				}
 
-				if (debit.getNumberParcel() > Constants.SINGLE_PARCEL) {
+				if (register.getNumberParcel() > Constants.SINGLE_PARCEL) {
 					Parcel parcel = new Parcel();
-					parcel.setParcels(debit.getNumberParcel());
+					parcel.setParcels(register.getNumberParcel());
 					parcel.setUser(user);
-					debit.setParcel(parcelDAO.save(parcel));
+					register.setParcel(parcelDAO.save(parcel));
 
-					Date currentDate = debit.getDate();
+					Date currentDate = register.getDate();
 
-					for (int x = 0; x < debit.getNumberParcel(); x++) {
-						if (debit.getTypeClosure().getId().equals(Constants.ANUAL) || debit.getTypeClosure().getId().equals(Constants.YEARLY)) {
-							setParcel(debit, currentDate, Calendar.YEAR, x);
-						} else if (debit.getTypeClosure().getId().equals(Constants.MENSAL) || debit.getTypeClosure().getId().equals(Constants.MONTHLY)) {
-							setParcel(debit, currentDate, Calendar.MONTH, x);
-						} else if (debit.getTypeClosure().getId().equals(Constants.QUINZENAL) || debit.getTypeClosure().getId().equals(Constants.FORTNIGHTLY)) {
-							setParcel(debit, currentDate, Calendar.DAY_OF_WEEK, x * 15);
-						} else if (debit.getTypeClosure().getId().equals(Constants.SEMANAL) || debit.getTypeClosure().getId().equals(Constants.WEEKLY)) {
-							setParcel(debit, currentDate, Calendar.WEEK_OF_MONTH, x);
-						} else if (debit.getTypeClosure().getId().equals(Constants.DIARIO) || debit.getTypeClosure().getId().equals(Constants.DAYLY)) {
-							setParcel(debit, currentDate, Calendar.DAY_OF_WEEK, x);
+					for (int x = 0; x < register.getNumberParcel(); x++) {
+						if (register.getTypeClosure().getId().equals(Constants.ANUAL) || register.getTypeClosure().getId().equals(Constants.YEARLY)) {
+							setParcel(register, currentDate, Calendar.YEAR, x);
+						} else if (register.getTypeClosure().getId().equals(Constants.MENSAL) || register.getTypeClosure().getId().equals(Constants.MONTHLY)) {
+							setParcel(register, currentDate, Calendar.MONTH, x);
+						} else if (register.getTypeClosure().getId().equals(Constants.QUINZENAL) || register.getTypeClosure().getId().equals(Constants.FORTNIGHTLY)) {
+							setParcel(register, currentDate, Calendar.DAY_OF_WEEK, x * 15);
+						} else if (register.getTypeClosure().getId().equals(Constants.SEMANAL) || register.getTypeClosure().getId().equals(Constants.WEEKLY)) {
+							setParcel(register, currentDate, Calendar.WEEK_OF_MONTH, x);
+						} else if (register.getTypeClosure().getId().equals(Constants.DIARIO) || register.getTypeClosure().getId().equals(Constants.DAYLY)) {
+							setParcel(register, currentDate, Calendar.DAY_OF_WEEK, x);
 						}
-						saveGeneric(debit);
+						register.setCurrentDate(new Date());
+						saveGeneric(register);
 					}
 				} else {
-					debit.setDate(Utils.stringToDate(debit.getStrDate(), false));
-					saveGeneric(debit);
+					register.setCurrentDate(new Date());
+					saveGeneric(register);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
-				libReturn.setRegister(debit);
+				libReturn.setRegister(register);
 				libReturn.setMessage(e.getMessage());
 			}
-			if (libReturn.getMessage() == null && debit.getId() == null) {
+			if (libReturn.getMessage() == null && register.getId() == null) {
 				libReturn.setMessage(MessageFactory.getMessage("lb_debit_saved", user.getCity().getState().getCountry().getLocale()));
-				libReturn.setRegister(debit);
-			} else if (libReturn.getMessage() == null && debit.getId() != null) {
+				libReturn.setRegister(register);
+			} else if (libReturn.getMessage() == null && register.getId() != null) {
 				libReturn.setMessage(MessageFactory.getMessage("lb_debit_updated", user.getCity().getState().getCountry().getLocale()));
-				libReturn.setRegister(debit);
+				libReturn.setRegister(register);
 			}
 		} else {
 			libReturn.setMessage(MessageFactory.getMessage("lb_debit_not_found", "en"));

@@ -710,7 +710,7 @@ public class RestService {
 		}
 		return Response.status(200).entity(ret).build();
 	}
-
+	
 	@DELETE
 	@Path("/register")
 	@Consumes({ MediaType.APPLICATION_JSON })

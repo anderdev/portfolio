@@ -293,9 +293,9 @@ border-width:5px;*/
         width: 100% !important;
     }
 
-input{
-		width: 99%;
-	}
+.calendar{
+	width: 20px;
+}
 
 .editor{
 	width: 100%;

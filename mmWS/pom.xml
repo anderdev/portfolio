@@ -40,7 +40,13 @@
 		<dependency>
 			<groupId>org.jboss.resteasy</groupId>
 			<artifactId>resteasy-jaxrs</artifactId>
-			<version>2.2.1.GA</version>
+			<version>2.3.5.Final</version>
+		</dependency>
+		
+		<dependency>
+		  <groupId>org.jboss.resteasy</groupId>
+		  <artifactId>resteasy-jackson-provider</artifactId>
+		  <version>2.3.5.Final</version>
 		</dependency>
 
 		<dependency>

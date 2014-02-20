@@ -87,16 +87,16 @@ public class DescriptionMBean implements Serializable {
 	}
 
 	public void edit() {
-		showFormDescription = false;
+		showFormDescription = true;
 	}
 
 	public void save() {
 		MessageReturn ret = new MessageReturn();
 
 		try {
-
+			
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/description");
-			description.setUser(userMBean.getLoggedUser());
+			description.setUser(userMBean.getLoggedUser().getSuperUser() == null ? userMBean.getLoggedUser() : userMBean.getLoggedUser().getSuperUser());
 			request.body(MediaType.APPLICATION_JSON, description);
 			
 			ClientResponse<Description> response = request.post(Description.class);

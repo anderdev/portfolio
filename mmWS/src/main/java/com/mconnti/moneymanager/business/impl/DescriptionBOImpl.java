@@ -83,7 +83,7 @@ public class DescriptionBOImpl extends GenericBOImpl<Description> implements Des
 						}
 						description.setTypeAccount(typeAccount);
 						saveGeneric(description);
-					} else if (description.getIsGroup() && typeAccount.getDescription().startsWith("S")) {
+					} else if (description.getIsSuperGroup() && typeAccount.getDescription().startsWith("S")) {
 						if (description.getIsSuperGroupOriginal() == null || !description.getIsSuperGroupOriginal()) {
 							description.setId(null);
 						} else {

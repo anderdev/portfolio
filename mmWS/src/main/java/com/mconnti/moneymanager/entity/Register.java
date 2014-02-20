@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.ForeignKey;
 
 @Entity
@@ -72,6 +73,7 @@ public class Register implements Serializable {
 	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = Parcel.class)
 	@JoinColumn(name = "parcel_id")
 	@ForeignKey(name = "FK_DEBIT_PARCEL")
+	@JsonIgnore
 	private Parcel parcel;
 
 	private Boolean closed;
@@ -204,5 +206,13 @@ public class Register implements Serializable {
 
 	public void setCurrentDate(Date currentDate) {
 		this.currentDate = currentDate;
+	}
+
+	public TypeAccount getTypeAccount() {
+		return typeAccount;
+	}
+
+	public void setTypeAccount(TypeAccount typeAccount) {
+		this.typeAccount = typeAccount;
 	}
 }
