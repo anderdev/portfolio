@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.mconnti</groupId>
 	<artifactId>moneymanager</artifactId>
@@ -13,6 +13,8 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<org.springframework.version>3.0.5.RELEASE</org.springframework.version>
+		<org.jboss.resteasy.version>2.3.5.Final</org.jboss.resteasy.version>
+		<org.hibernate.version>4.2.7.Final</org.hibernate.version>
 	</properties>
 
 	<repositories>
@@ -26,8 +28,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
-			<scope>test</scope>
+			<version>4.11</version>
 		</dependency>
 
 		<dependency>
@@ -40,13 +41,13 @@
 		<dependency>
 			<groupId>org.jboss.resteasy</groupId>
 			<artifactId>resteasy-jaxrs</artifactId>
-			<version>2.3.5.Final</version>
+			<version>${org.jboss.resteasy.version}</version>
 		</dependency>
-		
+
 		<dependency>
-		  <groupId>org.jboss.resteasy</groupId>
-		  <artifactId>resteasy-jackson-provider</artifactId>
-		  <version>2.3.5.Final</version>
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>resteasy-jackson-provider</artifactId>
+		<version>${org.jboss.resteasy.version}</version>
 		</dependency>
 
 		<dependency>
@@ -98,6 +99,12 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+
+		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-core</artifactId>
 			<version>3.1.4.RELEASE</version>
@@ -124,7 +131,7 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
-			<version>4.2.7.Final</version>
+			<version>${org.hibernate.version}</version>
 		</dependency>
 
 		<dependency>

@@ -58,6 +58,9 @@ public class User extends SearchObject implements Serializable{
 	@Transient
 	private Boolean admin;
 	
+	@Transient
+	private Boolean defaultPassword;
+	
 	@Column(name="phrase")
 	private String secretPhrase;
 	
@@ -227,6 +230,14 @@ public class User extends SearchObject implements Serializable{
 
 	public void setSuperUser(User superUser) {
 		this.superUser = superUser;
+	}
+
+	public Boolean getDefaultPassword() {
+		return defaultPassword;
+	}
+
+	public void setDefaultPassword(Boolean defaultPassword) {
+		this.defaultPassword = defaultPassword;
 	}
 
 }

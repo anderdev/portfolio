@@ -35,6 +35,8 @@ public class User extends SearchObject implements Serializable{
 	
 	private Boolean admin;
 	
+	private Boolean defaultPassword;
+	
 	private String secretPhrase;
 	
 	private City city;
@@ -186,5 +188,13 @@ public class User extends SearchObject implements Serializable{
 
 	public void setSuperUser(User superUser) {
 		this.superUser = superUser;
+	}
+
+	public Boolean getDefaultPassword() {
+		return defaultPassword;
+	}
+
+	public void setDefaultPassword(Boolean defaultPassword) {
+		this.defaultPassword = defaultPassword;
 	}
 }

@@ -168,8 +168,9 @@ public class DescriptionBOImpl extends GenericBOImpl<Description> implements Des
 		Map<String, String> queryParams = new LinkedHashMap<>();
 		queryParams.put(" where "," 1=1 ");
 		queryParams.put(" and x.user.id = ", description.getUser().getId()+"");
-		queryParams.put(" and x.typeAccount.id = ", description.getTypeAccount().getId()+ "");
-		
+		if( description.getTypeAccount() != null){
+			queryParams.put(" and x.typeAccount.id = ", description.getTypeAccount().getId()+ "");
+		}
 		
 		List<Description> list = list(Description.class, queryParams, "x.description");
 

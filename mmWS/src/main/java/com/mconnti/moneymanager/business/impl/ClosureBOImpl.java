@@ -297,12 +297,12 @@ public class ClosureBOImpl extends GenericBOImpl<Closure> implements ClosureBO {
 
 			ret = loadDates(date, Calendar.DAY_OF_MONTH, -6);
 
-		} else if (Constants.DIARIO.equalsIgnoreCase(closure.getType().toLowerCase()) || Constants.DAYLY.equalsIgnoreCase(closure.getType().toLowerCase())) {
+		} else if (Constants.DIARIO.equalsIgnoreCase(closure.getType().toLowerCase()) || Constants.DAILY.equalsIgnoreCase(closure.getType().toLowerCase())) {
 
 			ret = loadDates(date, Calendar.DAY_OF_MONTH, 0);
 		}
 		
-		closure = getClosureValues(closure, ret.get(Constants.DATA_INICIAL), ret.get(Constants.DATA_FINAL));
+		closure = getClosureValues(closure, ret.get(Constants.DATE_START), ret.get(Constants.DATE_END));
 		
 		
 		//TODO setar messageReturn
@@ -320,8 +320,8 @@ public class ClosureBOImpl extends GenericBOImpl<Closure> implements ClosureBO {
 		calendar.setTime(date);
 		String endDate = dataFormatada.format(calendar.getTime());
 
-		map.put(Constants.DATA_INICIAL, startDate);
-		map.put(Constants.DATA_FINAL, endDate);
+		map.put(Constants.DATE_START, startDate);
+		map.put(Constants.DATE_END, endDate);
 		return map;
 	}
 	

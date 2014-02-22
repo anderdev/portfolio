@@ -102,12 +102,12 @@ public class RegisterBOImpl extends GenericBOImpl<Register> implements RegisterB
 		}
 	}
 
-	private void setParcel(Register debit, Date currentDate, Integer interval, Integer x) {
-		Date minhaData = currentDate;
+	private void setParcel(Register register, Date currentDate, Integer interval, Integer x) {
+		Date newDate = currentDate;
 		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(minhaData);
+		calendar.setTime(newDate);
 		calendar.add(interval, x);
-		debit.setDate(calendar.getTime());
+		register.setDate(calendar.getTime());
 	}
 
 	@Override
@@ -118,7 +118,7 @@ public class RegisterBOImpl extends GenericBOImpl<Register> implements RegisterB
 		if (user != null && register.getCurrency() != null && register.getSuperGroup() != null) {
 			try {
 				if (register.getCreditCard() != null) {
-					TypeClosure typeClosure = getTypeClosure(MONTHLY); //Monthly
+					TypeClosure typeClosure = getTypeClosure(MONTHLY);
 					register.setTypeClosure(typeClosure);
 					setCreditCardDate(register);
 				}
@@ -128,20 +128,22 @@ public class RegisterBOImpl extends GenericBOImpl<Register> implements RegisterB
 					parcel.setParcels(register.getNumberParcel());
 					parcel.setUser(user);
 					register.setParcel(parcelDAO.save(parcel));
+					
+					register.setTypeClosure(typeClosureDAO.findById(TypeClosure.class, register.getTypeClosure().getId()));
 
 					Date currentDate = register.getDate();
 
 					for (int x = 0; x < register.getNumberParcel(); x++) {
-						if (register.getTypeClosure().getId().equals(Constants.ANUAL) || register.getTypeClosure().getId().equals(Constants.YEARLY)) {
+						if (register.getTypeClosure().getType().toLowerCase().equals(Constants.ANUAL) || register.getTypeClosure().getType().toLowerCase().equals(Constants.YEARLY)) {
 							setParcel(register, currentDate, Calendar.YEAR, x);
-						} else if (register.getTypeClosure().getId().equals(Constants.MENSAL) || register.getTypeClosure().getId().equals(Constants.MONTHLY)) {
+						} else if (register.getTypeClosure().getType().toLowerCase().equals(Constants.MENSAL) || register.getTypeClosure().getType().toLowerCase().equals(Constants.MONTHLY)) {
 							setParcel(register, currentDate, Calendar.MONTH, x);
-						} else if (register.getTypeClosure().getId().equals(Constants.QUINZENAL) || register.getTypeClosure().getId().equals(Constants.FORTNIGHTLY)) {
-							setParcel(register, currentDate, Calendar.DAY_OF_WEEK, x * 15);
-						} else if (register.getTypeClosure().getId().equals(Constants.SEMANAL) || register.getTypeClosure().getId().equals(Constants.WEEKLY)) {
+						} else if (register.getTypeClosure().getType().toLowerCase().equals(Constants.QUINZENAL) || register.getTypeClosure().getType().toLowerCase().equals(Constants.FORTNIGHTLY)) {
+							setParcel(register, currentDate, Calendar.DAY_OF_WEEK, x * 14);
+						} else if (register.getTypeClosure().getType().toLowerCase().equals(Constants.SEMANAL) || register.getTypeClosure().getType().toLowerCase().equals(Constants.WEEKLY)) {
 							setParcel(register, currentDate, Calendar.WEEK_OF_MONTH, x);
-						} else if (register.getTypeClosure().getId().equals(Constants.DIARIO) || register.getTypeClosure().getId().equals(Constants.DAYLY)) {
-							setParcel(register, currentDate, Calendar.DAY_OF_WEEK, x);
+						} else if (register.getTypeClosure().getType().toLowerCase().equals(Constants.DIARIO) || register.getTypeClosure().getType().toLowerCase().equals(Constants.DAILY)) {
+							setParcel(register, currentDate, Calendar.DAY_OF_WEEK, x+1);
 						}
 						register.setCurrentDate(new Date());
 						saveGeneric(register);
@@ -192,16 +194,6 @@ public class RegisterBOImpl extends GenericBOImpl<Register> implements RegisterB
 			libReturn.setMessage(e.getMessage());
 		}
 		return libReturn;
-	}
-
-	@Override
-	public Register getById(Long id) {
-		try {
-			return findById(Register.class, id);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
 	}
 
 }

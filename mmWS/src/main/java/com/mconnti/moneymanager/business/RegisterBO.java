@@ -16,6 +16,5 @@ public interface RegisterBO extends GenericBO<Register>{
 	
 	public MessageReturn delete (Long id);
 	
-	public Register getById(Long id);
 }
 

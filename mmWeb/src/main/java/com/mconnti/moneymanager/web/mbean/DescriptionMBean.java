@@ -51,9 +51,13 @@ public class DescriptionMBean implements Serializable {
 
 	private void loadList() {
 		try {
-
+			
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/description");
-			ClientResponse<Description> response = request.get(Description.class);
+
+			description.setUser(userMBean.getLoggedUser().getSuperUser() == null ? userMBean.getLoggedUser() : userMBean.getLoggedUser().getSuperUser());
+
+			request.body(MediaType.APPLICATION_JSON, description);
+			ClientResponse<Description> response = request.put(Description.class);
 
 			if (response.getStatus() != 200) {
 				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());

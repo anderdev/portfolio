@@ -369,6 +369,7 @@ public class RegisterMBean implements Serializable {
 			if(loadDebits){
 				createTypeAccount(2L);//debit
 			} else {
+				register.setGroup(null);
 				createTypeAccount(1L);//credit
 			}
 			

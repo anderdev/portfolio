@@ -41,8 +41,6 @@ public class UserMBean implements Serializable {
 
 	public static Long USER = 3L;
 
-	public static String DEFAUL_PASSWORD = "123456";
-
 	private static final long serialVersionUID = 1L;
 
 	FacesContext fc = FacesContext.getCurrentInstance();
@@ -390,7 +388,7 @@ public class UserMBean implements Serializable {
 		this.role.setId(USER);
 		this.user.setRole(role);
 		this.user.setSuperUser(loggedUser);
-		this.user.setPassword(DEFAUL_PASSWORD);
+		this.user.setDefaultPassword(true);
 		this.showPassword = false;
 		this.refreshList = true;
 		this.showFormUser = true;
@@ -399,18 +397,14 @@ public class UserMBean implements Serializable {
 	}
 
 	public void cancel() {
-		System.out.println("UserMBean.cancel triggered");
 		this.user = new User();
 		this.showFormUser = false;
-		System.out.println("UserMBean.cancel exited");
 	}
 
 	public void cancelApp(){
-		System.out.println("UserMBean.cancelApp triggered");
 		this.user = new User();
 		this.showFormUser = false;
 		this.showEditNewButton = true;
-		System.out.println("UserMBean.cancelApp exited");
 	}
 	
 	public void edit() {
