@@ -58,7 +58,7 @@ public class RegisterMBean implements Serializable {
 
 	private SelectItem[] descriptions;
 
-	private SelectItem[] groups;
+	private SelectItem[] groupItems;
 
 	private SelectItem[] superGroups;
 
@@ -101,8 +101,8 @@ public class RegisterMBean implements Serializable {
 	}
 
 	private void loadCombos() {
+		this.groupItems = loadGroups();
 		this.descriptions = loadDescriptions();
-		this.groups = loadGroups();
 		this.superGroups = loadSuperGroups();
 		this.creditCards = loadCreditCards();
 		this.typeClosures = loadTypeClosures();
@@ -135,14 +135,15 @@ public class RegisterMBean implements Serializable {
 
 		groupList = loadDescriptionList(typeAccount);
 
-		List<SelectItem> itens = new ArrayList<SelectItem>(groupList.size());
+		List<SelectItem> groupItens = new ArrayList<SelectItem>(groupList.size());
 
-		this.groups = new SelectItem[itens.size()];
+		this.groupItems = new SelectItem[groupItens.size()];
+		
 
 		for (Description desc : groupList) {
-			itens.add(new SelectItem(desc.getId(), desc.getDescription()));
+			groupItens.add(new SelectItem(desc.getId(), desc.getDescription()));
 		}
-		return itens.toArray(new SelectItem[itens.size()]);
+		return groupItens.toArray(new SelectItem[groupItens.size()]);
 	}
 
 	public SelectItem[] loadSuperGroups() {
@@ -192,7 +193,7 @@ public class RegisterMBean implements Serializable {
 
 		List<SelectItem> itens = new ArrayList<SelectItem>(currencyList.size());
 
-		this.groups = new SelectItem[itens.size()];
+		this.currencies = new SelectItem[itens.size()];
 
 		for (Currency c : currencyList) {
 			itens.add(new SelectItem(c.getId(), c.getAcronym()));
@@ -292,11 +293,13 @@ public class RegisterMBean implements Serializable {
 		return typeClosureList;
 	}
 
-	private void loadList() {
+	private void loadList(TypeAccount typeAccount) {
 		try {
-
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/register");
-			ClientResponse<Register> response = request.get(Register.class);
+			register.setTypeAccount(typeAccount);
+			register.setUser(userMBean.getLoggedUser().getSuperUser() == null ? userMBean.getLoggedUser() : userMBean.getLoggedUser().getSuperUser());
+			request.body(MediaType.APPLICATION_JSON, register);
+			ClientResponse<Register> response = request.put(Register.class);
 
 			if (response.getStatus() != 200) {
 				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
@@ -313,11 +316,6 @@ public class RegisterMBean implements Serializable {
 		}
 	}
 
-	public String list() {
-		loadList();
-		return "/common/listRegister.xhtml?faces-redirect=true";
-	}
-
 	private void createRegister() {
 		this.register = new Register();
 		register.setDescription(new Description());
@@ -325,6 +323,7 @@ public class RegisterMBean implements Serializable {
 		register.setSuperGroup(new Description());
 		register.setCurrency(new Currency());
 		register.setTypeClosure(new TypeClosure());
+		register.setCreditCard(new CreditCard());
 	}
 
 	public String newCredit() {
@@ -332,6 +331,8 @@ public class RegisterMBean implements Serializable {
 		loadDebits = false;
 		loadCredits = true;
 		loadCombos();
+		createTypeAccount(1L);
+		loadList(register.getTypeAccount());
 		return "/common/formRegister.xhtml?faces-redirect=true";
 	}
 	
@@ -343,10 +344,11 @@ public class RegisterMBean implements Serializable {
 
 	public String newDebit() {
 		createRegister();
-		register.setCreditCard(new CreditCard());
 		loadDebits = true;
 		loadCredits = false;
 		loadCombos();
+		createTypeAccount(2L);
+		loadList(register.getTypeAccount());
 		return "/common/formRegister.xhtml?faces-redirect=true";
 	}
 
@@ -368,8 +370,12 @@ public class RegisterMBean implements Serializable {
 			
 			if(loadDebits){
 				createTypeAccount(2L);//debit
+				if(register.getCreditCard().getId() == null || register.getCreditCard().getId() == 0){
+					register.setCreditCard(null);
+				}
 			} else {
 				register.setGroup(null);
+				register.setCreditCard(null);
 				createTypeAccount(1L);//credit
 			}
 			
@@ -389,9 +395,7 @@ public class RegisterMBean implements Serializable {
 			} else {
 				FacesUtil.showSuccessMessage(ret.getMessage());
 			}
-			// if (refreshList) {
-			// loadList();
-			// }
+			loadList(register.getTypeAccount());
 			createRegister();
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
@@ -420,7 +424,7 @@ public class RegisterMBean implements Serializable {
 			} else {
 				// FacesUtil.showSuccessMessage(MessageFactory.getMessage("lb_deleted_successfully", userMBean.getLoggedUser().getLanguage()));
 			}
-			loadList();
+//			loadList();
 		} catch (Exception e) {
 			e.printStackTrace();
 			FacesUtil.showAErrorMessage(ret.getMessage());
@@ -466,14 +470,6 @@ public class RegisterMBean implements Serializable {
 
 	public void setDescriptions(SelectItem[] descriptions) {
 		this.descriptions = descriptions;
-	}
-
-	public SelectItem[] getGroups() {
-		return groups;
-	}
-
-	public void setGroups(SelectItem[] groups) {
-		this.groups = groups;
 	}
 
 	public SelectItem[] getSuperGroups() {
@@ -626,5 +622,13 @@ public class RegisterMBean implements Serializable {
 
 	public void setTypeClosures(SelectItem[] typeClosures) {
 		this.typeClosures = typeClosures;
+	}
+
+	public SelectItem[] getGroupItems() {
+		return groupItems;
+	}
+
+	public void setGroupItems(SelectItem[] groupItems) {
+		this.groupItems = groupItems;
 	}
 }

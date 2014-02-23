@@ -18,9 +18,7 @@
 	</h:head>
 
 	<h:body>
-		<div class="topcontent">
 			<ui:include src="/include/menu.xhtml"/>
-		</div>
 		<div id="boxLoggedUser">
 			<h:panelGrid columns="2" width="300" rendered="#{userMBean.loggedUser != null}">
 				<h:outputText value="#{messages['lb_logged_user']}" />
@@ -28,7 +26,7 @@
 			</h:panelGrid>
 		</div>
 	
-		<div id="container">
+		<div id="content">
 		
 			<h:panelGrid rendered="#{userMBean.loggedUser != null}" >
 				<ui:insert name="contentAPP"/>

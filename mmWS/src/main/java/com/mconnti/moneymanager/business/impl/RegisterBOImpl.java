@@ -2,7 +2,9 @@ package com.mconnti.moneymanager.business.impl;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -171,8 +173,11 @@ public class RegisterBOImpl extends GenericBOImpl<Register> implements RegisterB
 		return libReturn;
 	}
 
-	public List<Register> list() throws Exception {
-		return list(Register.class, null, null);
+	@Override
+	public List<Register> list(Register register) throws Exception {
+		Map<String, String> queryParams = new LinkedHashMap<>();
+		queryParams.put(" where x.user.id = ", register.getUser().getId()+"");
+		return list(Register.class, queryParams, " x.date ");
 	}
 
 	@Override
@@ -194,6 +199,20 @@ public class RegisterBOImpl extends GenericBOImpl<Register> implements RegisterB
 			libReturn.setMessage(e.getMessage());
 		}
 		return libReturn;
+	}
+
+	@Override
+	public List<Register> listByParameter(Register register) throws Exception {
+		Map<String, String> queryParams = new LinkedHashMap<>();
+		queryParams.put(" where "," 1=1 ");
+		queryParams.put(" and x.user.id = ", register.getUser().getId()+"");
+		if( register.getTypeAccount() != null){
+			queryParams.put(" and x.typeAccount.id = ", register.getTypeAccount().getId()+ "");
+		}
+		
+		List<Register> list = list(Register.class, queryParams, " x.date desc");
+
+		return list;
 	}
 
 }

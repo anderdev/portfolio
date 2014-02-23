@@ -12,8 +12,8 @@
 
 				<p:growl id="msg" showDetail="true" showSummary="false" autoUpdate="true" sticky="true" /> 
 				
-				<h:panelGroup styleClass="content" style="margin-top:100px">
-	        		<div align="center" >
+				<div class="content" style="margin-top:30px">
+	        		<div align="center" class="formContant">
 		       	
 			       		<h:panelGrid columns="2" styleClass="formCadastroUser" border="0">
 		
@@ -35,7 +35,7 @@
 					        <h:outputText value="#{messages['lb_group']}" rendered="#{registerMBean.loadDebits}"/>
 							<p:selectOneMenu value="#{registerMBean.register.group.id}" label="#{messages['lb_group_']}" rendered="#{registerMBean.loadDebits}" required="true" style="width:100%">
 					            <f:selectItem itemLabel="#{messages['lb_select']}" itemValue="" />
-					            <f:selectItems value="#{registerMBean.groups}"  var="desc" itemLabel="#{desc.description}" itemValue="#{desc}"/>  
+					            <f:selectItems value="#{registerMBean.groupItems}"  var="desc" itemLabel="#{desc.description}" itemValue="#{desc}"/>  
 					        </p:selectOneMenu>
 					        
 					        <h:outputText value="#{messages['lb_super_group']}" />
@@ -45,7 +45,7 @@
 					        </p:selectOneMenu>
 					        
 					        <h:outputText value="#{messages['lb_creditcard']}" rendered="#{registerMBean.loadDebits}"/>
-							<p:selectOneMenu value="#{registerMBean.register.creditCard.id}" label="#{messages['lb_creditcard_']}" rendered="#{registerMBean.loadDebits}" required="true" style="width:100%">
+							<p:selectOneMenu value="#{registerMBean.register.creditCard.id}" label="#{messages['lb_creditcard_']}" rendered="#{registerMBean.loadDebits}" style="width:100%">
 					            <f:selectItem itemLabel="#{messages['lb_select']}" itemValue="" />
 					            <f:selectItems value="#{registerMBean.creditCards}"  var="desc" itemLabel="#{desc.name}" itemValue="#{desc}"/>  
 					        </p:selectOneMenu>
@@ -68,18 +68,52 @@
 							<h:outputText value="#{messages['lb_amount']}" />
 							<p:inputText  label="#{messages['lb_amount_']}" required="true"  value="#{registerMBean.register.amount}" style="width:100%" />
 						</h:panelGrid>
-					</div>
-					<br />
+						
+						<br />
 			
-				<div class="messages" align="center">
-					<p:commandButton value="#{messages['lb_post']}" 
-						id="post" action="#{registerMBean.save}" ajax="false" 
-						update=":formRegister"
-						styleClass="button">  
-					</p:commandButton>
-					<p:commandButton value="#{messages['lb_back']}" update=":formRegister" immediate="true" id="voltar" ajax="true"  styleClass="button" action="#{registerMBean.cancel}"/>
+						<div align="center">
+							<p:commandButton value="#{messages['lb_post']}" id="post" action="#{registerMBean.save}" ajax="false" update=":formRegister" styleClass="button"/>  
+							<p:commandButton value="#{messages['lb_back']}" update=":formRegister" immediate="true" id="voltar" ajax="true"  styleClass="button" action="#{registerMBean.cancel}"/>
+						</div>
+					</div>
+					
+					<div class="listContant">
+						<p:dataTable var="reg" value="#{registerMBean.registerList}" style="width:100%" id="registerList"
+					    		paginatorAlwaysVisible="false" paginator="true" emptyMessage="#{messages['lb_empty_list']}"
+					    		rows="10" rowKey="#{reg}"	paginatorPosition="botton" >
+					    	
+					        <p:column sortBy="#{reg.description.description}" >
+					            <f:facet name="header">
+					                <h:outputText value="#{messages['lb_description_']}" />
+					            </f:facet>
+					            <h:outputText value="#{reg.description.description}" />
+					        </p:column>
+					        
+					        <p:column sortBy="#{reg.date}" >
+					            <f:facet name="header">
+					                <h:outputText value="#{messages['lb_date_']}" />
+					            </f:facet>
+					            <h:outputText value="#{reg.date}">
+					            	<f:convertDateTime pattern="dd/MM/yyyy" />
+					            </h:outputText>
+					        </p:column>
+					        
+					        <p:column sortBy="#{reg.amount}" >
+					            <f:facet name="header">
+					                <h:outputText value="#{messages['lb_amount_']}" />
+					            </f:facet>
+					            <h:outputText value="#{reg.amount}" />
+					        </p:column>
+					        
+					        <p:column style="width:5%">
+					        	<p:commandLink action="#{registerMBean.edit}" immediate="true" update=":formRegister" id="editButton">
+					        		<f:setPropertyActionListener value="#{reg}" target="#{registerMBean.register}" />  
+									<p:graphicImage value="#{messages['img_update']}" style="border: 0px" />
+								</p:commandLink>
+					        </p:column>
+					    </p:dataTable>
+					</div>
 				</div>
-				</h:panelGroup>
 			</h:form>
 		</ui:define>
 </ui:composition>

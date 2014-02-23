@@ -20,41 +20,12 @@ body {
 	width: 90%;
 }
 
-.formContant{
-	text-align:left;
-	width: 60%;
-	border: 0px dotted #000;
-}
-
-.boxLoginMessage{
-	width: 500px;
-	left: 50%;
-	top: 10%;
-	position: absolute;
-	margin-left: -250px;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 10px;
-	font-weight: bold;
-	border: 0px dotted #000;
-}
-
-#boxLogin{
-	width: 300px;
-	left: 50%;
-	top: 35%;
-	position: absolute;
-	margin-left: -150px;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 10px;
-	font-weight: bold;
-	border: 0px dotted #000;
-}
 
 /* ===========================
    ========= Menu ======== 
    =========================== */
 .menuItem{
-	border:0px dotted #fff;
+	border:1px dotted #fff;
 	margin: 0px 40px 0px 40px;
 }
 	
@@ -84,19 +55,7 @@ a img {
 	border: 0px; 
 	text-decoration: none;
 }
-/*
-a:link, a:visited {
-	color: #CF5C3F;
-	padding: 0 1px;
-	text-decoration: none;
-}
 
-a:hover, a:active {
-	background-color: #CF5C3F;
-	color: #fff;
-	text-decoration: none;
-}
-*/
 /* ===========================
    ===== Main Navigation ===== 
    =========================== */
@@ -176,8 +135,8 @@ a:hover, a:active {
 }
 
 .content {
-	width:100%;
-	margin-left: -50%;
+	width:96%;
+	margin-left: -48%;
 	position: absolute;
 	left: 50%;
 	top: 190px;
@@ -212,13 +171,58 @@ a:hover, a:active {
 border-width:5px;*/
 }
 
+.formContant{
+	padding: 10px 10px 10px 10px;
+	float:left;
+	width: 30%;
+	border: 0px solid #000;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+}
+
+.listContant{
+	padding: 10px 10px 10px 10px;
+	float:right;
+	width: 60%;
+	border: 0px solid #000;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+}
+
+.boxLoginMessage{
+	width: 500px;
+	left: 50%;
+	top: 10%;
+	position: absolute;
+	margin-left: -250px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-weight: bold;
+	border: 0px dotted #000;
+}
+
+#boxLogin{
+	width: 230px;
+	left: 50%;
+	top: 35%;
+	position: absolute;
+	margin-left: -115px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-weight: bold;
+	border: 0px dotted #000;
+}
+
+
 .boldFont{
 	font-weight: bold;
 }
 
 .column80{
 	width: 80px;
-	border: 1px dotted #000;
+	border: 0px dotted #000;
 }
 
 .column85{
@@ -230,6 +234,13 @@ border-width:5px;*/
 
 .column100percent{
 	width: 100%;
+}
+
+.column80rightAlign{
+	width: 80px;
+	text-align: right;
+	margin-right: 5px;
+	border: 0px dotted #000;
 }
 
 .column120{
@@ -354,6 +365,21 @@ div#boxLoggedUser{
 	text-align: center;
 }
 
+.boxTitleLogin{
+	border: 0px dotted #000;
+	width:30%;
+	margin-left: -15%;
+	position: absolute;
+	left: 50%;
+	top: 0px;
+	font-family: sans-serif;
+	font-weight: bold;
+	font-size: 25px;
+	padding-left:10px;
+	padding-right:10px;
+	text-align: center;
+}
+
 .messages{
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	font-size: 12px;
@@ -440,6 +466,10 @@ div#boxLoggedUser{
 		border: 0px dotted #000;
 	}
 	
+	.listContant{
+		display: none;
+	}
+	
 	.input{
 		width: 88%;
 	}
@@ -487,9 +517,19 @@ div#boxLoggedUser{
 	/* ===========================
 	   ========= Menu ======== 
 	   =========================== */
+	   
+	
+	div#boxLoggedUser{
+		display: none;
+	}
+   
 	.menuItem{
-		border:1x dotted #000;
+		border:0x dotted #000;
 		margin: 0px 200px 20px 30px;
+	}
+	
+	.menuInvisible{
+		display: none;
 	}
 		
 	.mainHeader  li a {

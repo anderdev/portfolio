@@ -20,19 +20,11 @@
 		
 		<div id="container">
 			<h:form prependId="false" id="formTemplate">
-			<!-- 
-				<h:panelGrid styleClass="boxLoginMessage" >
-					<p:messages showDetail="true" showSummary="false" autoUpdate="true" id="msg" />
-				</h:panelGrid>
-			 
-			 	<p:panel footer="#{messages['lb_footer']}">
-			 	
-			 -->
-					<div id="messages" class="messages">
-				   	 	<p:messages showDetail="true" showSummary="false" autoUpdate="true" id="msg" />
-			       	</div>
-			       	
-					<ui:include src="/include/login.xhtml" />
+				<div id="messages" class="messages">
+			   	 	<p:messages showDetail="true" showSummary="false" autoUpdate="true" id="msg" />
+		       	</div>
+		       	
+				<ui:include src="/include/login.xhtml" />
 			</h:form>
 		</div>
 	</h:body>

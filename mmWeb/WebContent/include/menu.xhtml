@@ -6,31 +6,35 @@
 	<h:form prependId="false">        
        	<div class="menu">
 	       	<p:menubar autoSubmenuDisplay="true" rendered="#{userMBean.loggedUser != null}">
+	       		<p:menuitem value="#{messages['lb_credit_']}" immediate="true" action="#{registerMBean.newCredit}" ajax="true" styleClass="menuItem"/>
+				<p:menuitem value="#{messages['lb_debit_']}" immediate="true" action="#{registerMBean.newDebit}"   ajax="true" styleClass="menuItem"/>
+				<!-- commented while mobile version not completed. 	
 	       		<p:submenu label="#{messages['lb_inputs_']}" immediate="true" styleClass="menuItem">  
 	       			<p:menuitem value="#{messages['lb_credit_']}" immediate="true" action="#{registerMBean.newCredit}" ajax="true" />
 					<p:menuitem value="#{messages['lb_debit_']}" immediate="true" action="#{registerMBean.newDebit}"   ajax="true"/>
 				</p:submenu>
-				<p:submenu label="#{messages['lb_search_']}" styleClass="menuItem">
+				 -->
+				<p:submenu label="#{messages['lb_search_']}"  styleClass="menuInvisible">
 					<p:menuitem value="#{messages['lb_credit_']}" immediate="true" action="#{creditMBean.list}" ajax="true" />
 					<p:menuitem value="#{messages['lb_debit_']}" immediate="true" action="#{debitMBean.list}"   ajax="true" />
 					<p:menuitem value="#{messages['lb_closure_']}" immediate="true" action="#{debitMBean.list}"   ajax="true" />
 				</p:submenu>
-				<p:submenu label="#{messages['lb_tools_']}" styleClass="menuItem">
+				<p:submenu label="#{messages['lb_tools_']}" styleClass="menuInvisible">
 					<p:menuitem value="#{messages['lb_closure_']}" immediate="true" action="#{closureMBean.close}" ajax="true"/>
 					<p:menuitem value="#{messages['lb_planning_']}" immediate="true" action="#{planningMBean.list}"   ajax="true" />
 				</p:submenu>
-				<p:submenu label="#{messages['lb_configuration_']}" styleClass="menuItem">
+				<p:submenu label="#{messages['lb_configuration_']}" styleClass="menuInvisible">
 					<p:menuitem value="#{messages['lb_user_list_']}" immediate="true" action="#{userMBean.listSuperUser}" ajax="true" />  
 					<p:menuitem value="#{messages['lb_description_']}" immediate="true" action="#{descriptionMBean.list}" ajax="true"/>
 					<p:menuitem value="#{messages['lb_creditcard_']}" immediate="true" action="#{creditCardMBean.list}"   ajax="true"/>
 					<p:menuitem value="#{messages['lb_default_values_']}" immediate="true" action="#{configMBean.newConfig}" ajax="true" />
 				</p:submenu>
-				<p:submenu label="#{messages['lb_administration_']}" styleClass="menuItem" rendered="#{userMBean.loggedUser.admin}">
+				<p:submenu label="#{messages['lb_administration_']}" styleClass="menuInvisible" rendered="#{userMBean.loggedUser.admin}">
 					<p:menuitem value="#{messages['lb_user_list_']}" immediate="true" action="#{userMBean.listAdm}" ajax="true" />
 					<p:menuitem value="#{messages['lb_locale_']}" immediate="true" action="#{localeMBean.list}"   ajax="true" />
 					<p:menuitem value="#{messages['lb_default_values_']}" immediate="true" action="#{configMBean.list}"   ajax="true" />
 				</p:submenu>
-				<p:menuitem value="#{messages['lb_logout']}" immediate="true" action="#{userMBean.logout}" ajax="false" />
+				<p:menuitem value="#{messages['lb_logout']}" immediate="true" action="#{userMBean.logout}" ajax="false" styleClass="menuItem"/>
 			</p:menubar>
 		</div>
 	</h:form>

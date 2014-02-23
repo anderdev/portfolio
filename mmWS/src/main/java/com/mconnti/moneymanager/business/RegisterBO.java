@@ -10,7 +10,9 @@ import com.mconnti.moneymanager.entity.xml.MessageReturn;
 @Service("registerBO")
 public interface RegisterBO extends GenericBO<Register>{
 	
-	public List<Register> list() throws Exception;
+	public List<Register> list(Register register) throws Exception;
+	
+	public List<Register> listByParameter(Register register) throws Exception;
 	
 	public MessageReturn save(final Register debit) throws Exception;
 	

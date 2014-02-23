@@ -682,14 +682,30 @@ public class RestService {
 
 	// REGISTER AREA
 
-	@GET
-	@Path("/register")
+	@PUT
+	@Path("/register/all")
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response listRegister() {
+	public Response listRegister(Register register) {
 
 		List<Register> list = new ArrayList<>();
 		try {
-			list = registerBO.list();
+			list = registerBO.list(register);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return Response.status(200).entity(list).build();
+	}
+	
+	@PUT
+	@Path("/register")
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response listRegisterByParameter(Register register) {
+
+		List<Register> list = new ArrayList<>();
+		try {
+			list = registerBO.listByParameter(register);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
