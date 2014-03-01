@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"> 
+
+
+<f:view locale="#{userMBean.loggedUser.language}" id="view">
+	<h:head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		<link rel="shortcut icon" href="#{facesContext.externalContext.request.contextPath}/resources/images/logo.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="#{facesContext.externalContext.request.contextPath}/resources/css/style.css" type="text/css" />
+		<script type="text/javascript" src="#{facesContext.externalContext.request.contextPath}/resources/js/formaters.js"></script>
+		<script type="text/javascript" src="#{facesContext.externalContext.request.contextPath}/resources/js/functions.js"></script>
+		<h:outputScript name="calendar.js" library="js" />
+		<title>#{messages['lb_title_restrict']}</title>
+	</h:head>
+
+	<h:body>
+			<ui:include src="/include/menu.xhtml"/>
+		<div id="boxLoggedUser">
+			<h:panelGrid columns="2" width="300" rendered="#{userMBean.loggedUser != null}">
+				<h:outputText value="#{messages['lb_logged_user']}" />
+				<h:outputText value="#{userMBean.loggedUser.name}" style="text-align:left"/>
+			</h:panelGrid>
+		</div>
+	
+		<div id="content">
+		
+			<h:panelGrid rendered="#{userMBean.loggedUser != null}" >
+				<ui:insert name="contentAPP"/>
+			</h:panelGrid>
+				
+			<h:panelGrid  styleClass="notLoggedMessage" rendered="#{userMBean.loggedUser == null}">
+				<h:outputText value="#{messages['lb_not_logged_message']}" />
+				<h:outputLink value="#{userMBean.logoutURL}">#{messages['lb_back']}</h:outputLink>
+			</h:panelGrid>
+		
+			
+		</div>
+		<!-- 
+		<div id="bottomcontent">
+			<p:panel rendered="#{userMBean.loggedUser != null}">
+				#{messages['lb_footer']}
+			</p:panel>
+		</div>
+		 -->
+	</h:body>
+</f:view>
+</html>

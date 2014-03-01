@@ -1,0 +1,61 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui">
+        
+       	
+		<div id="boxLogin" >
+			<p:focus context="panel"/> 
+      		<p:panel header="#{messages['lb_login_info']}" id="panel" rendered="#{!userMBean.showFormUser}">
+      			<h:panelGrid  styleClass="boxLogin">
+      				<p:row>
+						<p:column >
+							<div class="column80">
+								<h:outputText value="#{messages['lb_username']}"/>
+							</div>
+							<h:inputText tabindex="1" label="#{messages['lb_username_']}" required="true" value="#{userMBean.user.username}" size="30" styleClass="column200"/>
+						</p:column>
+					</p:row>
+					
+					<p:row >
+						<p:column>
+							<div class="column80">
+								<h:outputText value="#{messages['lb_password']}" />							
+							</div>
+							<h:inputSecret tabindex="2" label="#{messages['lb_password_']}" required="true"  value="#{userMBean.user.password}" size="30" styleClass="column200"/>
+						</p:column>
+					</p:row>
+					
+					<p:row>
+						<p:column colspan="2">
+							<div align="center">
+								<p:commandButton id="btLogin" 
+										tabindex="3"
+										styleClass="button" 
+										value="#{messages['lb_login']}" 
+										action="#{userMBean.login}"
+										update=":formTemplate" 
+										ajax="false">
+								</p:commandButton>	
+								<p:commandButton id="btNewUser"
+										tabindex="4" 
+										value="#{messages['lb_new']}" 
+										update=":formTemplate" 
+										action="#{userMBean.newUser}"
+										styleClass="button" 
+										immediate="true">
+								</p:commandButton>
+							</div>
+						</p:column>
+						
+					</p:row>
+				</h:panelGrid >	
+      		</p:panel>
+     	</div>
+     	
+     	<h:panelGroup rendered="#{userMBean.showFormUser}">
+     		<h:outputText value="#{messages['lb_user_registration']}" styleClass="boxTitleLogin"/>
+			<ui:include src="/include/formUser.xhtml" />
+		</h:panelGroup>
+</ui:composition>
