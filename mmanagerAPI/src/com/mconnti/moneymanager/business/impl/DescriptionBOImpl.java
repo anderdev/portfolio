@@ -173,6 +173,22 @@ public class DescriptionBOImpl extends GenericBOImpl<Description> implements Des
 		}
 		
 		List<Description> list = list(Description.class, queryParams, "x.description");
+		
+		for (Description desc : list) {
+			if (desc.getTypeAccount().getDescription().startsWith("C")) {
+				desc.setIsCredit(true);
+				desc.setIsCreditOriginal(true);
+			} else if (desc.getTypeAccount().getDescription().startsWith("D")) {
+				desc.setIsDebit(true);
+				desc.setIsDebitOriginal(true);
+			} else if (desc.getTypeAccount().getDescription().startsWith("G")) {
+				desc.setIsGroup(true);
+				desc.setIsGroupOriginal(true);
+			} else if (desc.getTypeAccount().getDescription().startsWith("S")) {
+				desc.setIsSuperGroup(true);
+				desc.setIsSuperGroupOriginal(true);
+			}
+		}
 
 		return list;
 	}

@@ -53,7 +53,7 @@ public class DescriptionMBean implements Serializable {
 		try {
 			
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/description");
-
+			description.setTypeAccount(null);
 			description.setUser(userMBean.getLoggedUser().getSuperUser() == null ? userMBean.getLoggedUser() : userMBean.getLoggedUser().getSuperUser());
 
 			request.body(MediaType.APPLICATION_JSON, description);
