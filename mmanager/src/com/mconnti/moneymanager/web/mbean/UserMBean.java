@@ -365,6 +365,7 @@ public class UserMBean implements Serializable {
 	}
 
 	public void newUser() {
+		loggedUser = null;
 		this.user = new User();
 		this.country = new Country();
 		this.state = new State();

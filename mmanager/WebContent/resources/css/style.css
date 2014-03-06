@@ -205,15 +205,20 @@ border-width:5px;*/
 }
 
 #boxLogin{
-	width: 230px;
+	width: 250px;
 	left: 50%;
 	top: 35%;
 	position: absolute;
-	margin-left: -115px;
+	margin-left: -125px;
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	font-size: 10px;
 	font-weight: bold;
 	border: 0px dotted #000;
+}
+
+.gridLogin{
+	font-weight: bold;
+	width: 100%;
 }
 
 

@@ -9,51 +9,28 @@
 		
 	<context:component-scan base-package="com.mconnti" />
 	
-	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="location"><value>/WEB-INF/jdbc.properties</value></property>
+	<bean class="com.mconnti.context.SpringApplicationContext"/>
+	
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
 	</bean>
-	
-	<bean id="pooledDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close" >	
-		<property name="driverClass" value="com.mysql.jdbc.Driver" />
-		<property name="jdbcUrl"><value>${jdbc.url}</value></property>  
-	    <property name="user"><value>${jdbc.username}</value></property>  
-        <property name="password"><value>${jdbc.password}</value></property> 
-        
-        <property name="acquireIncrement" value="1" />
-        <property name="minPoolSize" value="5" />
-        <property name="maxPoolSize" value="30" />
-		<property name="maxStatements" value="50" />
-		<property name="maxIdleTime" value="1800" />
-	</bean>
-	
-	
-  	<bean id="JDBCDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" >
-   		<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-   		<property name="url"><value>${jdbc.url}</value></property>  
-	    <property name="username"><value>${jdbc.username}</value></property>  
-        <property name="password"><value>${jdbc.password}</value></property> 
-    </bean>
-	
+
 	<bean id="entityManagerFactory"
 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="dataSource" ref="dataSource" />
 		<property name="jpaVendorAdapter">
-			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" >
-				<!-- 
-					Specific properties for Hibernate are in persistence.xml file, 
-					but also can be placed here and removed from persistence.xml file.  
-				-->
-			</bean>
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
 		</property>
-		<property name="dataSource" ref="pooledDataSource" />
-		<property name="persistenceUnitName" value="mconn_PU"/> 
 	</bean>
 
-	<bean name="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-		<property name="entityManagerFactory" ref="entityManagerFactory" />		
+	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName">
+			<value>java:jboss/datasources/MconnDS</value>
+		</property>
 	</bean>
 
-	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
-	
+	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
+
 	<bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
-
+	
 </beans>

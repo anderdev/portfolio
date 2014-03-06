@@ -6,7 +6,7 @@
         	
         <div class="contentCenter">	
       	    <h:inputHidden value="#{userMBean.user.password}" rendered="#{!userMBean.showPassword}"/>
-	       	
+	       		
 	       		<h:panelGrid columns="2" columnClasses="column120RightWithPaddingRigth,column260" styleClass="boldFont" border="0">
 					<h:outputText value="#{messages['lb_name']}" />
 					<p:inputText id="name" label="#{messages['lb_name_']}" required="true"  value="#{userMBean.user.name}" style="width:100%" />
@@ -22,7 +22,7 @@
 					    oninputkeyup="Mascara(this,date);"  
 					    maxlength="10"
 						pattern="dd/MM/yyyy"
-						size="5"
+						size="7"
 						yearRange="1950:2020"/>
 						
 					<h:outputText value="#{messages['lb_email']}" />

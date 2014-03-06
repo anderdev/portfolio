@@ -3,6 +3,7 @@ package com.mconnti.moneymanager.web.mbean;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -451,9 +452,21 @@ public class RegisterMBean implements Serializable {
 		register.setTypeClosure(new TypeClosure());
 		register.setCreditCard(new CreditCard());
 	}
+	
+	private void setDefaultValues(){
+		TypeClosure typeClosure = new TypeClosure();
+		typeClosure.setId(1L);
+		register.setTypeClosure(typeClosure);
+		Currency currency = new Currency();
+		currency.setId(1L);
+		register.setCurrency(currency);
+		register.setDate(new Date());
+		register.setNumberParcel(1);
+	}
 
 	public String newCredit() {
 		createRegister();
+		setDefaultValues();
 		loadDebits = false;
 		loadCredits = true;
 		loadCombos();
@@ -470,6 +483,7 @@ public class RegisterMBean implements Serializable {
 
 	public String newDebit() {
 		createRegister();
+		setDefaultValues();
 		loadDebits = true;
 		loadCredits = false;
 		loadCombos();
