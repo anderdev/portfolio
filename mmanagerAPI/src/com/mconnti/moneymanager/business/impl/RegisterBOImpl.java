@@ -145,30 +145,18 @@ public class RegisterBOImpl extends GenericBOImpl<Register> implements RegisterB
 						} else if (register.getTypeClosure().getType().toLowerCase().equals(Constants.SEMANAL) || register.getTypeClosure().getType().toLowerCase().equals(Constants.WEEKLY)) {
 							setParcel(register, currentDate, Calendar.WEEK_OF_MONTH, x);
 						} else if (register.getTypeClosure().getType().toLowerCase().equals(Constants.DIARIO) || register.getTypeClosure().getType().toLowerCase().equals(Constants.DAILY)) {
-							setParcel(register, currentDate, Calendar.DAY_OF_WEEK, x+1);
+							setParcel(register, currentDate, Calendar.DAY_OF_WEEK, x);
 						}
-						
-						if(register.getDescription() != null && register.getDescription().getId() == null){
-							register.setDescription(descriptionDAO.save(register.getDescription()));
-						} else if(register.getGroup() != null && register.getGroup().getId() == null){
-							register.setGroup(descriptionDAO.save(register.getGroup()));
-						} else if(register.getSuperGroup() != null && register.getSuperGroup().getId() == null) {
-							register.setSuperGroup(descriptionDAO.save(register.getSuperGroup()));
-						}
+						//save description created on the register form
+						register = saveDescription(register);
 						
 						register.setCurrentDate(new Date());
 						saveGeneric(register);
 					}
 				} else {
-					if(register.getDescription() != null && register.getDescription().getId() == null){
-						register.setDescription(descriptionDAO.save(register.getDescription()));
-					} 
-					if(register.getGroup() != null && register.getGroup().getId() == null){
-						register.setGroup(descriptionDAO.save(register.getGroup()));
-					} 
-					if(register.getSuperGroup() != null && register.getSuperGroup().getId() == null) {
-						register.setSuperGroup(descriptionDAO.save(register.getSuperGroup()));
-					}
+					//save description created on the register form
+					register = saveDescription(register);
+					
 					register.setCurrentDate(new Date());
 					saveGeneric(register);
 				}
@@ -189,6 +177,19 @@ public class RegisterBOImpl extends GenericBOImpl<Register> implements RegisterB
 		}
 
 		return libReturn;
+	}
+	
+	private Register saveDescription(Register register) throws Exception{
+		if(register.getDescription() != null && register.getDescription().getId() == null){
+			register.setDescription(descriptionDAO.save(register.getDescription()));
+		} 
+		if(register.getGroup() != null && register.getGroup().getId() == null){
+			register.setGroup(descriptionDAO.save(register.getGroup()));
+		} 
+		if(register.getSuperGroup() != null && register.getSuperGroup().getId() == null) {
+			register.setSuperGroup(descriptionDAO.save(register.getSuperGroup()));
+		}
+		return register;
 	}
 
 	@Override

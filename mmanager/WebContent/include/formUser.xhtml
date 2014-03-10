@@ -4,89 +4,97 @@
         xmlns:ui="http://java.sun.com/jsf/facelets"
         xmlns:p="http://primefaces.org/ui">
         	
-        <div class="contentCenter">	
+        <div class="contentFormUser">	
       	    <h:inputHidden value="#{userMBean.user.password}" rendered="#{!userMBean.showPassword}"/>
 	       		
-	       		<h:panelGrid columns="2" columnClasses="column120RightWithPaddingRigth,column260" styleClass="boldFont" border="0">
-					<h:outputText value="#{messages['lb_name']}" />
-					<p:inputText id="name" label="#{messages['lb_name_']}" required="true"  value="#{userMBean.user.name}" style="width:100%" />
+       		<h:panelGrid columns="2" columnClasses="column120RightWithPaddingRigth,column350" styleClass="boldFont" border="0">
+				<h:outputText value="#{messages['lb_name']}" />
+				<p:inputText id="name" label="#{messages['lb_name_']}" required="true"  value="#{userMBean.user.name}" style="width:100%" />
 
-					<h:outputText value="#{messages['lb_birth']}"  />
-					<p:calendar showButtonPanel="true" navigator="true" showOn="button"
-						value="#{userMBean.user.birthDate}"  label="#{messages['lb_birth_']}"
-						required="true" 
-						id="calendar"
-						readonlyInput="false"
-						oninputkeydown="Mascara(this,date);"
-					    oninputkeypress="Mascara(this,date);" 
-					    oninputkeyup="Mascara(this,date);"  
-					    maxlength="10"
-						pattern="dd/MM/yyyy"
-						size="7"
-						yearRange="1950:2020"/>
-						
-					<h:outputText value="#{messages['lb_email']}" />
-					<p:inputText id="email" label="#{messages['lb_email_']}" required="true" value="#{userMBean.user.email}" style="width:100%" >
-						<p:ajax event="blur" update="msg"  listener="#{userMBean.checkEmail}" />  
-						<p:ajax event="blur" update="msg"  listener="#{userMBean.existsEmail}" /> 
-					</p:inputText>
-					
-					 <h:outputText value="#{messages['lb_country']}" />
-					<p:selectOneMenu value="#{userMBean.country.id}" label="#{messages['lb_country_']}" required="true" style="width:100%">
-			            <f:selectItem itemLabel="#{messages['lb_select']}" itemValue="" />
-			            <f:selectItems value="#{userMBean.countries}"  var="country" itemLabel="#{country.name}" itemValue="#{country}"/>  
-			            <p:ajax update="states" event="change" listener="#{userMBean.loadStates}"/>
-			        </p:selectOneMenu>
-			        
-			        <h:outputText value="#{messages['lb_state']}"  />
-					<p:selectOneMenu value="#{userMBean.state.id}" label="#{messages['lb_state_']}" required="true" id="states">
-			            <f:selectItem itemLabel="#{messages['lb_select']}" itemValue="" />
-			            <f:selectItems value="#{userMBean.states}" var="state" itemLabel="#{state.name}" itemValue="#{state}"/>  
-			            <p:ajax update="cities" event="change" listener="#{userMBean.loadCities}"/>
-			        </p:selectOneMenu>
-			        
-			        <h:outputText value="#{messages['lb_city']}"  />
-					<p:selectOneMenu value="#{userMBean.city.id}" label="#{messages['lb_city_']}" required="true" id="cities">
-			            <f:selectItem itemLabel="#{messages['lb_select']}" itemValue="" />
-			            <f:selectItems value="#{userMBean.cities}" var="city" itemLabel="#{city.name}" itemValue="#{city}"/>  
-			        </p:selectOneMenu>
-			        
-			        <h:outputText value="#{messages['lb_language']}" />
-					<p:selectOneMenu value="#{userMBean.user.language}" label="#{messages['lb_language_']}" required="true">
-			            <f:selectItem itemLabel="#{messages['lb_select']}" itemValue="" />
-			            <f:selectItem itemLabel="#{messages['lb_english']}" itemValue="en" />
-			            <f:selectItem itemLabel="#{messages['lb_portuguese']}" itemValue="pt_BR" />
-			        </p:selectOneMenu>
-			        
-			        <h:outputText value="#{messages['lb_username']}" />
-					<p:inputText id="username" label="#{messages['lb_username_']}" required="true"  value="#{userMBean.user.username}" style="width:100%" >
-						<p:ajax event="blur" update="msg"  listener="#{userMBean.existsUsername}" /> 
-					</p:inputText>
-					
-					<h:outputText value="#{messages['lb_password']}" rendered="#{userMBean.showPassword}"/>
-					<p:password id="senha" label="#{messages['lb_password_']}" required="true"  value="#{userMBean.user.password}"  size="27"  rendered="#{userMBean.showPassword}" style="width:100%"/>
-					
-					<h:outputText value="#{messages['lb_secret_phrase']}" />
-					<p:inputText id="secret_phrase" label="#{messages['lb_secret_phrase_']}" required="true"  value="#{userMBean.user.secretPhrase}" style="width:100%" />
-					
-					<h:outputText value="#{messages['lb_admin']}" rendered="#{userMBean.loggedUser.admin}" />
-					<p:selectOneMenu value="#{userMBean.user.role.id}" label="#{messages['lb_admin_']}" required="true" rendered="#{userMBean.loggedUser.admin}">
-			            <f:selectItem itemLabel="#{messages['lb_select']}" itemValue="" />
-			            <f:selectItems value="#{userMBean.roles}" var="r" itemLabel="#{r.role}" itemValue="#{r}"/>  
-			        </p:selectOneMenu>
-				</h:panelGrid>
+				<h:outputText value="#{messages['lb_email']}" />
+				<p:inputText id="email" label="#{messages['lb_email_']}" required="true" value="#{userMBean.user.email}" style="width:100%" >
+					<p:ajax event="blur" update="msg"  listener="#{userMBean.checkEmail}" />  
+					<p:ajax event="blur" update="msg"  listener="#{userMBean.existsEmail}" /> 
+				</p:inputText>
+			</h:panelGrid>
+
+			<h:panelGrid columns="4" columnClasses="column120RightWithPaddingRigth,column150,column80rightAlign,column80" styleClass="boldFont" border="0">
+				<h:outputText value="#{messages['lb_birth']}"  />
+				<p:calendar showButtonPanel="true" navigator="true" showOn="button"
+					value="#{userMBean.user.birthDate}"  label="#{messages['lb_birth_']}"
+					required="true" 
+					id="calendar"
+					readonlyInput="false"
+					oninputkeydown="Mascara(this,date);"
+				    oninputkeypress="Mascara(this,date);" 
+				    oninputkeyup="Mascara(this,date);"  
+				    maxlength="10"
+					pattern="dd/MM/yyyy"
+					size="7"
+					yearRange="1950:2020"/>
 				
-				<br />
+				<h:outputText value="#{messages['lb_language']}" />
+				<p:selectOneMenu value="#{userMBean.user.language}" label="#{messages['lb_language_']}" required="true">
+		            <f:selectItem itemLabel="#{messages['lb_select']}" itemValue="" />
+		            <f:selectItem itemLabel="#{messages['lb_english']}" itemValue="en" />
+		            <f:selectItem itemLabel="#{messages['lb_portuguese']}" itemValue="pt_BR" />
+		        </p:selectOneMenu>
+		   </h:panelGrid>
+		   
+		   <h:panelGrid columns="2" columnClasses="column120RightWithPaddingRigth,column350" styleClass="boldFont" border="0">		
+				<h:outputText value="#{messages['lb_country']}" />
+				<p:selectOneMenu value="#{userMBean.country.id}" label="#{messages['lb_country_']}" required="true" style="width:100%">
+		            <f:selectItem itemLabel="#{messages['lb_select']}" itemValue="" />
+		            <f:selectItems value="#{userMBean.countries}"  var="country" itemLabel="#{country.name}" itemValue="#{country}"/>  
+		            <p:ajax update="states" event="change" listener="#{userMBean.loadStates}"/>
+		        </p:selectOneMenu>
+		   </h:panelGrid>  
+		   
+		   <h:panelGrid columns="4" columnClasses="column120RightWithPaddingRigth,column80,column120RightWithPaddingRigth,column150" styleClass="boldFont" border="0">   
+		        <h:outputText value="#{messages['lb_state']}"  />
+				<p:selectOneMenu value="#{userMBean.state.id}" label="#{messages['lb_state_']}" required="true" id="states" style="width:100%">
+		            <f:selectItem itemLabel="#{messages['lb_select']}" itemValue="" />
+		            <f:selectItems value="#{userMBean.states}" var="state" itemLabel="#{state.name}" itemValue="#{state}"/>  
+		            <p:ajax update="cities" event="change" listener="#{userMBean.loadCities}"/>
+		        </p:selectOneMenu>
+		        
+		        <h:outputText value="#{messages['lb_city']}"  />
+				<p:selectOneMenu value="#{userMBean.city.id}" label="#{messages['lb_city_']}" required="true" id="cities" style="width:90%">
+		            <f:selectItem itemLabel="#{messages['lb_select']}" itemValue="" />
+		            <f:selectItems value="#{userMBean.cities}" var="city" itemLabel="#{city.name}" itemValue="#{city}"/>  
+		        </p:selectOneMenu>
+		    </h:panelGrid>     
+		        
+		    <h:panelGrid columns="2" columnClasses="column120RightWithPaddingRigth,column350" styleClass="boldFont" border="0">	    
+		        <h:outputText value="#{messages['lb_username']}" />
+				<p:inputText id="username" label="#{messages['lb_username_']}" required="true"  value="#{userMBean.user.username}" style="width:100%" >
+					<p:ajax event="blur" update="msg"  listener="#{userMBean.existsUsername}" /> 
+				</p:inputText>
+				
+				<h:outputText value="#{messages['lb_password']}" rendered="#{userMBean.showPassword}"/>
+				<p:password id="senha" label="#{messages['lb_password_']}" required="true"  value="#{userMBean.user.password}"  size="27"  rendered="#{userMBean.showPassword}" style="width:100%"/>
+				
+				<h:outputText value="#{messages['lb_secret_phrase']}" />
+				<p:inputText id="secret_phrase" label="#{messages['lb_secret_phrase_']}" required="true"  value="#{userMBean.user.secretPhrase}" style="width:100%" />
+				
+				<h:outputText value="#{messages['lb_admin']}" rendered="#{userMBean.loggedUser.admin}" />
+				<p:selectOneMenu value="#{userMBean.user.role.id}" label="#{messages['lb_admin_']}" required="true" rendered="#{userMBean.loggedUser.admin}">
+		            <f:selectItem itemLabel="#{messages['lb_select']}" itemValue="" />
+		            <f:selectItems value="#{userMBean.roles}" var="r" itemLabel="#{r.role}" itemValue="#{r}"/>  
+		        </p:selectOneMenu>
+			</h:panelGrid>
 			
-				<div class="messages" align="center">
-					<p:commandButton value="#{messages['lb_post']}" action="#{userMBean.save}" ajax="false" update=":formTemplate" styleClass="button" rendered="#{userMBean.loggedUser eq null}"/>
-					
-					<p:commandButton value="#{messages['lb_post']}" action="#{userMBean.save}" ajax="false" update=":formUser" styleClass="button" rendered="#{userMBean.loggedUser ne null}"/>  
-					
-					<p:commandButton value="#{messages['lb_back']}" rendered="#{userMBean.loggedUser eq null}" update=":formTemplate" immediate="true" id="back" ajax="true" styleClass="button" action="#{userMBean.cancel}"/>
-					
-					<p:commandButton value="#{messages['lb_back']}" rendered="#{userMBean.loggedUser ne null}" update=":formUser" immediate="true" id="backLogged" ajax="true" styleClass="button" action="#{userMBean.cancelApp}"/>
-					
-				</div>
+			<br />
+		
+			<div align="center">
+				<p:commandButton value="#{messages['lb_post']}" action="#{userMBean.save}" ajax="false" update=":formTemplate" styleClass="button" rendered="#{userMBean.loggedUser eq null}"/>
+				
+				<p:commandButton value="#{messages['lb_post']}" action="#{userMBean.save}" ajax="false" update=":formUser" styleClass="button" rendered="#{userMBean.loggedUser ne null}"/>  
+				
+				<p:commandButton value="#{messages['lb_back']}" rendered="#{userMBean.loggedUser eq null}" update=":formTemplate" immediate="true" id="back" ajax="true" styleClass="button" action="#{userMBean.cancel}"/>
+				
+				<p:commandButton value="#{messages['lb_back']}" rendered="#{userMBean.loggedUser ne null}" update=":formUser" immediate="true" id="backLogged" ajax="true" styleClass="button" action="#{userMBean.cancelApp}"/>
+				
+			</div>
 		</div>
 </ui:composition>

@@ -21,12 +21,12 @@
 	       	
 	       		<h:panelGrid columns="2" columnClasses="column85,column100percent"  border="0" styleClass="boldFont">
 					<h:outputText value="#{messages['lb_type']}" />
-					<p:inputText id="name" label="#{messages['lb_type_']}" required="true"  value="#{descriptionMBean.description.description}" style="width:100%" />
+					<p:inputText id="name" label="#{messages['lb_type_']}" required="true"  value="#{descriptionMBean.description.description}" style="width:90%" />
 				</h:panelGrid>
 				
 				<br />
 			
-				<div class="messages" align="center">
+				<div align="center">
 					<p:commandButton value="#{messages['lb_post']}" 
 						update=":formDescription"
 						id="gravar" action="#{descriptionMBean.save}" ajax="true" 

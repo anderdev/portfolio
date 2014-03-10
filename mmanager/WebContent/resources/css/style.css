@@ -113,18 +113,21 @@ a img {
 
 .mainContent {
 	overflow: hidden;
-	line-height: 25px;
+	width:98%;
+	height:98%;
+	border: 0px solid green;
 	border-radius: 5px;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
+	line-height: 25px;
 }
 
 .topcontent {
+	margin-top: 1%;
 	border-radius: 5px;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;	
-	padding: 3% 5%;	
-	margin-bottom: 3%;
+	padding: 1% 5%;
 }
 
 .bottomcontent {
@@ -136,43 +139,85 @@ a img {
 }
 
 .content {
-	width:96%;
-	margin-left: -48%;
+	width:98%;
+	height:98%;
+	margin-left: -49%;
 	position: absolute;
 	left: 50%;
-	top: 190px;
+	margin-top:5px;
 	border-radius: 5px;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;	
-	border: 0px dotted #000 !important;
+	border: 0px solid #000 !important;
+}
+
+.listContent {
+	width:98%;
+	height:450px;
+	margin-left: -49%;
+	position: absolute;
+	left: 50%;
+	margin-top:5px;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;	
+	border: 0px solid #000 !important;
+	bottom: 2%;
 }
 
 .contentCenter{
-	width:450px;
-	margin-left: -225px;
+	width:550px;
+	height: 350px;
+	margin-left: -275px;
 	position: absolute;
 	left: 50%;
-	top: 50px;
 	border-radius: 5px;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;	
-	border: 0px dotted #000 !important;
+	border: 1px solid green !important;
+	padding-top:25px;
+	padding-bottom:25px;
+	bottom: 10%;
+}
+
+.contentFormUser{
+	width:550px;
+	height: 350px;
+	margin-left: -275px;
+	position: absolute;
+	left: 50%;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;	
+	border: 1px solid green !important;
+	padding-top:25px;
+	padding-bottom:25px;
+	bottom: 8%;
 }
 
 .contentCenterSmall{
-	width:300px;
-	margin-left: -150px;
+	width:340px;
+	margin-left: -170px;
 	position: absolute;
 	left: 50%;
-	top: 50px;
+	bottom:30%;
 	border-radius: 5px;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;	
+	padding: 10px 10px 10px 10px;
+	border: 1px solid green !important;
 /*	border-style:solid;
 border-width:5px;*/
 }
 
+.slogan{
+	text-shadow: 2px 2px #fff;
+}
+
 .formContant{
+	position: absolute; 
+	bottom: 2%; 
+	vertical-align: bottom;
 	padding: 10px 10px 10px 10px;
 	float:left;
 	width: 30%;
@@ -182,10 +227,14 @@ border-width:5px;*/
 	-webkit-border-radius: 5px;
 }
 
-.listContant{
-	padding: 10px 10px 10px 10px;
+.listRegisterContant{
+	position: absolute; 
+	vertical-align: bottom;
+	left:34%;
+	bottom: 2%; 
 	float:right;
-	width: 60%;
+	width: 65%;
+	height:410px;
 	border: 0px solid #000;
 	border-radius: 5px;
 	-moz-border-radius: 5px;
@@ -205,13 +254,25 @@ border-width:5px;*/
 }
 
 #boxLogin{
-	width: 250px;
+	width: 280px;
 	left: 50%;
 	top: 35%;
 	position: absolute;
-	margin-left: -125px;
+	margin-left: -140px;
 	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 10px;
+	font-size: 12px;
+	font-weight: bold;
+	border: 0px dotted #000;
+}
+
+.notLoggedMessage{
+	width: 340px;
+	left: 50%;
+	top: 35%;
+	position: absolute;
+	margin-left: -170px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 14px;
 	font-weight: bold;
 	border: 0px dotted #000;
 }
@@ -253,14 +314,38 @@ border-width:5px;*/
 	width: 120px;
 }
 
+.column120RightWithPaddingRigth{
+	width: 120px;
+	text-align: right;
+	padding-right: 5px;
+	border: 0px dotted #000;
+}
+
+.column150{
+	width: 150px;
+	border: 0px dotted #000;
+}
+
 .column200{
 	width: 200px;
+	border: 0px dotted #000;
 }
 
 .column260{
 	width: 260px;
 }
 
+.column270{
+	width: 270px;
+}
+
+.column280{
+	width: 280px;
+}
+
+.column285{
+	width: 287px;
+}
 
 .column290{
 	width: 290px;
@@ -278,12 +363,6 @@ border-width:5px;*/
 
 .column350{
 	width: 350px;
-}
-
-.column120RightWithPaddingRigth{
-	width: 120px;
-	text-align: right;
-	padding-right: 5px;
 }
 
 
@@ -354,6 +433,7 @@ div#boxLoggedUser{
 	border: 0px dotted #000;
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	top: 10px;
+	z-index: 100;
 }
 
 .boxTitle{
@@ -373,11 +453,11 @@ div#boxLoggedUser{
 
 .boxTitleLogin{
 	border: 0px dotted #000;
-	width:30%;
-	margin-left: -15%;
+	width:90%;
+	margin-left: -45%;
 	position: absolute;
 	left: 50%;
-	top: 0px;
+	top: 20%;
 	font-family: sans-serif;
 	font-weight: bold;
 	font-size: 25px;
@@ -469,6 +549,14 @@ div#boxLoggedUser{
 	.formContant{
 		text-align:left;
 		width: 90%;
+		border: 0px dotted #000;
+	}
+	
+	#boxLogin{
+		width: 100%;
+		font-family: Verdana, Arial, Helvetica, sans-serif;
+		font-size: 10px;
+		font-weight: bold;
 		border: 0px dotted #000;
 	}
 	
@@ -565,12 +653,11 @@ div#boxLoggedUser{
 	}
 	
 	.topcontent {
-		margin-top: 5%;
-		background-color: #FFF;
+		margin-top: 1%;
 		border-radius: 5px;
 		-moz-border-radius: 5px;
 		-webkit-border-radius: 5px;	
-		padding: 2% 5%;
+		padding: 1% 5%;
 	}
 	
 	.bottomcontent {

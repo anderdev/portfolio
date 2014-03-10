@@ -18,7 +18,8 @@
 	</h:head>
 
 	<h:body>
-			<ui:include src="/include/menu.xhtml"/>
+		<ui:include src="/include/menu.xhtml"/>
+		
 		<div id="boxLoggedUser">
 			<h:panelGrid columns="2" width="300" rendered="#{userMBean.loggedUser != null}">
 				<h:outputText value="#{messages['lb_logged_user']}" />
@@ -26,18 +27,27 @@
 			</h:panelGrid>
 		</div>
 	
-		<div id="content">
+		<div id="mainContent" class="content">
 		
 			<h:panelGrid rendered="#{userMBean.loggedUser != null}" >
 				<ui:insert name="contentAPP"/>
 			</h:panelGrid>
-				
-			<h:panelGrid  styleClass="notLoggedMessage" rendered="#{userMBean.loggedUser == null}">
-				<h:outputText value="#{messages['lb_not_logged_message']}" />
-				<h:outputLink value="#{userMBean.logoutURL}">#{messages['lb_back']}</h:outputLink>
-			</h:panelGrid>
-		
 			
+			<h:panelGroup rendered="#{userMBean.loggedUser == null}">
+				<div class="topcontent">
+					<div class="slogan">
+						<h1>Money Manager</h1>
+						<span style="position:relative;top:-25px;margin-left: 100px;">helping on your financial organization.</span>
+					</div>
+				</div>
+				<div class="notLoggedMessage" >
+					<h:outputText value="#{messages['lb_not_logged_message']}" />
+					<br/>
+					<div align="center">
+						<h:outputLink value="#{userMBean.logoutURL}">#{messages['lb_home']}</h:outputLink>
+					</div>
+				</div>
+			</h:panelGroup>	
 		</div>
 		<!-- 
 		<div id="bottomcontent">

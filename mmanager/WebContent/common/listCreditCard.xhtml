@@ -14,7 +14,7 @@
 	        	
 		       	<p:growl id="msg" showDetail="true" showSummary="false" autoUpdate="true" sticky="true" /> 
 		       	
-	        	<h:panelGroup rendered="#{!creditCardMBean.showCreditCardForm}" styleClass="content">
+	        	<h:panelGroup rendered="#{!creditCardMBean.showCreditCardForm}" styleClass="listContent">
 	        		<div align="center" >
 		        		<h:panelGrid columns="2" width="50%" border="0" columnClasses="alignLeft,alignRight">
 			        		<p:commandButton value="#{messages['lb_delete']}" styleClass="button" onclick="confirmation.show()" />

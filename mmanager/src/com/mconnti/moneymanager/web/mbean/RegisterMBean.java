@@ -10,7 +10,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.MediaType;
@@ -49,6 +48,10 @@ public class RegisterMBean implements Serializable {
 
 	private List<Description> descriptionList;
 
+	private List<Description> creditList;
+
+	private List<Description> debitList;
+
 	private List<Description> groupList;
 
 	private List<Description> superGroupList;
@@ -58,12 +61,6 @@ public class RegisterMBean implements Serializable {
 	private List<Currency> currencyList;
 
 	private List<TypeClosure> typeClosureList;
-
-	private SelectItem[] descriptions;
-
-	private SelectItem[] groupItems;
-
-	private SelectItem[] superGroups;
 
 	private SelectItem[] creditCards;
 
@@ -106,9 +103,11 @@ public class RegisterMBean implements Serializable {
 	}
 
 	private void loadCombos() {
-		this.groupItems = loadGroups();
-		this.descriptions = loadDescriptions();
-		this.superGroups = loadSuperGroups();
+		this.creditList = loadDescriptionList(1L);
+		this.debitList = loadDescriptionList(2L);
+		this.groupList = loadDescriptionList(3L);
+		this.superGroupList = loadDescriptionList(4L);
+
 		this.creditCards = loadCreditCards();
 		this.typeClosures = loadTypeClosures();
 		this.currencies = loadCurrencies();
@@ -141,32 +140,50 @@ public class RegisterMBean implements Serializable {
 		}
 	}
 
-	public void checkCreditsDescription(ValueChangeEvent event) {
+	public void checkCreditDescription() {
 		boolean contain = false;
-		Long typeAccount = 0L;
-		if (loadDebits) {
-			listDescription(2L);
-			typeAccount = 2L;
-		} else {
-			listDescription(1L);
-			typeAccount = 1L;
-		}
-		if (descriptionList.size() > 0) {
-			ArrayList<String> descLista = new ArrayList<String>();
-			for (Description desc : descriptionList) {
-				if(desc.getDescription().equalsIgnoreCase(event.getNewValue().toString())){
-					register.setDescription(desc);
-					contain = true;
-					break;
+		if( register.getDescription().getDescription() != null && !"".equals( register.getDescription().getDescription())){
+			if (creditList.size() > 0) {
+				ArrayList<String> descLista = new ArrayList<String>();
+				for (Description desc : creditList) {
+					if (desc.getDescription().equalsIgnoreCase(register.getDescription().getDescription())) {
+						register.setDescription(desc);
+						contain = true;
+						break;
+					}
+					descLista.add(desc.getDescription());
 				}
-				descLista.add(desc.getDescription());
+
+				if (!contain && !descLista.contains(register.getDescription().getDescription())) {
+					newDescription(description.getDescription(), 1L);
+				}
+			} else {
+				newDescription(register.getDescription().getDescription(), 1L);
 			}
-			
-			if (!contain && !descLista.contains(event.getNewValue())) {
-				newDescription(event.getNewValue().toString(), typeAccount);
+		}
+		
+	}
+
+	public void checkDebitDescription() {
+		boolean contain = false;
+		if( register.getDescription().getDescription() != null && !"".equals(register.getDescription().getDescription())){
+			if (debitList.size() > 0) {
+				ArrayList<String> descLista = new ArrayList<String>();
+				for (Description desc : debitList) {
+					if (desc.getDescription().equalsIgnoreCase(register.getDescription().getDescription())) {
+						register.setDescription(desc);
+						contain = true;
+						break;
+					}
+					descLista.add(desc.getDescription());
+				}
+	
+				if (!contain && !descLista.contains(register.getDescription().getDescription())) {
+					newDescription(description.getDescription(), 2L);
+				} 
+			} else {
+				newDescription(register.getDescription().getDescription(), 2L);
 			}
-		} else {
-			newDescription(event.getNewValue().toString(), typeAccount);
 		}
 	}
 
@@ -174,53 +191,47 @@ public class RegisterMBean implements Serializable {
 		return userMBean.getLoggedUser().getSuperUser() == null ? userMBean.getLoggedUser() : userMBean.getLoggedUser().getSuperUser();
 	}
 
-	public void checkGroupDescription(ValueChangeEvent event) {
+	public void checkGroupDescription() {
 		boolean contain = false;
-		TypeAccount typeAccount = new TypeAccount();
-		typeAccount.setId(3L);
-
-		groupList = loadDescriptionList(typeAccount);
-
-		if (groupList.size() > 0) {
-			ArrayList<String> descLista = new ArrayList<String>();
-			for (Description desc : groupList) {
-				if(desc.getDescription().equalsIgnoreCase(event.getNewValue().toString())){
-					register.setGroup(desc);
-					contain = true;
-					break;
+		if( register.getGroup().getDescription() != null && !"".equals(register.getGroup().getDescription())){
+			if (groupList.size() > 0) {
+				ArrayList<String> descLista = new ArrayList<String>();
+				for (Description desc : groupList) {
+					if (desc.getDescription().equalsIgnoreCase(register.getGroup().getDescription())) {
+						register.setGroup(desc);
+						contain = true;
+						break;
+					}
+					descLista.add(desc.getDescription());
 				}
-				descLista.add(desc.getDescription());
+				if (!contain && !descLista.contains(register.getGroup().getDescription())) {
+					newDescription(register.getGroup().getDescription(), 3L);
+				}
+			} else {
+				newDescription(register.getGroup().getDescription(), 3L);
 			}
-			if (!contain && !descLista.contains(event.getNewValue())) {
-				newDescription(event.getNewValue().toString(), 3L);
-			}
-		} else {
-			newDescription(event.getNewValue().toString(), 3L);
 		}
 	}
 
-	public void checkSuperGroupDescription(ValueChangeEvent event) {
+	public void checkSuperGroupDescription() {
 		boolean contain = false;
-		TypeAccount typeAccount = new TypeAccount();
-		typeAccount.setId(4L);
-
-		superGroupList = loadDescriptionList(typeAccount);
-
-		if (superGroupList.size() > 0) {
-			ArrayList<String> descLista = new ArrayList<String>();
-			for (Description desc : superGroupList) {
-				if(desc.getDescription().equalsIgnoreCase(event.getNewValue().toString())){
-					register.setSuperGroup(desc);
-					contain = true;
-					break;
+		if(register.getSuperGroup().getDescription() != null && !"".equals(register.getSuperGroup().getDescription())){
+			if (superGroupList.size() > 0) {
+				ArrayList<String> descLista = new ArrayList<String>();
+				for (Description desc : superGroupList) {
+					if (desc.getDescription().equalsIgnoreCase(register.getSuperGroup().getDescription())) {
+						register.setSuperGroup(desc);
+						contain = true;
+						break;
+					}
+					descLista.add(desc.getDescription());
 				}
-				descLista.add(desc.getDescription());
+				if (!contain && !descLista.contains(register.getSuperGroup().getDescription())) {
+					newDescription(register.getSuperGroup().getDescription(), 4L);
+				}
+			} else {
+				newDescription(register.getSuperGroup().getDescription(), 4L);
 			}
-			if (!contain && !descLista.contains(event.getNewValue())) {
-				newDescription(event.getNewValue().toString(), 4L);
-			}
-		} else {
-			newDescription(event.getNewValue().toString(), 4L);
 		}
 	}
 
@@ -230,67 +241,11 @@ public class RegisterMBean implements Serializable {
 		return typeAccount;
 	}
 
-	private void listDescription(Long type) {
-		TypeAccount typeAccount = new TypeAccount();
-		if (loadDebits) {
-			typeAccount = getTypeAccount(type);
-		} else {
-			typeAccount = getTypeAccount(type);
-		}
-		descriptionList = loadDescriptionList(typeAccount);
-	}
 
-	public SelectItem[] loadDescriptions() {
-		if (loadDebits) {
-			listDescription(2L);
-		} else {
-			listDescription(1L);
-		}
-
-		List<SelectItem> itens = new ArrayList<SelectItem>(descriptionList.size());
-
-		this.descriptions = new SelectItem[itens.size()];
-
-		for (Description desc : descriptionList) {
-			itens.add(new SelectItem(desc.getId(), desc.getDescription()));
-		}
-		return itens.toArray(new SelectItem[itens.size()]);
-	}
-
-	public SelectItem[] loadGroups() {
-		TypeAccount typeAccount = new TypeAccount();
-		typeAccount.setId(3L);
-
-		groupList = loadDescriptionList(typeAccount);
-
-		List<SelectItem> groupItens = new ArrayList<SelectItem>(groupList.size());
-
-		this.groupItems = new SelectItem[groupItens.size()];
-
-		for (Description desc : groupList) {
-			groupItens.add(new SelectItem(desc.getId(), desc.getDescription()));
-		}
-		return groupItens.toArray(new SelectItem[groupItens.size()]);
-	}
-
-	public SelectItem[] loadSuperGroups() {
-		TypeAccount typeAccount = new TypeAccount();
-		typeAccount.setId(4L);
-
-		superGroupList = loadDescriptionList(typeAccount);
-
-		List<SelectItem> itens = new ArrayList<SelectItem>(superGroupList.size());
-
-		this.superGroups = new SelectItem[itens.size()];
-
-		for (Description desc : superGroupList) {
-			itens.add(new SelectItem(desc.getId(), desc.getDescription()));
-		}
-		return itens.toArray(new SelectItem[itens.size()]);
-	}
-
-	private List<Description> loadDescriptionList(TypeAccount typeAccount) {
+	private List<Description> loadDescriptionList(Long typeAccountId) {
 		try {
+			TypeAccount typeAccount = new TypeAccount();
+			typeAccount.setId(typeAccountId);
 
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/description");
 
@@ -451,9 +406,10 @@ public class RegisterMBean implements Serializable {
 		register.setCurrency(new Currency());
 		register.setTypeClosure(new TypeClosure());
 		register.setCreditCard(new CreditCard());
+		setDefaultValues();
 	}
-	
-	private void setDefaultValues(){
+
+	private void setDefaultValues() {
 		TypeClosure typeClosure = new TypeClosure();
 		typeClosure.setId(1L);
 		register.setTypeClosure(typeClosure);
@@ -466,7 +422,6 @@ public class RegisterMBean implements Serializable {
 
 	public String newCredit() {
 		createRegister();
-		setDefaultValues();
 		loadDebits = false;
 		loadCredits = true;
 		loadCombos();
@@ -483,7 +438,6 @@ public class RegisterMBean implements Serializable {
 
 	public String newDebit() {
 		createRegister();
-		setDefaultValues();
 		loadDebits = true;
 		loadCredits = false;
 		loadCombos();
@@ -501,7 +455,37 @@ public class RegisterMBean implements Serializable {
 
 	public void edit() {
 	}
+	
+	private List<String> returnResults(List<Description> list, String query){
+		List<String> results = new ArrayList<>();
+		for (Description description : list) {
+			if (description.getDescription().toLowerCase().startsWith(query.toLowerCase())) {
+				results.add(description.getDescription());
+			}
+		}
+		return results;
+	}
+	
+	public List<String> creditComplete(String query) {
+		List<String> results = returnResults(creditList, query);
+		return results;
+	}
 
+	public List<String> debitComplete(String query) {
+		List<String> results = returnResults(debitList, query);
+		return results;
+	}
+	
+	public List<String> groupComplete(String query) {
+		List<String> results = returnResults(groupList, query);
+		return results;
+	}
+	
+	public List<String> superGroupComplete(String query) {
+		List<String> results = returnResults(superGroupList, query);
+		return results;
+	}
+	
 	public void save() {
 		MessageReturn ret = new MessageReturn();
 
@@ -602,22 +586,6 @@ public class RegisterMBean implements Serializable {
 
 	public void setSelectedRegister(Register[] selectedRegister) {
 		this.selectedRegister = selectedRegister;
-	}
-
-	public SelectItem[] getDescriptions() {
-		return descriptions;
-	}
-
-	public void setDescriptions(SelectItem[] descriptions) {
-		this.descriptions = descriptions;
-	}
-
-	public SelectItem[] getSuperGroups() {
-		return superGroups;
-	}
-
-	public void setSuperGroups(SelectItem[] superGroups) {
-		this.superGroups = superGroups;
 	}
 
 	public SelectItem[] getCreditCards() {
@@ -764,14 +732,6 @@ public class RegisterMBean implements Serializable {
 		this.typeClosures = typeClosures;
 	}
 
-	public SelectItem[] getGroupItems() {
-		return groupItems;
-	}
-
-	public void setGroupItems(SelectItem[] groupItems) {
-		this.groupItems = groupItems;
-	}
-
 	public Boolean getNewDescription() {
 		return newDescription;
 	}
@@ -786,5 +746,21 @@ public class RegisterMBean implements Serializable {
 
 	public void setDescriptionDTO(String descriptionDTO) {
 		this.descriptionDTO = descriptionDTO;
+	}
+
+	public List<Description> getCreditList() {
+		return creditList;
+	}
+
+	public void setCreditList(List<Description> creditList) {
+		this.creditList = creditList;
+	}
+
+	public List<Description> getDebitList() {
+		return debitList;
+	}
+
+	public void setDebitList(List<Description> debitList) {
+		this.debitList = debitList;
 	}
 }

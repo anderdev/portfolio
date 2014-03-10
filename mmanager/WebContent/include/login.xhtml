@@ -12,12 +12,13 @@
 	      		<p:panel header="#{messages['lb_login_info']}" id="panel" rendered="#{!userMBean.showFormUser}">
 	      			<h:panelGrid border="0" styleClass="gridLogin">
 						<h:outputText value="#{messages['lb_username_']}"/>
-						<h:inputText tabindex="1" label="#{messages['lb_username_']}" required="true" value="#{userMBean.user.username}" style="width:100%"/>
+						<p:inputText tabindex="1" label="#{messages['lb_username_']}" required="true" value="#{userMBean.user.username}" style="width:95%"/>
 						
 						<h:outputText value="#{messages['lb_password_']}" />
-						<h:inputSecret tabindex="2" label="#{messages['lb_password_']}" required="true"  value="#{userMBean.user.password}" style="width:100%"/>
-						
-						<h:panelGrid columns="2">
+						<p:password tabindex="2" label="#{messages['lb_password_']}" required="true"  value="#{userMBean.user.password}" style="width:95%"/>
+					</h:panelGrid>
+					
+					<div align="center" style="padding-top:10px;">
 							<p:commandButton id="btLogin" 
 									tabindex="3"
 									styleClass="button" 
@@ -34,8 +35,7 @@
 									styleClass="button" 
 									immediate="true">
 							</p:commandButton>
-						</h:panelGrid>
-					</h:panelGrid>	
+						</div>	
 				</p:panel>
 			</div>
 			     	
