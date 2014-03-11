@@ -220,20 +220,20 @@ border-width:5px;*/
 	vertical-align: bottom;
 	padding: 10px 10px 10px 10px;
 	float:left;
-	width: 30%;
+	width: 31%;
 	border: 0px solid #000;
 	border-radius: 5px;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
 }
 
-.listRegisterContant{
+.formListContant{
 	position: absolute; 
 	vertical-align: bottom;
-	left:34%;
+	left:35.5%;
 	bottom: 2%; 
 	float:right;
-	width: 65%;
+	width: 64%;
 	height:410px;
 	border: 0px solid #000;
 	border-radius: 5px;

@@ -24,13 +24,15 @@ public class Closure implements Serializable {
 
 	private String type;
 
-	private String currency;
-
 	private Double totalCredit;
 	
 	private Double totalDebit;
 	
 	private Double totalGeneral;
+	
+	private TypeClosure typeClosure;
+	
+	private Currency currency;
 
 	private User user;
 	
@@ -62,14 +64,6 @@ public class Closure implements Serializable {
 
 	public void setType(String type) {
 		this.type = type;
-	}
-
-	public String getCurrency() {
-		return currency;
-	}
-
-	public void setCurrency(String currency) {
-		this.currency = currency;
 	}
 
 	public Double getTotalCredit() {
@@ -126,5 +120,21 @@ public class Closure implements Serializable {
 
 	public void setDebitsAlreadyClosed(Collection<Register> debitsAlreadyClosed) {
 		this.registersAlreadyClosed = debitsAlreadyClosed;
+	}
+
+	public TypeClosure getTypeClosure() {
+		return typeClosure;
+	}
+
+	public void setTypeClosure(TypeClosure typeClosure) {
+		this.typeClosure = typeClosure;
+	}
+
+	public Currency getCurrency() {
+		return currency;
+	}
+
+	public void setCurrency(Currency currency) {
+		this.currency = currency;
 	}
 }

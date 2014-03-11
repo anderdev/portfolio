@@ -14,7 +14,7 @@
 				
         		<div align="center" class="formContant">
 	       	
-		       		<h:panelGrid columns="2" styleClass="formCadastroUser" columnClasses="column120RightWithPaddingRigth,column285" border="0">
+		       		<h:panelGrid columns="2" styleClass="boldFont" columnClasses="column120RightWithPaddingRigth,column285" border="0">
 	
 						<h:outputText value="#{messages['lb_date']}"  />
 						<p:calendar showButtonPanel="true" navigator="true" showOn="button"
@@ -26,20 +26,21 @@
 							pattern="dd/MM/yyyy"/>
 						
 				        <h:outputText value="#{messages['lb_description']}" />
-			            <p:autoComplete dropdown="true" value="#{registerMBean.register.description.description}" completeMethod="#{registerMBean.debitComplete}" rendered="#{registerMBean.loadDebits}" style="width:90%">
+			            <p:autoComplete label="#{messages['lb_description_']}" dropdown="true" value="#{registerMBean.register.description.description}" completeMethod="#{registerMBean.debitComplete}" rendered="#{registerMBean.loadDebits}" required="true" style="width:90%">
 			            	<p:ajax event="blur" listener="#{registerMBean.checkDebitDescription}" />
 			            </p:autoComplete>  
-				        <p:autoComplete dropdown="true" value="#{registerMBean.register.description.description}" completeMethod="#{registerMBean.creditComplete}" rendered="#{registerMBean.loadCredits}" style="width:90%">
-			            	<p:ajax event="blur" listener="#{registerMBean.checkCreditDescription}"  />
+			            
+				        <p:autoComplete label="#{messages['lb_description_']}" dropdown="true" value="#{registerMBean.register.description.description}" completeMethod="#{registerMBean.creditComplete}" rendered="#{registerMBean.loadCredits}" required="true" style="width:90%">
+			            	<p:ajax event="blur" listener="#{registerMBean.checkCreditDescription}" />
 			            </p:autoComplete>  
 				        
 				        <h:outputText value="#{messages['lb_group']}" rendered="#{registerMBean.loadDebits}"/>
-				        <p:autoComplete dropdown="true" value="#{registerMBean.register.group.description}" completeMethod="#{registerMBean.groupComplete}" rendered="#{registerMBean.loadDebits}" style="width:90%">
+				        <p:autoComplete label="#{messages['lb_group_']}" dropdown="true" value="#{registerMBean.register.group.description}" completeMethod="#{registerMBean.groupComplete}" rendered="#{registerMBean.loadDebits}" required="true" style="width:90%">
 			            	<p:ajax event="blur" listener="#{registerMBean.checkGroupDescription}" />
 			            </p:autoComplete> 
 						
 				        <h:outputText value="#{messages['lb_super_group']}" />
-				        <p:autoComplete dropdown="true" value="#{registerMBean.register.superGroup.description}" completeMethod="#{registerMBean.superGroupComplete}" style="width:90%">
+				        <p:autoComplete label="#{messages['lb_super_group_']}" dropdown="true" value="#{registerMBean.register.superGroup.description}" completeMethod="#{registerMBean.superGroupComplete}" required="true" style="width:90%">
 			            	<p:ajax event="blur" listener="#{registerMBean.checkSuperGroupDescription}" />
 			            </p:autoComplete> 
 			            
@@ -51,7 +52,7 @@
 				        
 					</h:panelGrid>
 					
-					<h:panelGrid columns="4" styleClass="formCadastroUser" columnClasses="column120RightWithPaddingRigth,column80,column80rightAlign,column80" border="0">
+					<h:panelGrid columns="4" styleClass="boldFont" columnClasses="column120RightWithPaddingRigth,column80,column80rightAlign,column80" border="0">
 						<h:outputText value="#{messages['lb_type_closure']}" />
 						<p:selectOneMenu value="#{registerMBean.register.typeClosure.id}" label="#{messages['lb_type_closure_']}" required="true" >
 				            <f:selectItem itemLabel="#{messages['lb_select']}" itemValue="" />
@@ -65,10 +66,10 @@
 				        </p:selectOneMenu>
 				        
 						<h:outputText value="#{messages['lb_parcels']}" />
-						<p:inputText  label="#{messages['lb_parcels_']}" required="true"  value="#{registerMBean.register.numberParcel}" style="width:25px" />
+						<p:inputText  label="#{messages['lb_parcels_']}" required="true"  value="#{registerMBean.register.numberParcel}" style="width:25px;text-align:right;" />
 						
 						<h:outputText value="#{messages['lb_amount']}" />
-						<p:inputText  label="#{messages['lb_amount_']}" required="true" maxlength="10"  value="#{registerMBean.register.amount}" style="width:80px" />
+						<p:inputText id="amount"  label="#{messages['lb_amount_']}" required="true" maxlength="10"  value="#{registerMBean.register.amount}" style="width:80px;text-align:right;" />
 					</h:panelGrid>
 					
 					<br />
@@ -79,7 +80,7 @@
 					</div>
 				</div>
 				
-				<div class="listRegisterContant">
+				<div class="formListContant">
 					<p:dataTable var="reg" value="#{registerMBean.registerList}" style="width:100%" id="registerList"
 				    		paginatorAlwaysVisible="false" paginator="true" emptyMessage="#{messages['lb_empty_list']}"
 				    		rows="10" rowKey="#{reg}">
@@ -112,7 +113,7 @@
 				                <h:outputText value="#{messages['lb_amount_']}" />
 				            </f:facet>
 				            <h:outputText value="#{reg.amount}" >
-				            	<f:convertNumber pattern="##0.00"/>
+				            	<f:convertNumber pattern="###,##0.00"/>
 				            </h:outputText>
 				        </p:column>
 				        

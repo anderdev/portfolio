@@ -84,8 +84,6 @@ public class RegisterMBean implements Serializable {
 
 	private Boolean loadCredits = false;
 
-	private String descriptionDTO;
-
 	public RegisterMBean() {
 		this.register = new Register();
 		this.description = new Description();
@@ -112,8 +110,6 @@ public class RegisterMBean implements Serializable {
 		this.typeClosures = loadTypeClosures();
 		this.currencies = loadCurrencies();
 	}
-
-	private Boolean newDescription;
 
 	private void newDescription(String description, Long typeAccount) {
 		Description desc = new Description();
@@ -730,22 +726,6 @@ public class RegisterMBean implements Serializable {
 
 	public void setTypeClosures(SelectItem[] typeClosures) {
 		this.typeClosures = typeClosures;
-	}
-
-	public Boolean getNewDescription() {
-		return newDescription;
-	}
-
-	public void setNewDescription(Boolean newDescription) {
-		this.newDescription = newDescription;
-	}
-
-	public String getDescriptionDTO() {
-		return descriptionDTO;
-	}
-
-	public void setDescriptionDTO(String descriptionDTO) {
-		this.descriptionDTO = descriptionDTO;
 	}
 
 	public List<Description> getCreditList() {
