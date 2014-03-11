@@ -442,7 +442,7 @@ div#boxLoggedUser{
 	margin-left: -15%;
 	position: absolute;
 	left: 50%;
-	top: 120px;
+	top: 25%;
 	font-family: sans-serif;
 	font-weight: bold;
 	font-size: 25px;
@@ -457,7 +457,7 @@ div#boxLoggedUser{
 	margin-left: -45%;
 	position: absolute;
 	left: 50%;
-	top: 20%;
+	top: 25%;
 	font-family: sans-serif;
 	font-weight: bold;
 	font-size: 25px;
