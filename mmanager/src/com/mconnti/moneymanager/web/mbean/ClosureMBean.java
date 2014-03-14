@@ -3,6 +3,7 @@ package com.mconnti.moneymanager.web.mbean;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -146,7 +147,13 @@ public class ClosureMBean implements Serializable {
 	}
 
 	private void setDefaultValues() {
-
+		TypeClosure typeClosure = new TypeClosure();
+		typeClosure.setId(1L);
+		closure.setTypeClosure(typeClosure);
+		Currency currency = new Currency();
+		currency.setId(1L);
+		closure.setCurrency(currency);
+		closure.setDate(new Date());
 	}
 
 	public String close() {

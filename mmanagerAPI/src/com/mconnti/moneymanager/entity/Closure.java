@@ -34,9 +34,15 @@ public class Closure implements Serializable {
 	
 	private Date endDate;
 
-	private String type;
+	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = TypeClosure.class)
+	@JoinColumn(name = "typeclosure_id")
+	@ForeignKey(name = "FK_CLOSURE_TYPECLOSURE")
+	private TypeClosure typeClosure;
 
-	private String currency;
+	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = Currency.class)
+	@JoinColumn(name = "currency_id")
+	@ForeignKey(name = "FK_CLOSURE_CURRENCY")
+	private Currency currency;
 
 	@Column(length = 13, precision = 13, scale = 2)
 	private Double totalCredit;
@@ -75,19 +81,11 @@ public class Closure implements Serializable {
 		this.date = date;
 	}
 
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
-
-	public String getCurrency() {
+	public Currency getCurrency() {
 		return currency;
 	}
 
-	public void setCurrency(String currency) {
+	public void setCurrency(Currency currency) {
 		this.currency = currency;
 	}
 
@@ -145,5 +143,13 @@ public class Closure implements Serializable {
 
 	public void setDebitsAlreadyClosed(Collection<Register> debitsAlreadyClosed) {
 		this.registersAlreadyClosed = debitsAlreadyClosed;
+	}
+
+	public TypeClosure getTypeClosure() {
+		return typeClosure;
+	}
+
+	public void setTypeClosure(TypeClosure typeClosure) {
+		this.typeClosure = typeClosure;
 	}
 }

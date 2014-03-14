@@ -51,36 +51,47 @@
 				<div class="formListContant">
 					<p:dataTable var="reg" value="#{closureMBean.closureList}" style="width:100%" id="closureList"
 				    		paginatorAlwaysVisible="false" paginator="true" emptyMessage="#{messages['lb_empty_list']}"
-				    		rows="10" rowKey="#{reg}">
+				    		rows="10" rowKey="#{clo}">
 				    	
-				        <p:column sortBy="#{reg.description.description}" >
-				            <f:facet name="header">
-				                <h:outputText value="#{messages['lb_description_']}" />
-				            </f:facet>
-				            <h:outputText value="#{reg.description.description}" />
-				        </p:column>
-				        
-				        <p:column sortBy="#{reg.superGroup.description}" >
-				            <f:facet name="header">
-				                <h:outputText value="#{messages['lb_super_group_']}" />
-				            </f:facet>
-				            <h:outputText value="#{reg.superGroup.description}" />
-				        </p:column>
-				        
-				        <p:column sortBy="#{reg.date}" style="width:100px;text-align:center;">
-				            <f:facet name="header">
+				        <p:column sortBy="#{clo.date}" >
+				             <f:facet name="header">
 				                <h:outputText value="#{messages['lb_date_']}" />
 				            </f:facet>
-				            <h:outputText value="#{reg.date}">
+				            <h:outputText value="#{clo.date}">
 				            	<f:convertDateTime pattern="dd/MM/yyyy" />
 				            </h:outputText>
 				        </p:column>
 				        
-				        <p:column sortBy="#{reg.amount}" style="width:90px;text-align:right;">
+				        <p:column sortBy="#{clo.typeClosure.type}" >
+				            <f:facet name="header">
+				                <h:outputText value="#{messages['lb_type_closure_']}" />
+				            </f:facet>
+				            <h:outputText value="#{clo.typeClosure.type}" />
+				        </p:column>
+				        
+				        <p:column style="width:90px;text-align:right;">
 				            <f:facet name="header">
 				                <h:outputText value="#{messages['lb_amount_']}" />
 				            </f:facet>
-				            <h:outputText value="#{reg.amount}" >
+				            <h:outputText value="#{clo.totalCredit}" >
+				            	<f:convertNumber pattern="##0.00"/>
+				            </h:outputText>
+				        </p:column>
+				        
+				        <p:column style="width:90px;text-align:right;">
+				            <f:facet name="header">
+				                <h:outputText value="#{messages['lb_amount_']}" />
+				            </f:facet>
+				            <h:outputText value="#{clo.totalDebit}" >
+				            	<f:convertNumber pattern="##0.00"/>
+				            </h:outputText>
+				        </p:column>
+				        
+				        <p:column style="width:90px;text-align:right;">
+				            <f:facet name="header">
+				                <h:outputText value="#{messages['lb_amount_']}" />
+				            </f:facet>
+				            <h:outputText value="#{clo.totalGeneral}" >
 				            	<f:convertNumber pattern="##0.00"/>
 				            </h:outputText>
 				        </p:column>

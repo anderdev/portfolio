@@ -22,8 +22,6 @@ public class Closure implements Serializable {
 	
 	private Date endDate;
 
-	private String type;
-
 	private Double totalCredit;
 	
 	private Double totalDebit;
@@ -56,14 +54,6 @@ public class Closure implements Serializable {
 
 	public void setDate(Date date) {
 		this.date = date;
-	}
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
 	}
 
 	public Double getTotalCredit() {

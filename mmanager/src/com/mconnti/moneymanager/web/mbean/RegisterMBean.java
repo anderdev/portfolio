@@ -100,12 +100,15 @@ public class RegisterMBean implements Serializable {
 		}
 	}
 
-	private void loadCombos() {
+	private void loadAutocompleteLists() {
 		this.creditList = loadDescriptionList(1L);
 		this.debitList = loadDescriptionList(2L);
 		this.groupList = loadDescriptionList(3L);
 		this.superGroupList = loadDescriptionList(4L);
+	}
 
+	private void loadDefaultCombos() {
+		loadAutocompleteLists();
 		this.creditCards = loadCreditCards();
 		this.typeClosures = loadTypeClosures();
 		this.currencies = loadCurrencies();
@@ -138,7 +141,7 @@ public class RegisterMBean implements Serializable {
 
 	public void checkCreditDescription() {
 		boolean contain = false;
-		if( register.getDescription().getDescription() != null && !"".equals( register.getDescription().getDescription())){
+		if (register.getDescription().getDescription() != null && !"".equals(register.getDescription().getDescription())) {
 			if (creditList.size() > 0) {
 				ArrayList<String> descLista = new ArrayList<String>();
 				for (Description desc : creditList) {
@@ -157,12 +160,12 @@ public class RegisterMBean implements Serializable {
 				newDescription(register.getDescription().getDescription(), 1L);
 			}
 		}
-		
+
 	}
 
 	public void checkDebitDescription() {
 		boolean contain = false;
-		if( register.getDescription().getDescription() != null && !"".equals(register.getDescription().getDescription())){
+		if (register.getDescription().getDescription() != null && !"".equals(register.getDescription().getDescription())) {
 			if (debitList.size() > 0) {
 				ArrayList<String> descLista = new ArrayList<String>();
 				for (Description desc : debitList) {
@@ -173,10 +176,10 @@ public class RegisterMBean implements Serializable {
 					}
 					descLista.add(desc.getDescription());
 				}
-	
+
 				if (!contain && !descLista.contains(register.getDescription().getDescription())) {
 					newDescription(description.getDescription(), 2L);
-				} 
+				}
 			} else {
 				newDescription(register.getDescription().getDescription(), 2L);
 			}
@@ -189,7 +192,7 @@ public class RegisterMBean implements Serializable {
 
 	public void checkGroupDescription() {
 		boolean contain = false;
-		if( register.getGroup().getDescription() != null && !"".equals(register.getGroup().getDescription())){
+		if (register.getGroup().getDescription() != null && !"".equals(register.getGroup().getDescription())) {
 			if (groupList.size() > 0) {
 				ArrayList<String> descLista = new ArrayList<String>();
 				for (Description desc : groupList) {
@@ -211,7 +214,7 @@ public class RegisterMBean implements Serializable {
 
 	public void checkSuperGroupDescription() {
 		boolean contain = false;
-		if(register.getSuperGroup().getDescription() != null && !"".equals(register.getSuperGroup().getDescription())){
+		if (register.getSuperGroup().getDescription() != null && !"".equals(register.getSuperGroup().getDescription())) {
 			if (superGroupList.size() > 0) {
 				ArrayList<String> descLista = new ArrayList<String>();
 				for (Description desc : superGroupList) {
@@ -236,7 +239,6 @@ public class RegisterMBean implements Serializable {
 		typeAccount.setId(type);
 		return typeAccount;
 	}
-
 
 	private List<Description> loadDescriptionList(Long typeAccountId) {
 		try {
@@ -420,7 +422,7 @@ public class RegisterMBean implements Serializable {
 		createRegister();
 		loadDebits = false;
 		loadCredits = true;
-		loadCombos();
+		loadDefaultCombos();
 		createTypeAccount(1L);
 		loadList(register.getTypeAccount());
 		return "/common/formRegister.xhtml?faces-redirect=true";
@@ -436,7 +438,7 @@ public class RegisterMBean implements Serializable {
 		createRegister();
 		loadDebits = true;
 		loadCredits = false;
-		loadCombos();
+		loadDefaultCombos();
 		createTypeAccount(2L);
 		loadList(register.getTypeAccount());
 		return "/common/formRegister.xhtml?faces-redirect=true";
@@ -451,8 +453,8 @@ public class RegisterMBean implements Serializable {
 
 	public void edit() {
 	}
-	
-	private List<String> returnResults(List<Description> list, String query){
+
+	private List<String> returnResults(List<Description> list, String query) {
 		List<String> results = new ArrayList<>();
 		for (Description description : list) {
 			if (description.getDescription().toLowerCase().startsWith(query.toLowerCase())) {
@@ -461,7 +463,7 @@ public class RegisterMBean implements Serializable {
 		}
 		return results;
 	}
-	
+
 	public List<String> creditComplete(String query) {
 		List<String> results = returnResults(creditList, query);
 		return results;
@@ -471,17 +473,17 @@ public class RegisterMBean implements Serializable {
 		List<String> results = returnResults(debitList, query);
 		return results;
 	}
-	
+
 	public List<String> groupComplete(String query) {
 		List<String> results = returnResults(groupList, query);
 		return results;
 	}
-	
+
 	public List<String> superGroupComplete(String query) {
 		List<String> results = returnResults(superGroupList, query);
 		return results;
 	}
-	
+
 	public void save() {
 		MessageReturn ret = new MessageReturn();
 
@@ -517,6 +519,7 @@ public class RegisterMBean implements Serializable {
 			}
 			loadList(register.getTypeAccount());
 			createRegister();
+			loadAutocompleteLists();
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

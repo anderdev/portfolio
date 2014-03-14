@@ -285,19 +285,19 @@ public class ClosureBOImpl extends GenericBOImpl<Closure> implements ClosureBO {
 
 		HashMap<String, String> ret = new HashMap<String, String>();
 
-		if (Constants.MENSAL.equalsIgnoreCase(closure.getType().toLowerCase()) || Constants.MONTHLY.equalsIgnoreCase(closure.getType().toLowerCase())) {
+		if (Constants.MENSAL.equalsIgnoreCase(closure.getTypeClosure().getType().toLowerCase()) || Constants.MONTHLY.equalsIgnoreCase(closure.getTypeClosure().getType().toLowerCase())) {
 
 			ret = loadDates(date, Calendar.DAY_OF_MONTH, -Utils.getLastDayOfMonth(Utils.dateToString(date)));
 
-		} else if (Constants.QUINZENAL.equalsIgnoreCase(closure.getType().toLowerCase()) || Constants.FORTNIGHTLY.equalsIgnoreCase(closure.getType().toLowerCase())) {
+		} else if (Constants.QUINZENAL.equalsIgnoreCase(closure.getTypeClosure().getType().toLowerCase()) || Constants.FORTNIGHTLY.equalsIgnoreCase(closure.getTypeClosure().getType().toLowerCase())) {
 
 			ret = loadDates(date, Calendar.DAY_OF_MONTH, -14);
 
-		} else if (Constants.SEMANAL.equalsIgnoreCase(closure.getType().toLowerCase()) || Constants.WEEKLY.equalsIgnoreCase(closure.getType().toLowerCase())) {
+		} else if (Constants.SEMANAL.equalsIgnoreCase(closure.getTypeClosure().getType().toLowerCase()) || Constants.WEEKLY.equalsIgnoreCase(closure.getTypeClosure().getType().toLowerCase())) {
 
 			ret = loadDates(date, Calendar.DAY_OF_MONTH, -6);
 
-		} else if (Constants.DIARIO.equalsIgnoreCase(closure.getType().toLowerCase()) || Constants.DAILY.equalsIgnoreCase(closure.getType().toLowerCase())) {
+		} else if (Constants.DIARIO.equalsIgnoreCase(closure.getTypeClosure().getType().toLowerCase()) || Constants.DAILY.equalsIgnoreCase(closure.getTypeClosure().getType().toLowerCase())) {
 
 			ret = loadDates(date, Calendar.DAY_OF_MONTH, 0);
 		}
