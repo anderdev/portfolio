@@ -2,9 +2,6 @@ package com.mconnti.web.mbean;
 
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -24,12 +21,9 @@ import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 
 import org.primefaces.context.RequestContext;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 
-import com.mconnti.business.PageViewBO;
 import com.mconnti.entity.PageView;
 import com.mconnti.entity.dto.ContactDTO;
 import com.mconnti.web.util.FacesUtil;
@@ -44,9 +38,9 @@ public class ContactMBean implements Serializable {
 	FacesContext fc = FacesContext.getCurrentInstance();
 	
 	HttpServletRequest request = (HttpServletRequest) fc.getExternalContext().getRequest();
-
-	@Autowired
-	private PageViewBO pageViewBO;
+	
+//	@Autowired
+//	private PageViewBO pageViewBO;
 
 	@ManagedProperty(value = "#{pageView}")
 	private PageView pageView;
@@ -55,29 +49,33 @@ public class ContactMBean implements Serializable {
 	
 	public Integer counter;
 	
-	@Transactional
-	public Integer getCounter() {
+	public ContactMBean() {
 		contactDTO = new ContactDTO();
-		if (pageView == null) {
-			pageView = new PageView();
-			pageView.setLocale(request.getLocale().toString());
-			pageView.setLocalName(request.getRemoteHost());
-			pageView.setDateIn(new Date());
-			pageView.setIp(request.getRemoteAddr());
-			try {
-				pageViewBO.saveGeneric(pageView);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		List<PageView> list = new ArrayList<PageView>();
-		try {
-			list = pageViewBO.list(PageView.class, null, null);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return list.size();
 	}
+	
+//	@Transactional
+//	public Integer getCounter() {
+//		contactDTO = new ContactDTO();
+//		if (pageView == null) {
+//			pageView = new PageView();
+//			pageView.setLocale(request.getLocale().toString());
+//			pageView.setLocalName(request.getRemoteHost());
+//			pageView.setDateIn(new Date());
+//			pageView.setIp(request.getRemoteAddr());
+//			try {
+//				pageViewBO.saveGeneric(pageView);
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//		}
+//		List<PageView> list = new ArrayList<PageView>();
+//		try {
+//			list = pageViewBO.list(PageView.class, null, null);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		return list.size();
+//	}
 	
 	public void checkEmail() throws ValidatorException {
 		String email = this.contactDTO.getEmail();
@@ -93,6 +91,7 @@ public class ContactMBean implements Serializable {
 	}
 	
 	public void cancel(){
+		contactDTO = new ContactDTO();
 		RequestContext.getCurrentInstance().reset("contactForm:messagePanel");  
 	}
 	
@@ -158,13 +157,13 @@ public class ContactMBean implements Serializable {
 		this.pageView = pageView;
 	}
 
-	public PageViewBO getPageViewBO() {
-		return pageViewBO;
-	}
-
-	public void setPageViewBO(PageViewBO pageViewBO) {
-		this.pageViewBO = pageViewBO;
-	}
+//	public PageViewBO getPageViewBO() {
+//		return pageViewBO;
+//	}
+//
+//	public void setPageViewBO(PageViewBO pageViewBO) {
+//		this.pageViewBO = pageViewBO;
+//	}
 
 	public ContactDTO getContactDTO() {
 		return contactDTO;

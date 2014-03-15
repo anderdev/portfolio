@@ -8,6 +8,7 @@
         <ui:define name="content">
 	        <h:form id="contactForm">
 	        	<div class="contentHome" align="center">	
+	        		<h:inputHidden value="#{contactMBean.contactDTO.message}" id="hiddenMessage"/>
 					<p:panel styleClass="topcontent">
 						<p:messages showDetail="true" showSummary="false" autoUpdate="true" id="msg" />
 						
@@ -21,7 +22,7 @@
 							
 							<h:outputText value="#{messages['lb_message']}" />
 							
-							<textarea  style="height:120px;width: 99%" id="text"></textarea>
+							<textarea style="height:120px;width: 99%" id="text" onblur="setMessage(this.value);"/>
 						</h:panelGrid>	
 		                			
 						<br />
@@ -36,6 +37,11 @@
 						</div>
 					</p:panel>
 	        	</div>
+	        	<script>
+		        	function setMessage(text){
+		        		document.getElementById("contactForm:hiddenMessage").value = text;
+		        	}
+		        </script>
 			</h:form>  
         </ui:define>
 </ui:composition>
