@@ -19,6 +19,6 @@ public interface ClosureBO extends GenericBO<Closure>{
 	
 	public Closure getById(Long id);
 
-	public Closure getClosure(Closure closure) throws ParseException;
+	public MessageReturn getValuesToClose(Closure closure) throws ParseException;
 }
 

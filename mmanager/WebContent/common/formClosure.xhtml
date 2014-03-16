@@ -10,100 +10,145 @@
 	        	<h:outputText value="#{messages['lb_closure_registration']}" styleClass="boxTitle"/>
 
 				<p:growl id="msg" showDetail="true" showSummary="false" autoUpdate="true" sticky="true" /> 
-				
-        		<div align="center" class="formContant">
-	       	
-		       		<h:panelGrid columns="2" styleClass="boldFont" columnClasses="column120RightWithPaddingRigth,column285" border="0">
-	
-						<h:outputText value="#{messages['lb_date']}"  />
-						<p:calendar showButtonPanel="true" navigator="true" showOn="button"
-							value="#{closureMBean.closure.date}"  label="#{messages['lb_date_']}"
-							required="true" 
-							id="calendar"
-							readonlyInput="false"
-						    maxlength="10"
-							pattern="dd/MM/yyyy"/>
-					</h:panelGrid>
-					
-					<h:panelGrid columns="4" styleClass="boldFont" columnClasses="column120RightWithPaddingRigth,column80,column80rightAlign,column80" border="0">	
-						<h:outputText value="#{messages['lb_type_closure']}" />
-						<p:selectOneMenu value="#{closureMBean.closure.typeClosure.id}" label="#{messages['lb_type_closure_']}" required="true" >
-				            <f:selectItem itemLabel="#{messages['lb_select']}" itemValue="" />
-				            <f:selectItems value="#{closureMBean.typeClosures}"  var="desc" itemLabel="#{desc.type}" itemValue="#{desc}"/>  
-				        </p:selectOneMenu>
-				         
-				        <h:outputText value="#{messages['lb_currency']}" />
-						<p:selectOneMenu value="#{closureMBean.closure.currency.id}" label="#{messages['lb_currency_']}" required="true" style="width:100%">
-				            <f:selectItem itemLabel="#{messages['lb_select']}" itemValue="" />
-				            <f:selectItems value="#{closureMBean.currencies}"  var="desc" itemLabel="#{desc.acronymn}" itemValue="#{desc}"/>  
-				        </p:selectOneMenu>
-				        
-					</h:panelGrid>
-					
-					<br />
+				<h:panelGroup rendered="#{!closureMBean.showMaths}">
+					<div align="center" class="formContant">
+			       		<h:panelGrid columns="2" styleClass="boldFont" columnClasses="column120RightWithPaddingRigth,column285" border="0">
 		
-					<div align="center">
-						<p:commandButton value="#{messages['lb_post']}" id="post" action="#{closureMBean.save}" ajax="false" update=":formClosure" styleClass="button"/>  
-						<p:commandButton value="#{messages['lb_back']}" update=":formClosure" immediate="true" id="voltar" ajax="true"  styleClass="button" action="#{closureMBean.cancel}"/>
+							<h:outputText value="#{messages['lb_date']}"  />
+							<p:calendar showButtonPanel="true" navigator="true" showOn="button"
+								value="#{closureMBean.closure.date}"  label="#{messages['lb_date_']}"
+								required="true" 
+								id="calendar"
+								readonlyInput="false"
+							    maxlength="10"
+								pattern="dd/MM/yyyy"/>
+						</h:panelGrid>
+						
+						<h:panelGrid columns="4" styleClass="boldFont" columnClasses="column120RightWithPaddingRigth,column80,column80rightAlign,column80" border="0">	
+							<h:outputText value="#{messages['lb_type_closure']}" />
+							<p:selectOneMenu value="#{closureMBean.closure.typeClosure.id}" label="#{messages['lb_type_closure_']}" required="true" >
+					            <f:selectItem itemLabel="#{messages['lb_select']}" itemValue="" />
+					            <f:selectItems value="#{closureMBean.typeClosures}"  var="desc" itemLabel="#{desc.type}" itemValue="#{desc}"/>  
+					        </p:selectOneMenu>
+					         
+					        <h:outputText value="#{messages['lb_currency']}" />
+							<p:selectOneMenu value="#{closureMBean.closure.currency.id}" label="#{messages['lb_currency_']}" required="true" style="width:100%">
+					            <f:selectItem itemLabel="#{messages['lb_select']}" itemValue="" />
+					            <f:selectItems value="#{closureMBean.currencies}"  var="desc" itemLabel="#{desc.acronymn}" itemValue="#{desc}"/>  
+					        </p:selectOneMenu>
+					        
+						</h:panelGrid>
+						
+						<br />
+			
+						<div align="center">
+							<p:commandButton value="#{messages['lb_calculate']}" action="#{closureMBean.calculate}" ajax="false" update=":formClosure" styleClass="button"/>  
+							<p:commandButton value="#{messages['lb_back']}" update=":formClosure" immediate="true" id="back" ajax="true"  styleClass="button" action="#{closureMBean.cancel}"/>
+						</div>
 					</div>
-				</div>
+					
+					<div class="formListContant">
+						<p:dataTable var="reg" value="#{closureMBean.closureList}" style="width:100%" id="closureList"
+					    		paginatorAlwaysVisible="false" paginator="true" emptyMessage="#{messages['lb_empty_list']}"
+					    		rows="10" rowKey="#{clo}">
+					    	
+					        <p:column sortBy="#{clo.date}" >
+					             <f:facet name="header">
+					                <h:outputText value="#{messages['lb_date_']}" />
+					            </f:facet>
+					            <h:outputText value="#{clo.date}">
+					            	<f:convertDateTime pattern="dd/MM/yyyy" />
+					            </h:outputText>
+					        </p:column>
+					        
+					        <p:column sortBy="#{clo.typeClosure.type}" >
+					            <f:facet name="header">
+					                <h:outputText value="#{messages['lb_type_closure_']}" />
+					            </f:facet>
+					            <h:outputText value="#{clo.typeClosure.type}" />
+					        </p:column>
+					        
+					        <p:column style="width:90px;text-align:right;">
+					            <f:facet name="header">
+					                <h:outputText value="#{messages['lb_totalCredit_']}" />
+					            </f:facet>
+					            <h:outputText value="#{clo.totalCredit}" >
+					            	<f:convertNumber pattern="##0.00"/>
+					            </h:outputText>
+					        </p:column>
+					        
+					        <p:column style="width:90px;text-align:right;">
+					            <f:facet name="header">
+					                <h:outputText value="#{messages['lb_totalDebit_']}" />
+					            </f:facet>
+					            <h:outputText value="#{clo.totalDebit}" >
+					            	<f:convertNumber pattern="##0.00"/>
+					            </h:outputText>
+					        </p:column>
+					        
+					        <p:column style="width:90px;text-align:right;">
+					            <f:facet name="header">
+					                <h:outputText value="#{messages['lb_totalGeneral_']}" />
+					            </f:facet>
+					            <h:outputText value="#{clo.totalGeneral}" >
+					            	<f:convertNumber pattern="##0.00"/>
+					            </h:outputText>
+					        </p:column>
+					        
+					        <p:column style="width:5%">
+					        	<p:commandLink action="#{closureMBean.edit}" immediate="true" update=":formClosure" id="editButton">
+					        		<f:setPropertyActionListener value="#{reg}" target="#{closureMBean.closure}" />  
+									<p:graphicImage value="#{messages['img_update']}" style="border: 0px" />
+								</p:commandLink>
+					        </p:column>
+					    </p:dataTable>
+					</div>
+				</h:panelGroup>
+				<h:panelGroup rendered="#{closureMBean.showMaths}">
+					<h:panelGrid columns="4" width="300">
+			         	<f:facet name="header">
+			        		<h:outputText value="#{messages['lb_competence_']}"/>
+			        	</f:facet>
+			        	<h:outputText value="#{messages['lb_startDate_']}" />
+			        	<h:outputText value="#{closureMBean.closure.startDate}" >
+			        		<f:convertDateTime pattern="dd/MM/yyyy" />
+			        	</h:outputText>
+			        	<h:outputText value="#{messages['lb_endDate_']}"/>
+			        	<h:outputText value="#{closureMBean.closure.endDate}">
+			        		<f:convertDateTime pattern="dd/MM/yyyy" />
+			        	</h:outputText>
+			      	</h:panelGrid>
 				
-				<div class="formListContant">
-					<p:dataTable var="reg" value="#{closureMBean.closureList}" style="width:100%" id="closureList"
-				    		paginatorAlwaysVisible="false" paginator="true" emptyMessage="#{messages['lb_empty_list']}"
-				    		rows="10" rowKey="#{clo}">
-				    	
-				        <p:column sortBy="#{clo.date}" >
-				             <f:facet name="header">
-				                <h:outputText value="#{messages['lb_date_']}" />
-				            </f:facet>
-				            <h:outputText value="#{clo.date}">
-				            	<f:convertDateTime pattern="dd/MM/yyyy" />
-				            </h:outputText>
-				        </p:column>
-				        
-				        <p:column sortBy="#{clo.typeClosure.type}" >
-				            <f:facet name="header">
-				                <h:outputText value="#{messages['lb_type_closure_']}" />
-				            </f:facet>
-				            <h:outputText value="#{clo.typeClosure.type}" />
-				        </p:column>
-				        
-				        <p:column style="width:90px;text-align:right;">
-				            <f:facet name="header">
-				                <h:outputText value="#{messages['lb_amount_']}" />
-				            </f:facet>
-				            <h:outputText value="#{clo.totalCredit}" >
-				            	<f:convertNumber pattern="##0.00"/>
-				            </h:outputText>
-				        </p:column>
-				        
-				        <p:column style="width:90px;text-align:right;">
-				            <f:facet name="header">
-				                <h:outputText value="#{messages['lb_amount_']}" />
-				            </f:facet>
-				            <h:outputText value="#{clo.totalDebit}" >
-				            	<f:convertNumber pattern="##0.00"/>
-				            </h:outputText>
-				        </p:column>
-				        
-				        <p:column style="width:90px;text-align:right;">
-				            <f:facet name="header">
-				                <h:outputText value="#{messages['lb_amount_']}" />
-				            </f:facet>
-				            <h:outputText value="#{clo.totalGeneral}" >
-				            	<f:convertNumber pattern="##0.00"/>
-				            </h:outputText>
-				        </p:column>
-				        
-				        <p:column style="width:5%">
-				        	<p:commandLink action="#{closureMBean.edit}" immediate="true" update=":formClosure" id="editButton">
-				        		<f:setPropertyActionListener value="#{reg}" target="#{closureMBean.closure}" />  
-								<p:graphicImage value="#{messages['img_update']}" style="border: 0px" />
-							</p:commandLink>
-				        </p:column>
-				    </p:dataTable>
-				</div>
+					<h:panelGrid columns="5" width="300" border="0" columnClasses="colunaLabelCenter,colunaLabelCenter,colunaLabelCenter,colunaLabelCenter,colunaLabelCenter">
+			         	<f:facet name="header">
+			        		<h:outputText value="#{messages['lb_values']}"/>
+			        	</f:facet>
+			        	<h:outputText value="#{messages['lb_totalCredit_']}" />
+			        	<h:outputText value="-" />
+			        	<h:outputText value="#{messages['lb_totalDebit_']}" />
+			        	<h:outputText value="=" />
+			        	<h:outputText value="#{messages['lb_totalPeriod_']}" />
+			      	
+			      		<h:outputText id="totalCredit" value="#{closureMBean.closure.totalCredit}" >
+			        		<f:convertNumber pattern="#,##0.00" />
+			        	</h:outputText>
+			        	<h:outputText value="-" />
+			        	<h:outputText id="totalDebit" value="#{closureMBean.closure.totalDebit}" >
+			        		<f:convertNumber pattern="#,##0.00" />
+			        	</h:outputText>
+			        	<h:outputText value="=" />
+			        	<h:outputText id="totalPeriod" value="#{closureMBean.closure.totalGeneral}" >
+			        		<f:convertNumber pattern="#,##0.00" />
+			        	</h:outputText>
+			      	</h:panelGrid>
+			      	
+			      	<h:panelGroup width="300">
+			      		<div align="center">
+							<p:commandButton value="#{messages['lb_post']}" id="post" action="#{closureMBean.save}" ajax="false" update=":formClosure" styleClass="button"/>  
+							<p:commandButton value="#{messages['lb_back']}" update=":formClosure" immediate="true" id="cancelMaths" ajax="true"  styleClass="button" action="#{closureMBean.cancelMaths}"/>
+						</div>
+					</h:panelGroup>
+				</h:panelGroup>
 			</h:form>
 		</ui:define>
 </ui:composition>

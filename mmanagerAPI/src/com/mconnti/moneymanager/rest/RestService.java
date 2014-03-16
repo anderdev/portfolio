@@ -765,8 +765,7 @@ public class RestService {
 	public Response executeClosure(Closure closure) {
 		MessageReturn ret = new MessageReturn();
 		try {
-			ret = null;
-			closureBO.getClosure(closure);
+			ret = closureBO.getValuesToClose(closure);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

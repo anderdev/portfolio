@@ -124,6 +124,10 @@ public class RegisterBOImpl extends GenericBOImpl<Register> implements RegisterB
 					register.setTypeClosure(typeClosure);
 					setCreditCardDate(register);
 				}
+				
+				if(register.getId() == null){
+					register.setClosed(false);
+				}
 
 				if (register.getNumberParcel() > Constants.SINGLE_PARCEL) {
 					Parcel parcel = new Parcel();

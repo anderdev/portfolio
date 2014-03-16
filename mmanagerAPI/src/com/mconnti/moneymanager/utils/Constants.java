@@ -26,8 +26,12 @@ public abstract class Constants {
 
 	public static String YEARLY = "yearly";
 
-	public static String DATE_START = "dataInicial";
+	public static String DATE_START = "startDate";
 	
-	public static String DATE_END = "dataFinal";
+	public static String DATE_END = "endDate";
+	
+	public static Integer TYPE_ACCOUNT_CREDIT = 1;
+	
+	public static Integer TYPE_ACCOUNT_DEBIT = 2;
 	
 }

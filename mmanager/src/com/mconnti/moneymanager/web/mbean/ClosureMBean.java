@@ -53,6 +53,8 @@ public class ClosureMBean implements Serializable {
 	private Currency currency;
 
 	private TypeClosure typeClosure;
+	
+	private Boolean showMaths = false;
 
 	public ClosureMBean() {
 		this.closure = new Closure();
@@ -156,7 +158,7 @@ public class ClosureMBean implements Serializable {
 		closure.setDate(new Date());
 	}
 
-	public String close() {
+	public String list() {
 		createClosure();
 		loadCombos();
 		return "/common/formClosure.xhtml?faces-redirect=true";
@@ -164,8 +166,45 @@ public class ClosureMBean implements Serializable {
 
 
 	public String cancel() {
+		showMaths = false;
 		this.closure = new Closure();
 		return "/common/index.xhtml/faces-redirect=true";
+	}
+	
+	public void cancelMaths(){
+		showMaths = false;
+	}
+	
+	public void calculate(){
+		MessageReturn ret = new MessageReturn();
+		try {
+
+			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/closure");
+
+			closure.setUser(userMBean.getLoggedUser().getSuperUser() == null ? userMBean.getLoggedUser() : userMBean.getLoggedUser().getSuperUser());
+			request.body(MediaType.APPLICATION_JSON, closure);
+			
+			ClientResponse<Closure> response = request.put(Closure.class);
+
+			ret = response.getEntity(MessageReturn.class);
+
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+
+			if (ret.getClosure() == null) {
+				throw new Exception(ret.getMessage());
+			} else {
+				FacesUtil.showSuccessMessage(ret.getMessage());
+			}
+			showMaths = true;
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void edit() {
@@ -194,6 +233,7 @@ public class ClosureMBean implements Serializable {
 				FacesUtil.showSuccessMessage(ret.getMessage());
 			}
 			createClosure();
+			showMaths = false;
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -307,5 +347,13 @@ public class ClosureMBean implements Serializable {
 
 	public void setTypeClosures(SelectItem[] typeClosures) {
 		this.typeClosures = typeClosures;
+	}
+
+	public Boolean getShowMaths() {
+		return showMaths;
+	}
+
+	public void setShowMaths(Boolean showMaths) {
+		this.showMaths = showMaths;
 	}
 }

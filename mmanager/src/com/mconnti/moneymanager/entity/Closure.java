@@ -34,7 +34,9 @@ public class Closure implements Serializable {
 
 	private User user;
 	
-	private Collection<Register> registersAlreadyClosed;
+	private Collection<Register> debitsAlreadyClosed;
+	
+	private Collection<Register> creditsAlreadyClosed;
 
 	public Closure() {
 		super();
@@ -105,11 +107,11 @@ public class Closure implements Serializable {
 	}
 
 	public Collection<Register> getDebitsAlreadyClosed() {
-		return registersAlreadyClosed;
+		return debitsAlreadyClosed;
 	}
 
 	public void setDebitsAlreadyClosed(Collection<Register> debitsAlreadyClosed) {
-		this.registersAlreadyClosed = debitsAlreadyClosed;
+		this.debitsAlreadyClosed = debitsAlreadyClosed;
 	}
 
 	public TypeClosure getTypeClosure() {
@@ -126,5 +128,13 @@ public class Closure implements Serializable {
 
 	public void setCurrency(Currency currency) {
 		this.currency = currency;
+	}
+
+	public Collection<Register> getCreditsAlreadyClosed() {
+		return creditsAlreadyClosed;
+	}
+
+	public void setCreditsAlreadyClosed(Collection<Register> creditsAlreadyClosed) {
+		this.creditsAlreadyClosed = creditsAlreadyClosed;
 	}
 }
