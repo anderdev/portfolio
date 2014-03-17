@@ -1,6 +1,7 @@
 package com.mconnti.moneymanager.entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
 
@@ -22,11 +23,11 @@ public class Closure implements Serializable {
 	
 	private Date endDate;
 
-	private Double totalCredit;
+	private BigDecimal totalCredit;
 	
-	private Double totalDebit;
+	private BigDecimal totalDebit;
 	
-	private Double totalGeneral;
+	private BigDecimal totalGeneral;
 	
 	private TypeClosure typeClosure;
 	
@@ -58,27 +59,27 @@ public class Closure implements Serializable {
 		this.date = date;
 	}
 
-	public Double getTotalCredit() {
+	public BigDecimal getTotalCredit() {
 		return totalCredit;
 	}
 
-	public void setTotalCredit(Double totalCredit) {
+	public void setTotalCredit(BigDecimal totalCredit) {
 		this.totalCredit = totalCredit;
 	}
 
-	public Double getTotalDebit() {
+	public BigDecimal getTotalDebit() {
 		return totalDebit;
 	}
 
-	public void setTotalDebit(Double totalDebit) {
+	public void setTotalDebit(BigDecimal totalDebit) {
 		this.totalDebit = totalDebit;
 	}
 
-	public Double getTotalGeneral() {
+	public BigDecimal getTotalGeneral() {
 		return totalGeneral;
 	}
 
-	public void setTotalGeneral(Double totalGeneral) {
+	public void setTotalGeneral(BigDecimal totalGeneral) {
 		this.totalGeneral = totalGeneral;
 	}
 

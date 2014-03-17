@@ -1,5 +1,6 @@
 package com.mconnti.moneymanager.business.impl;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collection;
@@ -338,8 +339,9 @@ public class ClosureBOImpl extends GenericBOImpl<Closure> implements ClosureBO {
 	}
 
 	private Closure getClosureValues(Closure closure, String startDate, String endDate) {
-		Double sumCredit = 0.0;
-		Double sumDebit = 0.0;
+		BigDecimal sumCredit = new BigDecimal(0.00);
+		BigDecimal sumDebit = new BigDecimal(0.00);
+		
 
 		closure.setCreditsAlreadyClosed(closureDAO.getRegisters(closure.getUser(), startDate, endDate, true, Constants.TYPE_ACCOUNT_CREDIT));
 
@@ -349,15 +351,19 @@ public class ClosureBOImpl extends GenericBOImpl<Closure> implements ClosureBO {
 
 		Collection<Register> collectionDebit = closureDAO.getRegisters(closure.getUser(), startDate, endDate, false, Constants.TYPE_ACCOUNT_DEBIT);
 
-		for (Register debit : collectionDebit) {
-			sumDebit += debit.getAmount();
+		for (Register debit : collectionDebit) { 
+			System.out.println("amount: "+debit.getAmount());
+			sumDebit =sumDebit.add(debit.getAmount());
+			System.out.println("sumDebit: "+sumDebit);
 		}
 
 		for (Register credit : collectionCredit) {
-			sumCredit += credit.getAmount();
+			System.out.println("amount: "+credit.getAmount());
+			sumCredit = sumCredit.add(credit.getAmount());
+			System.out.println("sumCredit: "+sumCredit);
 		}
 
-		Double total = sumCredit - sumDebit;
+		BigDecimal total = sumCredit.min(sumDebit);
 		closure.setTotalCredit(sumCredit);
 		closure.setTotalDebit(sumDebit);
 		closure.setTotalGeneral(total);

@@ -195,6 +195,7 @@ public class ClosureMBean implements Serializable {
 			if (ret.getClosure() == null) {
 				throw new Exception(ret.getMessage());
 			} else {
+				closure = ret.getClosure();
 				FacesUtil.showSuccessMessage(ret.getMessage());
 			}
 			showMaths = true;

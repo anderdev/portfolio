@@ -1,6 +1,7 @@
 package com.mconnti.moneymanager.entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
@@ -36,7 +37,7 @@ public class Register implements Serializable {
 	private String strDate;
 
 	@Column(length = 13, precision = 13, scale = 2)
-	private Double amount;
+	private BigDecimal amount;
 
 	private Integer numberParcel;
 
@@ -152,11 +153,11 @@ public class Register implements Serializable {
 		this.typeClosure = type;
 	}
 
-	public Double getAmount() {
+	public BigDecimal getAmount() {
 		return amount;
 	}
 
-	public void setAmount(Double amount) {
+	public void setAmount(BigDecimal amount) {
 		this.amount = amount;
 	}
 

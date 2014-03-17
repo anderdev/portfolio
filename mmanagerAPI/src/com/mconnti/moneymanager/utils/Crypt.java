@@ -1,5 +1,6 @@
 package com.mconnti.moneymanager.utils;
 
+import java.math.BigDecimal;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 
@@ -53,12 +54,13 @@ public final class Crypt {
 		return ret;
 	}
 
-	public static final Double encryptValor(final Double valor) {
-		return valor * 3 / 10;
+	public static final BigDecimal encryptValor(final BigDecimal valor) {
+		return valor.multiply(new BigDecimal(3)).divide(new BigDecimal(10));
 	}
 
-	public static final Double decryptValor(final Double valor) {
-		return valor / 3 * 10;
+	public static final BigDecimal decryptValor(final BigDecimal valor) {
+		BigDecimal result =  valor.divide(new BigDecimal(3)).multiply(new BigDecimal(10));
+		return result;
 	}
 
 }

@@ -1,6 +1,7 @@
 package com.mconnti.moneymanager.entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
 
@@ -45,13 +46,13 @@ public class Closure implements Serializable {
 	private Currency currency;
 
 	@Column(length = 13, precision = 13, scale = 2)
-	private Double totalCredit;
+	private BigDecimal totalCredit;
 	
 	@Column(length = 13, precision = 13, scale = 2)
-	private Double totalDebit;
+	private BigDecimal totalDebit;
 	
 	@Column(length = 13, precision = 13, scale = 2)
-	private Double totalGeneral;
+	private BigDecimal totalGeneral;
 
 	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = User.class)
 	@JoinColumn(name = "user_id")
@@ -92,27 +93,27 @@ public class Closure implements Serializable {
 		this.currency = currency;
 	}
 
-	public Double getTotalCredit() {
+	public BigDecimal getTotalCredit() {
 		return totalCredit;
 	}
 
-	public void setTotalCredit(Double totalCredit) {
+	public void setTotalCredit(BigDecimal totalCredit) {
 		this.totalCredit = totalCredit;
 	}
 
-	public Double getTotalDebit() {
+	public BigDecimal getTotalDebit() {
 		return totalDebit;
 	}
 
-	public void setTotalDebit(Double totalDebit) {
+	public void setTotalDebit(BigDecimal totalDebit) {
 		this.totalDebit = totalDebit;
 	}
 
-	public Double getTotalGeneral() {
+	public BigDecimal getTotalGeneral() {
 		return totalGeneral;
 	}
 
-	public void setTotalGeneral(Double totalGeneral) {
+	public void setTotalGeneral(BigDecimal totalGeneral) {
 		this.totalGeneral = totalGeneral;
 	}
 
