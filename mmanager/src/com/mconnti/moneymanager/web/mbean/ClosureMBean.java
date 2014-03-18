@@ -159,6 +159,7 @@ public class ClosureMBean implements Serializable {
 	}
 
 	public String list() {
+		showMaths = false;
 		createClosure();
 		loadCombos();
 		return "/common/formClosure.xhtml?faces-redirect=true";
@@ -196,7 +197,6 @@ public class ClosureMBean implements Serializable {
 				throw new Exception(ret.getMessage());
 			} else {
 				closure = ret.getClosure();
-				FacesUtil.showSuccessMessage(ret.getMessage());
 			}
 			showMaths = true;
 		} catch (ClientProtocolException e) {

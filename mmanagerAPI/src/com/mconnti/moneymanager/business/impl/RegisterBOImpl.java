@@ -129,7 +129,7 @@ public class RegisterBOImpl extends GenericBOImpl<Register> implements RegisterB
 					register.setClosed(false);
 				}
 
-				if (register.getNumberParcel() > Constants.SINGLE_PARCEL) {
+				if (register.getNumberParcel() != null && register.getNumberParcel() > Constants.SINGLE_PARCEL) {
 					Parcel parcel = new Parcel();
 					parcel.setParcels(register.getNumberParcel());
 					parcel.setUser(user);

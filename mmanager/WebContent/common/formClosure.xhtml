@@ -24,7 +24,7 @@
 								pattern="dd/MM/yyyy"/>
 						</h:panelGrid>
 						
-						<h:panelGrid columns="4" styleClass="boldFont" columnClasses="column120RightWithPaddingRigth,column80,column80rightAlign,column80" border="0">	
+						<h:panelGrid columns="4" styleClass="boldFont" columnClasses="column120RightWithPaddingRigth,column80,column85rightAlign,column80" border="0">	
 							<h:outputText value="#{messages['lb_type_closure']}" />
 							<p:selectOneMenu value="#{closureMBean.closure.typeClosure.id}" label="#{messages['lb_type_closure_']}" required="true" >
 					            <f:selectItem itemLabel="#{messages['lb_select']}" itemValue="" />
@@ -52,7 +52,7 @@
 					    		paginatorAlwaysVisible="false" paginator="true" emptyMessage="#{messages['lb_empty_list']}"
 					    		rows="10" rowKey="#{clo}">
 					    	
-					        <p:column sortBy="#{clo.date}" >
+					        <p:column sortBy="#{clo.date}"  style="width:110px;text-align:center;">
 					             <f:facet name="header">
 					                <h:outputText value="#{messages['lb_date_']}" />
 					            </f:facet>
@@ -61,38 +61,44 @@
 					            </h:outputText>
 					        </p:column>
 					        
-					        <p:column sortBy="#{clo.typeClosure.type}" >
+					        <p:column sortBy="#{clo.typeClosure.type}" style="width:310px;text-align:center;">
 					            <f:facet name="header">
 					                <h:outputText value="#{messages['lb_type_closure_']}" />
 					            </f:facet>
 					            <h:outputText value="#{clo.typeClosure.type}" />
 					        </p:column>
 					        
-					        <p:column style="width:90px;text-align:right;">
+					        <p:column style="width:110px;">
 					            <f:facet name="header">
 					                <h:outputText value="#{messages['lb_totalCredit_']}" />
 					            </f:facet>
-					            <h:outputText value="#{clo.totalCredit}" >
-					            	<f:convertNumber pattern="##0.00"/>
-					            </h:outputText>
+					            <div align="right">
+						            <h:outputText value="#{clo.totalCredit}" >
+						            	<f:convertNumber pattern="##0.00"/>
+						            </h:outputText>
+					            </div>
 					        </p:column>
 					        
-					        <p:column style="width:90px;text-align:right;">
+					        <p:column style="width:110px;">
 					            <f:facet name="header">
 					                <h:outputText value="#{messages['lb_totalDebit_']}" />
 					            </f:facet>
-					            <h:outputText value="#{clo.totalDebit}" >
-					            	<f:convertNumber pattern="##0.00"/>
-					            </h:outputText>
+					            <div align="right">
+						            <h:outputText value="#{clo.totalDebit}" >
+						            	<f:convertNumber pattern="##0.00"/>
+						            </h:outputText>
+					            </div>
 					        </p:column>
 					        
-					        <p:column style="width:90px;text-align:right;">
+					        <p:column style="width:110px;">
 					            <f:facet name="header">
 					                <h:outputText value="#{messages['lb_totalGeneral_']}" />
 					            </f:facet>
-					            <h:outputText value="#{clo.totalGeneral}" >
-					            	<f:convertNumber pattern="##0.00"/>
-					            </h:outputText>
+					            <div align="right">
+						            <h:outputText value="#{clo.totalGeneral}" >
+						            	<f:convertNumber pattern="##0.00"/>
+						            </h:outputText>
+					            </div>
 					        </p:column>
 					        
 					        <p:column style="width:5%">
@@ -104,50 +110,55 @@
 					    </p:dataTable>
 					</div>
 				</h:panelGroup>
-				<h:panelGroup rendered="#{closureMBean.showMaths}">
-					<h:panelGrid columns="4" width="300">
-			         	<f:facet name="header">
-			        		<h:outputText value="#{messages['lb_competence_']}"/>
-			        	</f:facet>
-			        	<h:outputText value="#{messages['lb_startDate_']}" />
-			        	<h:outputText value="#{closureMBean.closure.startDate}" >
-			        		<f:convertDateTime pattern="dd/MM/yyyy" />
-			        	</h:outputText>
-			        	<h:outputText value="#{messages['lb_endDate_']}"/>
-			        	<h:outputText value="#{closureMBean.closure.endDate}">
-			        		<f:convertDateTime pattern="dd/MM/yyyy" />
-			        	</h:outputText>
-			      	</h:panelGrid>
 				
-					<h:panelGrid columns="5" width="300" border="0" columnClasses="colunaLabelCenter,colunaLabelCenter,colunaLabelCenter,colunaLabelCenter,colunaLabelCenter">
-			         	<f:facet name="header">
-			        		<h:outputText value="#{messages['lb_values']}"/>
-			        	</f:facet>
-			        	<h:outputText value="#{messages['lb_totalCredit_']}" />
-			        	<h:outputText value="-" />
-			        	<h:outputText value="#{messages['lb_totalDebit_']}" />
-			        	<h:outputText value="=" />
-			        	<h:outputText value="#{messages['lb_totalPeriod_']}" />
-			      	
-			      		<h:outputText id="totalCredit" value="#{closureMBean.closure.totalCredit}" >
-			        		<f:convertNumber pattern="#,##0.00" />
-			        	</h:outputText>
-			        	<h:outputText value="-" />
-			        	<h:outputText id="totalDebit" value="#{closureMBean.closure.totalDebit}" >
-			        		<f:convertNumber pattern="#,##0.00" />
-			        	</h:outputText>
-			        	<h:outputText value="=" />
-			        	<h:outputText id="totalPeriod" value="#{closureMBean.closure.totalGeneral}" >
-			        		<f:convertNumber pattern="#,##0.00" />
-			        	</h:outputText>
-			      	</h:panelGrid>
-			      	
-			      	<h:panelGroup width="300">
-			      		<div align="center">
-							<p:commandButton value="#{messages['lb_post']}" id="post" action="#{closureMBean.save}" ajax="false" update=":formClosure" styleClass="button"/>  
-							<p:commandButton value="#{messages['lb_back']}" update=":formClosure" immediate="true" id="cancelMaths" ajax="true"  styleClass="button" action="#{closureMBean.cancelMaths}"/>
-						</div>
-					</h:panelGroup>
+				<h:panelGroup rendered="#{closureMBean.showMaths}">
+					<div class="contentMathValues">
+						<p:panel>
+							<p:panelGrid columns="4" style="width:100%" columnClasses="textAlignCenter,textAlignCenter,textAlignCenter,textAlignCenter">
+								<f:facet name="header">
+					        		<h:outputText value="#{messages['lb_competence_']}"/>
+					        	</f:facet>
+								<h:outputText value="#{messages['lb_startDate_']}" />
+					        	<h:outputText value="#{closureMBean.closure.startDate}" >
+					        		<f:convertDateTime pattern="dd/MM/yyyy" />
+					        	</h:outputText>
+					        	<h:outputText value="#{messages['lb_endDate_']}"/>
+					        	<h:outputText value="#{closureMBean.closure.endDate}">
+					        		<f:convertDateTime pattern="dd/MM/yyyy" />
+					        	</h:outputText>
+							</p:panelGrid>
+							<br/>
+							<p:panelGrid columns="5" style="width:100%" columnClasses="textAlignCenter,textAlignCenter,textAlignCenter,textAlignCenter,textAlignCenter" >
+								<f:facet name="header">
+					        		<h:outputText value="#{messages['lb_values']}"/>
+					        	</f:facet>
+								<h:outputText value="#{messages['lb_totalCredit_']}"/>
+					        	<h:outputText/>
+					        	<h:outputText value="#{messages['lb_totalDebit_']}" />
+					        	<h:outputText />
+					        	<h:outputText value="#{messages['lb_totalGeneral_']}" />
+					      	
+					      		<h:outputText id="totalCredit" value="#{closureMBean.closure.totalCredit}" >
+					        		<f:convertNumber pattern="#,##0.00" />
+					        	</h:outputText>
+					        	<h:outputText value="-" />
+					        	<h:outputText id="totalDebit" value="#{closureMBean.closure.totalDebit}" >
+					        		<f:convertNumber pattern="#,##0.00" />
+					        	</h:outputText>
+					        	<h:outputText value="=" />
+					        	<h:outputText id="totalPeriod" value="#{closureMBean.closure.totalGeneral}" >
+					        		<f:convertNumber pattern="#,##0.00" />
+					        	</h:outputText>
+							</p:panelGrid>
+							<br/>
+							<h:panelGroup style="width:100%">
+					      		<div align="center">
+									<p:commandButton value="#{messages['lb_post']}" id="post" action="#{closureMBean.save}" ajax="false" update=":formClosure" styleClass="button"/>  
+									<p:commandButton value="#{messages['lb_back']}" update=":formClosure" immediate="true" id="cancelMaths" ajax="true"  styleClass="button" action="#{closureMBean.cancelMaths}"/>
+								</div>
+							</h:panelGroup>
+					    </p:panel>
+					</div>
 				</h:panelGroup>
 			</h:form>
 		</ui:define>

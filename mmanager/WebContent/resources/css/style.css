@@ -153,7 +153,7 @@ a img {
 
 .listContent {
 	width:98%;
-	height:450px;
+	height:400px;
 	margin-left: -49%;
 	position: absolute;
 	left: 50%;
@@ -177,7 +177,7 @@ a img {
 	border: 1px solid green !important;
 	padding-top:25px;
 	padding-bottom:25px;
-	bottom: 10%;
+	bottom: 5%;
 }
 
 .contentFormUser{
@@ -192,6 +192,19 @@ a img {
 	border: 1px solid green !important;
 	padding-top:25px;
 	padding-bottom:25px;
+	bottom: 8%;
+}
+
+.contentMathValues{
+	width:500px;
+	height: 300px;
+	margin-left: -250px;
+	position: absolute;
+	left: 50%;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;	
+	border: 0px solid green !important;
 	bottom: 8%;
 }
 
@@ -292,22 +305,38 @@ border-width:5px;*/
 	border: 0px dotted #000;
 }
 
-.column85{
-	width: 85px;
-}
-.column90{
-	width: 90px;
-}
-
-.column100percent{
-	width: 100%;
-}
 
 .column80rightAlign{
 	width: 80px;
 	text-align: right;
 	margin-right: 5px;
 	border: 0px dotted #000;
+}
+
+.column85{
+	width: 85px;
+}
+
+.column85rightAlign{
+	width: 87px;
+	text-align: right;
+	margin-right: 8px;
+	border: 0px dotted #000;
+}
+
+.column90rightAlign{
+	width: 90px;
+	text-align: right;
+	margin-right: 5px;
+	border: 0px dotted #000;
+}
+
+.column90{
+	width: 90px;
+}
+
+.column100percent{
+	width: 100%;
 }
 
 .column120{
@@ -344,7 +373,7 @@ border-width:5px;*/
 }
 
 .column285{
-	width: 287px;
+	width: 285px;
 }
 
 .column290{
@@ -435,6 +464,8 @@ div#boxLoggedUser{
 	top: 10px;
 	z-index: 100;
 }
+
+.textAlignCenter{text-align: center}
 
 .boxTitle{
 	border: 0px dotted #000;

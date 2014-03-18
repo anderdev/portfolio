@@ -108,13 +108,15 @@
 				            </h:outputText>
 				        </p:column>
 				        
-				        <p:column style="width:90px;text-align:right;">
+				        <p:column style="width:90px;text-align:center;">
 				            <f:facet name="header">
 				                <h:outputText value="#{messages['lb_amount_']}" />
 				            </f:facet>
+				            <div align="right">
 				            <h:outputText value="#{reg.amount}" >
 				            	<f:convertNumber pattern="###,##0.00"/>
 				            </h:outputText>
+				            </div>
 				        </p:column>
 				        
 				        <p:column style="width:5%">

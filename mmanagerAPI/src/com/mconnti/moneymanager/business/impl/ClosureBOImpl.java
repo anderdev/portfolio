@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mconnti.moneymanager.business.ClosureBO;
+import com.mconnti.moneymanager.business.DescriptionBO;
+import com.mconnti.moneymanager.business.RegisterBO;
 import com.mconnti.moneymanager.entity.Closure;
 import com.mconnti.moneymanager.entity.Description;
 import com.mconnti.moneymanager.entity.Register;
@@ -21,12 +23,10 @@ import com.mconnti.moneymanager.entity.TypeClosure;
 import com.mconnti.moneymanager.entity.User;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
 import com.mconnti.moneymanager.persistence.ClosureDAO;
-import com.mconnti.moneymanager.persistence.DescriptionDAO;
 import com.mconnti.moneymanager.persistence.RegisterDAO;
 import com.mconnti.moneymanager.persistence.TypeAccountDAO;
 import com.mconnti.moneymanager.persistence.UserDAO;
 import com.mconnti.moneymanager.utils.Constants;
-import com.mconnti.moneymanager.utils.Crypt;
 import com.mconnti.moneymanager.utils.MessageFactory;
 import com.mconnti.moneymanager.utils.Utils;
 
@@ -36,13 +36,16 @@ public class ClosureBOImpl extends GenericBOImpl<Closure> implements ClosureBO {
 	private UserDAO userDAO;
 
 	@Autowired
+	private RegisterBO registerBO;
+	
+	@Autowired
 	private RegisterDAO registerDAO;
 
 	@Autowired
 	private ClosureDAO closureDAO;
 
 	@Autowired
-	private DescriptionDAO descriptionDAO;
+	private DescriptionBO descriptionBO;
 
 	@Autowired
 	private TypeAccountDAO typeAccountDAO;
@@ -58,7 +61,7 @@ public class ClosureBOImpl extends GenericBOImpl<Closure> implements ClosureBO {
 
 	private Description getDescriptionByParameter(Map<String, String> queryParams) {
 		try {
-			return descriptionDAO.findByParameter(Description.class, queryParams);
+			return descriptionBO.findByParameter(Description.class, queryParams);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -84,123 +87,9 @@ public class ClosureBOImpl extends GenericBOImpl<Closure> implements ClosureBO {
 
 				closure.setUser(user);
 
-				closeValues(closure, Utils.dateToString(closure.getStartDate()), Utils.dateToString(closure.getDate()));
+				closeRegisters(closure, Utils.dateToString(closure.getStartDate()), Utils.dateToString(closure.getDate()));
 
-				Calendar calendar = Calendar.getInstance();
-				calendar.setTime(closure.getDate());
-				calendar.add(Calendar.DAY_OF_MONTH, +1);
-
-				Map<String, String> queryParams = new HashMap<>();
-
-				Register register = new Register();
-				register.setDate(calendar.getTime());
-				if (closure.getUser().getLanguage().equals("pt_BR")) {
-					queryParams.clear();
-					queryParams.put("description", "Saldo mÃªs anterior");
-					Description description = getDescriptionByParameter(queryParams);
-
-					if (description == null) {
-						description = new Description();
-						description.setDescription("Saldo mÃªs anterior");
-						queryParams.clear();
-						queryParams.put("description", "CrÃ©dito");
-						TypeAccount typeAccount = getTypeAccountByParameter(queryParams);
-						description.setTypeAccount(typeAccount);
-						description.setUser(user);
-						descriptionDAO.save(description);
-					}
-
-					queryParams.clear();
-					queryParams.put("description", "Fechamento de Contas");
-
-					Description group = getDescriptionByParameter(queryParams);
-
-					if (group == null) {
-						group = new Description();
-						group.setDescription("Fechamento de Contas");
-						queryParams.clear();
-						queryParams.put("description", "Grupo");
-						TypeAccount typeAccount = getTypeAccountByParameter(queryParams);
-						group.setTypeAccount(typeAccount);
-						group.setUser(user);
-						descriptionDAO.save(group);
-					}
-
-					queryParams.clear();
-					queryParams.put("description", "Fechamento de Contas");
-
-					Description superGroup = getDescriptionByParameter(queryParams);
-
-					if (superGroup == null) {
-						superGroup = new Description();
-						superGroup.setDescription("Fechamento de Contas");
-						queryParams.clear();
-						queryParams.put("description", "Super Grupo");
-						TypeAccount typeAccount = getTypeAccountByParameter(queryParams);
-						superGroup.setTypeAccount(typeAccount);
-						superGroup.setUser(user);
-						descriptionDAO.save(superGroup);
-					}
-					register.setDescription(description);
-					register.setGroup(group);
-					register.setSuperGroup(superGroup);
-				} else {
-					queryParams.clear();
-					queryParams.put("description", "Previous month balance");
-					Description description = getDescriptionByParameter(queryParams);
-
-					if (description == null) {
-						description = new Description();
-						description.setDescription("Previous month balance");
-						queryParams.clear();
-						queryParams.put("description", "Credit");
-						TypeAccount typeAccount = getTypeAccountByParameter(queryParams);
-						description.setTypeAccount(typeAccount);
-						description.setUser(user);
-						descriptionDAO.save(description);
-					}
-
-					queryParams.clear();
-					queryParams.put("description", "Closing of accounts");
-
-					Description group = getDescriptionByParameter(queryParams);
-
-					if (group == null) {
-						group = new Description();
-						group.setDescription("Closing of accounts");
-						queryParams.clear();
-						queryParams.put("description", "Group");
-						TypeAccount typeAccount = getTypeAccountByParameter(queryParams);
-						group.setTypeAccount(typeAccount);
-						group.setUser(user);
-						descriptionDAO.save(group);
-					}
-
-					queryParams.clear();
-					queryParams.put("description", "Closing of accounts");
-
-					Description superGroup = getDescriptionByParameter(queryParams);
-
-					if (superGroup == null) {
-						superGroup = new Description();
-						superGroup.setDescription("Closing of accounts");
-						queryParams.clear();
-						queryParams.put("description", "Super Group");
-						TypeAccount typeAccount = getTypeAccountByParameter(queryParams);
-						superGroup.setTypeAccount(typeAccount);
-						superGroup.setUser(user);
-						descriptionDAO.save(superGroup);
-					}
-					register.setDescription(description);
-					register.setGroup(group);
-					register.setSuperGroup(superGroup);
-				}
-
-				register.setCurrency(closure.getUser().getConfig().getCurrency());
-				register.setUser(closure.getUser());
-				register.setAmount(Crypt.encryptValor(closure.getTotalGeneral()));
-				register.setClosed(false);
-				registerDAO.save(register);
+				createRegister(closure, user);
 				saveGeneric(closure);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -221,7 +110,131 @@ public class ClosureBOImpl extends GenericBOImpl<Closure> implements ClosureBO {
 		return libReturn;
 	}
 
-	private void closeValues(Closure closure, String startDate, String endDate) throws Exception {
+	private void createRegister(Closure closure, User user) throws Exception {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(closure.getDate());
+		calendar.add(Calendar.DAY_OF_MONTH, +1);
+		
+		Map<String, String> queryParams = new HashMap<>();
+		TypeAccount typeAccountRegister = null;
+
+		Register register = new Register();
+		register.setDate(calendar.getTime());
+		if (closure.getUser().getLanguage().equals("pt_BR")) {
+			queryParams.clear();
+			queryParams.put("where x.description = ", "'Saldo mês anterior'");
+			Description description = getDescriptionByParameter(queryParams);
+
+			if (description == null) {
+				description = new Description();
+				description.setDescription("Saldo mês anterior");
+				queryParams.clear();
+				if(closure.getTotalGeneral().compareTo(BigDecimal.ZERO) > 0){
+					queryParams.put("where x.description = ", "'Crédito'");
+				} else{
+					queryParams.put("where x.description = ", "'Debito'");
+				}
+				TypeAccount typeAccount = getTypeAccountByParameter(queryParams);
+				typeAccountRegister = typeAccount;
+				description.setTypeAccount(typeAccount);
+				description.setUser(user);
+			}
+
+			queryParams.clear();
+			queryParams.put("where x.description = ", "'Fechamento de Contas'");
+
+			Description group = getDescriptionByParameter(queryParams);
+
+			if (group == null) {
+				group = new Description();
+				group.setDescription("Fechamento de Contas");
+				queryParams.clear();
+				queryParams.put("where x.description = ", "'Grupo'");
+				TypeAccount typeAccount = getTypeAccountByParameter(queryParams);
+				group.setTypeAccount(typeAccount);
+				group.setUser(user);
+			}
+
+			queryParams.clear();
+			queryParams.put("where x.description = ", "'Fechamento de Contas'");
+
+			Description superGroup = getDescriptionByParameter(queryParams);
+
+			if (superGroup == null) {
+				superGroup = new Description();
+				superGroup.setDescription("Fechamento de Contas");
+				queryParams.clear();
+				queryParams.put("where x.description = ", "'Super Grupo'");
+				TypeAccount typeAccount = getTypeAccountByParameter(queryParams);
+				superGroup.setTypeAccount(typeAccount);
+				superGroup.setUser(user);
+			}
+			register.setDescription(description);
+			register.setGroup(group);
+			register.setSuperGroup(superGroup);
+		} else {
+			queryParams.clear();
+			queryParams.put("where x.description = ", "'Previous month balance'");
+			Description description = getDescriptionByParameter(queryParams);
+
+			if (description == null) {
+				description = new Description();
+				description.setDescription("Previous month balance");
+				queryParams.clear();
+				if(closure.getTotalGeneral().compareTo(BigDecimal.ZERO) > 0){
+					queryParams.put("where x.description = ", "'Credit'");
+				} else {
+					queryParams.put("where x.description = ", "'Debit'");
+				}
+				TypeAccount typeAccount = getTypeAccountByParameter(queryParams);
+				typeAccountRegister = typeAccount;
+				description.setTypeAccount(typeAccount);
+				description.setUser(user);
+			}
+
+			queryParams.clear();
+			queryParams.put("where x.description = ", "'Closing of accounts'");
+
+			Description group = getDescriptionByParameter(queryParams);
+
+			if (group == null) {
+				group = new Description();
+				group.setDescription("Closing of accounts");
+				queryParams.clear();
+				queryParams.put("where x.description = ", "'Group'");
+				TypeAccount typeAccount = getTypeAccountByParameter(queryParams);
+				group.setTypeAccount(typeAccount);
+				group.setUser(user);
+			}
+
+			queryParams.clear();
+			queryParams.put("where x.description = ", "'Closing of accounts'");
+
+			Description superGroup = getDescriptionByParameter(queryParams);
+
+			if (superGroup == null) {
+				superGroup = new Description();
+				superGroup.setDescription("Closing of accounts");
+				queryParams.clear();
+				queryParams.put("where x.description = ", "'Super Group'");
+				TypeAccount typeAccount = getTypeAccountByParameter(queryParams);
+				superGroup.setTypeAccount(typeAccount);
+				superGroup.setUser(user);
+			}
+			register.setDescription(description);
+			register.setGroup(group);
+			register.setSuperGroup(superGroup);
+		}
+		register.setNumberParcel(Constants.SINGLE_PARCEL);
+		register.setTypeAccount(typeAccountRegister);
+		register.setTypeClosure(closure.getTypeClosure());
+		register.setCurrency(closure.getCurrency());
+		register.setUser(closure.getUser());
+		register.setAmount(closure.getTotalGeneral());
+		registerBO.save(register);
+	}
+
+	private void closeRegisters(Closure closure, String startDate, String endDate) throws Exception {
 
 		closure.setCreditsAlreadyClosed(closureDAO.getRegisters(closure.getUser(), startDate, endDate, true, Constants.TYPE_ACCOUNT_CREDIT));
 
@@ -241,10 +254,7 @@ public class ClosureBOImpl extends GenericBOImpl<Closure> implements ClosureBO {
 	}
 	
 	private void saveRegister(Register register, Boolean closed) throws Exception{
-//		came from organizer, commented to test the real necessity
-//		Register registerBean = new Register();
-//		registerBean = registerDAO.findById(Register.class, register.getId());
-		register.setClosed(true);
+		register.setClosed(closed);
 		registerDAO.save(register);
 	}
 
@@ -327,7 +337,7 @@ public class ClosureBOImpl extends GenericBOImpl<Closure> implements ClosureBO {
 
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
-		calendar.add(type, days);
+		calendar.add(type, days+1);
 		SimpleDateFormat dataFormatada = new SimpleDateFormat("dd/MM/yyyy");
 		String startDate = dataFormatada.format(calendar.getTime());
 		calendar.setTime(date);
@@ -352,18 +362,14 @@ public class ClosureBOImpl extends GenericBOImpl<Closure> implements ClosureBO {
 		Collection<Register> collectionDebit = closureDAO.getRegisters(closure.getUser(), startDate, endDate, false, Constants.TYPE_ACCOUNT_DEBIT);
 
 		for (Register debit : collectionDebit) { 
-			System.out.println("amount: "+debit.getAmount());
 			sumDebit =sumDebit.add(debit.getAmount());
-			System.out.println("sumDebit: "+sumDebit);
 		}
 
 		for (Register credit : collectionCredit) {
-			System.out.println("amount: "+credit.getAmount());
 			sumCredit = sumCredit.add(credit.getAmount());
-			System.out.println("sumCredit: "+sumCredit);
 		}
 
-		BigDecimal total = sumCredit.min(sumDebit);
+		BigDecimal total = sumCredit.subtract(sumDebit);
 		closure.setTotalCredit(sumCredit);
 		closure.setTotalDebit(sumDebit);
 		closure.setTotalGeneral(total);
