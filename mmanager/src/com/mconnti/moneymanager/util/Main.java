@@ -13,10 +13,10 @@ public class Main {
 		System.out.println("value = 500.50: "+value);
 		
 		BigDecimal minusValue = new BigDecimal(0.00);
-		minusValue = minusValue.add(new BigDecimal(250.50));
-		System.out.println("minusValue = 250.50: "+minusValue);
+		minusValue = minusValue.add(new BigDecimal(550.50));
+		System.out.println("minusValue = 550.50: "+minusValue);
 		
 		BigDecimal result = value.subtract(minusValue);
-		System.out.println("Result: "+result);
+		System.out.println("Result: "+new BigDecimal(result.toString().split("-")[1]));
 	}
 }

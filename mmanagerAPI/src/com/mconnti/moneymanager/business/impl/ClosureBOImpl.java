@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +28,7 @@ import com.mconnti.moneymanager.persistence.RegisterDAO;
 import com.mconnti.moneymanager.persistence.TypeAccountDAO;
 import com.mconnti.moneymanager.persistence.UserDAO;
 import com.mconnti.moneymanager.utils.Constants;
+import com.mconnti.moneymanager.utils.Crypt;
 import com.mconnti.moneymanager.utils.MessageFactory;
 import com.mconnti.moneymanager.utils.Utils;
 
@@ -115,122 +117,92 @@ public class ClosureBOImpl extends GenericBOImpl<Closure> implements ClosureBO {
 		calendar.setTime(closure.getDate());
 		calendar.add(Calendar.DAY_OF_MONTH, +1);
 		
-		Map<String, String> queryParams = new HashMap<>();
+		Map<String, String> queryParams = new LinkedHashMap<>();
 		TypeAccount typeAccountRegister = null;
+		TypeAccount typeAccount = null;
 
 		Register register = new Register();
 		register.setDate(calendar.getTime());
+		
+		String language = null;
 		if (closure.getUser().getLanguage().equals("pt_BR")) {
-			queryParams.clear();
-			queryParams.put("where x.description = ", "'Saldo mês anterior'");
-			Description description = getDescriptionByParameter(queryParams);
-
-			if (description == null) {
-				description = new Description();
-				description.setDescription("Saldo mês anterior");
-				queryParams.clear();
-				if(closure.getTotalGeneral().compareTo(BigDecimal.ZERO) > 0){
-					queryParams.put("where x.description = ", "'Crédito'");
-				} else{
-					queryParams.put("where x.description = ", "'Debito'");
-				}
-				TypeAccount typeAccount = getTypeAccountByParameter(queryParams);
-				typeAccountRegister = typeAccount;
-				description.setTypeAccount(typeAccount);
-				description.setUser(user);
-			}
-
-			queryParams.clear();
-			queryParams.put("where x.description = ", "'Fechamento de Contas'");
-
-			Description group = getDescriptionByParameter(queryParams);
-
-			if (group == null) {
-				group = new Description();
-				group.setDescription("Fechamento de Contas");
-				queryParams.clear();
-				queryParams.put("where x.description = ", "'Grupo'");
-				TypeAccount typeAccount = getTypeAccountByParameter(queryParams);
-				group.setTypeAccount(typeAccount);
-				group.setUser(user);
-			}
-
-			queryParams.clear();
-			queryParams.put("where x.description = ", "'Fechamento de Contas'");
-
-			Description superGroup = getDescriptionByParameter(queryParams);
-
-			if (superGroup == null) {
-				superGroup = new Description();
-				superGroup.setDescription("Fechamento de Contas");
-				queryParams.clear();
-				queryParams.put("where x.description = ", "'Super Grupo'");
-				TypeAccount typeAccount = getTypeAccountByParameter(queryParams);
-				superGroup.setTypeAccount(typeAccount);
-				superGroup.setUser(user);
-			}
-			register.setDescription(description);
-			register.setGroup(group);
-			register.setSuperGroup(superGroup);
+			language = "pt_BR";
 		} else {
-			queryParams.clear();
-			queryParams.put("where x.description = ", "'Previous month balance'");
-			Description description = getDescriptionByParameter(queryParams);
-
-			if (description == null) {
-				description = new Description();
-				description.setDescription("Previous month balance");
-				queryParams.clear();
-				if(closure.getTotalGeneral().compareTo(BigDecimal.ZERO) > 0){
-					queryParams.put("where x.description = ", "'Credit'");
-				} else {
-					queryParams.put("where x.description = ", "'Debit'");
-				}
-				TypeAccount typeAccount = getTypeAccountByParameter(queryParams);
-				typeAccountRegister = typeAccount;
-				description.setTypeAccount(typeAccount);
-				description.setUser(user);
-			}
-
-			queryParams.clear();
-			queryParams.put("where x.description = ", "'Closing of accounts'");
-
-			Description group = getDescriptionByParameter(queryParams);
-
-			if (group == null) {
-				group = new Description();
-				group.setDescription("Closing of accounts");
-				queryParams.clear();
-				queryParams.put("where x.description = ", "'Group'");
-				TypeAccount typeAccount = getTypeAccountByParameter(queryParams);
-				group.setTypeAccount(typeAccount);
-				group.setUser(user);
-			}
-
-			queryParams.clear();
-			queryParams.put("where x.description = ", "'Closing of accounts'");
-
-			Description superGroup = getDescriptionByParameter(queryParams);
-
-			if (superGroup == null) {
-				superGroup = new Description();
-				superGroup.setDescription("Closing of accounts");
-				queryParams.clear();
-				queryParams.put("where x.description = ", "'Super Group'");
-				TypeAccount typeAccount = getTypeAccountByParameter(queryParams);
-				superGroup.setTypeAccount(typeAccount);
-				superGroup.setUser(user);
-			}
-			register.setDescription(description);
-			register.setGroup(group);
-			register.setSuperGroup(superGroup);
+			language = "en";
 		}
+		
+		//Getting typeAccount for description
+		queryParams.clear();
+		if(closure.getTotalGeneral().compareTo(BigDecimal.ZERO) > 0){
+			queryParams.put(" where x.description = ", "'"+MessageFactory.getMessage("lb_credit", language)+"'");
+		} else{
+			queryParams.put(" where x.description = ", "'"+MessageFactory.getMessage("lb_debit", language)+"'");
+		}
+		typeAccount = getTypeAccountByParameter(queryParams);
+		typeAccountRegister = typeAccount;
+		
+		//getting description by typeAccount
+		queryParams.clear();
+		queryParams.put(" where x.description = ", "'"+Crypt.encrypt(MessageFactory.getMessage("lb_previous_month_balance", language))+"'");
+		queryParams.put(" and x.typeAccount = ", typeAccount.getId()+"");
+		Description description = getDescriptionByParameter(queryParams);
+		
+		//if description does not exist, then create
+		if (description == null) {
+			description = new Description();
+			description.setDescription(MessageFactory.getMessage("lb_previous_month_balance", language));
+			description.setTypeAccount(typeAccount);
+			description.setUser(user);
+		}
+		
+		//getting typeAccount for group
+		queryParams.clear();
+		queryParams.put(" where x.description = ", "'"+MessageFactory.getMessage("lb_group", language)+"'");
+		typeAccount = getTypeAccountByParameter(queryParams);
+		
+		//getting group description by typeAccount
+		queryParams.clear();
+		queryParams.put(" where x.description = ", "'"+Crypt.encrypt(MessageFactory.getMessage("lb_closing_of_accounts", language))+"'");
+		queryParams.put(" and x.typeAccount = ", typeAccount.getId()+"");
+		Description group = getDescriptionByParameter(queryParams);
+		
+		// if group does not exist, then create
+		if (group == null) {
+			group = new Description();
+			group.setDescription(MessageFactory.getMessage("lb_closing_of_accounts", language));
+			group.setTypeAccount(typeAccount);
+			group.setUser(user);
+		}
+		
+		//getting typeAccount for super group
+		queryParams.clear();
+		queryParams.put(" where x.description = ", "'"+MessageFactory.getMessage("lb_super_group", language)+"'");
+		typeAccount = getTypeAccountByParameter(queryParams);
+		
+		//getting super group description by typeAccount
+		queryParams.clear();
+		queryParams.put(" where x.description = ", "'"+Crypt.encrypt(MessageFactory.getMessage("lb_closing_of_accounts", language))+"'");
+		queryParams.put(" and x.typeAccount = ", typeAccount.getId()+"");
+		Description superGroup = getDescriptionByParameter(queryParams);
+		
+		// if super group does not exist, then create
+		if (superGroup == null) {
+			superGroup = new Description();
+			superGroup.setDescription(MessageFactory.getMessage("lb_closing_of_accounts", language));
+			superGroup.setTypeAccount(typeAccount);
+			superGroup.setUser(user);
+		}
+		
+		//create register
+		register.setDescription(description);
+		register.setGroup(group);
+		register.setSuperGroup(superGroup);
 		register.setNumberParcel(Constants.SINGLE_PARCEL);
 		register.setTypeAccount(typeAccountRegister);
 		register.setTypeClosure(closure.getTypeClosure());
 		register.setCurrency(closure.getCurrency());
 		register.setUser(closure.getUser());
-		register.setAmount(closure.getTotalGeneral());
+		register.setAmount(closure.getTotalGeneral().compareTo(BigDecimal.ZERO) > 0 ? closure.getTotalGeneral() : new BigDecimal(closure.getTotalGeneral().toString().split("-")[1]) );
 		registerBO.save(register);
 	}
 
