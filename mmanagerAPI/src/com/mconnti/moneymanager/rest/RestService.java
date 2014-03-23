@@ -742,15 +742,15 @@ public class RestService {
 	}
 
 	// CLOSURE AREA
-
-	@GET
-	@Path("/closure")
+	@PUT
+	@Path("/closure/list")
+	@Consumes({ MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response listClosure() {
+	public Response listClosure(Closure closure) {
 
 		List<Closure> list = new ArrayList<>();
 		try {
-			list = closureBO.list();
+			list = closureBO.list(closure.getUser());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

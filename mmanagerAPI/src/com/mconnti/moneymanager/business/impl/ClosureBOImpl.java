@@ -230,8 +230,11 @@ public class ClosureBOImpl extends GenericBOImpl<Closure> implements ClosureBO {
 		registerDAO.save(register);
 	}
 
-	public List<Closure> list() throws Exception {
-		return list(Closure.class, null, null);
+	public List<Closure> list(User user) throws Exception {
+		Map<String, String> queryParams = new LinkedHashMap<>();
+		queryParams.put(" where x.user.id = ", user.getId()+"");
+		List<Closure> result = list(Closure.class, queryParams, null); 
+		return  result;
 	}
 
 	@Override

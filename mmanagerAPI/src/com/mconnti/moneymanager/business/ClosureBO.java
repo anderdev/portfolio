@@ -6,12 +6,13 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.mconnti.moneymanager.entity.Closure;
+import com.mconnti.moneymanager.entity.User;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
 
 @Service("closureBO")
 public interface ClosureBO extends GenericBO<Closure>{
 	
-	public List<Closure> list() throws Exception;
+	public List<Closure> list(User user) throws Exception;
 	
 	public MessageReturn save(final Closure closure) throws Exception;
 	

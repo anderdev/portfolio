@@ -45,7 +45,7 @@ public class ClosureMBean implements Serializable {
 	private List<Currency> currencyList;
 
 	private List<TypeClosure> typeClosureList;
-
+	
 	private SelectItem[] currencies;
 
 	private SelectItem[] typeClosures;
@@ -157,10 +157,35 @@ public class ClosureMBean implements Serializable {
 		closure.setCurrency(currency);
 		closure.setDate(new Date());
 	}
+	
+	private List<Closure> loadList() {
+		try {
+			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/closure/list");
+			
+			closure.setUser(userMBean.getLoggedUser().getSuperUser() == null ? userMBean.getLoggedUser() : userMBean.getLoggedUser().getSuperUser());
+			request.body(MediaType.APPLICATION_JSON, closure);
+			
+			ClientResponse<Closure> response = request.put(Closure.class);
+
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+			closureList = response.getEntity(new GenericType<List<Closure>>() {
+			});
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return closureList;
+	}
 
 	public String list() {
 		showMaths = false;
 		createClosure();
+		loadList();
 		loadCombos();
 		return "/common/formClosure.xhtml?faces-redirect=true";
 	}

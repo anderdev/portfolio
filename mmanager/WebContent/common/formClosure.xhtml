@@ -48,24 +48,24 @@
 					</div>
 					
 					<div class="formListContant">
-						<p:dataTable var="reg" value="#{closureMBean.closureList}" style="width:100%" id="closureList"
+						<p:dataTable var="closure" value="#{closureMBean.closureList}" style="width:100%" id="closureList"
 					    		paginatorAlwaysVisible="false" paginator="true" emptyMessage="#{messages['lb_empty_list']}"
-					    		rows="10" rowKey="#{clo}">
+					    		rows="10" rowKey="#{closure}">
 					    	
-					        <p:column sortBy="#{clo.date}"  style="width:110px;text-align:center;">
+					        <p:column sortBy="#{closure.date}"  style="width:110px;text-align:center;">
 					             <f:facet name="header">
 					                <h:outputText value="#{messages['lb_date_']}" />
 					            </f:facet>
-					            <h:outputText value="#{clo.date}">
+					            <h:outputText value="#{closure.date}">
 					            	<f:convertDateTime pattern="dd/MM/yyyy" />
 					            </h:outputText>
 					        </p:column>
 					        
-					        <p:column sortBy="#{clo.typeClosure.type}" style="width:310px;text-align:center;">
+					        <p:column sortBy="#{closure.typeClosure.type}" style="width:310px;text-align:center;">
 					            <f:facet name="header">
 					                <h:outputText value="#{messages['lb_type_closure_']}" />
 					            </f:facet>
-					            <h:outputText value="#{clo.typeClosure.type}" />
+					            <h:outputText value="#{closure.typeClosure.type}" />
 					        </p:column>
 					        
 					        <p:column style="width:110px;">
@@ -73,7 +73,7 @@
 					                <h:outputText value="#{messages['lb_totalCredit_']}" />
 					            </f:facet>
 					            <div align="right">
-						            <h:outputText value="#{clo.totalCredit}" >
+						            <h:outputText value="#{closure.totalCredit}" >
 						            	<f:convertNumber pattern="##0.00"/>
 						            </h:outputText>
 					            </div>
@@ -84,7 +84,7 @@
 					                <h:outputText value="#{messages['lb_totalDebit_']}" />
 					            </f:facet>
 					            <div align="right">
-						            <h:outputText value="#{clo.totalDebit}" >
+						            <h:outputText value="#{closure.totalDebit}" >
 						            	<f:convertNumber pattern="##0.00"/>
 						            </h:outputText>
 					            </div>
@@ -95,7 +95,7 @@
 					                <h:outputText value="#{messages['lb_totalGeneral_']}" />
 					            </f:facet>
 					            <div align="right">
-						            <h:outputText value="#{clo.totalGeneral}" >
+						            <h:outputText value="#{closure.totalGeneral}" >
 						            	<f:convertNumber pattern="##0.00"/>
 						            </h:outputText>
 					            </div>
@@ -103,7 +103,7 @@
 					        
 					        <p:column style="width:5%">
 					        	<p:commandLink action="#{closureMBean.edit}" immediate="true" update=":formClosure" id="editButton">
-					        		<f:setPropertyActionListener value="#{reg}" target="#{closureMBean.closure}" />  
+					        		<f:setPropertyActionListener value="#{closure}" target="#{closureMBean.closure}" />  
 									<p:graphicImage value="#{messages['img_update']}" style="border: 0px" />
 								</p:commandLink>
 					        </p:column>
