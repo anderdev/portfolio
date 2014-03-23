@@ -1,7 +1,6 @@
 package com.mconnti.moneymanager.business.impl;
 
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -39,7 +38,7 @@ public class ClosureBOImpl extends GenericBOImpl<Closure> implements ClosureBO {
 
 	@Autowired
 	private RegisterBO registerBO;
-	
+
 	@Autowired
 	private RegisterDAO registerDAO;
 
@@ -116,56 +115,56 @@ public class ClosureBOImpl extends GenericBOImpl<Closure> implements ClosureBO {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(closure.getDate());
 		calendar.add(Calendar.DAY_OF_MONTH, +1);
-		
+
 		Map<String, String> queryParams = new LinkedHashMap<>();
 		TypeAccount typeAccountRegister = null;
 		TypeAccount typeAccount = null;
 
 		Register register = new Register();
 		register.setDate(calendar.getTime());
-		
+
 		String language = null;
 		if (closure.getUser().getLanguage().equals("pt_BR")) {
 			language = "pt_BR";
 		} else {
 			language = "en";
 		}
-		
-		//Getting typeAccount for description
+
+		// Getting typeAccount for description
 		queryParams.clear();
-		if(closure.getTotalGeneral().compareTo(BigDecimal.ZERO) > 0){
-			queryParams.put(" where x.description = ", "'"+MessageFactory.getMessage("lb_credit", language)+"'");
-		} else{
-			queryParams.put(" where x.description = ", "'"+MessageFactory.getMessage("lb_debit", language)+"'");
+		if (closure.getTotalGeneral().compareTo(BigDecimal.ZERO) > 0) {
+			queryParams.put(" where x.description = ", "'" + MessageFactory.getMessage("lb_credit", language) + "'");
+		} else {
+			queryParams.put(" where x.description = ", "'" + MessageFactory.getMessage("lb_debit", language) + "'");
 		}
 		typeAccount = getTypeAccountByParameter(queryParams);
 		typeAccountRegister = typeAccount;
-		
-		//getting description by typeAccount
+
+		// getting description by typeAccount
 		queryParams.clear();
-		queryParams.put(" where x.description = ", "'"+Crypt.encrypt(MessageFactory.getMessage("lb_previous_month_balance", language))+"'");
-		queryParams.put(" and x.typeAccount = ", typeAccount.getId()+"");
+		queryParams.put(" where x.description = ", "'" + Crypt.encrypt(MessageFactory.getMessage("lb_previous_month_balance", language)) + "'");
+		queryParams.put(" and x.typeAccount = ", typeAccount.getId() + "");
 		Description description = getDescriptionByParameter(queryParams);
-		
-		//if description does not exist, then create
+
+		// if description does not exist, then create
 		if (description == null) {
 			description = new Description();
 			description.setDescription(MessageFactory.getMessage("lb_previous_month_balance", language));
 			description.setTypeAccount(typeAccount);
 			description.setUser(user);
 		}
-		
-		//getting typeAccount for group
+
+		// getting typeAccount for group
 		queryParams.clear();
-		queryParams.put(" where x.description = ", "'"+MessageFactory.getMessage("lb_group", language)+"'");
+		queryParams.put(" where x.description = ", "'" + MessageFactory.getMessage("lb_group", language) + "'");
 		typeAccount = getTypeAccountByParameter(queryParams);
-		
-		//getting group description by typeAccount
+
+		// getting group description by typeAccount
 		queryParams.clear();
-		queryParams.put(" where x.description = ", "'"+Crypt.encrypt(MessageFactory.getMessage("lb_closing_of_accounts", language))+"'");
-		queryParams.put(" and x.typeAccount = ", typeAccount.getId()+"");
+		queryParams.put(" where x.description = ", "'" + Crypt.encrypt(MessageFactory.getMessage("lb_closing_of_accounts", language)) + "'");
+		queryParams.put(" and x.typeAccount = ", typeAccount.getId() + "");
 		Description group = getDescriptionByParameter(queryParams);
-		
+
 		// if group does not exist, then create
 		if (group == null) {
 			group = new Description();
@@ -173,18 +172,18 @@ public class ClosureBOImpl extends GenericBOImpl<Closure> implements ClosureBO {
 			group.setTypeAccount(typeAccount);
 			group.setUser(user);
 		}
-		
-		//getting typeAccount for super group
+
+		// getting typeAccount for super group
 		queryParams.clear();
-		queryParams.put(" where x.description = ", "'"+MessageFactory.getMessage("lb_super_group", language)+"'");
+		queryParams.put(" where x.description = ", "'" + MessageFactory.getMessage("lb_super_group", language) + "'");
 		typeAccount = getTypeAccountByParameter(queryParams);
-		
-		//getting super group description by typeAccount
+
+		// getting super group description by typeAccount
 		queryParams.clear();
-		queryParams.put(" where x.description = ", "'"+Crypt.encrypt(MessageFactory.getMessage("lb_closing_of_accounts", language))+"'");
-		queryParams.put(" and x.typeAccount = ", typeAccount.getId()+"");
+		queryParams.put(" where x.description = ", "'" + Crypt.encrypt(MessageFactory.getMessage("lb_closing_of_accounts", language)) + "'");
+		queryParams.put(" and x.typeAccount = ", typeAccount.getId() + "");
 		Description superGroup = getDescriptionByParameter(queryParams);
-		
+
 		// if super group does not exist, then create
 		if (superGroup == null) {
 			superGroup = new Description();
@@ -192,8 +191,8 @@ public class ClosureBOImpl extends GenericBOImpl<Closure> implements ClosureBO {
 			superGroup.setTypeAccount(typeAccount);
 			superGroup.setUser(user);
 		}
-		
-		//create register
+
+		// create register
 		register.setDescription(description);
 		register.setGroup(group);
 		register.setSuperGroup(superGroup);
@@ -202,7 +201,7 @@ public class ClosureBOImpl extends GenericBOImpl<Closure> implements ClosureBO {
 		register.setTypeClosure(closure.getTypeClosure());
 		register.setCurrency(closure.getCurrency());
 		register.setUser(closure.getUser());
-		register.setAmount(closure.getTotalGeneral().compareTo(BigDecimal.ZERO) > 0 ? closure.getTotalGeneral() : new BigDecimal(closure.getTotalGeneral().toString().split("-")[1]) );
+		register.setAmount(closure.getTotalGeneral().compareTo(BigDecimal.ZERO) > 0 ? closure.getTotalGeneral() : new BigDecimal(closure.getTotalGeneral().toString().split("-")[1]));
 		registerBO.save(register);
 	}
 
@@ -213,28 +212,28 @@ public class ClosureBOImpl extends GenericBOImpl<Closure> implements ClosureBO {
 		closure.setDebitsAlreadyClosed(closureDAO.getRegisters(closure.getUser(), startDate, endDate, true, Constants.TYPE_ACCOUNT_DEBIT));
 
 		Collection<Register> collectionCredit = closureDAO.getRegisters(closure.getUser(), startDate, endDate, false, Constants.TYPE_ACCOUNT_CREDIT);
-		
+
 		Collection<Register> collectionDebit = closureDAO.getRegisters(closure.getUser(), startDate, endDate, false, Constants.TYPE_ACCOUNT_DEBIT);
 
 		for (Register register : collectionCredit) {
 			saveRegister(register, true);
 		}
-		
+
 		for (Register register : collectionDebit) {
 			saveRegister(register, true);
 		}
 	}
-	
-	private void saveRegister(Register register, Boolean closed) throws Exception{
+
+	private void saveRegister(Register register, Boolean closed) throws Exception {
 		register.setClosed(closed);
 		registerDAO.save(register);
 	}
 
 	public List<Closure> list(User user) throws Exception {
 		Map<String, String> queryParams = new LinkedHashMap<>();
-		queryParams.put(" where x.user.id = ", user.getId()+"");
-		List<Closure> result = list(Closure.class, queryParams, null); 
-		return  result;
+		queryParams.put(" where x.user.id = ", user.getId() + "");
+		List<Closure> result = list(Closure.class, queryParams, null);
+		return result;
 	}
 
 	@Override
@@ -275,29 +274,23 @@ public class ClosureBOImpl extends GenericBOImpl<Closure> implements ClosureBO {
 			Date date = closure.getDate();
 
 			TypeClosure typeClosure = findById(TypeClosure.class, closure.getTypeClosure().getId());
-			
+
 			HashMap<String, String> ret = new HashMap<String, String>();
 
 			if (Constants.MENSAL.equalsIgnoreCase(typeClosure.getType().toLowerCase()) || Constants.MONTHLY.equalsIgnoreCase(typeClosure.getType().toLowerCase())) {
-
-				ret = loadDates(date, Calendar.DAY_OF_MONTH, -Utils.getLastDayOfMonth(Utils.dateToString(date)));
-
+				ret = Utils.loadDates(date, Calendar.DAY_OF_MONTH, -Utils.getLastDayOfMonth(date));
+				// ret = Utils.loadDates(date, Calendar.DAY_OF_MONTH, -Utils.getLastDayOfMonth(Utils.dateToString(date)));
 			} else if (Constants.QUINZENAL.equalsIgnoreCase(typeClosure.getType().toLowerCase()) || Constants.FORTNIGHTLY.equalsIgnoreCase(typeClosure.getType().toLowerCase())) {
-
-				ret = loadDates(date, Calendar.DAY_OF_MONTH, -14);
-
+				ret = Utils.loadDates(date, Calendar.DAY_OF_MONTH, -14);
 			} else if (Constants.SEMANAL.equalsIgnoreCase(typeClosure.getType().toLowerCase()) || Constants.WEEKLY.equalsIgnoreCase(typeClosure.getType().toLowerCase())) {
-
-				ret = loadDates(date, Calendar.DAY_OF_MONTH, -6);
-
+				ret = Utils.loadDates(date, Calendar.DAY_OF_MONTH, -6);
 			} else if (Constants.DIARIO.equalsIgnoreCase(typeClosure.getType().toLowerCase()) || Constants.DAILY.equalsIgnoreCase(typeClosure.getType().toLowerCase())) {
-
-				ret = loadDates(date, Calendar.DAY_OF_MONTH, 0);
+				ret = Utils.loadDates(date, Calendar.DAY_OF_MONTH, 0);
 			}
 
 			closure = getClosureValues(closure, ret.get(Constants.DATE_START), ret.get(Constants.DATE_END));
 			libReturn.setClosure(closure);
-			
+
 		} catch (Exception e) {
 			libReturn.setClosure(null);
 			libReturn.setMessage(e.getMessage());
@@ -307,26 +300,9 @@ public class ClosureBOImpl extends GenericBOImpl<Closure> implements ClosureBO {
 		return libReturn;
 	}
 
-	private HashMap<String, String> loadDates(Date date, Integer type, Integer days) {
-		HashMap<String, String> map = new HashMap<String, String>();
-
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(date);
-		calendar.add(type, days+1);
-		SimpleDateFormat dataFormatada = new SimpleDateFormat("dd/MM/yyyy");
-		String startDate = dataFormatada.format(calendar.getTime());
-		calendar.setTime(date);
-		String endDate = dataFormatada.format(calendar.getTime());
-
-		map.put(Constants.DATE_START, startDate);
-		map.put(Constants.DATE_END, endDate);
-		return map;
-	}
-
 	private Closure getClosureValues(Closure closure, String startDate, String endDate) {
 		BigDecimal sumCredit = new BigDecimal(0.00);
 		BigDecimal sumDebit = new BigDecimal(0.00);
-		
 
 		closure.setCreditsAlreadyClosed(closureDAO.getRegisters(closure.getUser(), startDate, endDate, true, Constants.TYPE_ACCOUNT_CREDIT));
 
@@ -336,8 +312,8 @@ public class ClosureBOImpl extends GenericBOImpl<Closure> implements ClosureBO {
 
 		Collection<Register> collectionDebit = closureDAO.getRegisters(closure.getUser(), startDate, endDate, false, Constants.TYPE_ACCOUNT_DEBIT);
 
-		for (Register debit : collectionDebit) { 
-			sumDebit =sumDebit.add(debit.getAmount());
+		for (Register debit : collectionDebit) {
+			sumDebit = sumDebit.add(debit.getAmount());
 		}
 
 		for (Register credit : collectionCredit) {

@@ -1,40 +1,12 @@
 package com.mconnti.moneymanager.utils;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 
 public abstract class Utils {
-
-	public static void main(String[] args) {
-		
-		String jsonString = "2/2016";
-		Date today = new Date();
-
-		String strDate = "01/" + jsonString;
-		today = stringToDate(strDate, false);
-
-		String[] tmpDate = strDate.split("/");
-		Calendar calendar = Calendar.getInstance();
-		calendar.set(Integer.valueOf(tmpDate[2]), Integer.valueOf(tmpDate[1]) - 1, Integer.valueOf(tmpDate[0]), 00, 00, 00);
-
-		calendar.add(Calendar.MONTH, 1);
-		calendar.set(Calendar.DAY_OF_MONTH, 1);
-		calendar.add(Calendar.DATE, -1);
-
-		Date lastDayOfMonth = calendar.getTime();
-
-		DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		System.out.println("Today            : " + sdf.format(today));
-		System.out.println("Last Day of Month: " + sdf.format(lastDayOfMonth));
-		
-		Date d = getCreditCardExpiredDate(jsonString);
-		System.out.println("Mine Last Day of Month: " + sdf.format(d));
-		
-		System.out.println(getLastDayOfMonth(strDate));
-	}
 
 	public static Date stringToDate(String data, Boolean mostraHora) {
 
@@ -75,12 +47,13 @@ public abstract class Utils {
 		return lastDayOfMonth;
 	}
 	
-	public static Integer getLastDayOfMonth(String strDate) {
+	public static Integer getLastDayOfMonth(Date date) {
 
-		String[] tmpDate = strDate.split("/");
+//		String[] tmpDate = date.split("/");
 		Calendar calendar = Calendar.getInstance();
-		calendar.set(Integer.valueOf(tmpDate[2]), Integer.valueOf(tmpDate[1]) - 1, Integer.valueOf(tmpDate[0]), 00, 00, 00);
-
+		calendar.setTime(date);
+//		calendar.set(Integer.valueOf(tmpDate[2]), Integer.valueOf(tmpDate[1]) - 1, Integer.valueOf(tmpDate[0]), 00, 00, 00);
+		
 		calendar.add(Calendar.MONTH, 1);
 		calendar.set(Calendar.DAY_OF_MONTH, 1);
 		calendar.add(Calendar.DATE, -1);
@@ -88,4 +61,19 @@ public abstract class Utils {
 		return calendar.get(Calendar.DAY_OF_MONTH);
 	}
 
+	public static HashMap<String, String> loadDates(Date date, Integer type, Integer days) {
+		HashMap<String, String> map = new HashMap<String, String>();
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.add(type, days+1);
+		SimpleDateFormat dataFormatada = new SimpleDateFormat("dd/MM/yyyy");
+		String startDate = dataFormatada.format(calendar.getTime());
+		calendar.setTime(date);
+		String endDate = dataFormatada.format(calendar.getTime());
+
+		map.put(Constants.DATE_START, startDate);
+		map.put(Constants.DATE_END, endDate);
+		return map;
+	}
 }
