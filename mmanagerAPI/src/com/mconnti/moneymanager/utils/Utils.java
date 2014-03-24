@@ -25,7 +25,7 @@ public abstract class Utils {
 		SimpleDateFormat DtFormat = new SimpleDateFormat("dd/MM/yyyy");
 		return (dtData == null || dtData.equals("")) ? "" : DtFormat.format(dtData);
 	}
-	
+
 	public static String dateToStringCreditCard(Date dtData) {
 		SimpleDateFormat DtFormat = new SimpleDateFormat("MM/yyyy");
 		return (dtData == null || dtData.equals("")) ? "" : DtFormat.format(dtData);
@@ -43,22 +43,28 @@ public abstract class Utils {
 		calendar.add(Calendar.DATE, -1);
 
 		Date lastDayOfMonth = calendar.getTime();
-		
+
 		return lastDayOfMonth;
 	}
-	
-	public static Integer getLastDayOfMonth(Date date) {
 
-//		String[] tmpDate = date.split("/");
+	public static Integer getLastDayOfMonth(Date date) {
+		Calendar testCalendar = Calendar.getInstance();
+		testCalendar.setTime(date);
+		testCalendar.add(Calendar.DAY_OF_MONTH, 1);
+
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
-//		calendar.set(Integer.valueOf(tmpDate[2]), Integer.valueOf(tmpDate[1]) - 1, Integer.valueOf(tmpDate[0]), 00, 00, 00);
-		
-		calendar.add(Calendar.MONTH, 1);
+
+		if (testCalendar.get(Calendar.DAY_OF_MONTH) == 1) {
+			calendar.add(Calendar.MONTH, 1);
+		} else {
+			calendar.add(Calendar.MONTH, 0);
+		}
+
 		calendar.set(Calendar.DAY_OF_MONTH, 1);
 		calendar.add(Calendar.DATE, -1);
-		
-		return calendar.get(Calendar.DAY_OF_MONTH);
+
+		return calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
 	}
 
 	public static HashMap<String, String> loadDates(Date date, Integer type, Integer days) {
@@ -66,7 +72,7 @@ public abstract class Utils {
 
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
-		calendar.add(type, days+1);
+		calendar.add(type, days + 1);
 		SimpleDateFormat dataFormatada = new SimpleDateFormat("dd/MM/yyyy");
 		String startDate = dataFormatada.format(calendar.getTime());
 		calendar.setTime(date);

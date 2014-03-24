@@ -279,6 +279,7 @@ public class ClosureBOImpl extends GenericBOImpl<Closure> implements ClosureBO {
 
 			if (Constants.MENSAL.equalsIgnoreCase(typeClosure.getType().toLowerCase()) || Constants.MONTHLY.equalsIgnoreCase(typeClosure.getType().toLowerCase())) {
 				ret = Utils.loadDates(date, Calendar.DAY_OF_MONTH, -Utils.getLastDayOfMonth(date));
+				System.out.println(ret);
 				// ret = Utils.loadDates(date, Calendar.DAY_OF_MONTH, -Utils.getLastDayOfMonth(Utils.dateToString(date)));
 			} else if (Constants.QUINZENAL.equalsIgnoreCase(typeClosure.getType().toLowerCase()) || Constants.FORTNIGHTLY.equalsIgnoreCase(typeClosure.getType().toLowerCase())) {
 				ret = Utils.loadDates(date, Calendar.DAY_OF_MONTH, -14);

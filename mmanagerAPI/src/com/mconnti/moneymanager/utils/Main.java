@@ -12,11 +12,11 @@ public class Main {
 	
 	public static void main(String[] args) {
 //		testLastDayOfMonthWithCreditCardDate();
-		getRangeOfDates(new Date());
+		getRangeOfDates(stringToDate("24/03/2014", false));
 	}
 	
 	private static void getRangeOfDates(Date date){
-		HashMap<String,String> range = loadDates(date,  Calendar.DAY_OF_MONTH, getLastDayOfMonth(date));
+		HashMap<String,String> range = loadDates(date,  Calendar.DAY_OF_MONTH, -getLastDayOfMonth(date));
 		System.out.println(range);
 	}
 	
