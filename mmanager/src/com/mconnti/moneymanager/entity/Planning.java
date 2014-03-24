@@ -1,7 +1,8 @@
 package com.mconnti.moneymanager.entity;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -15,15 +16,11 @@ public class Planning implements Serializable {
 	
 	private Long id;
 	
-	private Description description;
+	private String description;
 	
-	private TypeAccount typeAccount;
-
-	private Double amount;
+	private GregorianCalendar date;
 	
-	private Integer year;
-	
-	private Date payDay;
+	private Set<PlanningItem> plannigItemList;
 
 	private User user;
 
@@ -35,44 +32,12 @@ public class Planning implements Serializable {
 		this.id = id;
 	}
 
-	public Description getDescription() {
+	public String getDescription() {
 		return description;
 	}
 
-	public void setDescription(Description description) {
+	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public TypeAccount getTypeAccount() {
-		return typeAccount;
-	}
-
-	public void setTypeAccount(TypeAccount typeAccount) {
-		this.typeAccount = typeAccount;
-	}
-
-	public Double getAmount() {
-		return amount;
-	}
-
-	public void setAmount(Double amount) {
-		this.amount = amount;
-	}
-
-	public Integer getYear() {
-		return year;
-	}
-
-	public void setYear(Integer year) {
-		this.year = year;
-	}
-
-	public Date getPayDay() {
-		return payDay;
-	}
-
-	public void setPayDay(Date payDay) {
-		this.payDay = payDay;
 	}
 
 	public User getUser() {
@@ -81,5 +46,21 @@ public class Planning implements Serializable {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public GregorianCalendar getDate() {
+		return date;
+	}
+
+	public void setDate(GregorianCalendar date) {
+		this.date = date;
+	}
+
+	public Set<PlanningItem> getPlannigItemList() {
+		return plannigItemList;
+	}
+
+	public void setPlannigItemList(Set<PlanningItem> plannigItemList) {
+		this.plannigItemList = plannigItemList;
 	}
 }

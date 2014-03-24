@@ -1,11 +1,14 @@
 package com.mconnti.moneymanager.business.impl;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mconnti.moneymanager.business.PlanningBO;
 import com.mconnti.moneymanager.entity.Planning;
+import com.mconnti.moneymanager.entity.User;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
 import com.mconnti.moneymanager.utils.MessageFactory;
 
@@ -33,8 +36,11 @@ public class PlanningBOImpl extends GenericBOImpl<Planning> implements PlanningB
 		return libReturn;
 	}
 
-	public List<Planning> list() throws Exception {
-		return list(Planning.class, null, null);
+	public List<Planning> list(User user) throws Exception {
+		Map<String, String> queryParams = new LinkedHashMap<>();
+		queryParams.put(" where x.user.id = ", user.getId() + "");
+		List<Planning> result = list(Planning.class, queryParams, null);
+		return result;
 	}
 
 	@Override

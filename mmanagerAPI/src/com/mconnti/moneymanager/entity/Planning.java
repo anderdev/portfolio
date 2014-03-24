@@ -83,4 +83,12 @@ public class Planning implements Serializable {
 	public void setDate(GregorianCalendar date) {
 		this.date = date;
 	}
+
+	public Set<PlanningItem> getPlannigItemList() {
+		return plannigItemList;
+	}
+
+	public void setPlannigItemList(Set<PlanningItem> plannigItemList) {
+		this.plannigItemList = plannigItemList;
+	}
 }

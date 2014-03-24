@@ -802,14 +802,15 @@ public class RestService {
 
 	// PLANNING AREA
 
-	@GET
-	@Path("/planning")
+	@PUT
+	@Path("/planning/list")
+	@Consumes({ MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response listPlanning() {
+	public Response listPlanning(Planning planning) {
 
 		List<Planning> list = new ArrayList<>();
 		try {
-			list = planningBO.list();
+			list = planningBO.list(planning.getUser());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

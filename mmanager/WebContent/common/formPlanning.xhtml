@@ -1,0 +1,42 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui"
+        template="../template/templateAPP.xhtml" >
+        	
+		<ui:define name="contentAPP">
+        	<h:form prependId="false" id="formPlanning">
+	        	<h:outputText value="#{messages['lb_planning_registration']}" styleClass="boxTitle" />
+
+				<p:growl id="msg" showDetail="true" showSummary="false" autoUpdate="true" sticky="true" /> 
+				
+        		<div align="center" class="formContant">
+        			<h:panelGroup id="panel" rendered="#{planningMBean.showForm}">
+	       	
+						
+						<h:panelGrid columns="2" styleClass="boldFont" columnClasses="column120RightWithPaddingRigth,column80" border="0">
+							
+							<h:outputText value="#{messages['lb_description']}" />
+							<p:inputText label="#{messages['lb_description_']}" required="true" maxlength="10"  value="#{planningMBean.planning.description}" style="width:80px;text-align:right;" />
+						</h:panelGrid>
+						
+						<br />
+			
+						<div align="center">
+							<p:commandButton value="#{messages['lb_post']}" id="post" action="#{planningMBean.save}" ajax="true" update=":formPlanning" styleClass="button" />  
+							<p:commandButton value="#{messages['lb_back']}" update=":formPlanning" immediate="true" id="back" ajax="true"  styleClass="button" action="#{planningMBean.cancel}"/>
+						</div>
+					</h:panelGroup>
+				</div>
+				
+				<div class="formListContant">
+					<p:tabView id="tabView" var="plan" value="#{planningMBean.planningList}"> 
+						<p:tab id="planningItemTab" title="#{plan.description}">   
+							<h:outputText value="É nois..." /> 
+						</p:tab>
+					</p:tabView>
+				</div>
+			</h:form>
+		</ui:define>
+</ui:composition>
