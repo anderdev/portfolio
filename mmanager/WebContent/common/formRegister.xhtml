@@ -13,71 +13,73 @@
 				<p:growl id="msg" showDetail="true" showSummary="false" autoUpdate="true" sticky="true" /> 
 				
         		<div align="center" class="formContant">
+        			<h:panelGroup id="panel">
 	       	
-		       		<h:panelGrid columns="2" styleClass="boldFont" columnClasses="column120RightWithPaddingRigth,column285" border="0">
-	
-						<h:outputText value="#{messages['lb_date']}"  />
-						<p:calendar showButtonPanel="true" navigator="true" showOn="button"
-							value="#{registerMBean.register.date}"  label="#{messages['lb_date_']}"
-							required="true" 
-							id="calendar"
-							readonlyInput="false"
-						    maxlength="10"
-							pattern="dd/MM/yyyy"/>
-						
-				        <h:outputText value="#{messages['lb_description']}" />
-			            <p:autoComplete label="#{messages['lb_description_']}" dropdown="true" value="#{registerMBean.register.description.description}" completeMethod="#{registerMBean.debitComplete}" rendered="#{registerMBean.loadDebits}" required="true" style="width:90%">
-			            	<p:ajax event="blur" listener="#{registerMBean.checkDebitDescription}" />
-			            </p:autoComplete>  
-			            
-				        <p:autoComplete label="#{messages['lb_description_']}" dropdown="true" value="#{registerMBean.register.description.description}" completeMethod="#{registerMBean.creditComplete}" rendered="#{registerMBean.loadCredits}" required="true" style="width:90%">
-			            	<p:ajax event="blur" listener="#{registerMBean.checkCreditDescription}" />
-			            </p:autoComplete>  
-				        
-				        <h:outputText value="#{messages['lb_group']}" rendered="#{registerMBean.loadDebits}"/>
-				        <p:autoComplete label="#{messages['lb_group_']}" dropdown="true" value="#{registerMBean.register.group.description}" completeMethod="#{registerMBean.groupComplete}" rendered="#{registerMBean.loadDebits}" required="true" style="width:90%">
-			            	<p:ajax event="blur" listener="#{registerMBean.checkGroupDescription}" />
-			            </p:autoComplete> 
-						
-				        <h:outputText value="#{messages['lb_super_group']}" />
-				        <p:autoComplete label="#{messages['lb_super_group_']}" dropdown="true" value="#{registerMBean.register.superGroup.description}" completeMethod="#{registerMBean.superGroupComplete}" required="true" style="width:90%">
-			            	<p:ajax event="blur" listener="#{registerMBean.checkSuperGroupDescription}" />
-			            </p:autoComplete> 
-			            
-				        <h:outputText value="#{messages['lb_creditcard']}" rendered="#{registerMBean.loadDebits}"/>
-						<p:selectOneMenu value="#{registerMBean.register.creditCard.id}" label="#{messages['lb_creditcard_']}" rendered="#{registerMBean.loadDebits}" style="width:100%">
-				            <f:selectItem itemLabel="#{messages['lb_select']}" itemValue="" />
-				            <f:selectItems value="#{registerMBean.creditCards}"  var="desc" itemLabel="#{desc.name}" itemValue="#{desc}"/>  
-				        </p:selectOneMenu>
-				        
-					</h:panelGrid>
-					
-					<h:panelGrid columns="4" styleClass="boldFont" columnClasses="column120RightWithPaddingRigth,column80,column80rightAlign,column80" border="0">
-						<h:outputText value="#{messages['lb_type_closure']}" />
-						<p:selectOneMenu value="#{registerMBean.register.typeClosure.id}" label="#{messages['lb_type_closure_']}" required="true" >
-				            <f:selectItem itemLabel="#{messages['lb_select']}" itemValue="" />
-				            <f:selectItems value="#{registerMBean.typeClosures}"  var="desc" itemLabel="#{desc.type}" itemValue="#{desc}"/>  
-				        </p:selectOneMenu>
-				         
-				        <h:outputText value="#{messages['lb_currency']}" />
-						<p:selectOneMenu value="#{registerMBean.register.currency.id}" label="#{messages['lb_currency_']}" required="true" style="width:100%">
-				            <f:selectItem itemLabel="#{messages['lb_select']}" itemValue="" />
-				            <f:selectItems value="#{registerMBean.currencies}"  var="desc" itemLabel="#{desc.acronymn}" itemValue="#{desc}"/>  
-				        </p:selectOneMenu>
-				        
-						<h:outputText value="#{messages['lb_parcels']}" />
-						<p:inputText  label="#{messages['lb_parcels_']}" required="true"  value="#{registerMBean.register.numberParcel}" style="width:25px;text-align:right;" />
-						
-						<h:outputText value="#{messages['lb_amount']}" />
-						<p:inputText id="amount"  label="#{messages['lb_amount_']}" required="true" maxlength="10"  value="#{registerMBean.register.amount}" style="width:80px;text-align:right;" />
-					</h:panelGrid>
-					
-					<br />
+			       		<h:panelGrid columns="2" styleClass="boldFont" columnClasses="column120RightWithPaddingRigth,column285" border="0" >
 		
-					<div align="center">
-						<p:commandButton value="#{messages['lb_post']}" id="post" action="#{registerMBean.save}" ajax="false" update=":formRegister" styleClass="button"/>  
-						<p:commandButton value="#{messages['lb_back']}" update=":formRegister" immediate="true" id="voltar" ajax="true"  styleClass="button" action="#{registerMBean.cancel}"/>
-					</div>
+							<h:outputText value="#{messages['lb_date']}"  />
+							<p:calendar showButtonPanel="true" navigator="true" showOn="button"
+								value="#{registerMBean.register.date}"  label="#{messages['lb_date_']}"
+								required="true" 
+								id="calendar"
+								readonlyInput="false"
+							    maxlength="10"
+								pattern="dd/MM/yyyy"/>
+							
+					        <h:outputText value="#{messages['lb_description']}" />
+				            <p:autoComplete label="#{messages['lb_description_']}" dropdown="true" value="#{registerMBean.register.description.description}" completeMethod="#{registerMBean.debitComplete}" rendered="#{registerMBean.loadDebits}" required="true" style="width:90%">
+				            	<p:ajax event="blur" listener="#{registerMBean.checkDebitDescription}" />
+				            </p:autoComplete>  
+				            
+					        <p:autoComplete label="#{messages['lb_description_']}" dropdown="true" value="#{registerMBean.register.description.description}" completeMethod="#{registerMBean.creditComplete}" rendered="#{registerMBean.loadCredits}" required="true" style="width:90%">
+				            	<p:ajax event="blur" listener="#{registerMBean.checkCreditDescription}" />
+				            </p:autoComplete>  
+					        
+					        <h:outputText value="#{messages['lb_group']}" rendered="#{registerMBean.loadDebits}"/>
+					        <p:autoComplete label="#{messages['lb_group_']}" dropdown="true" value="#{registerMBean.register.group.description}" completeMethod="#{registerMBean.groupComplete}" rendered="#{registerMBean.loadDebits}" required="true" style="width:90%">
+				            	<p:ajax event="blur" listener="#{registerMBean.checkGroupDescription}" />
+				            </p:autoComplete> 
+							
+					        <h:outputText value="#{messages['lb_super_group']}" />
+					        <p:autoComplete label="#{messages['lb_super_group_']}" dropdown="true" value="#{registerMBean.register.superGroup.description}" completeMethod="#{registerMBean.superGroupComplete}" required="true" style="width:90%">
+				            	<p:ajax event="blur" listener="#{registerMBean.checkSuperGroupDescription}" />
+				            </p:autoComplete> 
+				            
+					        <h:outputText value="#{messages['lb_creditcard']}" rendered="#{registerMBean.loadDebits}"/>
+							<p:selectOneMenu value="#{registerMBean.register.creditCard.id}" label="#{messages['lb_creditcard_']}" rendered="#{registerMBean.loadDebits}" style="width:100%">
+					            <f:selectItem itemLabel="#{messages['lb_select']}" itemValue="" />
+					            <f:selectItems value="#{registerMBean.creditCards}"  var="desc" itemLabel="#{desc.name}" itemValue="#{desc}"/>  
+					        </p:selectOneMenu>
+					        
+						</h:panelGrid>
+						
+						<h:panelGrid columns="4" styleClass="boldFont" columnClasses="column120RightWithPaddingRigth,column80,column80rightAlign,column80" border="0">
+							<h:outputText value="#{messages['lb_type_closure']}" />
+							<p:selectOneMenu value="#{registerMBean.register.typeClosure.id}" label="#{messages['lb_type_closure_']}" required="true" >
+					            <f:selectItem itemLabel="#{messages['lb_select']}" itemValue="" />
+					            <f:selectItems value="#{registerMBean.typeClosures}"  var="desc" itemLabel="#{desc.type}" itemValue="#{desc}"/>  
+					        </p:selectOneMenu>
+					         
+					        <h:outputText value="#{messages['lb_currency']}" />
+							<p:selectOneMenu value="#{registerMBean.register.currency.id}" label="#{messages['lb_currency_']}" required="true" style="width:100%">
+					            <f:selectItem itemLabel="#{messages['lb_select']}" itemValue="" />
+					            <f:selectItems value="#{registerMBean.currencies}"  var="desc" itemLabel="#{desc.acronymn}" itemValue="#{desc}"/>  
+					        </p:selectOneMenu>
+					        
+							<h:outputText value="#{messages['lb_parcels']}" />
+							<p:inputText  label="#{messages['lb_parcels_']}" required="true"  value="#{registerMBean.register.numberParcel}" style="width:25px;text-align:right;" />
+							
+							<h:outputText value="#{messages['lb_amount']}" />
+							<p:inputText id="amount"  label="#{messages['lb_amount_']}" required="true" maxlength="10"  value="#{registerMBean.register.amount}" style="width:80px;text-align:right;" />
+						</h:panelGrid>
+						
+						<br />
+			
+						<div align="center">
+							<p:commandButton value="#{messages['lb_post']}" id="post" action="#{registerMBean.save}" ajax="false" update=":formRegister" styleClass="button"/>  
+							<p:commandButton value="#{messages['lb_back']}" update=":formRegister" immediate="true" id="voltar" ajax="true"  styleClass="button" action="#{registerMBean.cancel}"/>
+						</div>
+					</h:panelGroup>
 				</div>
 				
 				<div class="formListContant">
@@ -120,7 +122,7 @@
 				        </p:column>
 				        
 				        <p:column style="width:5%">
-				        	<p:commandLink action="#{registerMBean.edit}" immediate="true" update=":formRegister" id="editButton">
+				        	<p:commandLink action="#{registerMBean.edit}" id="editButton" update=":formRegister" ajax="true" immediate="true" process="@this">
 				        		<f:setPropertyActionListener value="#{reg}" target="#{registerMBean.register}" />  
 								<p:graphicImage value="#{messages['img_update']}" style="border: 0px" />
 							</p:commandLink>

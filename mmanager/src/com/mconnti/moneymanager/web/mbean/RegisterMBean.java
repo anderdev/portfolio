@@ -452,6 +452,9 @@ public class RegisterMBean implements Serializable {
 	}
 
 	public void edit() {
+		if(register.getCreditCard() == null){
+			register.setCreditCard(new CreditCard());
+		}
 	}
 
 	private List<String> returnResults(List<Description> list, String query) {
