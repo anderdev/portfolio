@@ -20,6 +20,7 @@
 		<class>com.mconnti.moneymanager.entity.State</class>
 		<class>com.mconnti.moneymanager.entity.City</class>
 		<class>com.mconnti.moneymanager.entity.Planning</class>
+		<class>com.mconnti.moneymanager.entity.PlanningItem</class>
 		<class>com.mconnti.moneymanager.entity.Publicity</class>
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />

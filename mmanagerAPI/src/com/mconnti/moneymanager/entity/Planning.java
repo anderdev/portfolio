@@ -1,7 +1,8 @@
 package com.mconnti.moneymanager.entity;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,10 +12,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.hibernate.annotations.ForeignKey;
 
@@ -31,22 +35,17 @@ public class Planning implements Serializable {
 	@Column(nullable = false, insertable = true, updatable = false)
 	private Long id;
 	
-	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = Description.class)
-	@JoinColumn(name = "description_id")
-	@ForeignKey(name = "FK_PLANNING_DESC")
-	private Description description;
+	@Column(nullable = false, insertable = true, updatable = true)
+	private String description;
 	
-	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = Description.class)
-	@JoinColumn(name = "typeaccount_id")
-	@ForeignKey(name = "FK_PLANNING_TYPEACC")
-	private TypeAccount typeAccount;
+	private GregorianCalendar date;
 	
-	@Column(length = 13, precision = 13, scale = 2)
-	private Double amount;
-	
-	private Integer year;
-	
-	private Date payDay;
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "planning_id")
+	@ForeignKey(name = "FK_PLANNING_PLITEM")
+	@XmlTransient
+	@Transient
+	private Set<PlanningItem> plannigItemList;
 
 	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = User.class)
 	@JoinColumn(name = "user_id")
@@ -61,44 +60,12 @@ public class Planning implements Serializable {
 		this.id = id;
 	}
 
-	public Description getDescription() {
+	public String getDescription() {
 		return description;
 	}
 
-	public void setDescription(Description description) {
+	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public TypeAccount getTypeAccount() {
-		return typeAccount;
-	}
-
-	public void setTypeAccount(TypeAccount typeAccount) {
-		this.typeAccount = typeAccount;
-	}
-
-	public Double getAmount() {
-		return amount;
-	}
-
-	public void setAmount(Double amount) {
-		this.amount = amount;
-	}
-
-	public Integer getYear() {
-		return year;
-	}
-
-	public void setYear(Integer year) {
-		this.year = year;
-	}
-
-	public Date getPayDay() {
-		return payDay;
-	}
-
-	public void setPayDay(Date payDay) {
-		this.payDay = payDay;
 	}
 
 	public User getUser() {
@@ -107,5 +74,13 @@ public class Planning implements Serializable {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public GregorianCalendar getDate() {
+		return date;
+	}
+
+	public void setDate(GregorianCalendar date) {
+		this.date = date;
 	}
 }
