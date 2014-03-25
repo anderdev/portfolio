@@ -14,6 +14,7 @@ import com.mconnti.moneymanager.entity.CreditCard;
 import com.mconnti.moneymanager.entity.Currency;
 import com.mconnti.moneymanager.entity.Description;
 import com.mconnti.moneymanager.entity.Planning;
+import com.mconnti.moneymanager.entity.PlanningGroup;
 import com.mconnti.moneymanager.entity.PlanningItem;
 import com.mconnti.moneymanager.entity.Register;
 import com.mconnti.moneymanager.entity.Role;
@@ -61,6 +62,8 @@ public class MessageReturn {
 	private Closure closure;
 	
 	private Planning planning;
+	
+	private PlanningGroup planningGroup;
 	
 	private PlanningItem planningItem;
 	
@@ -224,6 +227,14 @@ public class MessageReturn {
 
 	public void setPlanningItem(PlanningItem planningItem) {
 		this.planningItem = planningItem;
+	}
+
+	public PlanningGroup getPlanningGroup() {
+		return planningGroup;
+	}
+
+	public void setPlanningGroup(PlanningGroup planningGroup) {
+		this.planningGroup = planningGroup;
 	}
 
 }

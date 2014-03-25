@@ -16,10 +16,6 @@ public class PlanningItem implements Serializable {
 	
 	private Long id;
 	
-	private Description description;
-	
-	private TypeAccount typeAccount;
-	
 	private BigDecimal amount;
 	
 	private Integer year;
@@ -28,7 +24,7 @@ public class PlanningItem implements Serializable {
 	
 	private Date payDay;
 	
-	private Planning planning;
+	private PlanningGroup planningGroup;
 
 	private User user;
 
@@ -38,22 +34,6 @@ public class PlanningItem implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public Description getDescription() {
-		return description;
-	}
-
-	public void setDescription(Description description) {
-		this.description = description;
-	}
-
-	public TypeAccount getTypeAccount() {
-		return typeAccount;
-	}
-
-	public void setTypeAccount(TypeAccount typeAccount) {
-		this.typeAccount = typeAccount;
 	}
 
 	public BigDecimal getAmount() {
@@ -96,11 +76,11 @@ public class PlanningItem implements Serializable {
 		this.month = month;
 	}
 
-	public Planning getPlanning() {
-		return planning;
+	public PlanningGroup getPlanningGroup() {
+		return planningGroup;
 	}
 
-	public void setPlanning(Planning planning) {
-		this.planning = planning;
+	public void setPlanningGroup(PlanningGroup planningGroup) {
+		this.planningGroup = planningGroup;
 	}
 }

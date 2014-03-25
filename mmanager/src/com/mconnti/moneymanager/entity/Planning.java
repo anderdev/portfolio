@@ -20,7 +20,7 @@ public class Planning implements Serializable {
 	
 	private GregorianCalendar date;
 	
-	private Set<PlanningItem> plannigItemList;
+	private Set<PlanningGroup> plannigGroupList;
 
 	private User user;
 
@@ -56,11 +56,11 @@ public class Planning implements Serializable {
 		this.date = date;
 	}
 
-	public Set<PlanningItem> getPlannigItemList() {
-		return plannigItemList;
+	public Set<PlanningGroup> getPlannigGroupList() {
+		return plannigGroupList;
 	}
 
-	public void setPlannigItemList(Set<PlanningItem> plannigItemList) {
-		this.plannigItemList = plannigItemList;
+	public void setPlannigGroupList(Set<PlanningGroup> plannigGroupList) {
+		this.plannigGroupList = plannigGroupList;
 	}
 }

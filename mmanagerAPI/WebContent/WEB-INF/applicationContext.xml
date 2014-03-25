@@ -23,6 +23,7 @@
 	<bean id="registerBO" class="com.mconnti.moneymanager.business.impl.RegisterBOImpl"/>
 	<bean id="closureBO" class="com.mconnti.moneymanager.business.impl.ClosureBOImpl"/>
 	<bean id="planningBO" class="com.mconnti.moneymanager.business.impl.PlanningBOImpl"/>
+	<bean id="planningGroupBO" class="com.mconnti.moneymanager.business.impl.PlanningGroupBOImpl"/>
 	<bean id="planningItemBO" class="com.mconnti.moneymanager.business.impl.PlanningItemBOImpl"/>
 	<bean id="roleBO" class="com.mconnti.moneymanager.business.impl.RoleBOImpl"/>
 	

@@ -32,16 +32,6 @@ public class PlanningItem implements Serializable {
 	@Column(nullable = false, insertable = true, updatable = false)
 	private Long id;
 	
-	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = Description.class)
-	@JoinColumn(name = "description_id")
-	@ForeignKey(name = "FK_PLANNING_DESC")
-	private Description description;
-	
-	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = Description.class)
-	@JoinColumn(name = "typeaccount_id")
-	@ForeignKey(name = "FK_PLANNING_TYPEACC")
-	private TypeAccount typeAccount;
-	
 	@Column(length = 13, precision = 13, scale = 2)
 	private BigDecimal amount;
 	
@@ -52,13 +42,13 @@ public class PlanningItem implements Serializable {
 	private Date payDay;
 	
 	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = Planning.class)
-	@JoinColumn(name = "planning_id")
-	@ForeignKey(name = "FK_PLANNING_PLANNING")
-	private Planning planning;
+	@JoinColumn(name = "planninggroup_id")
+	@ForeignKey(name = "FK_PLITEM_PLGROUP")
+	private PlanningGroup planningGroup;
 
 	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = User.class)
 	@JoinColumn(name = "user_id")
-	@ForeignKey(name = "FK_PLANNING_USER")
+	@ForeignKey(name = "FK_PLITEM_USER")
 	private User user;
 
 	public Long getId() {
@@ -67,22 +57,6 @@ public class PlanningItem implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public Description getDescription() {
-		return description;
-	}
-
-	public void setDescription(Description description) {
-		this.description = description;
-	}
-
-	public TypeAccount getTypeAccount() {
-		return typeAccount;
-	}
-
-	public void setTypeAccount(TypeAccount typeAccount) {
-		this.typeAccount = typeAccount;
 	}
 
 	public BigDecimal getAmount() {
@@ -125,11 +99,11 @@ public class PlanningItem implements Serializable {
 		this.month = month;
 	}
 
-	public Planning getPlanning() {
-		return planning;
+	public PlanningGroup getPlanningGroup() {
+		return planningGroup;
 	}
 
-	public void setPlanning(Planning planning) {
-		this.planning = planning;
+	public void setPlanningGroup(PlanningGroup planningGroup) {
+		this.planningGroup = planningGroup;
 	}
 }

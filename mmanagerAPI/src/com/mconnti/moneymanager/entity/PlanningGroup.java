@@ -1,7 +1,6 @@
 package com.mconnti.moneymanager.entity;
 
 import java.io.Serializable;
-import java.util.GregorianCalendar;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -23,10 +22,10 @@ import javax.xml.bind.annotation.XmlTransient;
 import org.hibernate.annotations.ForeignKey;
 
 @Entity
-@Table(name="planning")
+@Table(name="planninggroup")
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Planning implements Serializable {
+public class PlanningGroup implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -35,22 +34,32 @@ public class Planning implements Serializable {
 	@Column(nullable = false, insertable = true, updatable = false)
 	private Long id;
 	
-	@Column(nullable = false, insertable = true, updatable = true)
-	private String description;
+	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = Description.class)
+	@JoinColumn(name = "description_id")
+	@ForeignKey(name = "FK_PLGROUP_DESC")
+	private Description description;
 	
-	private GregorianCalendar date;
+	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = Description.class)
+	@JoinColumn(name = "typeaccount_id")
+	@ForeignKey(name = "FK_PLGROUP_TYPEACC")
+	private TypeAccount typeAccount;
 	
-	@OneToMany(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = Planning.class)
 	@JoinColumn(name = "planning_id")
-	@ForeignKey(name = "FK_PLANNING_PLGROUP")
-	@XmlTransient
-	@Transient
-	private Set<PlanningGroup> plannigGroupList;
+	@ForeignKey(name = "FK_PLGROUP_PLANNING")
+	private Planning planning;
 
 	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = User.class)
 	@JoinColumn(name = "user_id")
-	@ForeignKey(name = "FK_PLANNING_USER")
+	@ForeignKey(name = "FK_PLGROUP_USER")
 	private User user;
+	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "planningitem_id")
+	@ForeignKey(name = "FK_PLGROUP_PLITEM")
+	@XmlTransient
+	@Transient
+	private Set<PlanningItem> plannigItemList;
 
 	public Long getId() {
 		return id;
@@ -60,12 +69,20 @@ public class Planning implements Serializable {
 		this.id = id;
 	}
 
-	public String getDescription() {
+	public Description getDescription() {
 		return description;
 	}
 
-	public void setDescription(String description) {
+	public void setDescription(Description description) {
 		this.description = description;
+	}
+
+	public TypeAccount getTypeAccount() {
+		return typeAccount;
+	}
+
+	public void setTypeAccount(TypeAccount typeAccount) {
+		this.typeAccount = typeAccount;
 	}
 
 	public User getUser() {
@@ -76,19 +93,19 @@ public class Planning implements Serializable {
 		this.user = user;
 	}
 
-	public GregorianCalendar getDate() {
-		return date;
+	public Planning getPlanning() {
+		return planning;
 	}
 
-	public void setDate(GregorianCalendar date) {
-		this.date = date;
+	public void setPlanning(Planning planning) {
+		this.planning = planning;
 	}
 
-	public Set<PlanningGroup> getPlannigGroupList() {
-		return plannigGroupList;
+	public Set<PlanningItem> getPlannigItemList() {
+		return plannigItemList;
 	}
 
-	public void setPlannigGroupList(Set<PlanningGroup> plannigGroupList) {
-		this.plannigGroupList = plannigGroupList;
+	public void setPlannigItemList(Set<PlanningItem> plannigItemList) {
+		this.plannigItemList = plannigItemList;
 	}
 }
