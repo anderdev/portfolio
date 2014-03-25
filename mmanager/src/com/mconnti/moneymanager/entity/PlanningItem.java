@@ -2,7 +2,6 @@ package com.mconnti.moneymanager.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -22,7 +21,7 @@ public class PlanningItem implements Serializable {
 	
 	private Integer month;
 	
-	private Date payDay;
+	private Integer day;
 	
 	private PlanningGroup planningGroup;
 
@@ -52,12 +51,12 @@ public class PlanningItem implements Serializable {
 		this.year = year;
 	}
 
-	public Date getPayDay() {
-		return payDay;
+	public Integer getDay() {
+		return day;
 	}
 
-	public void setPayDay(Date payDay) {
-		this.payDay = payDay;
+	public void setDay(Integer day) {
+		this.day = day;
 	}
 
 	public User getUser() {

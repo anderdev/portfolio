@@ -2,7 +2,6 @@ package com.mconnti.moneymanager.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -39,7 +38,7 @@ public class PlanningItem implements Serializable {
 	
 	private Integer month;
 	
-	private Date payDay;
+	private Integer day;
 	
 	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = PlanningGroup.class)
 	@JoinColumn(name = "planninggroup_id")
@@ -75,14 +74,6 @@ public class PlanningItem implements Serializable {
 		this.year = year;
 	}
 
-	public Date getPayDay() {
-		return payDay;
-	}
-
-	public void setPayDay(Date payDay) {
-		this.payDay = payDay;
-	}
-
 	public User getUser() {
 		return user;
 	}
@@ -105,5 +96,13 @@ public class PlanningItem implements Serializable {
 
 	public void setPlanningGroup(PlanningGroup planningGroup) {
 		this.planningGroup = planningGroup;
+	}
+
+	public Integer getDay() {
+		return day;
+	}
+
+	public void setDay(Integer day) {
+		this.day = day;
 	}
 }

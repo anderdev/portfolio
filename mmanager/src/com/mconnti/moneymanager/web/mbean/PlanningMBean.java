@@ -2,6 +2,7 @@ package com.mconnti.moneymanager.web.mbean;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.MediaType;
 
@@ -17,7 +19,11 @@ import org.jboss.resteasy.client.ClientRequest;
 import org.jboss.resteasy.client.ClientResponse;
 import org.jboss.resteasy.util.GenericType;
 
+import com.mconnti.moneymanager.entity.Description;
 import com.mconnti.moneymanager.entity.Planning;
+import com.mconnti.moneymanager.entity.PlanningGroup;
+import com.mconnti.moneymanager.entity.PlanningItem;
+import com.mconnti.moneymanager.entity.TypeAccount;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
 import com.mconnti.moneymanager.util.FacesUtil;
 
@@ -33,15 +39,29 @@ public class PlanningMBean implements Serializable {
 	private List<Planning> planningList;
 
 	private Planning planning;
+	
+	private PlanningGroup planningGroup;
+	
+	private PlanningItem planningItem;
 
 	private Planning[] selectedPlanning;
 
 	private String host = null;
 
-	private Boolean showForm = true;
+	private Boolean showForm = false;
+	
+	private List<TypeAccount> typeAccountList;
+	
+	private List<Description> descriptionList;
+	
+	private SelectItem[] typeAccounts;
+	
+	private SelectItem[] descriptions;
 
 	public PlanningMBean() {
 		this.planning = new Planning();
+		this.planningGroup = new PlanningGroup();
+		this.planningItem = new PlanningItem();
 
 		Object request = FacesContext.getCurrentInstance().getExternalContext().getRequest();
 		if (request instanceof HttpServletRequest) {
@@ -79,55 +99,21 @@ public class PlanningMBean implements Serializable {
 	}
 
 	public String list() {
-		showForm = true;
+		showForm = false;
 		createPlanning();
 		loadList();
 		return "/common/formPlanning.xhtml?faces-redirect=true";
 	}
 
-
-	public String cancel() {
-		showForm = false;
+	public void newTab(){
+		showForm = true;
 		this.planning = new Planning();
-		return "/common/index.xhtml/faces-redirect=true";
 	}
 	
-	public void cancelForm(){
+	public void cancelTab(){
 		showForm = false;
 	}
 	
-	public void calculate(){
-		MessageReturn ret = new MessageReturn();
-		try {
-
-			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/planning");
-
-			planning.setUser(userMBean.getLoggedUser().getSuperUser() == null ? userMBean.getLoggedUser() : userMBean.getLoggedUser().getSuperUser());
-			request.body(MediaType.APPLICATION_JSON, planning);
-			
-			ClientResponse<Planning> response = request.put(Planning.class);
-
-			ret = response.getEntity(MessageReturn.class);
-
-			if (response.getStatus() != 200) {
-				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
-			}
-
-			if (ret.getPlanning() == null) {
-				throw new Exception(ret.getMessage());
-			} else {
-				planning = ret.getPlanning();
-			}
-			showForm = true;
-		} catch (ClientProtocolException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
 	public void edit() {
 	}
 	
@@ -191,6 +177,78 @@ public class PlanningMBean implements Serializable {
 		}
 
 	}
+	
+	public void saveItem(){
+		
+	}
+	
+	public SelectItem[] loadTypeAccounts() {
+		typeAccountList = loadTypeAccountList();
+
+		List<SelectItem> itens = new ArrayList<SelectItem>(typeAccountList.size());
+
+		this.typeAccounts = new SelectItem[itens.size()];
+
+		for (TypeAccount c : typeAccountList) {
+			itens.add(new SelectItem(c.getId(), c.getDescription()));
+		}
+		return itens.toArray(new SelectItem[itens.size()]);
+	}
+	
+	private List<TypeAccount> loadTypeAccountList() {
+		try {
+
+			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/typeaccount");
+			ClientResponse<TypeAccount> response = request.get(TypeAccount.class);
+
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+			typeAccountList = response.getEntity(new GenericType<List<TypeAccount>>() {
+			});
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return typeAccountList;
+	}
+	
+	public SelectItem[] loadDescriptions() {
+		descriptionList = loadDescriptionList();
+
+		List<SelectItem> itens = new ArrayList<SelectItem>(descriptionList.size());
+
+		this.descriptions = new SelectItem[itens.size()];
+
+		for (Description c : descriptionList) {
+			itens.add(new SelectItem(c.getId(), c.getDescription()));
+		}
+		return itens.toArray(new SelectItem[itens.size()]);
+	}
+	
+	private List<Description> loadDescriptionList() {
+		try {
+
+			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/description");
+			ClientResponse<Description> response = request.get(Description.class);
+
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+			descriptionList = response.getEntity(new GenericType<List<Description>>() {
+			});
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return descriptionList;
+	}
 
 	public UserMBean getUserMBean() {
 		return userMBean;
@@ -231,5 +289,53 @@ public class PlanningMBean implements Serializable {
 
 	public void setShowForm(Boolean showForm) {
 		this.showForm = showForm;
+	}
+
+	public PlanningGroup getPlanningGroup() {
+		return planningGroup;
+	}
+
+	public void setPlanningGroup(PlanningGroup planningGroup) {
+		this.planningGroup = planningGroup;
+	}
+
+	public PlanningItem getPlanningItem() {
+		return planningItem;
+	}
+
+	public void setPlanningItem(PlanningItem planningItem) {
+		this.planningItem = planningItem;
+	}
+
+	public List<TypeAccount> getTypeAccountList() {
+		return typeAccountList;
+	}
+
+	public void setTypeAccountList(List<TypeAccount> typeAccountList) {
+		this.typeAccountList = typeAccountList;
+	}
+
+	public SelectItem[] getTypeAccounts() {
+		return typeAccounts;
+	}
+
+	public void setTypeAccounts(SelectItem[] typeAccounts) {
+		this.typeAccounts = typeAccounts;
+	}
+
+	public List<Description> getDescriptionList() {
+		return descriptionList;
+	}
+
+	public void setDescriptionList(List<Description> descriptionList) {
+		this.descriptionList = descriptionList;
+	}
+
+	public SelectItem[] getDescriptions() {
+		return descriptions;
+	}
+
+	public void setDescriptions(SelectItem[] descriptions) {
+		this.descriptions = descriptions;
 	}
 }

@@ -11,9 +11,8 @@
 					<p:menuitem value="#{messages['lb_debit_']}" immediate="true" action="#{registerMBean.newDebit}"   ajax="true"/>
 				</p:submenu>
 				<p:submenu label="#{messages['lb_search_']}"  styleClass="menuInvisible">
-					<p:menuitem value="#{messages['lb_credit_']}" immediate="true" action="#{creditMBean.list}" ajax="true" />
-					<p:menuitem value="#{messages['lb_debit_']}" immediate="true" action="#{debitMBean.list}"   ajax="true" />
-					<p:menuitem value="#{messages['lb_closure_']}" immediate="true" action="#{debitMBean.list}"   ajax="true" />
+					<p:menuitem value="#{messages['lb_credit_debit']}" immediate="true" action="#{registerMBean.list}" ajax="true" />
+					<p:menuitem value="#{messages['lb_closure_']}" immediate="true" action="#{closureMBean.list}"   ajax="true" />
 				</p:submenu>
 				<p:submenu label="#{messages['lb_tools_']}" styleClass="menuInvisible">
 					<p:menuitem value="#{messages['lb_closure_']}" immediate="true" action="#{closureMBean.list}" ajax="true"/>
