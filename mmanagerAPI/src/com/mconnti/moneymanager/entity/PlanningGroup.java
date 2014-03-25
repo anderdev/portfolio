@@ -55,7 +55,7 @@ public class PlanningGroup implements Serializable {
 	private User user;
 	
 	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "planningitem_id")
+	@JoinColumn(name = "planninggroup_id")
 	@ForeignKey(name = "FK_PLGROUP_PLITEM")
 	@XmlTransient
 	@Transient
