@@ -1,6 +1,8 @@
 package com.mconnti.moneymanager.business.impl;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,8 +34,10 @@ public class CurrencyBOImpl extends GenericBOImpl<Currency> implements CurrencyB
 		return libReturn;
 	}
 
-	public List<Currency> list() throws Exception {
-		return list(Currency.class, null, null);
+	public List<Currency> list(final Currency currency) throws Exception {
+		Map<String, String> queryParams = new LinkedHashMap<>();
+		queryParams.put(" where x.locale = ", "'"+currency.getLocale()+"'");
+		return list(Currency.class, queryParams, null);
 	}
 
 	@Override

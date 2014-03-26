@@ -10,7 +10,7 @@ import com.mconnti.moneymanager.entity.xml.MessageReturn;
 @Service("typeClosureBO")
 public interface TypeClosureBO extends GenericBO<TypeClosure>{
 	
-	public List<TypeClosure> list() throws Exception;
+	public List<TypeClosure> list(final TypeClosure typeClosure) throws Exception;
 	
 	public MessageReturn save(final TypeClosure typeClosure) throws Exception;
 	

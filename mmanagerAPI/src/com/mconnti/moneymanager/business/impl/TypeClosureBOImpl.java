@@ -1,6 +1,8 @@
 package com.mconnti.moneymanager.business.impl;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,8 +34,10 @@ public class TypeClosureBOImpl extends GenericBOImpl<TypeClosure> implements Typ
 		return libReturn;
 	}
 
-	public List<TypeClosure> list() throws Exception {
-		return list(TypeClosure.class, null, null);
+	public List<TypeClosure> list(final TypeClosure typeClosure) throws Exception {
+		Map<String, String> queryParams = new LinkedHashMap<>();
+		queryParams.put(" where x.locale = ", "'"+typeClosure.getLocale()+"'");
+		return list(TypeClosure.class, queryParams, null);
 	}
 
 	@Override

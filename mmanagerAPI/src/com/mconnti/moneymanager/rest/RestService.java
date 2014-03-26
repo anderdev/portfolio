@@ -380,14 +380,14 @@ public class RestService {
 
 	// CURRENCY AREA
 
-	@GET
+	@PUT
 	@Path("/currency")
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response listCurrency() {
+	public Response listCurrency(Currency currency) {
 
 		List<Currency> list = new ArrayList<>();
 		try {
-			list = currencyBO.list();
+			list = currencyBO.list(currency);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -470,14 +470,15 @@ public class RestService {
 
 	// TYPE_CLOSURE AREA
 
-	@GET
+	@PUT
 	@Path("/typeclosure")
+	@Consumes({ MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response listTypeClosure() {
+	public Response listTypeClosure(TypeClosure typeClosure) {
 
 		List<TypeClosure> list = new ArrayList<>();
 		try {
-			list = typeClosureBO.list();
+			list = typeClosureBO.list(typeClosure);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

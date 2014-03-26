@@ -285,7 +285,9 @@ public class RegisterMBean implements Serializable {
 		try {
 
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/currency");
-			ClientResponse<Currency> response = request.get(Currency.class);
+			currency.setLocale(userMBean.getLoggedUser().getLanguage());
+			request.body(MediaType.APPLICATION_JSON, currency);
+			ClientResponse<Currency> response = request.put(Currency.class);
 
 			if (response.getStatus() != 200) {
 				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
@@ -356,7 +358,9 @@ public class RegisterMBean implements Serializable {
 		try {
 
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/typeclosure");
-			ClientResponse<TypeClosure> response = request.get(TypeClosure.class);
+			typeClosure.setLocale(userMBean.getLoggedUser().getLanguage());
+			request.body(MediaType.APPLICATION_JSON, typeClosure);
+			ClientResponse<TypeClosure> response = request.put(TypeClosure.class);
 
 			if (response.getStatus() != 200) {
 				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
