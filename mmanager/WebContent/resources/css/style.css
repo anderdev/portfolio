@@ -312,6 +312,25 @@ border-width:5px;*/
 	border: 0px dotted #000;
 }
 
+div#boxLoggedUser{
+	width: 300px;
+	margin-left: -150px;
+	left: 85%;
+	position: absolute;
+	font-style: italic;
+	text-align: center;
+	font-weight: bold;
+	font-size: 12px;
+	vertical-align: middle;	
+	color: green;
+	text-decoration: none;
+	border: solid #dfedf8;
+	border-width: 0px 0;
+	top: 100px;
+	padding-right: 10px;
+	z-index: 100;
+}
+
 .gridLogin{
 	font-weight: bold;
 	width: 100%;

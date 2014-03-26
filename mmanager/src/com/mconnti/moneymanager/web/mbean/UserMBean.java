@@ -355,7 +355,8 @@ public class UserMBean implements Serializable {
 	}
 
 	public String logout() {
-		this.loggedUser = new User();
+		this.loggedUser = null;
+		this.user = null;
 		this.showFormUser = false;
 		return "/index.xhtml?faces-redirect=true";
 	}
