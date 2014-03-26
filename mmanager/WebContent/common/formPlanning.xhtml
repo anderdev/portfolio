@@ -13,12 +13,18 @@
 				
 				<div class="listPlanning">
 					<div align="right" class="newPlanning">
-						<h:panelGroup id="item" rendered="#{!planningMBean.showForm}">
-							<p:commandButton value="#{messages['lb_new_item']}" update=":formPlanning" immediate="true" id="newItem" ajax="true" styleClass="button" action="#{planningMBean.newTab}"/>						
-						</h:panelGroup>
-						<h:panelGroup id="tab" rendered="#{!planningMBean.showForm}">
-							<p:commandButton value="#{messages['lb_new_tab']}" update=":formPlanning" immediate="true" id="newTab" ajax="true" styleClass="button" action="#{planningMBean.newTab}"/>						
-						</h:panelGroup>
+					
+						<h:panelGrid columns="2" width="100%" border="0" columnClasses="alignLeft,alignRight" rendered="#{!planningMBean.showForm}">
+			        		<p:commandButton value="#{messages['lb_new_item']}" 
+			        			action="#{planningMBean.newItem}"  
+			        			styleClass="button" 
+			        			update=":planningItem" 
+			        			id="newButton"
+			        			oncomplete="newPlanningModal.show()" >
+			        		</p:commandButton>
+			        		<p:commandButton value="#{messages['lb_new_tab']}" update=":formPlanning" immediate="true" id="newTab" ajax="true" styleClass="button" action="#{planningMBean.newTab}"/>
+					    </h:panelGrid>
+					    
 	        			<h:panelGroup id="tabForm" rendered="#{planningMBean.showForm}">
 							<h:panelGrid columns="4" styleClass="boldFont" columnClasses="column120RightWithPaddingRigth,column80" border="0">
 								<h:outputText value="#{messages['lb_description']}" />
@@ -36,48 +42,55 @@
 					</p:tabView>
 				</div>
 			</h:form>
-			<p:dialog header="#{messages['lb_planning_registration']}" resizable="false" widgetVar="newUserModal" modal="true" appendToBody="true" height="300" width="480">  
-			    <h:form prependId="false" id="regist">
+			
+			<p:dialog header="#{messages['lb_planning_registration']}" resizable="false" widgetVar="newPlanningModal" modal="true" appendTo="@(body)" height="270" width="480">  
+			    <h:form prependId="false" id="planningItem">
+			    	<script type="text/javascript">
+					$(function() {
+					    $('#amountPlanning').maskMoney();
+					    $(".numeric").numeric();
+					  });
+					</script>
 			    	<h:panelGroup id="panel">
-	       	
+	       				<br />
 			       		<h:panelGrid columns="2" styleClass="boldFont" columnClasses="column120RightWithPaddingRigth,column285" border="0" >
 			       		
 			       			<h:outputText value="#{messages['lb_typeAccount']}" />
 							<p:selectOneMenu value="#{planningMBean.planningGroup.typeAccount.id}" label="#{messages['lb_typeAccount_']}" style="width:100%">
 					            <f:selectItem itemLabel="#{messages['lb_select']}" itemValue="" />
-					            <f:selectItems value="#{planningMBean.typeAccounts}"  var="desc" itemLabel="#{desc.name}" itemValue="#{desc}"/>  
+					            <f:selectItems value="#{planningMBean.typeAccounts}" var="desc" itemLabel="#{desc.name}" itemValue="#{desc}"/>
+					            <p:ajax update="descriptions" event="change" listener="#{planningMBean.loadDescriptions}"/>  
 					        </p:selectOneMenu>
 		
 					        <h:outputText value="#{messages['lb_description']}"/>
-							<p:selectOneMenu value="#{planningMBean.planningGroup.description.id}" label="#{messages['lb_description_']}" style="width:100%">
+							<p:selectOneMenu id="descriptions" value="#{planningMBean.planningGroup.description.id}" label="#{messages['lb_description_']}" style="width:100%">
 					            <f:selectItem itemLabel="#{messages['lb_select']}" itemValue="" />
 					            <f:selectItems value="#{planningMBean.descriptions}"  var="desc" itemLabel="#{desc.description}" itemValue="#{desc}"/>  
 					        </p:selectOneMenu>
 					        
 						</h:panelGrid>
-						
-						<h:panelGrid columns="4" styleClass="boldFont" columnClasses="column120RightWithPaddingRigth,column80,column80rightAlign,column80" border="0">
-					        
-					        <p:fieldset legend="#{messages['lb_date']}">
-					        	<h:outputText value="#{messages['lb_parcels']}" />
-								<p:inputText id="day" label="#{messages['lb_parcels_']}" required="true"  value="#{planningMBean.planningItem.day}" style="width:25px;text-align:right;" />
-								
-								<h:outputText value="#{messages['lb_amount']}" />
-								<p:inputText id="month"  label="#{messages['lb_amount_']}" required="true" maxlength="10"  value="#{planningMBean.planningItem.month}" style="width:80px;text-align:right;" />
-								
-								<h:outputText value="#{messages['lb_amount']}" />
-								<p:inputText id="year"  label="#{messages['lb_amount_']}" required="true" maxlength="10"  value="#{planningMBean.planningItem.year}" style="width:80px;text-align:right;" />
-					        </p:fieldset>
-							
-							<h:outputText value="#{messages['lb_amount']}" />
-							<p:inputText id="amount"  label="#{messages['lb_amount_']}" required="true" maxlength="10"  value="#{planningMBean.planningItem.amount}" style="width:80px;text-align:right;" />
-						</h:panelGrid>
-						
 						<br />
-			
 						<div align="center">
-							<p:commandButton value="#{messages['lb_post']}" id="postItem" action="#{planningMBean.saveItem}" ajax="false" update=":formPlanning" styleClass="button"/>  
-							<p:commandButton value="#{messages['lb_back']}" update=":formPlanning" immediate="true" id="backItem" ajax="true"  styleClass="button" />
+					        <p:fieldset>
+					        	<h:panelGrid columns="3" styleClass="boldFont" columnClasses="column140Center,column90rightAlign,column80" border="0">
+					        		<h:outputText value="dd/mm/yyyy" />
+					        		<h:outputText />
+					        		<h:outputText />
+					        		<h:panelGroup >
+										<p:inputText id="day" label="#{messages['lb_day']}" styleClass="numeric" required="true" maxlength="2" value="#{planningMBean.planningItem.day}" style="width:25px;text-align:center;" />
+										<h:outputText value="/"/>
+										<p:inputText id="month"  label="#{messages['lb_month']}" styleClass="numeric" required="true" maxlength="2"  value="#{planningMBean.planningItem.month}" style="width:25px;text-align:center;" />
+										<h:outputText value="/"/>
+										<p:inputText id="year"  label="#{messages['lb_year']}" styleClass="numeric" required="true" maxlength="4"  value="#{planningMBean.planningItem.year}" style="width:40px;text-align:center;" />
+									</h:panelGroup>
+									<h:outputText value="#{messages['lb_amount']}" />
+									<p:inputText id="amountPlanning" label="#{messages['lb_amount_']}" required="true" maxlength="10"  value="#{planningMBean.planningItem.amount}" style="width:80px;text-align:right;"/>
+								</h:panelGrid>
+					        </p:fieldset>
+							<br />
+						
+							<p:commandButton value="#{messages['lb_post']}" id="postItem" action="#{planningMBean.saveItem}" oncomplete="if (args &amp;&amp; !args.validationFailed) newPlanningModal.hide();" ajax="true" update=":formPlanning" styleClass="button"/>  
+							<p:commandButton value="#{messages['lb_back']}" update=":formPlanning" immediate="true" id="backItem" oncomplete="newPlanningModal.hide()" ajax="true"  styleClass="button" />
 						</div>
 					</h:panelGroup>
 				</h:form>

@@ -39,9 +39,13 @@ public class PlanningMBean implements Serializable {
 	private List<Planning> planningList;
 
 	private Planning planning;
-	
+
+	private TypeAccount typeAccount;
+
+	private Description description;
+
 	private PlanningGroup planningGroup;
-	
+
 	private PlanningItem planningItem;
 
 	private Planning[] selectedPlanning;
@@ -49,19 +53,23 @@ public class PlanningMBean implements Serializable {
 	private String host = null;
 
 	private Boolean showForm = false;
-	
+
 	private List<TypeAccount> typeAccountList;
-	
+
 	private List<Description> descriptionList;
-	
+
 	private SelectItem[] typeAccounts;
-	
+
 	private SelectItem[] descriptions;
 
 	public PlanningMBean() {
 		this.planning = new Planning();
 		this.planningGroup = new PlanningGroup();
+		this.planningGroup.setTypeAccount(new TypeAccount());
+		this.planningGroup.setDescription(new Description());
 		this.planningItem = new PlanningItem();
+		this.typeAccount = new TypeAccount();
+		this.description = new Description();
 
 		Object request = FacesContext.getCurrentInstance().getExternalContext().getRequest();
 		if (request instanceof HttpServletRequest) {
@@ -77,10 +85,10 @@ public class PlanningMBean implements Serializable {
 	private List<Planning> loadList() {
 		try {
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/planning/list");
-			
+
 			planning.setUser(userMBean.getLoggedUser().getSuperUser() == null ? userMBean.getLoggedUser() : userMBean.getLoggedUser().getSuperUser());
 			request.body(MediaType.APPLICATION_JSON, planning);
-			
+
 			ClientResponse<Planning> response = request.put(Planning.class);
 
 			if (response.getStatus() != 200) {
@@ -105,18 +113,23 @@ public class PlanningMBean implements Serializable {
 		return "/common/formPlanning.xhtml?faces-redirect=true";
 	}
 
-	public void newTab(){
+	public void newTab() {
 		showForm = true;
 		this.planning = new Planning();
 	}
-	
-	public void cancelTab(){
+
+	public void newItem() {
+		this.planningItem = new PlanningItem();
+		loadTypeAccount();
+	}
+
+	public void cancelTab() {
 		showForm = false;
 	}
-	
+
 	public void edit() {
 	}
-	
+
 	public void save() {
 		MessageReturn ret = new MessageReturn();
 
@@ -177,11 +190,11 @@ public class PlanningMBean implements Serializable {
 		}
 
 	}
-	
-	public void saveItem(){
-		
+
+	public void saveItem() {
+
 	}
-	
+
 	public SelectItem[] loadTypeAccounts() {
 		typeAccountList = loadTypeAccountList();
 
@@ -194,12 +207,18 @@ public class PlanningMBean implements Serializable {
 		}
 		return itens.toArray(new SelectItem[itens.size()]);
 	}
-	
+
+	private void loadTypeAccount() {
+		this.typeAccounts = loadTypeAccounts();
+	}
+
 	private List<TypeAccount> loadTypeAccountList() {
 		try {
 
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/typeaccount");
-			ClientResponse<TypeAccount> response = request.get(TypeAccount.class);
+			typeAccount.setLocale(userMBean.getLoggedUser().getLanguage());
+			request.body(MediaType.APPLICATION_JSON, typeAccount);
+			ClientResponse<TypeAccount> response = request.put(TypeAccount.class);
 
 			if (response.getStatus() != 200) {
 				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
@@ -215,7 +234,7 @@ public class PlanningMBean implements Serializable {
 		}
 		return typeAccountList;
 	}
-	
+
 	public SelectItem[] loadDescriptions() {
 		descriptionList = loadDescriptionList();
 
@@ -228,12 +247,16 @@ public class PlanningMBean implements Serializable {
 		}
 		return itens.toArray(new SelectItem[itens.size()]);
 	}
-	
+
 	private List<Description> loadDescriptionList() {
 		try {
 
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/description");
-			ClientResponse<Description> response = request.get(Description.class);
+			description.setUser(userMBean.getLoggedUser().getSuperUser() == null ? userMBean.getLoggedUser() : userMBean.getLoggedUser().getSuperUser());
+			description.setTypeAccount(planningGroup.getTypeAccount());
+
+			request.body(MediaType.APPLICATION_JSON, description);
+			ClientResponse<Description> response = request.put(Description.class);
 
 			if (response.getStatus() != 200) {
 				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
@@ -281,7 +304,6 @@ public class PlanningMBean implements Serializable {
 	public void setSelectedPlanning(Planning[] selectedPlanning) {
 		this.selectedPlanning = selectedPlanning;
 	}
-
 
 	public Boolean getShowForm() {
 		return showForm;
@@ -337,5 +359,21 @@ public class PlanningMBean implements Serializable {
 
 	public void setDescriptions(SelectItem[] descriptions) {
 		this.descriptions = descriptions;
+	}
+
+	public TypeAccount getTypeAccount() {
+		return typeAccount;
+	}
+
+	public void setTypeAccount(TypeAccount typeAccount) {
+		this.typeAccount = typeAccount;
+	}
+
+	public Description getDescription() {
+		return description;
+	}
+
+	public void setDescription(Description description) {
+		this.description = description;
 	}
 }

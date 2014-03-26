@@ -383,12 +383,21 @@ div#boxLoggedUser{
 .column120{
 	width: 120px;
 }
+.column120Center{
+	width: 120px;
+	text-align: center;
+}
 
 .column120RightWithPaddingRigth{
 	width: 120px;
 	text-align: right;
 	padding-right: 5px;
 	border: 0px dotted #000;
+}
+
+.column140Center{
+	width: 140px;
+	text-align: center;
 }
 
 .column150{
@@ -398,7 +407,7 @@ div#boxLoggedUser{
 
 .column200{
 	width: 200px;
-	border: 0px dotted #000;
+	border: 1px dotted #000;
 }
 
 .column260{
@@ -540,17 +549,19 @@ div#boxLoggedUser{
 
 .messages{
 	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 12px;
+	font-size: 13px;
 	font-weight: bold;
+	color:red;
+	text-align:center;
 	border: 0px dotted #000;
-	width:450px;
-	margin-left: -225px;
+	width:500px;
+	margin-left: -250px;
 	position: absolute;
 	left: 50%;
 	border-radius: 5px;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;	
-	border: 0px dotted #000 !important;
+	border: 1px solid gray !important;
 }
 
 /* ===========================

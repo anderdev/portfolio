@@ -37,6 +37,10 @@
 		<param-name>org.apache.myfaces.NUMBER_OF_VIEWS_IN_SESSION</param-name>
 		<param-value>200</param-value>
 	</context-param>
+	<error-page>
+	    <exception-type>javax.faces.application.ViewExpiredException</exception-type>
+	    <location>/expired.xhtml</location>
+	</error-page>
 	<servlet-mapping>
 		<servlet-name>Faces Servlet</servlet-name>
 		<url-pattern>*.jsf</url-pattern>

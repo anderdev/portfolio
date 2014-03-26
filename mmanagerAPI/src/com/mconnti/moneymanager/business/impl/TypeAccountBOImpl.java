@@ -1,6 +1,8 @@
 package com.mconnti.moneymanager.business.impl;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,8 +47,10 @@ public class TypeAccountBOImpl extends GenericBOImpl<TypeAccount> implements Typ
 		return libReturn;
 	}
 
-	public List<TypeAccount> list() throws Exception {
-		return list(TypeAccount.class, null, null);
+	public List<TypeAccount> list(TypeAccount typeAccount) throws Exception {
+		Map<String, String> queryParams = new LinkedHashMap<>();
+		queryParams.put(" where x.locale = ", "'"+typeAccount.getLocale()+"'");
+		return list(TypeAccount.class, queryParams, null);
 	}
 
 	@Override

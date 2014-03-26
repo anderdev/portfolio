@@ -425,14 +425,15 @@ public class RestService {
 
 	// TYPE ACCOUNT AREA
 
-	@GET
+	@PUT
 	@Path("/typeaccount")
+	@Consumes({ MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response listAccount() {
+	public Response listAccount(TypeAccount typeAccount) {
 
 		List<TypeAccount> list = new ArrayList<>();
 		try {
-			list = typeAccountBO.list();
+			list = typeAccountBO.list(typeAccount);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -467,7 +468,7 @@ public class RestService {
 		}
 		return Response.status(200).entity(ret).build();
 	}
-
+	
 	// TYPE_CLOSURE AREA
 
 	@PUT

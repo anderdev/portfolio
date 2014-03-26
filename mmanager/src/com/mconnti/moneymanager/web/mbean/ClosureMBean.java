@@ -124,7 +124,8 @@ public class ClosureMBean implements Serializable {
 		try {
 
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/typeclosure");
-			ClientResponse<TypeClosure> response = request.get(TypeClosure.class);
+			typeClosure.setLocale(userMBean.getLoggedUser().getLanguage());
+			ClientResponse<TypeClosure> response = request.put(TypeClosure.class);
 
 			if (response.getStatus() != 200) {
 				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());

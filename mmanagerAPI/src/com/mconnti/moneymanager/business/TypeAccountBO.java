@@ -10,9 +10,9 @@ import com.mconnti.moneymanager.entity.xml.MessageReturn;
 @Service("typeAccountBO")
 public interface TypeAccountBO extends GenericBO<TypeAccount>{
 	
-	public List<TypeAccount> list() throws Exception;
+	public List<TypeAccount> list(final TypeAccount typeAccount) throws Exception;
 	
-	public MessageReturn save(final TypeAccount account) throws Exception;
+	public MessageReturn save(final TypeAccount typeAccount) throws Exception;
 	
 	public MessageReturn delete (Long id);
 	

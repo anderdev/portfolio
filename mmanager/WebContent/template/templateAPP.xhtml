@@ -11,16 +11,17 @@
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 		<link rel="shortcut icon" href="#{facesContext.externalContext.request.contextPath}/resources/images/logo.ico" type="image/x-icon" />
 		<link rel="stylesheet" href="#{facesContext.externalContext.request.contextPath}/resources/css/style.css" type="text/css" />
-		<script type="text/javascript" src="#{facesContext.externalContext.request.contextPath}/resources/js/jquery.number.js"></script>
+		<script type="text/javascript" src="#{facesContext.externalContext.request.contextPath}/resources/js/jquery.maskMoney.js"></script>
+		<script type="text/javascript" src="#{facesContext.externalContext.request.contextPath}/resources/js/jquery.numeric.js"></script>
 		<h:outputScript name="calendar.js" library="js" />
 		
 		
 		<script type="text/javascript">
-			
-			$(function(){
-				// Set up the number formatting.
-				$('#amount').number( true, 2 );
-			});
+		$(function() {
+		    $('#amount').maskMoney();
+		    $('#amountPlanning').maskMoney();
+		    $(".numeric").numeric();
+		  });
 		</script>
 		<title>#{messages['lb_title_restrict']}</title>
 	</h:head>

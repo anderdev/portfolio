@@ -67,7 +67,7 @@
 					        </p:selectOneMenu>
 					        
 							<h:outputText value="#{messages['lb_parcels']}" />
-							<p:inputText  label="#{messages['lb_parcels_']}" required="true"  value="#{registerMBean.register.numberParcel}" style="width:25px;text-align:right;" />
+							<p:inputText  label="#{messages['lb_parcels_']}" required="true" styleClass="numeric" maxlength="3" value="#{registerMBean.register.numberParcel}" style="width:25px;text-align:right;" />
 							
 							<h:outputText value="#{messages['lb_amount']}" />
 							<p:inputText id="amount"  label="#{messages['lb_amount_']}" required="true" maxlength="10"  value="#{registerMBean.register.amount}" style="width:80px;text-align:right;" />
