@@ -150,12 +150,8 @@ public class ClosureMBean implements Serializable {
 	}
 
 	private void setDefaultValues() {
-		TypeClosure typeClosure = new TypeClosure();
-		typeClosure.setId(1L);
-		closure.setTypeClosure(typeClosure);
-		Currency currency = new Currency();
-		currency.setId(1L);
-		closure.setCurrency(currency);
+		closure.setTypeClosure(userMBean.getUser().getConfig().getTypeClosure());
+		closure.setCurrency(userMBean.getUser().getConfig().getCurrency());
 		closure.setDate(new Date());
 	}
 	

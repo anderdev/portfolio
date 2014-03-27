@@ -59,7 +59,7 @@
 							<p:selectOneMenu value="#{planningMBean.planningGroup.typeAccount.id}" label="#{messages['lb_typeAccount_']}" style="width:100%">
 					            <f:selectItem itemLabel="#{messages['lb_select']}" itemValue="" />
 					            <f:selectItems value="#{planningMBean.typeAccounts}" var="desc" itemLabel="#{desc.name}" itemValue="#{desc}"/>
-					            <p:ajax update="descriptions" event="change" listener="#{planningMBean.loadDescriptions}"/>  
+					            <p:ajax update="descriptions" event="change" listener="#{planningMBean.loadDescriptionsByTypeAccount}"/>  
 					        </p:selectOneMenu>
 		
 					        <h:outputText value="#{messages['lb_description']}"/>

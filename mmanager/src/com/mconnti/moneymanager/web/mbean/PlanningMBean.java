@@ -234,6 +234,10 @@ public class PlanningMBean implements Serializable {
 		}
 		return typeAccountList;
 	}
+	
+	public void loadDescriptionsByTypeAccount() {
+		this.descriptions = loadDescriptions();
+	}
 
 	public SelectItem[] loadDescriptions() {
 		descriptionList = loadDescriptionList();
