@@ -90,7 +90,9 @@ public class ClosureMBean implements Serializable {
 		try {
 
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/currency");
-			ClientResponse<Currency> response = request.get(Currency.class);
+			currency.setLocale(userMBean.getLoggedUser().getLanguage());
+			request.body(MediaType.APPLICATION_JSON, currency);
+			ClientResponse<Currency> response = request.put(Currency.class);
 
 			if (response.getStatus() != 200) {
 				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
@@ -125,6 +127,7 @@ public class ClosureMBean implements Serializable {
 
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/typeclosure");
 			typeClosure.setLocale(userMBean.getLoggedUser().getLanguage());
+			request.body(MediaType.APPLICATION_JSON, typeClosure);
 			ClientResponse<TypeClosure> response = request.put(TypeClosure.class);
 
 			if (response.getStatus() != 200) {
@@ -150,8 +153,10 @@ public class ClosureMBean implements Serializable {
 	}
 
 	private void setDefaultValues() {
-		closure.setTypeClosure(userMBean.getUser().getConfig().getTypeClosure());
-		closure.setCurrency(userMBean.getUser().getConfig().getCurrency());
+		if(userMBean.getLoggedUser().getConfig() != null){
+			closure.setTypeClosure(userMBean.getLoggedUser().getConfig().getTypeClosure());
+			closure.setCurrency(userMBean.getLoggedUser().getConfig().getCurrency());
+		}
 		closure.setDate(new Date());
 	}
 	

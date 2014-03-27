@@ -70,8 +70,8 @@ public class User extends SearchObject implements Serializable{
 	private City city;
 	
 	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = Config.class)
-	@JoinColumn(name = "parameter_id")
-	@ForeignKey(name = "FK_USER_PARAMETER")
+	@JoinColumn(name = "config_id")
+	@ForeignKey(name = "FK_USER_CONFIG")
 	private Config config;
 	
 	private String username;

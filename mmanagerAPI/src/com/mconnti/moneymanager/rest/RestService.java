@@ -654,8 +654,8 @@ public class RestService {
 		return Response.status(200).entity(list).build();
 	}
 
-	@POST
-	@Path("/config")
+	@PUT
+	@Path("/config/save")
 	@Consumes({ MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Response saveConfig(Config config) {

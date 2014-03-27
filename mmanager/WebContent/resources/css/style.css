@@ -195,6 +195,21 @@ a img {
 	bottom: 8%;
 }
 
+.contentConfigUser{
+	width:500px;
+	height: 100px;
+	margin-left: -250px;
+	position: absolute;
+	left: 50%;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;	
+	border: 1px solid green !important;
+	padding-top:25px;
+	padding-bottom:25px;
+	bottom: 30%;
+}
+
 .contentMathValues{
 	width:500px;
 	height: 300px;

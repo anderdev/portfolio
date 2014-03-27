@@ -48,11 +48,14 @@ public class ConfigMBean implements Serializable {
 	private SelectItem[] typeClosures;
 
 	private SelectItem[] currencies;
-
+	
 	public ConfigMBean() {
+		this.config = new Config();
+		this.config.setCurrency(new Currency());
+		this.config.setTypeClosure(new TypeClosure());
 		this.typeClosure = new TypeClosure();
 		this.currency = new Currency();
-
+		
 		Object request = FacesContext.getCurrentInstance().getExternalContext().getRequest();
 		if (request instanceof HttpServletRequest) {
 			String[] str = ((HttpServletRequest) request).getRequestURL().toString().split("mmanager");
@@ -62,12 +65,14 @@ public class ConfigMBean implements Serializable {
 
 	private void createConfig() {
 		this.config = new Config();
+		this.config.setCurrency(new Currency());
+		this.config.setTypeClosure(new TypeClosure());
 	}
 
 	public String load() {
 		createConfig();
-		if(userMBean.getUser().getConfig() != null){
-			this.config = userMBean.getUser().getConfig();
+		if(userMBean.getLoggedUser().getConfig() != null){
+			this.config = userMBean.getLoggedUser().getConfig();
 		}
 		loadCombos();
 		return "/common/formConfig.xhtml?faces-redirect=true";
@@ -81,12 +86,12 @@ public class ConfigMBean implements Serializable {
 		MessageReturn ret = new MessageReturn();
 
 		try {
-			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/config");
+			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/config/save");
 
-			config.setUser(userMBean.getLoggedUser().getSuperUser() == null ? userMBean.getLoggedUser() : userMBean.getLoggedUser().getSuperUser());
+			config.setUser(userMBean.getLoggedUser());
 			request.body(MediaType.APPLICATION_JSON, config);
 
-			ClientResponse<Config> response = request.post(Config.class);
+			ClientResponse<Config> response = request.put(Config.class);
 
 			ret = response.getEntity(MessageReturn.class);
 
@@ -94,7 +99,7 @@ public class ConfigMBean implements Serializable {
 				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
 			}
 
-			if (ret.getPlanning() == null) {
+			if (ret.getConfig() == null) {
 				throw new Exception(ret.getMessage());
 			} else {
 				FacesUtil.showSuccessMessage(ret.getMessage());
@@ -258,5 +263,4 @@ public class ConfigMBean implements Serializable {
 	public void setCurrencies(SelectItem[] currencies) {
 		this.currencies = currencies;
 	}
-
 }
