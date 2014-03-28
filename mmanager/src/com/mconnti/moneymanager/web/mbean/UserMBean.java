@@ -23,6 +23,7 @@ import org.jboss.resteasy.client.ClientResponse;
 import org.jboss.resteasy.util.GenericType;
 
 import com.mconnti.moneymanager.entity.City;
+import com.mconnti.moneymanager.entity.Config;
 import com.mconnti.moneymanager.entity.Country;
 import com.mconnti.moneymanager.entity.Role;
 import com.mconnti.moneymanager.entity.State;
@@ -58,6 +59,8 @@ public class UserMBean implements Serializable {
 	private User user;
 
 	private User loggedUser;
+	
+	private Config configLoggedUser;
 
 	private User[] selectedUsers;
 
@@ -192,6 +195,7 @@ public class UserMBean implements Serializable {
 				throw new Exception(ret.getMessage());
 			} else {
 				loggedUser = ret.getUser();
+				configLoggedUser = ret.getConfig();
 				FacesUtil.showSuccessMessage(ret.getMessage());
 			}
 		} catch (ClientProtocolException e) {
@@ -203,6 +207,10 @@ public class UserMBean implements Serializable {
 			FacesUtil.showAErrorMessage(e.getMessage());
 			return "";
 		}
+		
+//		if(configLoggedUser == null){
+//			return "/common/formConfig.xhtml?faces-redirect=true";
+//		}
 
 		return "/common/index.xhtml?faces-redirect=true";
 	}
@@ -736,5 +744,13 @@ public class UserMBean implements Serializable {
 
 	public void setLogoutURL(String logoutURL) {
 		this.logoutURL = logoutURL;
+	}
+
+	public Config getConfigLoggedUser() {
+		return configLoggedUser;
+	}
+
+	public void setConfigLoggedUser(Config configLoggedUser) {
+		this.configLoggedUser = configLoggedUser;
 	}
 }

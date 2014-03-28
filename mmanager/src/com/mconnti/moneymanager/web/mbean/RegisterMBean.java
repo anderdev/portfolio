@@ -412,9 +412,9 @@ public class RegisterMBean implements Serializable {
 	}
 
 	private void setDefaultValues() {
-		if(userMBean.getLoggedUser().getConfig() != null){
-			register.setTypeClosure(userMBean.getLoggedUser().getConfig().getTypeClosure());
-			register.setCurrency(userMBean.getLoggedUser().getConfig().getCurrency());
+		if(userMBean.getConfigLoggedUser() != null){
+			register.setTypeClosure(userMBean.getConfigLoggedUser().getTypeClosure());
+			register.setCurrency(userMBean.getConfigLoggedUser().getCurrency());
 		}
 		register.setDate(new Date());
 		register.setNumberParcel(1);

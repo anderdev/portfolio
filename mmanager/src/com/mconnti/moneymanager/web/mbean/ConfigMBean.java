@@ -9,6 +9,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.MediaType;
@@ -71,8 +72,8 @@ public class ConfigMBean implements Serializable {
 
 	public String load() {
 		createConfig();
-		if(userMBean.getLoggedUser().getConfig() != null){
-			this.config = userMBean.getLoggedUser().getConfig();
+		if(userMBean.getConfigLoggedUser() != null){
+			this.config = userMBean.getConfigLoggedUser();
 		}
 		loadCombos();
 		return "/common/formConfig.xhtml?faces-redirect=true";
@@ -104,7 +105,7 @@ public class ConfigMBean implements Serializable {
 			} else {
 				FacesUtil.showSuccessMessage(ret.getMessage());
 			}
-			createConfig();
+			userMBean.setConfigLoggedUser(ret.getConfig());
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -114,7 +115,11 @@ public class ConfigMBean implements Serializable {
 			FacesUtil.showAErrorMessage(e.getMessage());
 		}
 	}
-
+	
+	public void loadCombosJS(ActionEvent event){
+		loadCombos();
+	}
+	
 	private void loadCombos() {
 		this.typeClosures = loadTypeClosures();
 		this.currencies = loadCurrencies();

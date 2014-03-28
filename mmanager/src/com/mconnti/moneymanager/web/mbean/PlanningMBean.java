@@ -80,6 +80,9 @@ public class PlanningMBean implements Serializable {
 
 	private void createPlanning() {
 		this.planning = new Planning();
+		this.planningGroup = new PlanningGroup();
+		this.planningGroup.setTypeAccount(new TypeAccount());
+		this.planningGroup.setDescription(new Description());
 	}
 
 	private List<Planning> loadList() {
@@ -119,7 +122,7 @@ public class PlanningMBean implements Serializable {
 	}
 
 	public void newItem() {
-		this.planningItem = new PlanningItem();
+		createPlanning();
 		loadTypeAccount();
 	}
 

@@ -153,9 +153,9 @@ public class ClosureMBean implements Serializable {
 	}
 
 	private void setDefaultValues() {
-		if(userMBean.getLoggedUser().getConfig() != null){
-			closure.setTypeClosure(userMBean.getLoggedUser().getConfig().getTypeClosure());
-			closure.setCurrency(userMBean.getLoggedUser().getConfig().getCurrency());
+		if(userMBean.getConfigLoggedUser() != null){
+			closure.setTypeClosure(userMBean.getConfigLoggedUser().getTypeClosure());
+			closure.setCurrency(userMBean.getConfigLoggedUser().getCurrency());
 		}
 		closure.setDate(new Date());
 	}

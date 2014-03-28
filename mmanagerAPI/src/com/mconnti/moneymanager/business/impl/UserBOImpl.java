@@ -1,16 +1,20 @@
 package com.mconnti.moneymanager.business.impl;
 
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mconnti.moneymanager.business.UserBO;
 import com.mconnti.moneymanager.entity.City;
+import com.mconnti.moneymanager.entity.Config;
 import com.mconnti.moneymanager.entity.User;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
 import com.mconnti.moneymanager.persistence.CityDAO;
+import com.mconnti.moneymanager.persistence.ConfigDAO;
 import com.mconnti.moneymanager.persistence.UserDAO;
 import com.mconnti.moneymanager.utils.Constants;
 import com.mconnti.moneymanager.utils.Crypt;
@@ -24,6 +28,9 @@ public class UserBOImpl extends GenericBOImpl<User> implements UserBO {
 
 	@Autowired
 	private CityDAO cityDAO;
+	
+	@Autowired
+	private ConfigDAO configDAO;
 
 	private City getCity(User user) {
 		try {
@@ -50,10 +57,10 @@ public class UserBOImpl extends GenericBOImpl<User> implements UserBO {
 					if (user.getPass() != null && !user.getPass().isEmpty()) {
 						user.setPassword(user.getPass());
 					}
-				} else {
 					if(user.getDefaultPassword() != null && user.getDefaultPassword()){
 						user.setPassword(Constants.DEFAULT_PASSWORD);
 					}
+				} else {
 					if(user.getPassword() != null && !user.getPassword().isEmpty()){
 						user.setPassword(Crypt.decrypt(Crypt.decrypt(user.getPassword())));
 					}
@@ -133,6 +140,12 @@ public class UserBOImpl extends GenericBOImpl<User> implements UserBO {
 				if("ADMIN".equals(messageReturn.getUser().getRole().getRole())){
 					messageReturn.getUser().setAdmin(true);
 				}
+				
+				Map<String, String> queryParams = new LinkedHashMap<>();
+				queryParams.put(" where x.user = ", messageReturn.getUser().getId()+"");
+				Config config =  configDAO.findByParameter(Config.class, queryParams);
+				messageReturn.setConfig(config);
+				
 				messageReturn.setMessage(MessageFactory.getMessage("lb_login_success", messageReturn.getUser().getLanguage()));
 			}
 		} catch (Exception e) {

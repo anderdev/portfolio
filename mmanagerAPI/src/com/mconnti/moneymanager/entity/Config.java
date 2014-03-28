@@ -11,7 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import org.hibernate.annotations.ForeignKey;
 
@@ -32,11 +31,13 @@ public class Config implements Serializable {
 	private Currency currency;
 	
 	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = TypeClosure.class)
-	@JoinColumn(name = "typeClosure_id")
+	@JoinColumn(name = "typeclosure_id")
 	@ForeignKey(name = "FK_CONFIG_TYPE_CLOSURE")
 	private TypeClosure typeClosure;
 	
-	@Transient
+	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = User.class)
+	@JoinColumn(name = "user_id")
+	@ForeignKey(name = "FK_CONFIG_USER")
 	private User user;
 
 	public Long getId() {

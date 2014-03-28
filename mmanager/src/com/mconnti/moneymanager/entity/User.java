@@ -41,8 +41,6 @@ public class User extends SearchObject implements Serializable{
 	
 	private City city;
 	
-	private Config config;
-	
 	private String username;
 	
 	private String password;
@@ -148,14 +146,6 @@ public class User extends SearchObject implements Serializable{
 
 	public void setExcluded(Boolean excluded) {
 		this.excluded = excluded;
-	}
-
-	public Config getConfig() {
-		return config;
-	}
-
-	public void setConfig(Config config) {
-		this.config = config;
 	}
 
 	public String getBirth() {

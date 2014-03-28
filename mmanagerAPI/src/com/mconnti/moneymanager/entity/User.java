@@ -69,11 +69,6 @@ public class User extends SearchObject implements Serializable{
 	@ForeignKey(name = "FK_USER_CITY")
 	private City city;
 	
-	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = Config.class)
-	@JoinColumn(name = "config_id")
-	@ForeignKey(name = "FK_USER_CONFIG")
-	private Config config;
-	
 	private String username;
 	
 	private String password;
@@ -190,14 +185,6 @@ public class User extends SearchObject implements Serializable{
 
 	public void setExcluded(Boolean excluded) {
 		this.excluded = excluded;
-	}
-
-	public Config getConfig() {
-		return config;
-	}
-
-	public void setConfig(Config config) {
-		this.config = config;
 	}
 
 	public String getBirth() {

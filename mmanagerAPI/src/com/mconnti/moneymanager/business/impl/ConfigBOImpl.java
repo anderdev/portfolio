@@ -33,9 +33,7 @@ public class ConfigBOImpl extends GenericBOImpl<Config> implements ConfigBO {
 		User user = getUser(config);
 		if (user != null || config.getTypeClosure() != null || config.getCurrency() != null) {
 			try {
-				Config newConfig = saveGeneric(config);
-				user.setConfig(newConfig);
-				userDAO.save(user);
+				saveGeneric(config);
 			} catch (Exception e) {
 				e.printStackTrace();
 				libReturn.setConfig(config);
