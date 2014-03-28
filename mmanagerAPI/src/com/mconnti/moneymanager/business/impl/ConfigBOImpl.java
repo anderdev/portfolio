@@ -32,8 +32,9 @@ public class ConfigBOImpl extends GenericBOImpl<Config> implements ConfigBO {
 		MessageReturn libReturn = new MessageReturn();
 		User user = getUser(config);
 		if (user != null || config.getTypeClosure() != null || config.getCurrency() != null) {
+			Config conf = new Config();
 			try {
-				saveGeneric(config);
+				conf = saveGeneric(config);
 			} catch (Exception e) {
 				e.printStackTrace();
 				libReturn.setConfig(config);
@@ -41,10 +42,10 @@ public class ConfigBOImpl extends GenericBOImpl<Config> implements ConfigBO {
 			}
 			if (libReturn.getMessage() == null && config.getId() == null) {
 				libReturn.setMessage(MessageFactory.getMessage("lb_config_saved", user.getCity().getState().getCountry().getLocale()));
-				libReturn.setConfig(config);
+				libReturn.setConfig(conf);
 			} else if (libReturn.getMessage() == null && config.getId() != null) {
 				libReturn.setMessage(MessageFactory.getMessage("lb_config_updated", user.getCity().getState().getCountry().getLocale()));
-				libReturn.setConfig(config);
+				libReturn.setConfig(conf);
 			}
 		} else {
 			libReturn.setMessage(MessageFactory.getMessage("lb_config_not_found", "en"));

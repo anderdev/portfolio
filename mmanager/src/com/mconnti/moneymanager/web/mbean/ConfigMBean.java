@@ -106,6 +106,7 @@ public class ConfigMBean implements Serializable {
 				FacesUtil.showSuccessMessage(ret.getMessage());
 			}
 			userMBean.setConfigLoggedUser(ret.getConfig());
+			this.config = userMBean.getConfigLoggedUser();
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

@@ -440,6 +440,20 @@ public class RestService {
 
 		return Response.status(200).entity(list).build();
 	}
+	
+	@PUT
+	@Path("/typeaccount/getbydescription")
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response getAccountByDescription(String description) {
+		MessageReturn ret = new MessageReturn();
+		try {
+			ret = typeAccountBO.getByDescription(description);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Response.status(200).entity(ret).build();
+	}
 
 	@POST
 	@Path("/typeaccount")

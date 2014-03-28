@@ -49,7 +49,7 @@ public class TypeAccountBOImpl extends GenericBOImpl<TypeAccount> implements Typ
 
 	public List<TypeAccount> list(TypeAccount typeAccount) throws Exception {
 		Map<String, String> queryParams = new LinkedHashMap<>();
-		queryParams.put(" where x.locale = ", "'"+typeAccount.getLocale()+"'");
+		queryParams.put(" where x.locale = ", "'" + typeAccount.getLocale() + "'");
 		return list(TypeAccount.class, queryParams, null);
 	}
 
@@ -82,6 +82,19 @@ public class TypeAccountBOImpl extends GenericBOImpl<TypeAccount> implements Typ
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	@Override
+	public MessageReturn getByDescription(String description) {
+		MessageReturn ret = new MessageReturn();
+		try {
+			Map<String, String> queryParams = new LinkedHashMap<>();
+			queryParams.put(" where lower(x.description) = ", "'" + description.toLowerCase() + "'");
+			ret.setAccount(findByParameter(TypeAccount.class, queryParams));
+		} catch (Exception e) {
+			ret.setMessage(e.getMessage());
+		}
+		return ret;
 	}
 
 }

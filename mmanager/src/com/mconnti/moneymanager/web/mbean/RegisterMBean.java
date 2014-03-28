@@ -28,6 +28,7 @@ import com.mconnti.moneymanager.entity.TypeClosure;
 import com.mconnti.moneymanager.entity.User;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
 import com.mconnti.moneymanager.util.FacesUtil;
+import com.mconnti.moneymanager.util.MessageFactory;
 
 @SessionScoped
 @ManagedBean(name = "registerMBean")
@@ -101,10 +102,10 @@ public class RegisterMBean implements Serializable {
 	}
 
 	private void loadAutocompleteLists() {
-		this.creditList = loadDescriptionList(1L);
-		this.debitList = loadDescriptionList(2L);
-		this.groupList = loadDescriptionList(3L);
-		this.superGroupList = loadDescriptionList(4L);
+		this.creditList = loadDescriptionList(getTypeAccount(MessageFactory.getMessage("lb_credit_", superUser().getLanguage())));
+		this.debitList = loadDescriptionList(getTypeAccount(MessageFactory.getMessage("lb_debit_", superUser().getLanguage())));
+		this.groupList = loadDescriptionList(getTypeAccount(MessageFactory.getMessage("lb_group_", superUser().getLanguage())));
+		this.superGroupList = loadDescriptionList(getTypeAccount(MessageFactory.getMessage("lb_super_group_", superUser().getLanguage())));
 	}
 
 	private void loadDefaultCombos() {
@@ -114,25 +115,25 @@ public class RegisterMBean implements Serializable {
 		this.currencies = loadCurrencies();
 	}
 
-	private void newDescription(String description, Long typeAccount) {
+	private void newDescription(String description, String typeAccount) {
 		Description desc = new Description();
 		desc.setUser(superUser());
 		desc.setDescription(description);
 		desc.setTypeAccount(getTypeAccount(typeAccount));
-		switch (typeAccount.intValue()) {
-		case 1:
+		switch (typeAccount.toLowerCase()) {
+		case "credit":
 			desc.setIsCredit(true);
 			register.setDescription(desc);
 			break;
-		case 2:
+		case "debit":
 			desc.setIsDebit(true);
 			register.setDescription(desc);
 			break;
-		case 3:
+		case "group":
 			desc.setIsGroup(true);
 			register.setGroup(desc);
 			break;
-		case 4:
+		case "super group":
 			desc.setIsSuperGroup(true);
 			register.setSuperGroup(desc);
 			break;
@@ -154,10 +155,10 @@ public class RegisterMBean implements Serializable {
 				}
 
 				if (!contain && !descLista.contains(register.getDescription().getDescription())) {
-					newDescription(description.getDescription(), 1L);
+					newDescription(description.getDescription(), MessageFactory.getMessage("lb_credit_", superUser().getLanguage()));
 				}
 			} else {
-				newDescription(register.getDescription().getDescription(), 1L);
+				newDescription(register.getDescription().getDescription(), MessageFactory.getMessage("lb_credit_", superUser().getLanguage()));
 			}
 		}
 
@@ -178,10 +179,10 @@ public class RegisterMBean implements Serializable {
 				}
 
 				if (!contain && !descLista.contains(register.getDescription().getDescription())) {
-					newDescription(description.getDescription(), 2L);
+					newDescription(description.getDescription(), MessageFactory.getMessage("lb_debit_", superUser().getLanguage()));
 				}
 			} else {
-				newDescription(register.getDescription().getDescription(), 2L);
+				newDescription(register.getDescription().getDescription(), MessageFactory.getMessage("lb_debit_", superUser().getLanguage()));
 			}
 		}
 	}
@@ -204,10 +205,10 @@ public class RegisterMBean implements Serializable {
 					descLista.add(desc.getDescription());
 				}
 				if (!contain && !descLista.contains(register.getGroup().getDescription())) {
-					newDescription(register.getGroup().getDescription(), 3L);
+					newDescription(register.getGroup().getDescription(), MessageFactory.getMessage("lb_group_", superUser().getLanguage()));
 				}
 			} else {
-				newDescription(register.getGroup().getDescription(), 3L);
+				newDescription(register.getGroup().getDescription(), MessageFactory.getMessage("lb_group_", superUser().getLanguage()));
 			}
 		}
 	}
@@ -226,28 +227,49 @@ public class RegisterMBean implements Serializable {
 					descLista.add(desc.getDescription());
 				}
 				if (!contain && !descLista.contains(register.getSuperGroup().getDescription())) {
-					newDescription(register.getSuperGroup().getDescription(), 4L);
+					newDescription(register.getSuperGroup().getDescription(), MessageFactory.getMessage("lb_super_group_", superUser().getLanguage()));
 				}
 			} else {
-				newDescription(register.getSuperGroup().getDescription(), 4L);
+				newDescription(register.getSuperGroup().getDescription(), MessageFactory.getMessage("lb_super_group_", superUser().getLanguage()));
 			}
 		}
 	}
 
-	private TypeAccount getTypeAccount(Long type) {
-		TypeAccount typeAccount = new TypeAccount();
-		typeAccount.setId(type);
-		return typeAccount;
+	private TypeAccount getTypeAccount(String description) {
+		MessageReturn ret = new MessageReturn();
+		try {
+			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/typeaccount/getbydescription");
+
+			request.body(MediaType.APPLICATION_JSON, description);
+			ClientResponse<String> response = request.put(String.class);
+			
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+			
+			ret = response.getEntity(MessageReturn.class);
+			
+			if (ret.getAccount() == null) {
+				throw new Exception(ret.getMessage());
+			} else {
+				return ret.getAccount();
+			}
+			
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
-	private List<Description> loadDescriptionList(Long typeAccountId) {
+	private List<Description> loadDescriptionList(TypeAccount typeAccount) {
 		try {
-			TypeAccount typeAccount = new TypeAccount();
-			typeAccount.setId(typeAccountId);
-
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/description");
 
-			description.setUser(userMBean.getLoggedUser().getSuperUser() == null ? userMBean.getLoggedUser() : userMBean.getLoggedUser().getSuperUser());
+			description.setUser(superUser());
 			description.setTypeAccount(typeAccount);
 
 			request.body(MediaType.APPLICATION_JSON, description);
@@ -321,7 +343,7 @@ public class RegisterMBean implements Serializable {
 		try {
 
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/creditcard");
-			creditCard.setUser(userMBean.getLoggedUser().getSuperUser() == null ? userMBean.getLoggedUser() : userMBean.getLoggedUser().getSuperUser());
+			creditCard.setUser(superUser());
 
 			request.body(MediaType.APPLICATION_JSON, creditCard);
 			ClientResponse<CreditCard> response = request.put(CreditCard.class);
@@ -381,7 +403,7 @@ public class RegisterMBean implements Serializable {
 		try {
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/register");
 			register.setTypeAccount(typeAccount);
-			register.setUser(userMBean.getLoggedUser().getSuperUser() == null ? userMBean.getLoggedUser() : userMBean.getLoggedUser().getSuperUser());
+			register.setUser(superUser());
 			request.body(MediaType.APPLICATION_JSON, register);
 			ClientResponse<Register> response = request.put(Register.class);
 
@@ -425,14 +447,13 @@ public class RegisterMBean implements Serializable {
 		loadDebits = false;
 		loadCredits = true;
 		loadDefaultCombos();
-		createTypeAccount(1L);
+		createTypeAccount(MessageFactory.getMessage("lb_credit_", superUser().getLanguage()));
 		loadList(register.getTypeAccount());
 		return "/common/formRegister.xhtml?faces-redirect=true";
 	}
 
-	private void createTypeAccount(final Long type) {
-		TypeAccount typeAccount = new TypeAccount();
-		typeAccount.setId(type);
+	private void createTypeAccount(final String description) {
+		TypeAccount typeAccount = getTypeAccount(description);
 		register.setTypeAccount(typeAccount);
 	}
 
@@ -441,7 +462,7 @@ public class RegisterMBean implements Serializable {
 		loadDebits = true;
 		loadCredits = false;
 		loadDefaultCombos();
-		createTypeAccount(2L);
+		createTypeAccount(MessageFactory.getMessage("lb_debit_", superUser().getLanguage()));
 		loadList(register.getTypeAccount());
 		return "/common/formRegister.xhtml?faces-redirect=true";
 	}
@@ -496,17 +517,17 @@ public class RegisterMBean implements Serializable {
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/register");
 
 			if (loadDebits) {
-				createTypeAccount(2L);// debit
+				createTypeAccount(MessageFactory.getMessage("lb_debit_", superUser().getLanguage()));// debit
 				if (register.getCreditCard().getId() == null || register.getCreditCard().getId() == 0) {
 					register.setCreditCard(null);
 				}
 			} else {
 				register.setGroup(null);
 				register.setCreditCard(null);
-				createTypeAccount(1L);// credit
+				createTypeAccount(MessageFactory.getMessage("lb_credit_", superUser().getLanguage()));// credit
 			}
 
-			register.setUser(userMBean.getLoggedUser().getSuperUser() == null ? userMBean.getLoggedUser() : userMBean.getLoggedUser().getSuperUser());
+			register.setUser(superUser());
 			request.body(MediaType.APPLICATION_JSON, register);
 
 			ClientResponse<Register> response = request.post(Register.class);

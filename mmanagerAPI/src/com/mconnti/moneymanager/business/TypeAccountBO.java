@@ -17,5 +17,7 @@ public interface TypeAccountBO extends GenericBO<TypeAccount>{
 	public MessageReturn delete (Long id);
 	
 	public TypeAccount getById(Long id);
+	
+	public MessageReturn getByDescription(String description);
 }
 
