@@ -93,7 +93,7 @@ public class UserMBean implements Serializable {
 	private String logoutURL = null;
 
 	private String locale;
-
+	
 	public UserMBean() {
 		this.user = new User();
 		this.user.setRole(new Role());

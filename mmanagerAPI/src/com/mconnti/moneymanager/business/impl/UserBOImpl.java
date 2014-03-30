@@ -146,6 +146,10 @@ public class UserBOImpl extends GenericBOImpl<User> implements UserBO {
 				Config config =  configDAO.findByParameter(Config.class, queryParams);
 				messageReturn.setConfig(config);
 				
+				if(messageReturn.getUser().getPassword().equals(Crypt.encrypt(Constants.DEFAULT_PASSWORD))){
+					messageReturn.getUser().setDefaultPassword(true);
+				}
+				
 				messageReturn.setMessage(MessageFactory.getMessage("lb_login_success", messageReturn.getUser().getLanguage()));
 			}
 		} catch (Exception e) {

@@ -4,14 +4,14 @@
         xmlns:ui="http://java.sun.com/jsf/facelets"
         xmlns:p="http://primefaces.org/ui">
 	       	
-	       	<div class="contentCenter">
+	       	<div class="contentCreditCard">
 	       	
-	       		<h:panelGrid columns="2" columnClasses="column85,column350" border="0" styleClass="boldFont">
+	       		<h:panelGrid columns="2" columnClasses="column120RightWithPaddingRigth,column350" border="0" styleClass="boldFont">
 					<h:outputText value="#{messages['lb_name']}" />
 					<p:inputText id="name" label="#{messages['lb_name_']}" required="true"  value="#{creditCardMBean.creditCard.name}" style="width:100%" />
 				</h:panelGrid>
 				
-				<h:panelGrid columns="3" columnClasses="column90,column90,column300peddingLeft" border="0" styleClass="boldFont">
+				<h:panelGrid columns="3" columnClasses="column120RightWithPaddingRigth,column90,column300peddingLeft" border="0" styleClass="boldFont">
 						<h:outputText value="#{messages['lb_expired_date']}" style="colunaLabel"/>
 						<p:inputText id="expiredDate" label="#{messages['lb_expired_date_']}" value="#{creditCardMBean.creditCard.expire}" size="4" required="true"/>  
 						<h:outputText style="color: #0033FF;font-family:tahoma,verdana,arial;font-size: 11px;font-weight: bold;" value="#{messages['lb_info_expired_date']}"/>
@@ -27,7 +27,7 @@
 				
 				<br />
 			
-				<div class="messages" align="center">
+				<div align="center">
 					<p:commandButton value="#{messages['lb_post']}" 
 						id="gravar" action="#{creditCardMBean.save}" ajax="true" 
 						styleClass="button" 
