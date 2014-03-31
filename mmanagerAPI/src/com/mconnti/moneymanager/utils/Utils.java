@@ -1,10 +1,21 @@
 package com.mconnti.moneymanager.utils;
 
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.Properties;
+
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 public abstract class Utils {
 
@@ -81,5 +92,41 @@ public abstract class Utils {
 		map.put(Constants.DATE_START, startDate);
 		map.put(Constants.DATE_END, endDate);
 		return map;
+	}
+	
+	public static void sendEmail(final String emailTo, final String emailFrom, final String nameFrom, final String subject, final String body) throws UnsupportedEncodingException, MessagingException {
+		try {
+			Properties props = System.getProperties();
+			/** Parâmetros de conexão com servidor Gmail */
+            props.put("mail.smtp.host", "smtp.gmail.com");
+            props.put("mail.smtp.socketFactory.port", "465");
+            props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+            props.put("mail.smtp.auth", "true");
+            props.put("mail.smtp.port", "465");
+
+			Authenticator auth = new Authenticator() {
+				public PasswordAuthentication getPasswordAuthentication() {
+					return new PasswordAuthentication("ander.dev@gmail.com", "hzvpkssayrajixxu");
+				}
+			};
+
+			Session session = Session.getInstance(props, auth);
+			MimeMessage message = new MimeMessage(session);
+
+			message.setFrom(new InternetAddress(emailFrom,"Site Contact"));
+			message.addRecipient(Message.RecipientType.TO, new InternetAddress(emailTo));
+			StringBuilder sb = new StringBuilder();
+			
+			sb.append("Email sent by: ").append(nameFrom+" &lt;"+emailFrom+"&gt;");
+			sb.append("<br/><br/> "+body);
+			
+			message.setSubject(subject);
+			message.setContent(sb.toString(), "text/HTML");
+
+			
+			Transport.send(message);
+		} catch (Exception e) {
+			throw new UnsupportedEncodingException(e.getMessage());
+		}
 	}
 }

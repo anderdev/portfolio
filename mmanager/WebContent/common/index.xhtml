@@ -6,5 +6,33 @@
         template="../template/templateAPP.xhtml" >
         
 	<ui:define name="contentAPP">
+	
+		<h:form prependId="false" id="newPassword" rendered="#{userMBean.loggedUser.defaultPassword}">
+			<h:outputText value="#{messages['lb_password_registration']}" styleClass="boxTitle"/>	
+		    <p:growl id="msg" showDetail="true" showSummary="false" autoUpdate="true" sticky="true" />
+		
+			<div class="contentCenterSmall">	
+				<div class="messages">
+					<h:outputText value="#{messages['lb_new_parant_user_first_login']}"/>
+				</div>
+				<h:panelGrid columns="2" columnClasses="column120RightWithPaddingRigth,column350" styleClass="boldFont" border="0">	    
+			        <h:outputText value="#{messages['lb_username']}" />
+					<p:inputText id="username" label="#{messages['lb_username_']}" required="true"  value="#{userMBean.loggedUser.username}" style="width:100%" >
+					</p:inputText>
+					
+					<h:outputText value="#{messages['lb_password']}" />
+					<p:password id="pass" label="#{messages['lb_password_']}" required="true"  value="#{userMBean.loggedUser.password}"  size="27"  style="width:100%"/>
+					
+					<h:outputText value="#{messages['lb_confirm']}" />
+					<p:password id="confirmPass" label="#{messages['lb_confirm_']}" required="true"  value="#{userMBean.confirmPassword}"  size="27"  style="width:100%"/>
+					
+					<h:outputText value="#{messages['lb_secret_phrase']}" />
+					<p:inputText id="secretPhrase" label="#{messages['lb_secret_phrase_']}" required="true"  value="#{userMBean.loggedUser.secretPhrase}" style="width:100%" />
+				</h:panelGrid>
+				<div align="center">
+					<p:commandButton value="#{messages['lb_post']}" action="#{userMBean.saveNewPassword}" ajax="true" styleClass="button" update=":formMenu"/>
+				</div>
+			</div>
+		</h:form>
 	</ui:define>
 </ui:composition>

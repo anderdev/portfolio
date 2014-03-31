@@ -94,6 +94,8 @@ public class UserMBean implements Serializable {
 
 	private String locale;
 	
+	private String confirmPassword;
+	
 	public UserMBean() {
 		this.user = new User();
 		this.user.setRole(new Role());
@@ -428,6 +430,44 @@ public class UserMBean implements Serializable {
 		this.showFormUser = true;
 		loadRoles();
 	}
+	
+	public void saveNewPassword(){
+		MessageReturn ret = new MessageReturn();
+		if(loggedUser.getPassword().equals(confirmPassword)){
+			if(loggedUser.getSecretPhrase().equals(loggedUser.getSuperUser().getSecretPhrase())){
+				try {
+					ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/user");
+					request.body(MediaType.APPLICATION_JSON, loggedUser);
+
+					ClientResponse<User> response = request.post(User.class);
+					
+					ret = response.getEntity(MessageReturn.class);
+
+					if (response.getStatus() != 200) {
+						throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+					}
+
+					if (ret.getUser() == null) {
+						throw new Exception(ret.getMessage());
+					} else {
+						FacesUtil.showSuccessMessage(ret.getMessage());
+					}
+				} catch (ClientProtocolException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				} catch (Exception e) {
+					e.printStackTrace();
+					FacesUtil.showAErrorMessage(e.getMessage());
+				}
+				loggedUser.setDefaultPassword(false);
+			} else {
+				FacesUtil.showAErrorMessage(MessageFactory.getMessage("lb_secret_phrase_not_match", loggedUser.getLanguage()));
+			}
+		}else{
+			FacesUtil.showAErrorMessage(MessageFactory.getMessage("lb_password_not_match", loggedUser.getLanguage()));
+		}
+	}
 
 	public void save() {
 		MessageReturn ret = new MessageReturn();
@@ -752,5 +792,13 @@ public class UserMBean implements Serializable {
 
 	public void setConfigLoggedUser(Config configLoggedUser) {
 		this.configLoggedUser = configLoggedUser;
+	}
+
+	public String getConfirmPassword() {
+		return confirmPassword;
+	}
+
+	public void setConfirmPassword(String confirmPassword) {
+		this.confirmPassword = confirmPassword;
 	}
 }

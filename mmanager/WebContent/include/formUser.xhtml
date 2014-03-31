@@ -94,7 +94,12 @@
 				<p:commandButton value="#{messages['lb_back']}" rendered="#{userMBean.loggedUser eq null}" update=":formTemplate" immediate="true" id="back" ajax="true" styleClass="button" action="#{userMBean.cancel}"/>
 				
 				<p:commandButton value="#{messages['lb_back']}" rendered="#{userMBean.loggedUser ne null}" update=":formUser" immediate="true" id="backLogged" ajax="true" styleClass="button" action="#{userMBean.cancelApp}"/>
-				
 			</div>
+			<br />
+			<h:panelGroup rendered="#{userMBean.user.defaultPassword}">
+				<div class="messages">
+					<h:outputText value="#{messages['lb_new_prarent_user']}"/>
+				</div>
+			</h:panelGroup>
 		</div>
 </ui:composition>

@@ -3,7 +3,7 @@
         xmlns:f="http://java.sun.com/jsf/core"
         xmlns:ui="http://java.sun.com/jsf/facelets"
         xmlns:p="http://primefaces.org/ui"> 
-	<h:form prependId="false">        
+	<h:form prependId="false" id="formMenu">        
        	<div class="menu">
 	       	<p:menubar autoSubmenuDisplay="true" rendered="#{userMBean.loggedUser != null}">
 	       		<p:submenu label="#{messages['lb_inputs_']}" immediate="true" styleClass="menuItem" rendered="#{!userMBean.loggedUser.defaultPassword}">  

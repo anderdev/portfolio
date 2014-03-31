@@ -1,9 +1,12 @@
 package com.mconnti.moneymanager.business.impl;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -74,6 +77,15 @@ public class UserBOImpl extends GenericBOImpl<User> implements UserBO {
 			if (libReturn.getMessage() == null && user.getId() == null) {
 				libReturn.setMessage(MessageFactory.getMessage("lb_user_saved", city.getState().getCountry().getLocale()));
 				libReturn.setUser(user);
+				try {
+					sendEmail(user);
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				} catch (MessagingException e) {
+					e.printStackTrace();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			} else if (libReturn.getMessage() == null && user.getId() != null) {
 				libReturn.setMessage(MessageFactory.getMessage("lb_user_updated", city.getState().getCountry().getLocale()));
 				libReturn.setUser(user);
@@ -83,6 +95,28 @@ public class UserBOImpl extends GenericBOImpl<User> implements UserBO {
 		}
 
 		return libReturn;
+	}
+	
+	private void sendEmail(User user) throws Exception{
+		if(user.getDefaultPassword() != null && user.getDefaultPassword()){
+			String emailTo = user.getEmail();
+			String emailFrom = user.getSuperUser().getEmail();
+			String nameFrom = user.getSuperUser().getName();
+			StringBuilder body = new StringBuilder();
+			body.append("Olá ").append(user.getName()).append("\n");
+			body.append("<b>").append(user.getSuperUser().getName()).append("</b>, lhe cadastrou no Momey Manager como coparticipante nos cadastros de créditos e despesas de seu controle financeiro.\n");
+			body.append("No seu primeiro acesso será solicitado a frase secreta registrada pelo <b>").append(user.getSuperUser().getName()).append("</b>\n");
+			body.append("Frase: <b>").append(user.getSuperUser().getSecretPhrase()).append("</b>\n");
+			body.append("Para fazer o primeiro acesso você terá que se logar no sistema com:").append("\n");
+			body.append("Usuário: <b>").append(user.getUsername()).append("</b>\n");
+			body.append("Senha: <b>").append(Crypt.decrypt(user.getPassword())).append("</b>\n");
+			body.append("Link: <b>").append("www.andersantos.com/mmanager").append("</b>\n");
+			body.append("Na próxima tela lhe será solitado para cadastrar nova senha e informar a frase secreta cadastrada pelo usuário <b>").append(user.getSuperUser().getName()).append("</b>\n\n");
+			body.append("Obrigado pela atenção,").append("\n");
+			body.append("<b>Equipe Money Manager</b>");
+			
+			Utils.sendEmail(emailTo, emailFrom, nameFrom, MessageFactory.getMessage("lb_email_subject", user.getLanguage()), body.toString());
+		}
 	}
 
 	@Override
@@ -148,6 +182,9 @@ public class UserBOImpl extends GenericBOImpl<User> implements UserBO {
 				
 				if(messageReturn.getUser().getPassword().equals(Crypt.encrypt(Constants.DEFAULT_PASSWORD))){
 					messageReturn.getUser().setDefaultPassword(true);
+					messageReturn.getUser().setSecretPhrase(null);
+				}else{
+					messageReturn.getUser().setDefaultPassword(false);
 				}
 				
 				messageReturn.setMessage(MessageFactory.getMessage("lb_login_success", messageReturn.getUser().getLanguage()));

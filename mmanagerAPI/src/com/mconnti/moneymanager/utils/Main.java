@@ -6,13 +6,36 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
+import com.mconnti.moneymanager.entity.User;
+
 import static com.mconnti.moneymanager.utils.Utils.*;
 
 public class Main {
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 //		testLastDayOfMonthWithCreditCardDate();
-		getRangeOfDates(stringToDate("24/03/2014", false));
+//		getRangeOfDates(stringToDate("24/03/2014", false));
+		User user = new User();
+		user.setName("<b>Bruno Wunsche</b>");
+		user.setSuperUser(new User());
+		user.getSuperUser().setName("Anderson Santos");
+		user.getSuperUser().setSecretPhrase("Vai funcionar de prima");
+		user.setUsername("bruno.wunsche");
+		user.setPassword("123456");
+		StringBuilder body = new StringBuilder();
+		body.append("Olá ").append(user.getName()).append("\n");
+		body.append("<b>").append(user.getSuperUser().getName()).append("</b>, lhe cadastrou no Momey Manager como coparticipante nos cadastros de créditos e despesas de seu controle financeiro.\n");
+		body.append("No seu primeiro acesso será solicitado a frase secreta registrada pelo <b>").append(user.getSuperUser().getName()).append("</b>\n");
+		body.append("Frase: <b>").append(user.getSuperUser().getSecretPhrase()).append("</b>\n");
+		body.append("Para fazer o primeiro acesso você terá que se logar no sistema com:").append("\n");
+		body.append("Usuário: <b>").append(user.getUsername()).append("</b>\n");
+		body.append("Senha: <b>").append(Crypt.decrypt(user.getPassword())).append("</b>\n");
+		body.append("Link: <b>").append("www.andersantos.com/mmanager").append("</b>\n");
+		body.append("Na próxima tela lhe será solitado para cadastrar nova senha e informar a frase secreta cadastrada pelo usuário <b>").append(user.getSuperUser().getName()).append("</b>\n\n");
+		body.append("Obrigado pela atenção,").append("\n");
+		body.append("<b>Equipe Money Manager</b>");
+		
+		System.out.println(body.toString());
 	}
 	
 	private static void getRangeOfDates(Date date){
