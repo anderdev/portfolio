@@ -64,9 +64,9 @@ public class UserBOImpl extends GenericBOImpl<User> implements UserBO {
 						user.setPassword(Constants.DEFAULT_PASSWORD);
 					}
 				} else {
-					if(user.getPassword() != null && !user.getPassword().isEmpty()){
+					if(user.getPassword() != null && !user.getPassword().isEmpty() && !user.getDefaultPassword()){
 						user.setPassword(Crypt.decrypt(Crypt.decrypt(user.getPassword())));
-					}
+					} 
 				}
 				saveGeneric(user);
 			} catch (Exception e) {
@@ -75,7 +75,7 @@ public class UserBOImpl extends GenericBOImpl<User> implements UserBO {
 				libReturn.setMessage(e.getMessage());
 			}
 			if (libReturn.getMessage() == null && user.getId() == null) {
-				libReturn.setMessage(MessageFactory.getMessage("lb_user_saved", city.getState().getCountry().getLocale()));
+				libReturn.setMessage(MessageFactory.getMessage("lb_user_saved", user.getLanguage()));
 				libReturn.setUser(user);
 				try {
 					sendEmail(user);
@@ -87,11 +87,11 @@ public class UserBOImpl extends GenericBOImpl<User> implements UserBO {
 					e.printStackTrace();
 				}
 			} else if (libReturn.getMessage() == null && user.getId() != null) {
-				libReturn.setMessage(MessageFactory.getMessage("lb_user_updated", city.getState().getCountry().getLocale()));
+				libReturn.setMessage(MessageFactory.getMessage("lb_user_updated", user.getLanguage()));
 				libReturn.setUser(user);
 			}
 		} else {
-			libReturn.setMessage(MessageFactory.getMessage("lb_city_not_found", "en"));
+			libReturn.setMessage(MessageFactory.getMessage("lb_city_not_found", user.getLanguage()));
 		}
 
 		return libReturn;
@@ -103,17 +103,18 @@ public class UserBOImpl extends GenericBOImpl<User> implements UserBO {
 			String emailFrom = user.getSuperUser().getEmail();
 			String nameFrom = user.getSuperUser().getName();
 			StringBuilder body = new StringBuilder();
-			body.append("Olá ").append(user.getName()).append("\n");
-			body.append("<b>").append(user.getSuperUser().getName()).append("</b>, lhe cadastrou no Momey Manager como coparticipante nos cadastros de créditos e despesas de seu controle financeiro.\n");
-			body.append("No seu primeiro acesso será solicitado a frase secreta registrada pelo <b>").append(user.getSuperUser().getName()).append("</b>\n");
-			body.append("Frase: <b>").append(user.getSuperUser().getSecretPhrase()).append("</b>\n");
-			body.append("Para fazer o primeiro acesso você terá que se logar no sistema com:").append("\n");
-			body.append("Usuário: <b>").append(user.getUsername()).append("</b>\n");
-			body.append("Senha: <b>").append(Crypt.decrypt(user.getPassword())).append("</b>\n");
-			body.append("Link: <b>").append("www.andersantos.com/mmanager").append("</b>\n");
-			body.append("Na próxima tela lhe será solitado para cadastrar nova senha e informar a frase secreta cadastrada pelo usuário <b>").append(user.getSuperUser().getName()).append("</b>\n\n");
-			body.append("Obrigado pela atenção,").append("\n");
-			body.append("<b>Equipe Money Manager</b>");
+			body.append(MessageFactory.getMessage("lb_email_hello", user.getLanguage())).append(" <b>").append(user.getName()).append("</b><br/>");
+			body.append("<b>").append(user.getSuperUser().getName()).append("</b>").append(MessageFactory.getMessage("lb_email_first_line", user.getLanguage())).append("<br/>");
+			body.append(MessageFactory.getMessage("lb_email_second_line", user.getLanguage())).append(" <b>").append(user.getSuperUser().getName()).append("</b><br/>");
+
+			body.append(MessageFactory.getMessage("lb_email_phrase", user.getLanguage())).append(" <b>").append(user.getSuperUser().getSecretPhrase()).append("</b><br/>");
+			body.append(MessageFactory.getMessage("lb_email_first_login", user.getLanguage())).append("<br/>");
+			body.append(MessageFactory.getMessage("lb_email_user", user.getLanguage())).append(" <b>").append(user.getUsername()).append("</b><br/>");
+			body.append(MessageFactory.getMessage("lb_email_password", user.getLanguage())).append(" <b>").append(Crypt.decrypt(user.getPassword())).append("</b><br/>");
+			body.append(MessageFactory.getMessage("lb_email_link", user.getLanguage())).append(" <b>").append(MessageFactory.getMessage("lb_email_url", user.getLanguage())).append("</b><br/>");
+			body.append(MessageFactory.getMessage("lb_email_next_page", user.getLanguage())).append(" <b>").append(user.getSuperUser().getName()).append("</b><br/><br/>");
+			body.append(MessageFactory.getMessage("lb_email_thanks", user.getLanguage())).append("<br/>");
+			body.append("<b>").append(MessageFactory.getMessage("lb_email_signature", user.getLanguage())).append("</b>");
 			
 			Utils.sendEmail(emailTo, emailFrom, nameFrom, MessageFactory.getMessage("lb_email_subject", user.getLanguage()), body.toString());
 		}

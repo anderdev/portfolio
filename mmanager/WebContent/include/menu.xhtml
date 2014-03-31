@@ -19,7 +19,7 @@
 					<p:menuitem value="#{messages['lb_planning_']}" immediate="true" action="#{planningMBean.list}"   ajax="true" />
 				</p:submenu>
 				<p:submenu label="#{messages['lb_configuration_']}" styleClass="menuItem" rendered="#{!userMBean.loggedUser.defaultPassword}">
-					<p:menuitem value="#{messages['lb_user_list_']}" immediate="true" action="#{userMBean.listSuperUser}" ajax="true" />  
+					<p:menuitem value="#{messages['lb_user_list_']}" immediate="true" action="#{userMBean.listSuperUser}" ajax="true" rendered="#{userMBean.loggedUser.superUser == null}"/>  
 					<p:menuitem value="#{messages['lb_description_']}" immediate="true" action="#{descriptionMBean.list}" ajax="true"/>
 					<p:menuitem value="#{messages['lb_creditcard_']}" immediate="true" action="#{creditCardMBean.list}"   ajax="true"/>
 					<p:menuitem value="#{messages['lb_default_values_']}" immediate="true" action="#{configMBean.load}" ajax="true" />

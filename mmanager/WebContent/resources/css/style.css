@@ -227,7 +227,6 @@ a img {
 
 .contentConfirmUser{
 	width:500px;
-	height: 100px;
 	margin-left: -250px;
 	position: absolute;
 	left: 50%;
@@ -607,6 +606,16 @@ div#boxLoggedUser{
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;	
 	border: 1px solid gray !important;
+}
+
+.styleMessage{
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	font-weight: bold;
+	color:red;
+	text-align:center;
+	border: 0px dotted #000;
+	width:100%;
 }
 
 /* ===========================

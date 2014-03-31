@@ -431,7 +431,7 @@ public class UserMBean implements Serializable {
 		loadRoles();
 	}
 	
-	public void saveNewPassword(){
+	public String saveNewPassword(){
 		MessageReturn ret = new MessageReturn();
 		if(loggedUser.getPassword().equals(confirmPassword)){
 			if(loggedUser.getSecretPhrase().equals(loggedUser.getSuperUser().getSecretPhrase())){
@@ -451,6 +451,7 @@ public class UserMBean implements Serializable {
 						throw new Exception(ret.getMessage());
 					} else {
 						FacesUtil.showSuccessMessage(ret.getMessage());
+						loggedUser.setDefaultPassword(false);
 					}
 				} catch (ClientProtocolException e) {
 					e.printStackTrace();
@@ -460,13 +461,13 @@ public class UserMBean implements Serializable {
 					e.printStackTrace();
 					FacesUtil.showAErrorMessage(e.getMessage());
 				}
-				loggedUser.setDefaultPassword(false);
 			} else {
 				FacesUtil.showAErrorMessage(MessageFactory.getMessage("lb_secret_phrase_not_match", loggedUser.getLanguage()));
 			}
 		}else{
 			FacesUtil.showAErrorMessage(MessageFactory.getMessage("lb_password_not_match", loggedUser.getLanguage()));
 		}
+		return "/common/index.xhtml?faces-redirect=true";
 	}
 
 	public void save() {
