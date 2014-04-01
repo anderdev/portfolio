@@ -1,0 +1,144 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui"
+        template="../template/templateAPP.xhtml" >
+        
+        
+        <ui:define name="contentAPP">
+        	<h:form prependId="false" id="formDescription">
+        	
+        		<h:outputText value="#{messages['lb_search_register_list']}" styleClass="boxTitle"/>
+
+				<p:growl id="msg" showDetail="true" showSummary="false" autoUpdate="true" sticky="true" /> 
+				
+				<h:panelGroup styleClass="searchContent">
+	        		<div align="center" >
+	        		
+		        		<h:panelGrid columns="2" width="100%" border="0" columnClasses="alignLeft,alignRight">
+			        		<h:panelGroup>
+			        			<h:panelGrid columns="3" width="30%" border="0" columnClasses=",,,">
+			        				<p:selectOneMenu value="#{registerMBean.register.creditCard.id}" label="#{messages['lb_creditcard_']}" >
+							            <f:selectItem itemLabel="#{messages['lb_creditcard_']}" itemValue="" />
+							            <f:selectItems value="#{registerMBean.creditCards}"  var="desc" itemLabel="#{desc.name}" itemValue="#{desc}"/>  
+							        </p:selectOneMenu>
+									<p:selectOneMenu value="#{registerMBean.register.typeClosure.id}" label="#{messages['lb_type_closure_']}" required="true">
+							            <f:selectItem itemLabel="#{messages['lb_type_closure_']}" itemValue="" />
+							            <f:selectItems value="#{registerMBean.typeClosures}"  var="desc" itemLabel="#{desc.type}" itemValue="#{desc}"/>  
+							        </p:selectOneMenu>
+									<p:selectOneMenu value="#{registerMBean.register.currency.id}" label="#{messages['lb_currency_']}" required="true" >
+							            <f:selectItem itemLabel="#{messages['lb_currency_']}" itemValue="" />
+							            <f:selectItems value="#{registerMBean.currencies}"  var="desc" itemLabel="#{desc.acronymn}" itemValue="#{desc}"/>  
+							        </p:selectOneMenu>
+							    </h:panelGrid>
+			        			<h:panelGrid columns="6" width="100%" border="0" >
+									<h:panelGroup>
+									 	<p:autoComplete id="description" label="#{messages['lb_description_']}" dropdown="true" value="#{registerMBean.register.description.description}" completeMethod="#{registerMBean.debitComplete}" required="true" style="width:40%"/>
+									 	<p:watermark for="description" value="#{messages['lb_description_']}" />
+									</h:panelGroup>
+									<h:panelGroup>
+									 	<p:autoComplete id="group" label="#{messages['lb_group_']}" dropdown="true" value="#{registerMBean.register.group.description}" completeMethod="#{registerMBean.groupComplete}" required="true" style="width:40%"/>
+									 	<p:watermark for="group" value="#{messages['lb_group_']}" />
+									</h:panelGroup>
+									<h:panelGroup>
+										<p:autoComplete id="superGroup" label="#{messages['lb_super_group_']}" dropdown="true" value="#{registerMBean.register.superGroup.description}" completeMethod="#{registerMBean.superGroupComplete}" required="true" style="width:40%"/>
+										<p:watermark for="superGroup" value="#{messages['lb_super_group_']}" />							 
+									</h:panelGroup>
+							        <h:panelGroup>
+								        <p:calendar id="from"  />
+							        	<p:watermark for="from" value="#{messages['lb_from']}" />
+							        </h:panelGroup>
+							        <h:panelGroup>
+							        	<p:calendar id="to"   />
+							      	  <p:watermark for="to" value="#{messages['lb_to']}" />
+							      	</h:panelGroup>
+							      	<p:commandButton value="#{messages['lb_search_']}" styleClass="button" />
+					            </h:panelGrid>
+			        		</h:panelGroup>
+					    </h:panelGrid>
+					   
+					    <p:dataTable var="reg" value="#{registerMBean.registerList}" style="width:100%" id="registerList"
+				    		paginatorAlwaysVisible="false" paginator="true" emptyMessage="#{messages['lb_empty_list']}"
+				    		rows="10" rowKey="#{reg}"
+				    		paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                 			rowsPerPageTemplate="5,10,15"
+                 			paginatorPosition="top">
+				    	 	<f:facet name="footer">
+				    	 		<div style="text-align:right">
+				                	<h:outputText value="Total" />
+				                </div>
+				            </f:facet>
+					        <p:column>
+					            <f:facet name="header">
+					                <h:outputText value="#{messages['lb_description_']}" />
+					            </f:facet>
+					            <h:outputText value="#{reg.description.description}" />
+					        </p:column>
+					        
+					        <p:column>
+					            <f:facet name="header">
+					                <h:outputText value="#{messages['lb_super_group_']}" />
+					            </f:facet>
+					            <h:outputText value="#{reg.superGroup.description}" />
+					        </p:column>
+					        
+					        <p:column>
+					            <f:facet name="header">
+					                <h:outputText value="#{messages['lb_group_']}" />
+					            </f:facet>
+					            <h:outputText value="#{reg.group.description}" />
+					        </p:column>
+					        
+					        <p:column style="width:120px;text-align:center;">
+					            <f:facet name="header">
+					                <h:outputText value="#{messages['lb_creditcard_']}" />
+					            </f:facet>
+					            <h:outputText value="#{reg.creditCard.name}" />
+					        </p:column>
+					        
+					        <p:column style="width:120px;text-align:center;">
+					            <f:facet name="header">
+					                <h:outputText value="#{messages['lb_type_closure_']}" />
+					            </f:facet>
+					            <h:outputText value="#{reg.typeClosure.type}" />
+					        </p:column>
+					        
+					        <p:column sortBy="#{reg.date}" style="width:100px;text-align:center;">
+					            <f:facet name="header">
+					                <h:outputText value="#{messages['lb_date_']}" />
+					            </f:facet>
+					            <h:outputText value="#{reg.date}">
+					            	<f:convertDateTime pattern="dd/MM/yyyy" />
+					            </h:outputText>
+					        </p:column>
+					        
+					        <p:column style="width:90px;text-align:center;">
+					            <f:facet name="header">
+					                <h:outputText value="#{messages['lb_amount_']}" />
+					            </f:facet>
+					            <div align="right">
+					            <h:outputText value="#{reg.amount}" >
+					            	<f:convertNumber pattern="###,##0.00"/>
+					            </h:outputText>
+					            </div>
+					        </p:column>
+					        
+					        <p:column style="width:5%">
+					        	<p:commandLink action="#{registerMBean.edit}" id="editButton" ajax="true" immediate="true" process="@this">
+					        		<f:setPropertyActionListener value="#{reg}" target="#{registerMBean.register}" />  
+									<p:graphicImage value="#{messages['img_update']}" style="border: 0px" />
+								</p:commandLink>
+					        </p:column>
+					    </p:dataTable>
+					</div>	
+				</h:panelGroup>
+				<p:confirmDialog message="#{messages['lb_multiple_exclusion']}" header="#{messages['lb_header_confirmation']}" severity="alert" widgetVar="confirmation">  
+	             	<div align="center">
+				        <p:commandButton value="#{messages['lb_yes']}" update=":formDescription" oncomplete="confirmation.hide()" action="#{descriptionMBean.delete}"/>  
+				        <p:commandButton value="#{messages['lb_no']}" onclick="confirmation.hide()" type="button" action="#{descriptionMBean.cancel}"/>   
+	                </div> 
+	    		</p:confirmDialog>  	
+    		</h:form>	
+        </ui:define>
+</ui:composition>

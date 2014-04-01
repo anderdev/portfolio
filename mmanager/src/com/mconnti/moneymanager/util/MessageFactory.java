@@ -11,7 +11,7 @@ public abstract class MessageFactory {
 			language = "en";
 		}
 		locale = new Locale(language);
-    	bundle = ResourceBundle.getBundle("com.mconnti.moneymanager.web.bundle.Messages", locale);
+    	bundle = ResourceBundle.getBundle("com.mconnti.moneymanager.web.bundle.messages", locale);
 		return bundle.getString(key);
 	}
 }

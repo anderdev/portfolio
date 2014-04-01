@@ -101,15 +101,25 @@ public class RegisterMBean implements Serializable {
 		}
 	}
 
-	private void loadAutocompleteLists() {
-		this.creditList = loadDescriptionList(getTypeAccount(MessageFactory.getMessage("lb_credit_", superUser().getLanguage())));
-		this.debitList = loadDescriptionList(getTypeAccount(MessageFactory.getMessage("lb_debit_", superUser().getLanguage())));
+	private void loadAutocompleteLists(Boolean search) {
+		if(search){
+			//TODO new object to get the list of register (credit//debit)
+			System.out.println();
+		} else {
+			this.creditList = loadDescriptionList(getTypeAccount(MessageFactory.getMessage("lb_credit_", superUser().getLanguage())));
+			this.debitList = loadDescriptionList(getTypeAccount(MessageFactory.getMessage("lb_debit_", superUser().getLanguage())));
+			
+		}
 		this.groupList = loadDescriptionList(getTypeAccount(MessageFactory.getMessage("lb_group_", superUser().getLanguage())));
 		this.superGroupList = loadDescriptionList(getTypeAccount(MessageFactory.getMessage("lb_super_group_", superUser().getLanguage())));
 	}
 
-	private void loadDefaultCombos() {
-		loadAutocompleteLists();
+	private void loadDefaultCombos(Boolean search) {
+		if(search){
+			loadAutocompleteLists(true);
+		}else{
+			loadAutocompleteLists(false);
+		}
 		this.creditCards = loadCreditCards();
 		this.typeClosures = loadTypeClosures();
 		this.currencies = loadCurrencies();
@@ -421,6 +431,11 @@ public class RegisterMBean implements Serializable {
 			e.printStackTrace();
 		}
 	}
+	
+	public String list() {
+		loadDefaultCombos(true);
+		return "/common/listRegister.xhtml?faces-redirect=true";
+	}
 
 	private void createRegister() {
 		this.register = new Register();
@@ -446,7 +461,7 @@ public class RegisterMBean implements Serializable {
 		createRegister();
 		loadDebits = false;
 		loadCredits = true;
-		loadDefaultCombos();
+		loadDefaultCombos(false);
 		createTypeAccount(MessageFactory.getMessage("lb_credit_", superUser().getLanguage()));
 		loadList(register.getTypeAccount());
 		return "/common/formRegister.xhtml?faces-redirect=true";
@@ -461,7 +476,7 @@ public class RegisterMBean implements Serializable {
 		createRegister();
 		loadDebits = true;
 		loadCredits = false;
-		loadDefaultCombos();
+		loadDefaultCombos(false);
 		createTypeAccount(MessageFactory.getMessage("lb_debit_", superUser().getLanguage()));
 		loadList(register.getTypeAccount());
 		return "/common/formRegister.xhtml?faces-redirect=true";
@@ -545,7 +560,7 @@ public class RegisterMBean implements Serializable {
 			}
 			loadList(register.getTypeAccount());
 			createRegister();
-			loadAutocompleteLists();
+			loadAutocompleteLists(false);
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
