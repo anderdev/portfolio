@@ -40,6 +40,8 @@ public class RegisterMBean implements Serializable {
 	private UserMBean userMBean;
 
 	private List<Register> registerList;
+	
+	private List<Register> registerSearchList;
 
 	private Register register;
 
@@ -48,6 +50,8 @@ public class RegisterMBean implements Serializable {
 	private String host = null;
 
 	private List<Description> descriptionList;
+	
+	private List<Description> descriptionFullList;
 
 	private List<Description> creditList;
 
@@ -103,15 +107,14 @@ public class RegisterMBean implements Serializable {
 
 	private void loadAutocompleteLists(Boolean search) {
 		if(search){
-			//TODO new object to get the list of register (credit//debit)
-			System.out.println();
+			this.descriptionFullList = loadDescriptionList("credit_debit");
 		} else {
-			this.creditList = loadDescriptionList(getTypeAccount(MessageFactory.getMessage("lb_credit_", superUser().getLanguage())));
-			this.debitList = loadDescriptionList(getTypeAccount(MessageFactory.getMessage("lb_debit_", superUser().getLanguage())));
+			this.creditList = loadDescriptionList(MessageFactory.getMessage("lb_credit_", superUser().getLanguage()));
+			this.debitList = loadDescriptionList(MessageFactory.getMessage("lb_debit_", superUser().getLanguage()));
 			
 		}
-		this.groupList = loadDescriptionList(getTypeAccount(MessageFactory.getMessage("lb_group_", superUser().getLanguage())));
-		this.superGroupList = loadDescriptionList(getTypeAccount(MessageFactory.getMessage("lb_super_group_", superUser().getLanguage())));
+		this.groupList = loadDescriptionList(MessageFactory.getMessage("lb_group_", superUser().getLanguage()));
+		this.superGroupList = loadDescriptionList(MessageFactory.getMessage("lb_super_group_", superUser().getLanguage()));
 	}
 
 	private void loadDefaultCombos(Boolean search) {
@@ -275,10 +278,12 @@ public class RegisterMBean implements Serializable {
 		return null;
 	}
 
-	private List<Description> loadDescriptionList(TypeAccount typeAccount) {
+	private List<Description> loadDescriptionList(String typeAccountDescription) {
 		try {
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/description");
-
+			TypeAccount typeAccount = new TypeAccount();
+			typeAccount.setDescription(typeAccountDescription);
+			
 			description.setUser(superUser());
 			description.setTypeAccount(typeAccount);
 
@@ -434,10 +439,11 @@ public class RegisterMBean implements Serializable {
 	
 	public String list() {
 		loadDefaultCombos(true);
+		createRegister(true);
 		return "/common/listRegister.xhtml?faces-redirect=true";
 	}
 
-	private void createRegister() {
+	private void createRegister(Boolean search) {
 		this.register = new Register();
 		register.setDescription(new Description());
 		register.setGroup(new Description());
@@ -445,7 +451,10 @@ public class RegisterMBean implements Serializable {
 		register.setCurrency(new Currency());
 		register.setTypeClosure(new TypeClosure());
 		register.setCreditCard(new CreditCard());
-		setDefaultValues();
+		if(!search){
+			setDefaultValues();
+		}
+		
 	}
 
 	private void setDefaultValues() {
@@ -458,7 +467,7 @@ public class RegisterMBean implements Serializable {
 	}
 
 	public String newCredit() {
-		createRegister();
+		createRegister(false);
 		loadDebits = false;
 		loadCredits = true;
 		loadDefaultCombos(false);
@@ -473,7 +482,7 @@ public class RegisterMBean implements Serializable {
 	}
 
 	public String newDebit() {
-		createRegister();
+		createRegister(false);
 		loadDebits = true;
 		loadCredits = false;
 		loadDefaultCombos(false);
@@ -505,6 +514,11 @@ public class RegisterMBean implements Serializable {
 		return results;
 	}
 
+	public List<String> creditDebitComplete(String query) {
+		List<String> results = returnResults(descriptionFullList, query);
+		return results;
+	}
+	
 	public List<String> creditComplete(String query) {
 		List<String> results = returnResults(creditList, query);
 		return results;
@@ -559,7 +573,7 @@ public class RegisterMBean implements Serializable {
 				FacesUtil.showSuccessMessage(ret.getMessage());
 			}
 			loadList(register.getTypeAccount());
-			createRegister();
+			createRegister(false);
 			loadAutocompleteLists(false);
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
@@ -786,5 +800,21 @@ public class RegisterMBean implements Serializable {
 
 	public void setDebitList(List<Description> debitList) {
 		this.debitList = debitList;
+	}
+
+	public List<Register> getRegisterSearchList() {
+		return registerSearchList;
+	}
+
+	public void setRegisterSearchList(List<Register> registerSearchList) {
+		this.registerSearchList = registerSearchList;
+	}
+
+	public List<Description> getDescriptionFullList() {
+		return descriptionFullList;
+	}
+
+	public void setDescriptionFullList(List<Description> descriptionFullList) {
+		this.descriptionFullList = descriptionFullList;
 	}
 }

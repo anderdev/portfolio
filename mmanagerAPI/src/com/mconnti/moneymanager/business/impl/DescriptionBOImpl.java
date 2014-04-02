@@ -162,14 +162,38 @@ public class DescriptionBOImpl extends GenericBOImpl<Description> implements Des
 		}
 		return null;
 	}
+	
+	private List<TypeAccount> getTypeAccountByDescription(Description description) throws Exception{
+		Map<String, String> queryParamsTypeAccoount = new LinkedHashMap<>();
+		
+		if(description.getTypeAccount().getDescription().toLowerCase().equals("credit_debit")){
+			if(description.getUser().getLanguage().equals("pt_BR")){
+				queryParamsTypeAccoount.put(" where lower(x.description) in ", "('credito','debito')");
+			} else {
+				queryParamsTypeAccoount.put(" where lower(x.description) in ", "('credit','debit')");
+			}
+		} else{
+			queryParamsTypeAccoount.put(" where lower(x.description) = ", "'" + description.getTypeAccount().getDescription().toLowerCase() + "'");
+		}
+		
+		List<TypeAccount> typeAccountList = typeAccountDAO.list(TypeAccount.class, queryParamsTypeAccoount,"x.description");
+		return typeAccountList;
+	}
 
 	@Override
 	public List<Description> listByParameter(Description description) throws Exception {
 		Map<String, String> queryParams = new LinkedHashMap<>();
 		queryParams.put(" where "," 1=1 ");
 		queryParams.put(" and x.user.id = ", description.getUser().getId()+"");
+		
 		if( description.getTypeAccount() != null){
-			queryParams.put(" and x.typeAccount.id = ", description.getTypeAccount().getId()+ "");
+			List<TypeAccount> typeAccountList = getTypeAccountByDescription(description);
+			
+			if(typeAccountList.size() > 1){
+				queryParams.put(" and x.typeAccount.id in ", "("+typeAccountList.get(0).getId()+ ","+typeAccountList.get(1).getId()+")");
+			} else{
+				queryParams.put(" and x.typeAccount.id = ", typeAccountList.get(0).getId()+ "");
+			}
 		}
 		
 		List<Description> list = list(Description.class, queryParams, "x.description");
