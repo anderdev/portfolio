@@ -16,7 +16,7 @@ public class ClosureDAOImpl extends GenericDAOImpl<Closure> implements ClosureDA
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Collection<Register> getRegisters(User user, String startDate, String endDate, boolean closed, int typeAccountId) {
+	public Collection<Register> getRegisters(User user, String startDate, String endDate, boolean closed, Long typeAccountId) {
 		StringBuilder sql = new StringBuilder();
 		sql.append(" select d from Register d ");
 		sql.append(" where d.user = ").append(user.getId());

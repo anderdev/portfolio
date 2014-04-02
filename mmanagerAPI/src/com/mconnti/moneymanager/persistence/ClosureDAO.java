@@ -8,6 +8,6 @@ import com.mconnti.moneymanager.entity.User;
 
 public interface ClosureDAO  extends GenericDAO<Closure>{
 
-	public Collection<Register> getRegisters(User user, String startDate, String endDate, boolean closed, int typeAccountId);
+	public Collection<Register> getRegisters(User user, String startDate, String endDate, boolean closed, Long typeAccountId);
 	
 }

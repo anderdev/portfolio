@@ -261,6 +261,7 @@ public class ClosureMBean implements Serializable {
 				FacesUtil.showSuccessMessage(ret.getMessage());
 			}
 			createClosure();
+			loadList();
 			showMaths = false;
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();

@@ -30,8 +30,4 @@ public abstract class Constants {
 	
 	public static String DATE_END = "endDate";
 	
-	public static Integer TYPE_ACCOUNT_CREDIT = 1;
-	
-	public static Integer TYPE_ACCOUNT_DEBIT = 2;
-	
 }

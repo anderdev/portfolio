@@ -204,16 +204,34 @@ public class ClosureBOImpl extends GenericBOImpl<Closure> implements ClosureBO {
 		register.setAmount(closure.getTotalGeneral().compareTo(BigDecimal.ZERO) > 0 ? closure.getTotalGeneral() : new BigDecimal(closure.getTotalGeneral().toString().split("-")[1]));
 		registerBO.save(register);
 	}
+	
+	private TypeAccount getTypeAccountByDescription(String description){
+		Map<String, String> queryParams = new LinkedHashMap<>();
+		queryParams.put(" where x.description = ", "'" + description + "'");
+//		String language = null;
+//		if (closure.getUser().getLanguage().equals("pt_BR")) {
+//			language = "pt_BR";
+//		} else {
+//			language = "en";
+//		}
+//		if (closure.getTotalGeneral().compareTo(BigDecimal.ZERO) > 0) {
+//			queryParams.put(" where x.description = ", "'" + MessageFactory.getMessage("lb_credit", language) + "'");
+//		} else {
+//			queryParams.put(" where x.description = ", "'" + MessageFactory.getMessage("lb_debit", language) + "'");
+//		}
+		TypeAccount typeAccount = getTypeAccountByParameter(queryParams);
+		return typeAccount;
+	}
 
 	private void closeRegisters(Closure closure, String startDate, String endDate) throws Exception {
+		
+		closure.setCreditsAlreadyClosed(closureDAO.getRegisters(closure.getUser(), startDate, endDate, true, getTypeAccountByDescription(MessageFactory.getMessage("lb_credit", closure.getUser().getLanguage())).getId()));
 
-		closure.setCreditsAlreadyClosed(closureDAO.getRegisters(closure.getUser(), startDate, endDate, true, Constants.TYPE_ACCOUNT_CREDIT));
+		closure.setDebitsAlreadyClosed(closureDAO.getRegisters(closure.getUser(), startDate, endDate, true, getTypeAccountByDescription(MessageFactory.getMessage("lb_debit", closure.getUser().getLanguage())).getId()));
 
-		closure.setDebitsAlreadyClosed(closureDAO.getRegisters(closure.getUser(), startDate, endDate, true, Constants.TYPE_ACCOUNT_DEBIT));
+		Collection<Register> collectionCredit = closureDAO.getRegisters(closure.getUser(), startDate, endDate, false, getTypeAccountByDescription(MessageFactory.getMessage("lb_credit", closure.getUser().getLanguage())).getId());
 
-		Collection<Register> collectionCredit = closureDAO.getRegisters(closure.getUser(), startDate, endDate, false, Constants.TYPE_ACCOUNT_CREDIT);
-
-		Collection<Register> collectionDebit = closureDAO.getRegisters(closure.getUser(), startDate, endDate, false, Constants.TYPE_ACCOUNT_DEBIT);
+		Collection<Register> collectionDebit = closureDAO.getRegisters(closure.getUser(), startDate, endDate, false, getTypeAccountByDescription(MessageFactory.getMessage("lb_debit", closure.getUser().getLanguage())).getId());
 
 		for (Register register : collectionCredit) {
 			saveRegister(register, true);
@@ -279,8 +297,6 @@ public class ClosureBOImpl extends GenericBOImpl<Closure> implements ClosureBO {
 
 			if (Constants.MENSAL.equalsIgnoreCase(typeClosure.getType().toLowerCase()) || Constants.MONTHLY.equalsIgnoreCase(typeClosure.getType().toLowerCase())) {
 				ret = Utils.loadDates(date, Calendar.DAY_OF_MONTH, -Utils.getLastDayOfMonth(date));
-				System.out.println(ret);
-				// ret = Utils.loadDates(date, Calendar.DAY_OF_MONTH, -Utils.getLastDayOfMonth(Utils.dateToString(date)));
 			} else if (Constants.QUINZENAL.equalsIgnoreCase(typeClosure.getType().toLowerCase()) || Constants.FORTNIGHTLY.equalsIgnoreCase(typeClosure.getType().toLowerCase())) {
 				ret = Utils.loadDates(date, Calendar.DAY_OF_MONTH, -14);
 			} else if (Constants.SEMANAL.equalsIgnoreCase(typeClosure.getType().toLowerCase()) || Constants.WEEKLY.equalsIgnoreCase(typeClosure.getType().toLowerCase())) {
@@ -305,13 +321,13 @@ public class ClosureBOImpl extends GenericBOImpl<Closure> implements ClosureBO {
 		BigDecimal sumCredit = new BigDecimal(0.00);
 		BigDecimal sumDebit = new BigDecimal(0.00);
 
-		closure.setCreditsAlreadyClosed(closureDAO.getRegisters(closure.getUser(), startDate, endDate, true, Constants.TYPE_ACCOUNT_CREDIT));
+		closure.setCreditsAlreadyClosed(closureDAO.getRegisters(closure.getUser(), startDate, endDate, true, getTypeAccountByDescription(MessageFactory.getMessage("lb_credit", closure.getUser().getLanguage())).getId()));
 
-		closure.setDebitsAlreadyClosed(closureDAO.getRegisters(closure.getUser(), startDate, endDate, true, Constants.TYPE_ACCOUNT_DEBIT));
+		closure.setDebitsAlreadyClosed(closureDAO.getRegisters(closure.getUser(), startDate, endDate, true, getTypeAccountByDescription(MessageFactory.getMessage("lb_debit", closure.getUser().getLanguage())).getId()));
 
-		Collection<Register> collectionCredit = closureDAO.getRegisters(closure.getUser(), startDate, endDate, false, Constants.TYPE_ACCOUNT_CREDIT);
+		Collection<Register> collectionCredit = closureDAO.getRegisters(closure.getUser(), startDate, endDate, false, getTypeAccountByDescription(MessageFactory.getMessage("lb_credit", closure.getUser().getLanguage())).getId());
 
-		Collection<Register> collectionDebit = closureDAO.getRegisters(closure.getUser(), startDate, endDate, false, Constants.TYPE_ACCOUNT_DEBIT);
+		Collection<Register> collectionDebit = closureDAO.getRegisters(closure.getUser(), startDate, endDate, false, getTypeAccountByDescription(MessageFactory.getMessage("lb_debit", closure.getUser().getLanguage())).getId());
 
 		for (Register debit : collectionDebit) {
 			sumDebit = sumDebit.add(debit.getAmount());
