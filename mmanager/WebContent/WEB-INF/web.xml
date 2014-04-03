@@ -41,14 +41,34 @@
 	    <exception-type>javax.faces.application.ViewExpiredException</exception-type>
 	    <location>/expired.xhtml</location>
 	</error-page>
+	
+	<filter>
+		<filter-name>EncodingFilter</filter-name>
+		<filter-class>
+			com.mconnti.moneymanager.util.EncodingFilter
+		</filter-class>
+
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>EncodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
 	<servlet-mapping>
 		<servlet-name>Faces Servlet</servlet-name>
 		<url-pattern>*.jsf</url-pattern>
 	</servlet-mapping>
+	
 	<servlet-mapping>
 		<servlet-name>Faces Servlet</servlet-name>
 		<url-pattern>*.xhtml</url-pattern>
 	</servlet-mapping>
+	
 	<session-config>
 		<session-timeout>10</session-timeout>
 	</session-config>

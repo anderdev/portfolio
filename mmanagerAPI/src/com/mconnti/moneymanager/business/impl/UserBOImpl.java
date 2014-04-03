@@ -64,8 +64,13 @@ public class UserBOImpl extends GenericBOImpl<User> implements UserBO {
 						user.setPassword(Constants.DEFAULT_PASSWORD);
 					}
 				} else {
-					if(user.getPassword() != null && !user.getPassword().isEmpty() && !user.getDefaultPassword()){
-						user.setPassword(Crypt.decrypt(Crypt.decrypt(user.getPassword())));
+					if(user.getPassword() != null && !user.getPassword().isEmpty()){
+						if(user.getDefaultPassword() == null){
+							user.setDefaultPassword(false);
+						}
+						if(!user.getDefaultPassword()){
+							user.setPassword(Crypt.decrypt(Crypt.decrypt(user.getPassword())));
+						}
 					} 
 				}
 				saveGeneric(user);
