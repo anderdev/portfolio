@@ -15,6 +15,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.faces.validator.ValidatorException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.http.client.ClientProtocolException;
@@ -45,6 +46,8 @@ public class UserMBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	FacesContext fc = FacesContext.getCurrentInstance();
+	
+	HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
 
 	private List<User> userList;
 
@@ -103,6 +106,7 @@ public class UserMBean implements Serializable {
 		this.state = new State();
 		this.city = new City();
 		this.role = new Role();
+		
 		Object request = FacesContext.getCurrentInstance().getExternalContext().getRequest();
 		if (request instanceof HttpServletRequest) {
 			String[] str = ((HttpServletRequest) request).getRequestURL().toString().split("mmanager");
@@ -197,6 +201,7 @@ public class UserMBean implements Serializable {
 				throw new Exception(ret.getMessage());
 			} else {
 				loggedUser = ret.getUser();
+				session.setAttribute("loggedUser", loggedUser);
 				configLoggedUser = ret.getConfig();
 				FacesUtil.showSuccessMessage(ret.getMessage());
 			}
@@ -368,6 +373,7 @@ public class UserMBean implements Serializable {
 		this.loggedUser = null;
 		this.user = new User();
 		this.showFormUser = false;
+		session.removeAttribute("loggedUser");
 		return "/index.xhtml?faces-redirect=true";
 	}
 

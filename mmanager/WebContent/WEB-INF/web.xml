@@ -58,6 +58,22 @@
 		<filter-name>EncodingFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
+	
+	<filter>
+		<description>Filter to restrict user into the system without been loged in.</description>
+		<filter-name>AccessFilter</filter-name>
+		<filter-class>
+			com.mconnti.moneymanager.util.AccessFilter
+		</filter-class>
+	</filter>
+	
+	<!-- pages to be filtered -->
+	<filter-mapping>
+		<filter-name>AccessFilter</filter-name>
+		<url-pattern>/common/index.jsf</url-pattern>
+		<url-pattern>/common/*</url-pattern>
+		<url-pattern>/include/*</url-pattern>
+	</filter-mapping>
 
 	<servlet-mapping>
 		<servlet-name>Faces Servlet</servlet-name>
