@@ -53,7 +53,7 @@ public class UserBOImpl extends GenericBOImpl<User> implements UserBO {
 			try {
 				if (user.getId() == null) {
 					if (user.getBirth() != null && !user.getBirth().isEmpty()) {
-						user.setBirthDate(Utils.stringToDate(user.getBirth(), false));
+						user.setBirthDate(Utils.stringToDate(user.getBirth(), false).getTime());
 					}
 					user.setRegister(new Date());
 					user.setExcluded(false);

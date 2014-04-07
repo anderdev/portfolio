@@ -109,7 +109,7 @@ public class RegisterBOImpl extends GenericBOImpl<Register> implements RegisterB
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(newDate);
 		calendar.add(interval, x);
-		register.setDate(calendar.getTime());
+		register.setDate(calendar);
 	}
 
 	@Override
@@ -137,7 +137,7 @@ public class RegisterBOImpl extends GenericBOImpl<Register> implements RegisterB
 					
 					register.setTypeClosure(typeClosureDAO.findById(TypeClosure.class, register.getTypeClosure().getId()));
 
-					Date currentDate = register.getDate();
+					Date currentDate = register.getDate().getTime();
 
 					for (int x = 0; x < register.getNumberParcel(); x++) {
 						if (register.getTypeClosure().getType().toLowerCase().equals(Constants.ANUAL) || register.getTypeClosure().getType().toLowerCase().equals(Constants.YEARLY)) {
@@ -154,14 +154,14 @@ public class RegisterBOImpl extends GenericBOImpl<Register> implements RegisterB
 						//save description created on the register form
 						register = saveDescription(register);
 						
-						register.setCurrentDate(new Date());
+						register.setCurrentDate(Calendar.getInstance());
 						saveGeneric(register);
 					}
 				} else {
 					//save description created on the register form
 					register = saveDescription(register);
 					
-					register.setCurrentDate(new Date());
+					register.setCurrentDate(Calendar.getInstance());
 					saveGeneric(register);
 				}
 			} catch (Exception e) {
@@ -223,14 +223,70 @@ public class RegisterBOImpl extends GenericBOImpl<Register> implements RegisterB
 		}
 		return libReturn;
 	}
+	
+	private String addAndOr(Boolean isAnd){
+		String andOr = "";
+		if(isAnd){
+			andOr = "and";
+		}else{
+			andOr = "or";
+		}
+		return andOr;
+	}
 
 	@Override
 	public List<Register> listByParameter(Register register) throws Exception {
 		Map<String, String> queryParams = new LinkedHashMap<>();
 		queryParams.put(" where "," 1=1 ");
-		queryParams.put(" and x.user.id = ", register.getUser().getId()+"");
-		if( register.getTypeAccount() != null){
-			queryParams.put(" and x.typeAccount.id = ", register.getTypeAccount().getId()+ "");
+		queryParams.put(" and x.user = ", register.getUser().getId()+"");
+		
+		if( register.getTypeAccount() != null && register.getTypeAccount().getId() != null && register.getTypeAccount().getId() > 0){
+			queryParams.put(" and x.typeAccount = ", register.getTypeAccount().getId()+ "");
+		}
+		
+		
+		Boolean isAnd = true;
+		
+		
+		if (register.getSearch() != null && register.getSearch()){
+			if(register.getDescription() != null && register.getDescription().getId() != null  && register.getDescription().getId() > 0){
+				queryParams.put(" "+addAndOr(isAnd)+"  x.description = ", register.getDescription().getId()+ "");
+				isAnd = false;
+			}
+			if(register.getGroup() != null && register.getGroup().getId() != null  && register.getGroup().getId() > 0){
+				queryParams.put(" "+addAndOr(isAnd)+"   x.group = ", register.getGroup().getId()+ "");
+				isAnd = false;
+			}
+			if(register.getSuperGroup() != null && register.getSuperGroup().getId() != null  && register.getSuperGroup().getId() > 0){
+				queryParams.put(" "+addAndOr(isAnd)+"  x.superGroup = ", register.getSuperGroup().getId()+ "");
+				isAnd = false;
+			}
+			
+			if(register.getCreditCard() != null && register.getCreditCard().getId() != null && register.getCreditCard().getId() > 0){
+				queryParams.put(" "+addAndOr(isAnd)+"  x.creditCard = ", register.getCreditCard().getId()+ "");
+				isAnd = false;
+			}
+			if(register.getCurrency() != null && register.getCurrency().getId() != null && register.getCurrency().getId() > 0){
+				queryParams.put(" "+addAndOr(isAnd)+"  x.currency = ", register.getCurrency().getId()+ "");
+				isAnd = false;
+			}
+			
+			if(register.getTypeClosure() != null && register.getTypeClosure().getId() != null && register.getTypeClosure().getId() > 0){
+				queryParams.put(" "+addAndOr(isAnd)+"  x.typeClosure = ", register.getTypeClosure().getId()+ "");
+				isAnd = false;
+			}
+			
+			if(register.getStrDate() != null && register.getDate() == null){
+				queryParams.put(" and x.date = ", " str_to_date('"+Utils.dateToString(register.getStrDate())+ "', '%d/%m/%Y')");
+			}
+			
+			if(register.getStrDate() == null && register.getDate() != null){
+				queryParams.put(" and x.date = ", " str_to_date('"+Utils.dateToString(register.getDate())+"', '%d/%m/%Y') ");
+			}
+			
+			if(register.getStrDate() != null && register.getDate() != null){
+				queryParams.put(" and x.date between ", " str_to_date('"+Utils.dateToString(register.getStrDate())+ "', '%d/%m/%Y') and str_to_date('"+Utils.dateToString(register.getDate())+"', '%d/%m/%Y') ");
+			}
 		}
 		
 		List<Register> list = list(Register.class, queryParams, " x.date desc");

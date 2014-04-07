@@ -23,37 +23,48 @@
 							            <f:selectItem itemLabel="#{messages['lb_creditcard_']}" itemValue="" />
 							            <f:selectItems value="#{registerMBean.creditCards}"  var="desc" itemLabel="#{desc.name}" itemValue="#{desc}"/>  
 							        </p:selectOneMenu>
-									<p:selectOneMenu value="#{registerMBean.register.typeClosure.id}" label="#{messages['lb_type_closure_']}" required="true">
+									<p:selectOneMenu value="#{registerMBean.register.typeClosure.id}" label="#{messages['lb_type_closure_']}" >
 							            <f:selectItem itemLabel="#{messages['lb_type_closure_']}" itemValue="" />
 							            <f:selectItems value="#{registerMBean.typeClosures}"  var="desc" itemLabel="#{desc.type}" itemValue="#{desc}"/>  
 							        </p:selectOneMenu>
-									<p:selectOneMenu value="#{registerMBean.register.currency.id}" label="#{messages['lb_currency_']}" required="true" >
+									<p:selectOneMenu value="#{registerMBean.register.currency.id}" label="#{messages['lb_currency_']}"  >
 							            <f:selectItem itemLabel="#{messages['lb_currency_']}" itemValue="" />
 							            <f:selectItems value="#{registerMBean.currencies}"  var="desc" itemLabel="#{desc.acronymn}" itemValue="#{desc}"/>  
 							        </p:selectOneMenu>
 							    </h:panelGrid>
-			        			<h:panelGrid columns="6" width="100%" border="0" >
-									<h:panelGroup>
-									 	<p:autoComplete id="description" label="#{messages['lb_description_']}" dropdown="true" value="#{registerMBean.register.description.description}" completeMethod="#{registerMBean.creditDebitComplete}" required="true" style="width:40%"/>
-									 	<p:watermark for="description" value="#{messages['lb_description_']}" />
-									</h:panelGroup>
-									<h:panelGroup>
-									 	<p:autoComplete id="group" label="#{messages['lb_group_']}" dropdown="true" value="#{registerMBean.register.group.description}" completeMethod="#{registerMBean.groupComplete}" required="true" style="width:40%"/>
-									 	<p:watermark for="group" value="#{messages['lb_group_']}" />
-									</h:panelGroup>
-									<h:panelGroup>
-										<p:autoComplete id="superGroup" label="#{messages['lb_super_group_']}" dropdown="true" value="#{registerMBean.register.superGroup.description}" completeMethod="#{registerMBean.superGroupComplete}" required="true" style="width:40%"/>
-										<p:watermark for="superGroup" value="#{messages['lb_super_group_']}" />							 
-									</h:panelGroup>
+			        			<h:panelGrid columns="6"  border="0" columnClasses="column90,column90,column90,column90,column90,column90" >
+			        				<p:selectOneMenu value="#{registerMBean.register.description.id}" label="#{messages['lb_description_']}"  >
+							            <f:selectItem itemLabel="#{messages['lb_description_']}" itemValue="" />
+							            <f:selectItems value="#{registerMBean.creditsDebits}"  var="desc" itemLabel="#{desc.name}" itemValue="#{desc}"/>  
+							        </p:selectOneMenu>
+							        
+							        <p:selectOneMenu value="#{registerMBean.register.group.id}" label="#{messages['lb_group_']}" >
+							            <f:selectItem itemLabel="#{messages['lb_group_']}" itemValue="" />
+							            <f:selectItems value="#{registerMBean.groups}"  var="desc" itemLabel="#{desc.name}" itemValue="#{desc}"/>  
+							        </p:selectOneMenu>
+							        
+							        <p:selectOneMenu value="#{registerMBean.register.superGroup.id}" label="#{messages['lb_super_group_']}" >
+							            <f:selectItem itemLabel="#{messages['lb_super_group_']}" itemValue="" />
+							            <f:selectItems value="#{registerMBean.superGroups}"  var="desc" itemLabel="#{desc.name}" itemValue="#{desc}"/>  
+							        </p:selectOneMenu>
+			        				
 							        <h:panelGroup>
-								        <p:calendar id="from"  />
-							        	<p:watermark for="from" value="#{messages['lb_from']}" />
+								        <p:calendar id="from" value="#{registerMBean.register.strDate}"  
+								        	maxlength="10"
+											pattern="dd/MM/yyyy"
+											size="7"
+											yearRange="1950:2050"/>		
+							        	<p:watermark for="from" value="#{messages['lb_from']}" style="width:100px"/>
 							        </h:panelGroup>
 							        <h:panelGroup>
-							        	<p:calendar id="to"   />
+							        	<p:calendar id="to"  value="#{registerMBean.register.date}"  
+								        	maxlength="10"
+											pattern="dd/MM/yyyy"
+											size="7"
+											yearRange="1950:2050"/>	
 							      	  <p:watermark for="to" value="#{messages['lb_to']}" />
 							      	</h:panelGroup>
-							      	<p:commandButton value="#{messages['lb_search_']}" styleClass="button" />
+							      	<p:commandButton value="#{messages['lb_search_']}" styleClass="button" ajax="true" action="#{registerMBean.search}" update=":formDescription"/>
 					            </h:panelGrid>
 			        		</h:panelGroup>
 					    </h:panelGrid>
@@ -63,12 +74,37 @@
 				    		rows="10" rowKey="#{reg}"
 				    		paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
                  			rowsPerPageTemplate="5,10,15"
-                 			paginatorPosition="top">
-				    	 	<f:facet name="footer">
-				    	 		<div style="text-align:right">
-				                	<h:outputText value="Total" />
-				                </div>
+                 			paginatorPosition="top" >
+                 			
+                 			<f:facet name="footer">
+                 				<h:panelGroup rendered="#{registerMBean.loadSearchFooter}">
+					    	 		<div style="text-align:right;">
+					    	 			<h:panelGrid columns="3" styleClass="gridNoLayout" columnClasses=",column90,column4percent" rendered="#{registerMBean.debitTotal gt 0}">
+						    	 			<h:outputText value="#{messages['lb_totalDebit_']}" />
+						    	 			<h:outputText value="#{registerMBean.debitTotal}" style="color:red;" >
+						    	 				<f:convertNumber pattern="###,##0.00"/>
+						    	 			</h:outputText>
+						    	 			<h:outputText value="" />
+					    	 			</h:panelGrid>
+					    	 			<h:panelGrid columns="3" styleClass="gridNoLayout" columnClasses=",column90,column4percent" rendered="#{registerMBean.creditTotal gt 0}">
+						    	 			<h:outputText value="#{messages['lb_totalCredit_']}" />
+						    	 			<h:outputText value="#{registerMBean.creditTotal}" style="color:blue;">
+						    	 				<f:convertNumber pattern="###,##0.00"/>
+						    	 			</h:outputText>
+						    	 			<h:outputText value="" />
+					    	 			</h:panelGrid>
+					    	 			<h:panelGrid columns="3" styleClass="gridNoLayout" columnClasses=",column90,column4percent" rendered="#{registerMBean.searchTotal gt 0 or registerMBean.searchTotal lt 0}">
+						    	 			<h:outputText value="#{messages['lb_total_']}" />
+						    	 			<h:outputText value="#{registerMBean.searchTotal}" >
+						    	 				<f:convertNumber pattern="###,##0.00"/>
+						    	 			</h:outputText>
+						    	 			<h:outputText value="" />
+					    	 			</h:panelGrid>
+					                </div>
+				                </h:panelGroup>
 				            </f:facet>
+                 			
+				    	 	
 					        <p:column>
 					            <f:facet name="header">
 					                <h:outputText value="#{messages['lb_description_']}" />
@@ -78,16 +114,16 @@
 					        
 					        <p:column>
 					            <f:facet name="header">
-					                <h:outputText value="#{messages['lb_super_group_']}" />
+					                <h:outputText value="#{messages['lb_group_']}" />
 					            </f:facet>
-					            <h:outputText value="#{reg.superGroup.description}" />
+					            <h:outputText value="#{reg.group.description}" />
 					        </p:column>
 					        
 					        <p:column>
 					            <f:facet name="header">
-					                <h:outputText value="#{messages['lb_group_']}" />
+					                <h:outputText value="#{messages['lb_super_group_']}" />
 					            </f:facet>
-					            <h:outputText value="#{reg.group.description}" />
+					            <h:outputText value="#{reg.superGroup.description}" />
 					        </p:column>
 					        
 					        <p:column style="width:120px;text-align:center;">
@@ -118,7 +154,10 @@
 					                <h:outputText value="#{messages['lb_amount_']}" />
 					            </f:facet>
 					            <div align="right">
-					            <h:outputText value="#{reg.amount}" >
+					            <h:outputText value="#{reg.amount}" style="color:red;" rendered="#{reg.typeAccount.description eq 'Debit' or reg.typeAccount.description eq 'Debito'}">
+					            	<f:convertNumber pattern="###,##0.00"/>
+					            </h:outputText>
+					            <h:outputText value="#{reg.amount}" style="color:blue;" rendered="#{reg.typeAccount.description eq 'Credit' or reg.typeAccount.description eq 'Credito'}">
 					            	<f:convertNumber pattern="###,##0.00"/>
 					            </h:outputText>
 					            </div>

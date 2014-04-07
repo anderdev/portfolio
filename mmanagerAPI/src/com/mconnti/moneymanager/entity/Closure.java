@@ -2,8 +2,8 @@ package com.mconnti.moneymanager.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Collection;
-import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -29,11 +29,11 @@ public class Closure implements Serializable {
 	@Column(nullable = false, insertable = true, updatable = false)
 	private Long id;
 
-	private Date date;
+	private Calendar date;
 	
-	private Date startDate;
+	private Calendar startDate;
 	
-	private Date endDate;
+	private Calendar endDate;
 
 	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = TypeClosure.class)
 	@JoinColumn(name = "typeclosure_id")
@@ -77,11 +77,11 @@ public class Closure implements Serializable {
 		this.id = id;
 	}
 
-	public Date getDate() {
+	public Calendar getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(Calendar date) {
 		this.date = date;
 	}
 
@@ -125,19 +125,19 @@ public class Closure implements Serializable {
 		this.user = user;
 	}
 
-	public Date getStartDate() {
+	public Calendar getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(Date startDate) {
+	public void setStartDate(Calendar startDate) {
 		this.startDate = startDate;
 	}
 
-	public Date getEndDate() {
+	public Calendar getEndDate() {
 		return endDate;
 	}
 
-	public void setEndDate(Date endDate) {
+	public void setEndDate(Calendar endDate) {
 		this.endDate = endDate;
 	}
 

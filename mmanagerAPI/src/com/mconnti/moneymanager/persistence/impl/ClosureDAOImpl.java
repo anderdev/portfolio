@@ -25,6 +25,8 @@ public class ClosureDAOImpl extends GenericDAOImpl<Closure> implements ClosureDA
 		sql.append(" and d.date between ");
 		sql.append(" str_to_date('").append(startDate).append("', '%d/%m/%Y') and str_to_date('").append(endDate).append("', '%d/%m/%Y') ");
 		
+		System.out.println("Query: "+sql.toString());
+		
 		Query query = em.createQuery(sql.toString());
 		Collection<Register> res = query.getResultList();
 		

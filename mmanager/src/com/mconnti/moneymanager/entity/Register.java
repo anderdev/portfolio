@@ -20,7 +20,7 @@ public class Register implements Serializable {
 
 	private Date currentDate;
 
-	private String strDate;
+	private Date strDate;
 
 	private BigDecimal amount;
 
@@ -37,6 +37,8 @@ public class Register implements Serializable {
 	private TypeClosure typeClosure;
 	
 	private TypeAccount typeAccount;
+
+	private Boolean search;
 
 	private Boolean closed;
 
@@ -60,11 +62,11 @@ public class Register implements Serializable {
 		this.date = date;
 	}
 
-	public String getStrDate() {
+	public Date getStrDate() {
 		return strDate;
 	}
 
-	public void setStrDate(String strDate) {
+	public void setStrDate(Date strDate) {
 		this.strDate = strDate;
 	}
 
@@ -162,5 +164,13 @@ public class Register implements Serializable {
 
 	public void setTypeAccount(TypeAccount typeAccount) {
 		this.typeAccount = typeAccount;
+	}
+
+	public Boolean getSearch() {
+		return search;
+	}
+
+	public void setSearch(Boolean search) {
+		this.search = search;
 	}
 }

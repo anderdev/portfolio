@@ -3,7 +3,6 @@ package com.mconnti.moneymanager.business.impl;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -112,8 +111,9 @@ public class ClosureBOImpl extends GenericBOImpl<Closure> implements ClosureBO {
 	}
 
 	private void createRegister(Closure closure, User user) throws Exception {
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(closure.getDate());
+//		Calendar calendar = Calendar.getInstance();
+//		calendar = closure.getDate();
+		Calendar calendar = closure.getDate();
 		calendar.add(Calendar.DAY_OF_MONTH, +1);
 
 		Map<String, String> queryParams = new LinkedHashMap<>();
@@ -121,7 +121,7 @@ public class ClosureBOImpl extends GenericBOImpl<Closure> implements ClosureBO {
 		TypeAccount typeAccount = null;
 
 		Register register = new Register();
-		register.setDate(calendar.getTime());
+		register.setDate(calendar);
 
 		String language = null;
 		if (closure.getUser().getLanguage().equals("pt_BR")) {
@@ -289,20 +289,20 @@ public class ClosureBOImpl extends GenericBOImpl<Closure> implements ClosureBO {
 	public MessageReturn getValuesToClose(Closure closure) {
 		MessageReturn libReturn = new MessageReturn();
 		try {
-			Date date = closure.getDate();
+			Calendar date = closure.getDate();
 
 			TypeClosure typeClosure = findById(TypeClosure.class, closure.getTypeClosure().getId());
 
 			HashMap<String, String> ret = new HashMap<String, String>();
 
 			if (Constants.MENSAL.equalsIgnoreCase(typeClosure.getType().toLowerCase()) || Constants.MONTHLY.equalsIgnoreCase(typeClosure.getType().toLowerCase())) {
-				ret = Utils.loadDates(date, Calendar.DAY_OF_MONTH, -Utils.getLastDayOfMonth(date));
+				ret = Utils.loadDates(date.getTime(), Calendar.DAY_OF_MONTH, -Utils.getLastDayOfMonth(date.getTime()));
 			} else if (Constants.QUINZENAL.equalsIgnoreCase(typeClosure.getType().toLowerCase()) || Constants.FORTNIGHTLY.equalsIgnoreCase(typeClosure.getType().toLowerCase())) {
-				ret = Utils.loadDates(date, Calendar.DAY_OF_MONTH, -14);
+				ret = Utils.loadDates(date.getTime(), Calendar.DAY_OF_MONTH, -14);
 			} else if (Constants.SEMANAL.equalsIgnoreCase(typeClosure.getType().toLowerCase()) || Constants.WEEKLY.equalsIgnoreCase(typeClosure.getType().toLowerCase())) {
-				ret = Utils.loadDates(date, Calendar.DAY_OF_MONTH, -6);
+				ret = Utils.loadDates(date.getTime(), Calendar.DAY_OF_MONTH, -6);
 			} else if (Constants.DIARIO.equalsIgnoreCase(typeClosure.getType().toLowerCase()) || Constants.DAILY.equalsIgnoreCase(typeClosure.getType().toLowerCase())) {
-				ret = Utils.loadDates(date, Calendar.DAY_OF_MONTH, 0);
+				ret = Utils.loadDates(date.getTime(), Calendar.DAY_OF_MONTH, 0);
 			}
 
 			closure = getClosureValues(closure, ret.get(Constants.DATE_START), ret.get(Constants.DATE_END));

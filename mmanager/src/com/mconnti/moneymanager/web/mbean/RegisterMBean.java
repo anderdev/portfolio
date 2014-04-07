@@ -2,8 +2,9 @@ package com.mconnti.moneymanager.web.mbean;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -66,6 +67,12 @@ public class RegisterMBean implements Serializable {
 	private List<Currency> currencyList;
 
 	private List<TypeClosure> typeClosureList;
+	
+	private SelectItem[] creditsDebits;
+	
+	private SelectItem[] groups;
+	
+	private SelectItem[] superGroups;
 
 	private SelectItem[] creditCards;
 
@@ -88,6 +95,14 @@ public class RegisterMBean implements Serializable {
 	private Boolean loadDebits = false;
 
 	private Boolean loadCredits = false;
+	
+	private BigDecimal debitTotal;
+	
+	private BigDecimal creditTotal;
+	
+	private BigDecimal searchTotal;
+	
+	private Boolean loadSearchFooter = false;
 
 	public RegisterMBean() {
 		this.register = new Register();
@@ -97,6 +112,9 @@ public class RegisterMBean implements Serializable {
 		this.currency = new Currency();
 		this.creditCard = new CreditCard();
 		this.typeClosure = new TypeClosure();
+		creditTotal = new BigDecimal(0.0);
+		debitTotal = new BigDecimal(0.0);
+		searchTotal = new BigDecimal(0.0);
 
 		Object request = FacesContext.getCurrentInstance().getExternalContext().getRequest();
 		if (request instanceof HttpServletRequest) {
@@ -107,14 +125,15 @@ public class RegisterMBean implements Serializable {
 
 	private void loadAutocompleteLists(Boolean search) {
 		if(search){
-			this.descriptionFullList = loadDescriptionList("credit_debit");
+			this.creditsDebits = loadCreditDebits();
+			this.groups = loadGroups();
+			this.superGroups = loadSuperGroups();
 		} else {
 			this.creditList = loadDescriptionList(MessageFactory.getMessage("lb_credit_", superUser().getLanguage()));
 			this.debitList = loadDescriptionList(MessageFactory.getMessage("lb_debit_", superUser().getLanguage()));
-			
+			this.groupList = loadDescriptionList(MessageFactory.getMessage("lb_group_", superUser().getLanguage()));
+			this.superGroupList = loadDescriptionList(MessageFactory.getMessage("lb_super_group_", superUser().getLanguage()));
 		}
-		this.groupList = loadDescriptionList(MessageFactory.getMessage("lb_group_", superUser().getLanguage()));
-		this.superGroupList = loadDescriptionList(MessageFactory.getMessage("lb_super_group_", superUser().getLanguage()));
 	}
 
 	private void loadDefaultCombos(Boolean search) {
@@ -340,6 +359,46 @@ public class RegisterMBean implements Serializable {
 		}
 		return currencyList;
 	}
+	
+	public SelectItem[] loadCreditDebits() {
+		descriptionFullList = loadDescriptionList("credit_debit");
+
+		List<SelectItem> itens = new ArrayList<SelectItem>(descriptionFullList.size());
+
+		this.creditsDebits = new SelectItem[itens.size()];
+
+		for (Description d : descriptionFullList) {
+			itens.add(new SelectItem(d.getId(), d.getDescription()));
+		}
+		return itens.toArray(new SelectItem[itens.size()]);
+	}
+	
+	public SelectItem[] loadGroups() {
+		groupList = loadDescriptionList(MessageFactory.getMessage("lb_group_", superUser().getLanguage()));
+		
+		List<SelectItem> itens = new ArrayList<SelectItem>(groupList.size());
+
+		this.groups = new SelectItem[itens.size()];
+
+		for (Description d : groupList) {
+			itens.add(new SelectItem(d.getId(), d.getDescription()));
+		}
+		return itens.toArray(new SelectItem[itens.size()]);
+	}
+	
+	public SelectItem[] loadSuperGroups() {
+		
+		superGroupList = loadDescriptionList(MessageFactory.getMessage("lb_super_group_", superUser().getLanguage()));
+
+		List<SelectItem> itens = new ArrayList<SelectItem>(superGroupList.size());
+
+		this.superGroups = new SelectItem[itens.size()];
+
+		for (Description d : superGroupList) {
+			itens.add(new SelectItem(d.getId(), d.getDescription()));
+		}
+		return itens.toArray(new SelectItem[itens.size()]);
+	}
 
 	public SelectItem[] loadCreditCards() {
 		creditCardList = loadCreditCardList();
@@ -417,7 +476,9 @@ public class RegisterMBean implements Serializable {
 	private void loadList(TypeAccount typeAccount) {
 		try {
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/register");
-			register.setTypeAccount(typeAccount);
+			if(typeAccount != null){
+				register.setTypeAccount(typeAccount);
+			}
 			register.setUser(superUser());
 			request.body(MediaType.APPLICATION_JSON, register);
 			ClientResponse<Register> response = request.put(Register.class);
@@ -425,9 +486,21 @@ public class RegisterMBean implements Serializable {
 			if (response.getStatus() != 200) {
 				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
 			}
-
-			registerList = (List<Register>) response.getEntity(new GenericType<List<Register>>() {
-			});
+			
+			if(typeAccount != null){
+				registerList = (List<Register>) response.getEntity(new GenericType<List<Register>>() {});
+			} else {
+				registerSearchList = (List<Register>) response.getEntity(new GenericType<List<Register>>() {});
+				for (Register reg : registerSearchList) {
+					if(reg.getTypeAccount().getDescription().equals(MessageFactory.getMessage("lb_credit_", superUser().getLanguage()))){
+						creditTotal = creditTotal.add(reg.getAmount());
+					} else if (reg.getTypeAccount().getDescription().equals(MessageFactory.getMessage("lb_debit_", superUser().getLanguage()))){
+						debitTotal = debitTotal.add(reg.getAmount());
+					}
+				}
+				searchTotal = creditTotal.subtract(debitTotal);
+				loadSearchFooter = true;
+			}
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -438,9 +511,24 @@ public class RegisterMBean implements Serializable {
 	}
 	
 	public String list() {
+		loadSearchFooter = false;
+		searchTotal = new BigDecimal(0.0);
+		debitTotal = new BigDecimal(0.0);
+		creditTotal = new BigDecimal(0.0);
 		loadDefaultCombos(true);
 		createRegister(true);
+		this.registerSearchList = new ArrayList<>();
 		return "/common/listRegister.xhtml?faces-redirect=true";
+	}
+	
+	public void search(){
+		loadSearchFooter = false;
+		searchTotal = new BigDecimal(0.0);
+		debitTotal = new BigDecimal(0.0);
+		creditTotal = new BigDecimal(0.0);
+		register.setSearch(true);
+		loadList(null);
+		register.setSearch(false);
 	}
 
 	private void createRegister(Boolean search) {
@@ -451,10 +539,10 @@ public class RegisterMBean implements Serializable {
 		register.setCurrency(new Currency());
 		register.setTypeClosure(new TypeClosure());
 		register.setCreditCard(new CreditCard());
+		register.setSearch(false);
 		if(!search){
 			setDefaultValues();
 		}
-		
 	}
 
 	private void setDefaultValues() {
@@ -462,7 +550,8 @@ public class RegisterMBean implements Serializable {
 			register.setTypeClosure(userMBean.getConfigLoggedUser().getTypeClosure());
 			register.setCurrency(userMBean.getConfigLoggedUser().getCurrency());
 		}
-		register.setDate(new Date());
+		Calendar calendar = Calendar.getInstance();
+		register.setDate(calendar.getTime());
 		register.setNumberParcel(1);
 	}
 
@@ -572,7 +661,7 @@ public class RegisterMBean implements Serializable {
 			} else {
 				FacesUtil.showSuccessMessage(ret.getMessage());
 			}
-			loadList(register.getTypeAccount());
+			loadList(ret.getRegister().getTypeAccount());
 			createRegister(false);
 			loadAutocompleteLists(false);
 		} catch (ClientProtocolException e) {
@@ -816,5 +905,61 @@ public class RegisterMBean implements Serializable {
 
 	public void setDescriptionFullList(List<Description> descriptionFullList) {
 		this.descriptionFullList = descriptionFullList;
+	}
+
+	public SelectItem[] getCreditsDebits() {
+		return creditsDebits;
+	}
+
+	public void setCreditsDebits(SelectItem[] creditsDebits) {
+		this.creditsDebits = creditsDebits;
+	}
+
+	public SelectItem[] getGroups() {
+		return groups;
+	}
+
+	public void setGroups(SelectItem[] groups) {
+		this.groups = groups;
+	}
+
+	public SelectItem[] getSuperGroups() {
+		return superGroups;
+	}
+
+	public void setSuperGroups(SelectItem[] superGroups) {
+		this.superGroups = superGroups;
+	}
+
+	public BigDecimal getSearchTotal() {
+		return searchTotal;
+	}
+
+	public void setSearchTotal(BigDecimal searchTotal) {
+		this.searchTotal = searchTotal;
+	}
+
+	public BigDecimal getDebitTotal() {
+		return debitTotal;
+	}
+
+	public void setDebitTotal(BigDecimal debitTotal) {
+		this.debitTotal = debitTotal;
+	}
+
+	public BigDecimal getCreditTotal() {
+		return creditTotal;
+	}
+
+	public void setCreditTotal(BigDecimal creditTotal) {
+		this.creditTotal = creditTotal;
+	}
+
+	public Boolean getLoadSearchFooter() {
+		return loadSearchFooter;
+	}
+
+	public void setLoadSearchFooter(Boolean loadSearchFooter) {
+		this.loadSearchFooter = loadSearchFooter;
 	}
 }

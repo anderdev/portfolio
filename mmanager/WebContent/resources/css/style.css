@@ -394,10 +394,20 @@ div#boxLoggedUser{
 	width: 100%;
 }
 
+.gridNoLayout{
+	crear: both;
+	border: 0px solid #f0eee1;
+}
+
 
 .boldFont{
 	font-weight: bold;
 }
+
+.column2percent{width: 2%;}
+.column3percent{width: 3%;}
+.column4percent{width: 4%;}
+.column5percent{width: 5%;}
 
 .column80{
 	width: 80px;

@@ -47,9 +47,9 @@ public class CreditCardBOImpl extends GenericBOImpl<CreditCard> implements Credi
 		if(user != null){
 			try {
 				if(creditCard.getExpire() != null){
-					creditCard.setExpireDate(Utils.getCreditCardExpiredDate(creditCard.getExpire()));
+					creditCard.setExpireDate(Utils.getCreditCardExpiredDate(creditCard.getExpire()).getTime());
 				}else{
-					creditCard.setExpireDate(Utils.getCreditCardExpiredDate(Utils.dateToString(creditCard.getExpireDate())));
+					creditCard.setExpireDate(Utils.getCreditCardExpiredDate(creditCard.getExpire()).getTime());
 				}
 				
 				creditCard.setMasterUser(masterUser);

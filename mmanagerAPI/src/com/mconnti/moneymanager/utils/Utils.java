@@ -19,7 +19,7 @@ import javax.mail.internet.MimeMessage;
 
 public abstract class Utils {
 
-	public static Date stringToDate(String data, Boolean mostraHora) {
+	public static Calendar stringToDate(String data, Boolean mostraHora) {
 
 		String[] date2 = data.split("/");
 		Calendar calendar = new GregorianCalendar();
@@ -29,12 +29,18 @@ public abstract class Utils {
 		} else {
 			calendar.set(Integer.valueOf(date2[2]), Integer.valueOf(date2[1]) - 1, Integer.valueOf(date2[0]));
 		}
-		return calendar.getTime();
+		return calendar;
 	}
 
-	public static String dateToString(Date dtData) {
-		SimpleDateFormat DtFormat = new SimpleDateFormat("dd/MM/yyyy");
-		return (dtData == null || dtData.equals("")) ? "" : DtFormat.format(dtData);
+	public static String dateToString(Calendar dtData) {
+		
+		Calendar calendar = dtData;
+	    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	    String ret = sdf.format(calendar.getTime());
+		
+//		SimpleDateFormat DtFormat = new SimpleDateFormat("dd/MM/yyyy");
+//		return (dtData == null || dtData.equals("")) ? "" : DtFormat.format(dtData);
+	    return ret;
 	}
 
 	public static String dateToStringCreditCard(Date dtData) {
@@ -42,7 +48,7 @@ public abstract class Utils {
 		return (dtData == null || dtData.equals("")) ? "" : DtFormat.format(dtData);
 	}
 
-	public static Date getCreditCardExpiredDate(String jsonString) {
+	public static Calendar getCreditCardExpiredDate(String jsonString) {
 		String strDate = "01/" + jsonString;
 
 		String[] tmpDate = strDate.split("/");
@@ -53,9 +59,7 @@ public abstract class Utils {
 		calendar.set(Calendar.DAY_OF_MONTH, 1);
 		calendar.add(Calendar.DATE, -1);
 
-		Date lastDayOfMonth = calendar.getTime();
-
-		return lastDayOfMonth;
+		return calendar;
 	}
 
 	public static Integer getLastDayOfMonth(Date date) {
@@ -97,7 +101,7 @@ public abstract class Utils {
 	public static void sendEmail(final String emailTo, final String emailFrom, final String nameFrom, final String subject, final String body) throws UnsupportedEncodingException, MessagingException {
 		try {
 			Properties props = System.getProperties();
-			/** Parâmetros de conexão com servidor Gmail */
+			/** Parï¿½metros de conexï¿½o com servidor Gmail */
             props.put("mail.smtp.host", "smtp.gmail.com");
             props.put("mail.smtp.socketFactory.port", "465");
             props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");

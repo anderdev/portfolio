@@ -2,7 +2,7 @@ package com.mconnti.moneymanager.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.util.Calendar;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -29,12 +29,12 @@ public class Register implements Serializable {
 	@Column(nullable = false, insertable = true, updatable = false)
 	private Long id;
 
-	private Date date;
+	private Calendar date;
 
-	private Date currentDate;
+	private Calendar currentDate;
 
 	@Transient
-	private String strDate;
+	private Calendar strDate;
 
 	@Column(length = 13, precision = 13, scale = 2)
 	private BigDecimal amount;
@@ -76,6 +76,9 @@ public class Register implements Serializable {
 	@ForeignKey(name = "FK_DEBIT_PARCEL")
 	@JsonIgnore
 	private Parcel parcel;
+	
+	@Transient
+	private Boolean search;
 
 	private Boolean closed;
 
@@ -97,19 +100,19 @@ public class Register implements Serializable {
 		this.id = id;
 	}
 
-	public Date getDate() {
+	public Calendar getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(Calendar date) {
 		this.date = date;
 	}
 
-	public String getStrDate() {
+	public Calendar getStrDate() {
 		return strDate;
 	}
 
-	public void setStrDate(String strDate) {
+	public void setStrDate(Calendar strDate) {
 		this.strDate = strDate;
 	}
 
@@ -201,11 +204,11 @@ public class Register implements Serializable {
 		this.numberParcel = numberParcel;
 	}
 
-	public Date getCurrentDate() {
+	public Calendar getCurrentDate() {
 		return currentDate;
 	}
 
-	public void setCurrentDate(Date currentDate) {
+	public void setCurrentDate(Calendar currentDate) {
 		this.currentDate = currentDate;
 	}
 
@@ -215,5 +218,13 @@ public class Register implements Serializable {
 
 	public void setTypeAccount(TypeAccount typeAccount) {
 		this.typeAccount = typeAccount;
+	}
+
+	public Boolean getSearch() {
+		return search;
+	}
+
+	public void setSearch(Boolean search) {
+		this.search = search;
 	}
 }
