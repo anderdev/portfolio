@@ -35,5 +35,10 @@
 				</div>
 			</div>
 		</h:form>
+		
+		<h:panelGroup rendered="#{!userMBean.loggedUser.defaultPassword and userMBean.configLoggedUser eq null}">
+			<h:outputText value="You have not set default values for Credits and Debits." />
+			<p:commandButton value="#{messages['lb_default_values_']}" action="#{configMBean.load}" ajax="true" styleClass="button"/>
+		</h:panelGroup>
 	</ui:define>
 </ui:composition>

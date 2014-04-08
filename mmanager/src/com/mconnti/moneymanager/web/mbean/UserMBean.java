@@ -47,7 +47,7 @@ public class UserMBean implements Serializable {
 
 	FacesContext fc = FacesContext.getCurrentInstance();
 	
-	HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+	HttpSession session = (HttpSession) fc.getExternalContext().getSession(true);
 
 	private List<User> userList;
 

@@ -18,8 +18,8 @@ public class AccessFilter implements Filter {
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-		HttpSession sessao = ((HttpServletRequest) request).getSession();
-		User loggedUser = (User) sessao.getAttribute("loggedUser");
+		HttpSession session = ((HttpServletRequest) request).getSession();
+		User loggedUser = (User) session.getAttribute("loggedUser");
 
 		if (loggedUser != null) {
 			try {
@@ -33,7 +33,7 @@ public class AccessFilter implements Filter {
 				// // logger.warn("Enviar e-mail ViewExpiredException: " + e1.getMessage());
 				// }
 				System.out.println("send email - EXPIRED EXCEPTION!");
-				((HttpServletResponse) response).sendRedirect("index.jsf");
+				((HttpServletResponse) response).sendRedirect("../expired.jsf");
 			} catch (Exception e) {
 				// try {
 				// // contato.enviarEmail("ander.dev@gmail.com", "organizer@gmail.com", "Organizer", "Exce��o Gerada", e.getMessage());

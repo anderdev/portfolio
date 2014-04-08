@@ -37,26 +37,7 @@
 		</div>
 	
 		<div id="mainContent" class="content">
-		
-			<h:panelGrid rendered="#{userMBean.loggedUser != null}" >
-				<ui:insert name="contentAPP"/>
-			</h:panelGrid>
-			
-			<h:panelGroup rendered="#{userMBean.loggedUser == null}">
-				<div class="topcontent">
-					<div class="slogan">
-						<h1>Money Manager</h1>
-						<span style="position:relative;top:-25px;margin-left: 100px;">helping on your financial organization.</span>
-					</div>
-				</div>
-				<div class="notLoggedMessage" >
-					<h:outputText value="#{messages['lb_not_logged_message']}" />
-					<br/>
-					<div align="center">
-						<h:outputLink value="#{userMBean.logoutURL}">#{messages['lb_home']}</h:outputLink>
-					</div>
-				</div>
-			</h:panelGroup>	
+			<ui:insert name="contentAPP"/>
 		</div>
 		<!-- 
 		<div id="bottomcontent">
