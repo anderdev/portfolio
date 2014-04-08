@@ -404,10 +404,25 @@ div#boxLoggedUser{
 	font-weight: bold;
 }
 
+.boxDefaultConfigMessage{
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	font-weight: bold;
+	width:300px; 
+	border:0px dotted #000;
+	margin-left: 15px;
+	margin-right: 15px;
+}
+
 .column2percent{width: 2%;}
 .column3percent{width: 3%;}
 .column4percent{width: 4%;}
 .column5percent{width: 5%;}
+
+.column20percent{width: 20%;}
+.column30percent{width: 30%;}
+.column40percentC{width: 40%; text-align: center;}
+.column60percentC{width: 60%; text-align: center;}
 
 .column80{
 	width: 80px;
@@ -521,6 +536,13 @@ div#boxLoggedUser{
 	cursor: pointer;
 }
 
+.button150{
+	width: 150px;
+	font-family:tahoma,verdana,arial;
+   	font-size: 12px;
+   	font-weight: bold !important;
+	cursor: pointer;
+}
 .paddingLeft10px{
 	padding-left: 10px;
 }
@@ -622,14 +644,14 @@ div#boxLoggedUser{
 	color:red;
 	text-align:center;
 	border: 0px dotted #000;
-	width:500px;
-	margin-left: -250px;
+	width:800px;
+	margin-left: -400px;
 	position: absolute;
 	left: 50%;
 	border-radius: 5px;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;	
-	border: 1px solid gray !important;
+	border: 1px solid #f0eee9 !important;
 }
 
 .styleMessage{

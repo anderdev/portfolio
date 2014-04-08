@@ -37,6 +37,20 @@
 		</div>
 	
 		<div id="mainContent" class="content">
+			<h:panelGroup rendered="#{!userMBean.loggedUser.defaultPassword and userMBean.configLoggedUser eq null}">
+			<div class="ui-messages-warn ui-corner-all" style="margin-top: 50px;"  >
+				<h:panelGrid columns="3" border="0" width="100%" columnClasses="column20percent,column60percentC,column20percent">
+					<h:outputText value="" />
+					<h:panelGroup >
+						<div align="center">
+		        			<h:outputText value="#{messages['lb_default_values_not_setted']}" styleClass="boxDefaultConfigMessage"/>
+		        			<p:commandButton value="#{messages['lb_default_values_']}" action="#{configMBean.load}" ajax="true" styleClass="button150"/>
+	        			</div>
+        			</h:panelGroup>
+        			<h:outputText value="" />
+        		</h:panelGrid>
+        	</div>
+		</h:panelGroup>
 			<ui:insert name="contentAPP"/>
 		</div>
 		<!-- 

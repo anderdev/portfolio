@@ -7,8 +7,8 @@
         
         <ui:define name="content">
         	<br/>
-        	<div class="messages">
-        		Expired Session, you have been disconnected from the server!
+        	<div class="messages ui-messages-error">
+        		<h:outputText value="#{messages['lb_expired_session']}" />
         	</div>
         	<ui:include src="/include/login.xhtml" />
         </ui:define>
