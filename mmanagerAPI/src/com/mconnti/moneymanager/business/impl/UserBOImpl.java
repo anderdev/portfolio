@@ -80,6 +80,7 @@ public class UserBOImpl extends GenericBOImpl<User> implements UserBO {
 				libReturn.setMessage(e.getMessage());
 			}
 			if (libReturn.getMessage() == null && user.getId() == null) {
+				System.out.println("user.getLanguage(): "+user.getLanguage());
 				libReturn.setMessage(MessageFactory.getMessage("lb_user_saved", user.getLanguage()));
 				libReturn.setUser(user);
 				try {
