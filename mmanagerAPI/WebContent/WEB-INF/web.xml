@@ -20,5 +20,9 @@
 		<servlet-name>Resteasy-servlet</servlet-name>
 		<url-pattern>/rest/*</url-pattern>
 	</servlet-mapping>
+	
+	<session-config>
+		<session-timeout>25</session-timeout>
+	</session-config>
 
 </web-app>

@@ -9,8 +9,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.faces.validator.ValidatorException;
@@ -33,7 +33,7 @@ import com.mconnti.moneymanager.entity.xml.MessageReturn;
 import com.mconnti.moneymanager.util.FacesUtil;
 import com.mconnti.moneymanager.util.MessageFactory;
 
-@ApplicationScoped
+@SessionScoped 
 @ManagedBean(name = "userMBean")
 public class UserMBean implements Serializable {
 

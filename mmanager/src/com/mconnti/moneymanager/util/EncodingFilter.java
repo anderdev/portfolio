@@ -8,7 +8,13 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.annotation.WebFilter;
 
+@WebFilter(
+			servletNames={"facesServlet"},
+			filterName = "EncodingFilter",
+			description = "Filter to encode data been inputed on pages."  
+		  )
 public class EncodingFilter implements Filter {
 
 	private String encoding = "utf-8";
