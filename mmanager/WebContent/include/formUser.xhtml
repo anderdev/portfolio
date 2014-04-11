@@ -13,14 +13,12 @@
 
 				<h:outputText value="#{messages['lb_email']}" />
 				<p:inputText id="email" label="#{messages['lb_email_']}" required="true" value="#{userMBean.user.email}" style="width:100%" >
-					<p:ajax event="blur" update="mailMessage"  listener="#{userMBean.checkEmail}" />  
-					<p:ajax event="blur" update="mailMessage"  listener="#{userMBean.existsEmail}" /> 
+					<p:ajax event="blur" update="msg"  listener="#{userMBean.checkEmail}" />  
+					<p:ajax event="blur" update="msg"  listener="#{userMBean.existsEmail}" /> 
 				</p:inputText>
-				
-				<p:message for="email" id="mailMessage" />
 			</h:panelGrid>
 			
-			
+			<p:message for="email" id="mailMessage" />
 
 			<h:panelGrid columns="4" columnClasses="column120RightWithPaddingRigth,column150,column80rightAlign,column80" styleClass="boldFont" border="0">
 				<h:outputText value="#{messages['lb_birth']}"  />

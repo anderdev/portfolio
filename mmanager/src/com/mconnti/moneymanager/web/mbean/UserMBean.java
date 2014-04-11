@@ -99,6 +99,10 @@ public class UserMBean implements Serializable {
 	
 	private String confirmPassword;
 	
+	private Boolean emailInUse = false;
+	
+	private Boolean usernameInUse = false;
+	
 	public UserMBean() {
 		this.user = new User();
 		this.user.setRole(new Role());
@@ -479,6 +483,18 @@ public class UserMBean implements Serializable {
 	public void save() {
 		MessageReturn ret = new MessageReturn();
 
+		if (emailInUse){
+			FacesMessage message = new FacesMessage(MessageFactory.getMessage("error_email_in_use", "en"));
+			message.setSeverity(FacesMessage.SEVERITY_ERROR);
+			FacesContext.getCurrentInstance().addMessage("", message);
+			return;
+		} else if (usernameInUse){
+			FacesMessage message = new FacesMessage(MessageFactory.getMessage("error_username_in_use", "en"));
+			message.setSeverity(FacesMessage.SEVERITY_ERROR);
+			FacesContext.getCurrentInstance().addMessage("", message);
+			return;
+		}
+		
 		try {
 
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/user");
@@ -607,8 +623,8 @@ public class UserMBean implements Serializable {
 
 	public void existsEmail() throws ValidatorException {
 		this.user.setPassword("");
-		Boolean exists = verifyEmailExists();
-		if (this.user.getId() == null && exists) {
+		emailInUse  = verifyEmailExists();
+		if (this.user.getId() == null && emailInUse) {
 			FacesMessage message = new FacesMessage(MessageFactory.getMessage("error_email_in_use", "en"));
 			message.setSeverity(FacesMessage.SEVERITY_ERROR);
 			FacesContext.getCurrentInstance().addMessage("", message);
@@ -616,9 +632,9 @@ public class UserMBean implements Serializable {
 	}
 
 	public void existsUsername() throws ValidatorException {
-		Boolean exists = verifyUsernameExists();
+		usernameInUse = verifyUsernameExists();
 		this.user.setPassword("");
-		if (this.user.getId() == null && exists) {
+		if (this.user.getId() == null && usernameInUse) {
 			FacesMessage message = new FacesMessage(MessageFactory.getMessage("error_username_in_use", "en"));
 			message.setSeverity(FacesMessage.SEVERITY_ERROR);
 			FacesContext.getCurrentInstance().addMessage("", message);
@@ -807,5 +823,21 @@ public class UserMBean implements Serializable {
 
 	public void setConfirmPassword(String confirmPassword) {
 		this.confirmPassword = confirmPassword;
+	}
+
+	public Boolean getEmailInUse() {
+		return emailInUse;
+	}
+
+	public void setEmailInUse(Boolean emailInUse) {
+		this.emailInUse = emailInUse;
+	}
+
+	public Boolean getUsernameInUse() {
+		return usernameInUse;
+	}
+
+	public void setUsernameInUse(Boolean usernameInUse) {
+		this.usernameInUse = usernameInUse;
 	}
 }
