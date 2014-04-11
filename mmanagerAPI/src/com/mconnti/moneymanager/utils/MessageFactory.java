@@ -7,10 +7,10 @@ public abstract class MessageFactory {
 	private static Locale locale;
 	
 	public static String getMessage(String key, String language) {
-		if(language == null || !"pt_BR".equals(language)){
+		if(language == null || !"pt_br".equals(language.toLowerCase())){
 			language = "en";
 		}
-		locale = new Locale(language);
+		locale = new Locale(language.toLowerCase());
     	bundle = ResourceBundle.getBundle("com.mconnti.moneymanager.bundle.Messages", locale);
 		return bundle.getString(key);
 	}

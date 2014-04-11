@@ -537,9 +537,9 @@ public class UserMBean implements Serializable {
 	}
 
 	public void checkEmail() throws ValidatorException {
-		String digitado = this.user.getEmail();
+		String typed = this.user.getEmail();
 		Pattern p = Pattern.compile(".+@.+\\.[a-z]+");
-		Matcher m = p.matcher(digitado);
+		Matcher m = p.matcher(typed);
 		boolean matchFound = m.matches();
 
 		if (!matchFound) {
