@@ -49,6 +49,29 @@ public class UserBOImpl extends GenericBOImpl<User> implements UserBO {
 	public MessageReturn save(User user) {
 		MessageReturn libReturn = new MessageReturn();
 		City city = getCity(user);
+		
+		//check username/email
+		try {
+			Map<String, String> queryParams = new LinkedHashMap<String, String>();
+			queryParams.put(" where x.username", "= '" + user.getUsername()+"'");
+			User testUsername = findByParameter(User.class, queryParams);
+			if(testUsername != null){
+				libReturn.setMessage(MessageFactory.getMessage("error_username_in_use", user.getLanguage()));
+				return libReturn;
+			}
+			
+			queryParams.clear();
+			queryParams.put(" where x.email", "= '" + user.getEmail()+"'");
+			
+			User testEmail = findByParameter(User.class, queryParams);
+			if(testEmail != null){
+				libReturn.setMessage(MessageFactory.getMessage("error_email_in_use", user.getLanguage()));
+				return libReturn;
+			}
+		} catch (Exception e1) {
+			e1.printStackTrace();
+			libReturn.setMessage("Error testing email or username.");
+		}
 		if (city != null) {
 			try {
 				if (user.getId() == null) {

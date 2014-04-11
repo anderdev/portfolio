@@ -89,7 +89,7 @@
 			<br />
 		
 			<div align="center">
-				<p:commandButton value="#{messages['lb_post']}" action="#{userMBean.save}" process="@this" ajax="false" update=":formTemplate" styleClass="button" rendered="#{userMBean.loggedUser eq null}"/>
+				<p:commandButton value="#{messages['lb_post']}" action="#{userMBean.save}" ajax="false" update=":formTemplate" styleClass="button" rendered="#{userMBean.loggedUser eq null}"/>
 				
 				<p:commandButton value="#{messages['lb_post']}" action="#{userMBean.save}" ajax="false" update=":formUser" styleClass="button" rendered="#{userMBean.loggedUser ne null}"/>  
 				

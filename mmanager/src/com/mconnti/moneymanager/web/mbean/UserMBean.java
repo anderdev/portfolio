@@ -483,18 +483,6 @@ public class UserMBean implements Serializable {
 	public void save() {
 		MessageReturn ret = new MessageReturn();
 
-		if (emailInUse){
-			FacesMessage message = new FacesMessage(MessageFactory.getMessage("error_email_in_use", "en"));
-			message.setSeverity(FacesMessage.SEVERITY_ERROR);
-			FacesContext.getCurrentInstance().addMessage("", message);
-			return;
-		} else if (usernameInUse){
-			FacesMessage message = new FacesMessage(MessageFactory.getMessage("error_username_in_use", "en"));
-			message.setSeverity(FacesMessage.SEVERITY_ERROR);
-			FacesContext.getCurrentInstance().addMessage("", message);
-			return;
-		}
-		
 		try {
 
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/user");
@@ -502,7 +490,6 @@ public class UserMBean implements Serializable {
 			request.body(MediaType.APPLICATION_JSON, user);
 
 			ClientResponse<User> response = request.post(User.class);
-			this.showFormUser = false;
 			
 			ret = response.getEntity(MessageReturn.class);
 
@@ -513,6 +500,7 @@ public class UserMBean implements Serializable {
 			if (ret.getUser() == null) {
 				throw new Exception(ret.getMessage());
 			} else {
+				this.showFormUser = false;
 				FacesUtil.showSuccessMessage(ret.getMessage());
 			}
 			if (refreshList) {
