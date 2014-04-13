@@ -85,7 +85,7 @@
 				<div class="formListContant">
 					<p:dataTable var="reg" value="#{registerMBean.registerList}" style="width:100%" id="registerList"
 				    		paginatorAlwaysVisible="false" paginator="true" emptyMessage="#{messages['lb_empty_list']}"
-				    		rows="10" rowKey="#{reg}">
+				    		rows="10" rowKey="#{reg}" paginatorPosition="top" >
 				    	
 				        <p:column>
 				            <f:facet name="header">
@@ -122,7 +122,7 @@
 				        </p:column>
 				        
 				        <p:column style="width:5%">
-				        	<p:commandLink action="#{registerMBean.edit}" id="editButton" update=":formRegister" ajax="true" immediate="true" process="@this">
+				        	<p:commandLink action="#{registerMBean.edit(false)}" id="editButton" update=":formRegister" ajax="true" immediate="true" process="@this">
 				        		<f:setPropertyActionListener value="#{reg}" target="#{registerMBean.register}" />  
 								<p:graphicImage value="#{messages['img_update']}" style="border: 0px" />
 							</p:commandLink>

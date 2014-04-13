@@ -45,6 +45,8 @@ public class Register implements Serializable {
 	private CreditCard creditCard;
 
 	private User user;
+	
+	private Parcel parcel;
 
 	public Long getId() {
 		return id;
@@ -172,5 +174,13 @@ public class Register implements Serializable {
 
 	public void setSearch(Boolean search) {
 		this.search = search;
+	}
+
+	public Parcel getParcel() {
+		return parcel;
+	}
+
+	public void setParcel(Parcel parcel) {
+		this.parcel = parcel;
 	}
 }

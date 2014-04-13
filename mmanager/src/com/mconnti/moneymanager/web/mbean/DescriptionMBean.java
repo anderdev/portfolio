@@ -141,9 +141,9 @@ public class DescriptionMBean implements Serializable {
 			}
 
 			if (selectedDescriptions.length > 1) {
-				FacesUtil.showSuccessMessage(MessageFactory.getMessage("lb_description_deleted_successfully_mult", userMBean.getLoggedUser().getLanguage()));
+				FacesUtil.showSuccessMessage(MessageFactory.getMessage("lb_description_deleted_successfully_mult", userMBean.getLoggedUser().getLanguage(), null));
 			} else {
-				FacesUtil.showSuccessMessage(MessageFactory.getMessage("lb_deleted_successfully", userMBean.getLoggedUser().getLanguage()));
+				FacesUtil.showSuccessMessage(MessageFactory.getMessage("lb_deleted_successfully", userMBean.getLoggedUser().getLanguage(), null));
 			}
 			loadList();
 		} catch (Exception e) {

@@ -136,9 +136,9 @@ public class CreditCardMBean implements Serializable {
 			}
 
 			if (selectedCreditCard.length > 1) {
-				FacesUtil.showSuccessMessage(MessageFactory.getMessage("lb_creditcard_deleted_successfully_mult", userMBean.getLoggedUser().getLanguage()));
+				FacesUtil.showSuccessMessage(MessageFactory.getMessage("lb_creditcard_deleted_successfully_mult", userMBean.getLoggedUser().getLanguage(), null));
 			} else {
-				FacesUtil.showSuccessMessage(MessageFactory.getMessage("lb_deleted_successfully", userMBean.getLoggedUser().getLanguage()));
+				FacesUtil.showSuccessMessage(MessageFactory.getMessage("lb_deleted_successfully", userMBean.getLoggedUser().getLanguage(), null));
 			}
 			loadList();
 		} catch (Exception e) {

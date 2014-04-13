@@ -130,32 +130,53 @@ public class RegisterBOImpl extends GenericBOImpl<Register> implements RegisterB
 				}
 
 				if (register.getNumberParcel() != null && register.getNumberParcel() > Constants.SINGLE_PARCEL) {
-					Parcel parcel = new Parcel();
-					parcel.setParcels(register.getNumberParcel());
-					parcel.setUser(user);
-					register.setParcel(parcelDAO.save(parcel));
-					
-					register.setTypeClosure(typeClosureDAO.findById(TypeClosure.class, register.getTypeClosure().getId()));
+					if(register.getId() == null){
+						Parcel parcel = new Parcel();
+						parcel.setParcels(register.getNumberParcel());
+						parcel.setUser(user);
+						register.setParcel(parcelDAO.save(parcel));
+						register.setTypeClosure(typeClosureDAO.findById(TypeClosure.class, register.getTypeClosure().getId()));
+						Date currentDate = register.getDate().getTime();
 
-					Date currentDate = register.getDate().getTime();
-
-					for (int x = 0; x < register.getNumberParcel(); x++) {
-						if (register.getTypeClosure().getType().toLowerCase().equals(Constants.ANUAL) || register.getTypeClosure().getType().toLowerCase().equals(Constants.YEARLY)) {
-							setParcel(register, currentDate, Calendar.YEAR, x);
-						} else if (register.getTypeClosure().getType().toLowerCase().equals(Constants.MENSAL) || register.getTypeClosure().getType().toLowerCase().equals(Constants.MONTHLY)) {
-							setParcel(register, currentDate, Calendar.MONTH, x);
-						} else if (register.getTypeClosure().getType().toLowerCase().equals(Constants.QUINZENAL) || register.getTypeClosure().getType().toLowerCase().equals(Constants.FORTNIGHTLY)) {
-							setParcel(register, currentDate, Calendar.DAY_OF_WEEK, x * 14);
-						} else if (register.getTypeClosure().getType().toLowerCase().equals(Constants.SEMANAL) || register.getTypeClosure().getType().toLowerCase().equals(Constants.WEEKLY)) {
-							setParcel(register, currentDate, Calendar.WEEK_OF_MONTH, x);
-						} else if (register.getTypeClosure().getType().toLowerCase().equals(Constants.DIARIO) || register.getTypeClosure().getType().toLowerCase().equals(Constants.DAILY)) {
-							setParcel(register, currentDate, Calendar.DAY_OF_WEEK, x);
+						for (int x = 0; x < register.getNumberParcel(); x++) {
+							if (register.getTypeClosure().getType().toLowerCase().equals(Constants.ANUAL) || register.getTypeClosure().getType().toLowerCase().equals(Constants.YEARLY)) {
+								setParcel(register, currentDate, Calendar.YEAR, x);
+							} else if (register.getTypeClosure().getType().toLowerCase().equals(Constants.MENSAL) || register.getTypeClosure().getType().toLowerCase().equals(Constants.MONTHLY)) {
+								setParcel(register, currentDate, Calendar.MONTH, x);
+							} else if (register.getTypeClosure().getType().toLowerCase().equals(Constants.QUINZENAL) || register.getTypeClosure().getType().toLowerCase().equals(Constants.FORTNIGHTLY)) {
+								setParcel(register, currentDate, Calendar.DAY_OF_WEEK, x * 14);
+							} else if (register.getTypeClosure().getType().toLowerCase().equals(Constants.SEMANAL) || register.getTypeClosure().getType().toLowerCase().equals(Constants.WEEKLY)) {
+								setParcel(register, currentDate, Calendar.WEEK_OF_MONTH, x);
+							} else if (register.getTypeClosure().getType().toLowerCase().equals(Constants.DIARIO) || register.getTypeClosure().getType().toLowerCase().equals(Constants.DAILY)) {
+								setParcel(register, currentDate, Calendar.DAY_OF_WEEK, x);
+							}
+							//save description created on the register form
+							register = saveDescription(register);
+							
+							register.setCurrentDate(Calendar.getInstance());
+							saveGeneric(register);
 						}
-						//save description created on the register form
-						register = saveDescription(register);
+					} else {
+						Map<String, String> queryParams = new LinkedHashMap<>();
+						queryParams.put(" where "," 1=1 ");
+						queryParams.put(" and x.user = ", register.getUser().getId()+"");
+						queryParams.put(" and x.parcel = ", register.getParcel().getId()+"");
 						
-						register.setCurrentDate(Calendar.getInstance());
-						saveGeneric(register);
+						List<Register> registerParcels = list(Register.class, queryParams, " x.date");
+						
+						for (Register reg : registerParcels) {
+							Long id = reg.getId();
+							Calendar date = reg.getDate();
+							System.out.println("ID: "+id);
+							System.out.println("Date: "+(Utils.dateToString(date)));
+							reg = register;
+							reg.setId(id);
+							reg.setDate(date);
+							//save description created on the register form
+							reg = saveDescription(register);
+							reg.setCurrentDate(Calendar.getInstance());
+							saveGeneric(reg);
+						}
 					}
 				} else {
 					//save description created on the register form

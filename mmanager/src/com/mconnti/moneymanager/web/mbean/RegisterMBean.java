@@ -45,6 +45,8 @@ public class RegisterMBean implements Serializable {
 	private List<Register> registerSearchList;
 
 	private Register register;
+	
+	private Register searchRegister;
 
 	private Register[] selectedRegister;
 
@@ -103,6 +105,8 @@ public class RegisterMBean implements Serializable {
 	private BigDecimal searchTotal;
 	
 	private Boolean loadSearchFooter = false;
+	
+	private String nrParcels;
 
 	public RegisterMBean() {
 		this.register = new Register();
@@ -129,10 +133,10 @@ public class RegisterMBean implements Serializable {
 			this.groups = loadGroups();
 			this.superGroups = loadSuperGroups();
 		} else {
-			this.creditList = loadDescriptionList(MessageFactory.getMessage("lb_credit_", superUser().getLanguage()));
-			this.debitList = loadDescriptionList(MessageFactory.getMessage("lb_debit_", superUser().getLanguage()));
-			this.groupList = loadDescriptionList(MessageFactory.getMessage("lb_group_", superUser().getLanguage()));
-			this.superGroupList = loadDescriptionList(MessageFactory.getMessage("lb_super_group_", superUser().getLanguage()));
+			this.creditList = loadDescriptionList(MessageFactory.getMessage("lb_credit_", superUser().getLanguage(),null));
+			this.debitList = loadDescriptionList(MessageFactory.getMessage("lb_debit_", superUser().getLanguage(),null));
+			this.groupList = loadDescriptionList(MessageFactory.getMessage("lb_group_", superUser().getLanguage(),null));
+			this.superGroupList = loadDescriptionList(MessageFactory.getMessage("lb_super_group_", superUser().getLanguage(),null));
 		}
 	}
 
@@ -187,10 +191,10 @@ public class RegisterMBean implements Serializable {
 				}
 
 				if (!contain && !descLista.contains(register.getDescription().getDescription())) {
-					newDescription(description.getDescription(), MessageFactory.getMessage("lb_credit_", superUser().getLanguage()));
+					newDescription(description.getDescription(), MessageFactory.getMessage("lb_credit_", superUser().getLanguage(),null));
 				}
 			} else {
-				newDescription(register.getDescription().getDescription(), MessageFactory.getMessage("lb_credit_", superUser().getLanguage()));
+				newDescription(register.getDescription().getDescription(), MessageFactory.getMessage("lb_credit_", superUser().getLanguage(),null));
 			}
 		}
 
@@ -211,10 +215,10 @@ public class RegisterMBean implements Serializable {
 				}
 
 				if (!contain && !descLista.contains(register.getDescription().getDescription())) {
-					newDescription(description.getDescription(), MessageFactory.getMessage("lb_debit_", superUser().getLanguage()));
+					newDescription(description.getDescription(), MessageFactory.getMessage("lb_debit_", superUser().getLanguage(),null));
 				}
 			} else {
-				newDescription(register.getDescription().getDescription(), MessageFactory.getMessage("lb_debit_", superUser().getLanguage()));
+				newDescription(register.getDescription().getDescription(), MessageFactory.getMessage("lb_debit_", superUser().getLanguage(),null));
 			}
 		}
 	}
@@ -237,10 +241,10 @@ public class RegisterMBean implements Serializable {
 					descLista.add(desc.getDescription());
 				}
 				if (!contain && !descLista.contains(register.getGroup().getDescription())) {
-					newDescription(register.getGroup().getDescription(), MessageFactory.getMessage("lb_group_", superUser().getLanguage()));
+					newDescription(register.getGroup().getDescription(), MessageFactory.getMessage("lb_group_", superUser().getLanguage(),null));
 				}
 			} else {
-				newDescription(register.getGroup().getDescription(), MessageFactory.getMessage("lb_group_", superUser().getLanguage()));
+				newDescription(register.getGroup().getDescription(), MessageFactory.getMessage("lb_group_", superUser().getLanguage(),null));
 			}
 		}
 	}
@@ -259,10 +263,10 @@ public class RegisterMBean implements Serializable {
 					descLista.add(desc.getDescription());
 				}
 				if (!contain && !descLista.contains(register.getSuperGroup().getDescription())) {
-					newDescription(register.getSuperGroup().getDescription(), MessageFactory.getMessage("lb_super_group_", superUser().getLanguage()));
+					newDescription(register.getSuperGroup().getDescription(), MessageFactory.getMessage("lb_super_group_", superUser().getLanguage(),null));
 				}
 			} else {
-				newDescription(register.getSuperGroup().getDescription(), MessageFactory.getMessage("lb_super_group_", superUser().getLanguage()));
+				newDescription(register.getSuperGroup().getDescription(), MessageFactory.getMessage("lb_super_group_", superUser().getLanguage(),null));
 			}
 		}
 	}
@@ -374,7 +378,7 @@ public class RegisterMBean implements Serializable {
 	}
 	
 	public SelectItem[] loadGroups() {
-		groupList = loadDescriptionList(MessageFactory.getMessage("lb_group_", superUser().getLanguage()));
+		groupList = loadDescriptionList(MessageFactory.getMessage("lb_group_", superUser().getLanguage(),null));
 		
 		List<SelectItem> itens = new ArrayList<SelectItem>(groupList.size());
 
@@ -388,7 +392,7 @@ public class RegisterMBean implements Serializable {
 	
 	public SelectItem[] loadSuperGroups() {
 		
-		superGroupList = loadDescriptionList(MessageFactory.getMessage("lb_super_group_", superUser().getLanguage()));
+		superGroupList = loadDescriptionList(MessageFactory.getMessage("lb_super_group_", superUser().getLanguage(),null));
 
 		List<SelectItem> itens = new ArrayList<SelectItem>(superGroupList.size());
 
@@ -476,6 +480,9 @@ public class RegisterMBean implements Serializable {
 	private void loadList(TypeAccount typeAccount) {
 		try {
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/register");
+			if(searchRegister != null){
+				register = searchRegister;
+			}
 			if(typeAccount != null){
 				register.setTypeAccount(typeAccount);
 			}
@@ -492,9 +499,9 @@ public class RegisterMBean implements Serializable {
 			} else {
 				registerSearchList = (List<Register>) response.getEntity(new GenericType<List<Register>>() {});
 				for (Register reg : registerSearchList) {
-					if(reg.getTypeAccount().getDescription().equals(MessageFactory.getMessage("lb_credit_", superUser().getLanguage()))){
+					if(reg.getTypeAccount().getDescription().equals(MessageFactory.getMessage("lb_credit_", superUser().getLanguage(),null))){
 						creditTotal = creditTotal.add(reg.getAmount());
-					} else if (reg.getTypeAccount().getDescription().equals(MessageFactory.getMessage("lb_debit_", superUser().getLanguage()))){
+					} else if (reg.getTypeAccount().getDescription().equals(MessageFactory.getMessage("lb_debit_", superUser().getLanguage(),null))){
 						debitTotal = debitTotal.add(reg.getAmount());
 					}
 				}
@@ -517,6 +524,7 @@ public class RegisterMBean implements Serializable {
 		creditTotal = new BigDecimal(0.0);
 		loadDefaultCombos(true);
 		createRegister(true);
+		createSearchRegister() ;
 		this.registerSearchList = new ArrayList<>();
 		return "/common/listRegister.xhtml?faces-redirect=true";
 	}
@@ -526,9 +534,9 @@ public class RegisterMBean implements Serializable {
 		searchTotal = new BigDecimal(0.0);
 		debitTotal = new BigDecimal(0.0);
 		creditTotal = new BigDecimal(0.0);
-		register.setSearch(true);
+		searchRegister.setSearch(true);
 		loadList(null);
-		register.setSearch(false);
+		searchRegister.setSearch(false);
 	}
 
 	private void createRegister(Boolean search) {
@@ -543,6 +551,17 @@ public class RegisterMBean implements Serializable {
 		if(!search){
 			setDefaultValues();
 		}
+	}
+	
+	private void createSearchRegister() {
+		this.searchRegister = new Register();
+		searchRegister.setDescription(new Description());
+		searchRegister.setGroup(new Description());
+		searchRegister.setSuperGroup(new Description());
+		searchRegister.setCurrency(new Currency());
+		searchRegister.setTypeClosure(new TypeClosure());
+		searchRegister.setCreditCard(new CreditCard());
+		searchRegister.setSearch(false);
 	}
 
 	private void setDefaultValues() {
@@ -560,7 +579,7 @@ public class RegisterMBean implements Serializable {
 		loadDebits = false;
 		loadCredits = true;
 		loadDefaultCombos(false);
-		createTypeAccount(MessageFactory.getMessage("lb_credit_", superUser().getLanguage()));
+		createTypeAccount(MessageFactory.getMessage("lb_credit_", superUser().getLanguage(),null));
 		loadList(register.getTypeAccount());
 		return "/common/formRegister.xhtml?faces-redirect=true";
 	}
@@ -575,7 +594,7 @@ public class RegisterMBean implements Serializable {
 		loadDebits = true;
 		loadCredits = false;
 		loadDefaultCombos(false);
-		createTypeAccount(MessageFactory.getMessage("lb_debit_", superUser().getLanguage()));
+		createTypeAccount(MessageFactory.getMessage("lb_debit_", superUser().getLanguage(),null));
 		loadList(register.getTypeAccount());
 		return "/common/formRegister.xhtml?faces-redirect=true";
 	}
@@ -587,10 +606,23 @@ public class RegisterMBean implements Serializable {
 		return "/common/index.xhtml/faces-redirect=true";
 	}
 
-	public void edit() {
+	public void edit(Boolean fromSearch) {
 		if(register.getCreditCard() == null){
 			register.setCreditCard(new CreditCard());
 		}
+		
+		if(fromSearch){
+			Object prams[] = {register.getNumberParcel()};
+			nrParcels = MessageFactory.getMessage("lb_multiple_edition", superUser().getLanguage(), prams);
+		}
+	}
+	
+	public void editSearch(Boolean all){
+		if(!all){
+			register.setNumberParcel(1);
+		}
+		register.setAmount(new BigDecimal(2.55));
+		save();
 	}
 
 	private List<String> returnResults(List<Description> list, String query) {
@@ -635,14 +667,14 @@ public class RegisterMBean implements Serializable {
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/register");
 
 			if (loadDebits) {
-				createTypeAccount(MessageFactory.getMessage("lb_debit_", superUser().getLanguage()));// debit
+				createTypeAccount(MessageFactory.getMessage("lb_debit_", superUser().getLanguage(),null));// debit
 				if (register.getCreditCard().getId() == null || register.getCreditCard().getId() == 0) {
 					register.setCreditCard(null);
 				}
 			} else {
 				register.setGroup(null);
 				register.setCreditCard(null);
-				createTypeAccount(MessageFactory.getMessage("lb_credit_", superUser().getLanguage()));// credit
+				createTypeAccount(MessageFactory.getMessage("lb_credit_", superUser().getLanguage(),null));// credit
 			}
 
 			register.setUser(superUser());
@@ -961,5 +993,21 @@ public class RegisterMBean implements Serializable {
 
 	public void setLoadSearchFooter(Boolean loadSearchFooter) {
 		this.loadSearchFooter = loadSearchFooter;
+	}
+
+	public String getNrParcels() {
+		return nrParcels;
+	}
+
+	public void setNrParcels(String nrParcels) {
+		this.nrParcels = nrParcels;
+	}
+
+	public Register getSearchRegister() {
+		return searchRegister;
+	}
+
+	public void setSearchRegister(Register searchRegister) {
+		this.searchRegister = searchRegister;
 	}
 }

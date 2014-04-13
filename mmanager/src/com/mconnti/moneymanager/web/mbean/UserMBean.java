@@ -472,10 +472,10 @@ public class UserMBean implements Serializable {
 					FacesUtil.showAErrorMessage(e.getMessage());
 				}
 			} else {
-				FacesUtil.showAErrorMessage(MessageFactory.getMessage("lb_secret_phrase_not_match", loggedUser.getLanguage()));
+				FacesUtil.showAErrorMessage(MessageFactory.getMessage("lb_secret_phrase_not_match", loggedUser.getLanguage(), null));
 			}
 		}else{
-			FacesUtil.showAErrorMessage(MessageFactory.getMessage("lb_password_not_match", loggedUser.getLanguage()));
+			FacesUtil.showAErrorMessage(MessageFactory.getMessage("lb_password_not_match", loggedUser.getLanguage(), null));
 		}
 		return "/common/index.xhtml?faces-redirect=true";
 	}
@@ -529,9 +529,9 @@ public class UserMBean implements Serializable {
 			}
 
 			if (selectedUsers.length > 1) {
-				FacesUtil.showSuccessMessage(MessageFactory.getMessage("lb_user_deleted_successfully_mult", loggedUser.getLanguage()));
+				FacesUtil.showSuccessMessage(MessageFactory.getMessage("lb_user_deleted_successfully_mult", loggedUser.getLanguage(), null));
 			} else {
-				FacesUtil.showSuccessMessage(MessageFactory.getMessage("lb_deleted_successfully", loggedUser.getLanguage()));
+				FacesUtil.showSuccessMessage(MessageFactory.getMessage("lb_deleted_successfully", loggedUser.getLanguage(), null));
 			}
 			loadList();
 		} catch (Exception e) {
@@ -547,7 +547,7 @@ public class UserMBean implements Serializable {
 		boolean matchFound = m.matches();
 
 		if (!matchFound) {
-			FacesMessage message = new FacesMessage(MessageFactory.getMessage("error_invalid_email", "en"));
+			FacesMessage message = new FacesMessage(MessageFactory.getMessage("error_invalid_email", "en", null));
 			message.setSeverity(FacesMessage.SEVERITY_ERROR);
 			FacesContext.getCurrentInstance().addMessage("", message);
 		}
@@ -613,7 +613,7 @@ public class UserMBean implements Serializable {
 		this.user.setPassword("");
 		emailInUse  = verifyEmailExists();
 		if (this.user.getId() == null && emailInUse) {
-			FacesMessage message = new FacesMessage(MessageFactory.getMessage("error_email_in_use", "en"));
+			FacesMessage message = new FacesMessage(MessageFactory.getMessage("error_email_in_use", "en", null));
 			message.setSeverity(FacesMessage.SEVERITY_ERROR);
 			FacesContext.getCurrentInstance().addMessage("", message);
 		}
@@ -623,7 +623,7 @@ public class UserMBean implements Serializable {
 		usernameInUse = verifyUsernameExists();
 		this.user.setPassword("");
 		if (this.user.getId() == null && usernameInUse) {
-			FacesMessage message = new FacesMessage(MessageFactory.getMessage("error_username_in_use", "en"));
+			FacesMessage message = new FacesMessage(MessageFactory.getMessage("error_username_in_use", "en", null));
 			message.setSeverity(FacesMessage.SEVERITY_ERROR);
 			FacesContext.getCurrentInstance().addMessage("", message);
 		}
