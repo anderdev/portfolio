@@ -622,7 +622,11 @@ public class RegisterMBean implements Serializable {
 			register.setNumberParcel(1);
 		}
 		register.setAmount(new BigDecimal(2.55));
+	}
+	
+	public void saveFromSearch(){
 		save();
+		search();
 	}
 
 	private List<String> returnResults(List<Description> list, String query) {
