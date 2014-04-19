@@ -29,8 +29,6 @@ import com.mconnti.moneymanager.utils.Utils;
 
 public class RegisterBOImpl extends GenericBOImpl<Register> implements RegisterBO {
 
-	private static final Long MONTHLY = 1L;
-	
 	@Autowired
 	private RegisterDAO registerDAO;
 
@@ -64,15 +62,6 @@ public class RegisterBOImpl extends GenericBOImpl<Register> implements RegisterB
 	private CreditCard getCreditCard(Register debit) {
 		try {
 			return creditCardDAO.findById(CreditCard.class, debit.getCreditCard().getId());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	private TypeClosure getTypeClosure(Long id) {
-		try {
-			return typeClosureDAO.findById(TypeClosure.class, id);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -120,7 +109,9 @@ public class RegisterBOImpl extends GenericBOImpl<Register> implements RegisterB
 		if (user != null && register.getCurrency() != null && register.getSuperGroup() != null) {
 			try {
 				if (register.getCreditCard() != null) {
-					TypeClosure typeClosure = getTypeClosure(MONTHLY);
+					Map<String, String> queryParams = new LinkedHashMap<>();
+					queryParams.put(" where x.type = ", MessageFactory.getMessage("lb_monthly", user.getLanguage()));
+					TypeClosure typeClosure = typeClosureDAO.findByParameter(TypeClosure.class, queryParams);
 					register.setTypeClosure(typeClosure);
 					setCreditCardDate(register);
 				}
@@ -191,10 +182,10 @@ public class RegisterBOImpl extends GenericBOImpl<Register> implements RegisterB
 				libReturn.setMessage(e.getMessage());
 			}
 			if (libReturn.getMessage() == null && register.getId() == null) {
-				libReturn.setMessage(MessageFactory.getMessage("lb_debit_saved", user.getCity().getState().getCountry().getLocale()));
+				libReturn.setMessage(MessageFactory.getMessage("lb_debit_saved", user.getLanguage()));
 				libReturn.setRegister(register);
 			} else if (libReturn.getMessage() == null && register.getId() != null) {
-				libReturn.setMessage(MessageFactory.getMessage("lb_debit_updated", user.getCity().getState().getCountry().getLocale()));
+				libReturn.setMessage(MessageFactory.getMessage("lb_debit_updated", user.getLanguage()));
 				libReturn.setRegister(register);
 			}
 		} else {
@@ -234,7 +225,7 @@ public class RegisterBOImpl extends GenericBOImpl<Register> implements RegisterB
 			if (debit == null) {
 				libReturn.setMessage(MessageFactory.getMessage("lb_debit_not_found", "en"));
 			} else {
-				String locale = debit.getUser().getCity().getState().getCountry().getLocale();
+				String locale = debit.getUser().getLanguage();
 				remove(debit);
 				libReturn.setMessage(MessageFactory.getMessage("lb_debit_deleted", locale));
 			}
@@ -312,15 +303,6 @@ public class RegisterBOImpl extends GenericBOImpl<Register> implements RegisterB
 		
 		List<Register> list = list(Register.class, queryParams, " x.date desc");
 
-		for (Register reg : list) {
-			System.out.println("Description ID: "+reg.getDescription().getId());
-			System.out.println("Description: "+reg.getDescription().getDescription());
-			System.out.println("Group ID: "+reg.getGroup().getId());
-			System.out.println("Group: "+reg.getGroup().getDescription());
-			System.out.println("SuperGroup ID: "+reg.getSuperGroup().getId());
-			System.out.println("SuperGroup: "+reg.getSuperGroup().getDescription());
-		}
-		
 		return list;
 	}
 
