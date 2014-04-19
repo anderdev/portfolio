@@ -182,9 +182,14 @@ public class RegisterBOImpl extends GenericBOImpl<Register> implements RegisterB
 					}
 				} else {
 					//save description created on the register form
-					register = saveDescription(register);
+//					register = saveDescription(register);
 					
+					System.out.println("Description ID: "+register.getDescription().getId());
 					System.out.println("Description: "+register.getDescription().getDescription());
+					System.out.println("Group ID: "+register.getGroup().getId());
+					System.out.println("Group: "+register.getGroup().getDescription());
+					System.out.println("SuperGroup ID: "+register.getSuperGroup().getId());
+					System.out.println("SuperGroup: "+register.getSuperGroup().getDescription());
 					
 					register.setCurrentDate(Calendar.getInstance());
 					saveGeneric(register);
@@ -316,6 +321,15 @@ public class RegisterBOImpl extends GenericBOImpl<Register> implements RegisterB
 		
 		List<Register> list = list(Register.class, queryParams, " x.date desc");
 
+		for (Register reg : list) {
+			System.out.println("Description ID: "+reg.getDescription().getId());
+			System.out.println("Description: "+reg.getDescription().getDescription());
+			System.out.println("Group ID: "+reg.getGroup().getId());
+			System.out.println("Group: "+reg.getGroup().getDescription());
+			System.out.println("SuperGroup ID: "+reg.getSuperGroup().getId());
+			System.out.println("SuperGroup: "+reg.getSuperGroup().getDescription());
+		}
+		
 		return list;
 	}
 

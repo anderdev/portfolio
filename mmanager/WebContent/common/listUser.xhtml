@@ -28,7 +28,7 @@
 					   
 					    <p:dataTable var="cat" value="#{userMBean.userList}" style="width:50%" id="userList"
 					    		paginatorAlwaysVisible="false" paginator="true" emptyMessage="#{messages['lb_empty_list']}"
-					    		rows="10" selection="#{userMBean.selectedUsers}" rowKey="#{cat}" >
+					    		rows="10" selection="#{userMBean.selectedUsers}" rowKey="#{cat}" paginatorPosition="top" >
 					    	
 					    	<p:column selectionMode="multiple" style="text-align:center;width:5%"  />
 					        

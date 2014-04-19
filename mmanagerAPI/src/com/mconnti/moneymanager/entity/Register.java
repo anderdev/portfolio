@@ -40,17 +40,17 @@ public class Register implements Serializable {
 
 	private Integer numberParcel;
 
-	@ManyToOne(cascade = { CascadeType.DETACH }, targetEntity = Description.class)
+	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = Description.class)
 	@JoinColumn(name = "description_id")
 	@ForeignKey(name = "FK_DEBIT_DESCRIPTION")
 	private Description description;
 
-	@ManyToOne(cascade = { CascadeType.DETACH }, targetEntity = Description.class)
+	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = Description.class)
 	@JoinColumn(name = "group_id")
 	@ForeignKey(name = "FK_DEBIT_GROUP")
 	private Description group;
 
-	@ManyToOne(cascade = { CascadeType.DETACH }, targetEntity = Description.class)
+	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = Description.class)
 	@JoinColumn(name = "supergroup_id")
 	@ForeignKey(name = "FK_DEBIT_SGROUP")
 	private Description superGroup;
@@ -60,7 +60,7 @@ public class Register implements Serializable {
 	@ForeignKey(name = "FK_DEBIT_CURRENCY")
 	private Currency currency;
 	
-	@ManyToOne(cascade = { CascadeType.DETACH }, targetEntity = TypeAccount.class)
+	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = TypeAccount.class)
 	@JoinColumn(name = "typeaccount_id")
 	@ForeignKey(name = "FK_DEBIT_TYPEACCOUNT")
 	private TypeAccount typeAccount;

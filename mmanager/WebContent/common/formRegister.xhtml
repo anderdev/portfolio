@@ -28,21 +28,21 @@
 							
 					        <h:outputText value="#{messages['lb_description']}" />
 				            <p:autoComplete label="#{messages['lb_description_']}" dropdown="true" value="#{registerMBean.register.description.description}" completeMethod="#{registerMBean.debitComplete}" rendered="#{registerMBean.loadDebits}" required="true" style="width:90%">
-				            	<p:ajax event="blur" listener="#{registerMBean.checkDebitDescription}" />
+				            	<p:ajax event="itemSelect" listener="#{registerMBean.checkDebitDescription}" />
 				            </p:autoComplete>  
 				            
 					        <p:autoComplete label="#{messages['lb_description_']}" dropdown="true" value="#{registerMBean.register.description.description}" completeMethod="#{registerMBean.creditComplete}" rendered="#{registerMBean.loadCredits}" required="true" style="width:90%">
-				            	<p:ajax event="blur" listener="#{registerMBean.checkCreditDescription}" />
+				            	<p:ajax event="itemSelect" listener="#{registerMBean.checkCreditDescription}" />
 				            </p:autoComplete>  
 					        
-					        <h:outputText value="#{messages['lb_group']}" rendered="#{registerMBean.loadDebits}"/>
+					        <h:outputText value="#{messages['lb_group']}" rendered="#{registerMBean.loadDebits}" />
 					        <p:autoComplete label="#{messages['lb_group_']}" dropdown="true" value="#{registerMBean.register.group.description}" completeMethod="#{registerMBean.groupComplete}" rendered="#{registerMBean.loadDebits}" required="true" style="width:90%">
-				            	<p:ajax event="blur" listener="#{registerMBean.checkGroupDescription}" />
+				            	<p:ajax event="itemSelect" listener="#{registerMBean.checkGroupDescription}" />
 				            </p:autoComplete> 
 							
 					        <h:outputText value="#{messages['lb_super_group']}" />
 					        <p:autoComplete label="#{messages['lb_super_group_']}" dropdown="true" value="#{registerMBean.register.superGroup.description}" completeMethod="#{registerMBean.superGroupComplete}" required="true" style="width:90%">
-				            	<p:ajax event="blur" listener="#{registerMBean.checkSuperGroupDescription}" />
+				            	<p:ajax event="itemSelect" listener="#{registerMBean.checkSuperGroupDescription}" />
 				            </p:autoComplete> 
 				            
 					        <h:outputText value="#{messages['lb_creditcard']}" rendered="#{registerMBean.loadDebits}"/>
@@ -92,6 +92,13 @@
 				                <h:outputText value="#{messages['lb_description_']}" />
 				            </f:facet>
 				            <h:outputText value="#{reg.description.description}" />
+				        </p:column>
+				        
+				        <p:column>
+				            <f:facet name="header">
+				                <h:outputText value="#{messages['lb_group_']}" />
+				            </f:facet>
+				            <h:outputText value="#{reg.group.description}" />
 				        </p:column>
 				        
 				        <p:column>

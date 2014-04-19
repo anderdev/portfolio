@@ -107,7 +107,7 @@ public class RegisterMBean implements Serializable {
 	private Boolean loadSearchFooter = false;
 	
 	private String nrParcels;
-
+	
 	public RegisterMBean() {
 		this.register = new Register();
 		this.description = new Description();
@@ -185,7 +185,6 @@ public class RegisterMBean implements Serializable {
 					if (desc.getDescription().equalsIgnoreCase(register.getDescription().getDescription())) {
 						register.setDescription(desc);
 						contain = true;
-						break;
 					}
 					descLista.add(desc.getDescription());
 				}
@@ -209,7 +208,6 @@ public class RegisterMBean implements Serializable {
 					if (desc.getDescription().equalsIgnoreCase(register.getDescription().getDescription())) {
 						register.setDescription(desc);
 						contain = true;
-						break;
 					}
 					descLista.add(desc.getDescription());
 				}
@@ -236,7 +234,6 @@ public class RegisterMBean implements Serializable {
 					if (desc.getDescription().equalsIgnoreCase(register.getGroup().getDescription())) {
 						register.setGroup(desc);
 						contain = true;
-						break;
 					}
 					descLista.add(desc.getDescription());
 				}
@@ -258,7 +255,6 @@ public class RegisterMBean implements Serializable {
 					if (desc.getDescription().equalsIgnoreCase(register.getSuperGroup().getDescription())) {
 						register.setSuperGroup(desc);
 						contain = true;
-						break;
 					}
 					descLista.add(desc.getDescription());
 				}
