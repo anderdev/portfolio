@@ -119,8 +119,6 @@ public class RegisterBOImpl extends GenericBOImpl<Register> implements RegisterB
 		User user = getUser(register);
 		if (user != null && register.getCurrency() != null && register.getSuperGroup() != null) {
 			try {
-				System.out.println("Description: "+register.getDescription().getDescription());
-				
 				if (register.getCreditCard() != null) {
 					TypeClosure typeClosure = getTypeClosure(MONTHLY);
 					register.setTypeClosure(typeClosure);
@@ -182,14 +180,7 @@ public class RegisterBOImpl extends GenericBOImpl<Register> implements RegisterB
 					}
 				} else {
 					//save description created on the register form
-//					register = saveDescription(register);
-					
-					System.out.println("Description ID: "+register.getDescription().getId());
-					System.out.println("Description: "+register.getDescription().getDescription());
-					System.out.println("Group ID: "+register.getGroup().getId());
-					System.out.println("Group: "+register.getGroup().getDescription());
-					System.out.println("SuperGroup ID: "+register.getSuperGroup().getId());
-					System.out.println("SuperGroup: "+register.getSuperGroup().getDescription());
+					register = saveDescription(register);
 					
 					register.setCurrentDate(Calendar.getInstance());
 					saveGeneric(register);
