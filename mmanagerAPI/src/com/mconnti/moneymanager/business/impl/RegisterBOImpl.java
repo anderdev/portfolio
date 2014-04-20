@@ -68,28 +68,22 @@ public class RegisterBOImpl extends GenericBOImpl<Register> implements RegisterB
 		return null;
 	}
 
-	private void setCreditCardDate(Register debit) {
-		CreditCard creditCard = getCreditCard(debit);
-		if (debit.getId() != null) {
-			if (debit.getCurrentDate().getTime() != debit.getDate().getTime()) {
-				setupDate(debit, creditCard);
-			} else if (debit.getCreditCard() == null) {
-				setupDate(debit, creditCard);
-			}
-		} else {
-			setupDate(debit, creditCard);
+	private void setCreditCardDate(Register register) {
+		CreditCard creditCard = getCreditCard(register);
+		if (register.getId() == null) {
+			setupDate(register, creditCard);
 		}
 	}
 
-	private void setupDate(Register debit, CreditCard creditCard) {
-		String[] temp = Utils.dateToString(debit.getDate()).split("/");
+	private void setupDate(Register register, CreditCard creditCard) {
+		String[] temp = Utils.dateToString(register.getDate()).split("/");
 		Integer dayOfBuy = Integer.parseInt(temp[0]);
 		Integer monthOfBuy = Integer.parseInt(temp[1]);
 		Integer yearOfBuy = Integer.parseInt(temp[2]);
-		if ((dayOfBuy <= creditCard.getPayday()) || (dayOfBuy > creditCard.getPayday() && dayOfBuy < creditCard.getLastDayToBuy())) {
-			debit.setDate(Utils.stringToDate(creditCard.getPayday().toString() + "/" + (monthOfBuy + 1) + "/" + yearOfBuy.toString(), false));
+		if ((dayOfBuy < creditCard.getPayday()) || (dayOfBuy > creditCard.getPayday() && dayOfBuy < creditCard.getLastDayToBuy())) {
+			register.setDate(Utils.stringToDate(creditCard.getPayday().toString() + "/" + (monthOfBuy + 1) + "/" + yearOfBuy.toString(), false));
 		} else {
-			debit.setDate(Utils.stringToDate(creditCard.getPayday().toString() + "/" + (monthOfBuy + 2) + "/" + yearOfBuy.toString(), false));
+			register.setDate(Utils.stringToDate(creditCard.getPayday().toString() + "/" + (monthOfBuy + 1) + "/" + yearOfBuy.toString(), false));
 		}
 	}
 
@@ -110,7 +104,7 @@ public class RegisterBOImpl extends GenericBOImpl<Register> implements RegisterB
 			try {
 				if (register.getCreditCard() != null) {
 					Map<String, String> queryParams = new LinkedHashMap<>();
-					queryParams.put(" where x.type = ", MessageFactory.getMessage("lb_monthly", user.getLanguage()));
+					queryParams.put(" where x.type = ", "'"+MessageFactory.getMessage("lb_monthly", user.getLanguage())+"'");
 					TypeClosure typeClosure = typeClosureDAO.findByParameter(TypeClosure.class, queryParams);
 					register.setTypeClosure(typeClosure);
 					setCreditCardDate(register);
