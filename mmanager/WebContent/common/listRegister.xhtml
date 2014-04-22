@@ -167,8 +167,7 @@
 					        <p:column style="width:5%">
 					        <p:commandLink action="#{registerMBean.edit(true)}" 
 					        		id="editButton" ajax="true" 
-					        		immediate="true" 
-					        		update=":formRegister" >
+					        		immediate="true" >
 					        
 					        		<f:setPropertyActionListener value="#{reg}" target="#{registerMBean.register}" />  
 									<p:graphicImage value="#{messages['img_update']}" style="border: 0px" />
@@ -179,18 +178,20 @@
 				</h:panelGroup>
     		</h:form>
     		
-    		<p:dialog header="#{messages['lb_header_confirmation']}" widgetVar="confirmation" modal="true" id="confirmationDialog" appendTo="@(body)" closable="false" resizable="false">  
-             	<div align="center">
-             		<p:panel styleClass="boldFont">
-             			<p:outputLabel value="#{registerMBean.nrParcels}"/>
-             		</p:panel>	
-             		<h:panelGrid columns="3" >
-			        	<p:commandButton value="#{messages['lb_edit_all']}" update="formRegister:panel" oncomplete="confirmation.hide()" action="#{registerMBean.editSearch(true)}"/>  
-			        	<p:commandButton value="#{messages['lb_edit_just']}" update="formRegister:panel" oncomplete="confirmation.hide()" action="#{registerMBean.editSearch(false)}"/>
-			        	<p:commandButton value="#{messages['lb_back']}" oncomplete="confirmation.hide()" />  
-			        </h:panelGrid>   
-                </div> 
-    		</p:dialog>  
+    		<p:dialog header="#{messages['lb_header_confirmation']}" widgetVar="confirmation" modal="true" id="confirmationDialog" appendTo="@(body)" closable="false" resizable="false">
+				<h:form id="formConfirmation">  
+	             	<div align="center">
+	             		<p:panel styleClass="boldFont" id="messageParcels">
+	             			<p:outputLabel value="#{registerMBean.nrParcels}"/>
+	             		</p:panel>	
+	             		<h:panelGrid columns="3" >
+				        	<p:commandButton value="#{messages['lb_edit_all']}" update=":formRegister" oncomplete="confirmation.hide()" action="#{registerMBean.editSearch(true)}"/>  
+				        	<p:commandButton value="#{messages['lb_edit_just']}" update=":formRegister" oncomplete="confirmation.hide()" action="#{registerMBean.editSearch(false)}"/>
+				        	<p:commandButton value="#{messages['lb_back']}" oncomplete="confirmation.hide()" />  
+				        </h:panelGrid>   
+	                </div> 
+                </h:form>
+    		</p:dialog> 
     		
     		<p:dialog header="#{messages['lb_maintain_register']}" resizable="false" widgetVar="registerModal" modal="true" appendTo="@(body)" closable="false" >
     			<h:form id="formRegister"> 

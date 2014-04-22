@@ -629,18 +629,15 @@ public class RegisterMBean implements Serializable {
 				Object prams[] = {register.getNumberParcel()};
 				nrParcels = MessageFactory.getMessage("lb_multiple_edition", superUser().getLanguage(), prams);
 				context.execute("confirmation.show();");
-				context.update("formSearchRegister:confirmationDialog"); 
+				context.update("formConfirmation:messageParcels"); 
 				
 				hasParcels = true;
 			} else {
 				context.execute("registerModal.show();");
-				context.update("formRegister:panelg"); 
+				context.update("formRegister:panel"); 
 				hasParcels = false;
 			}
 		}
-		System.out.println("hasParcels: "+hasParcels);
-		System.out.println("loadDebits: "+loadDebits);
-		System.out.println("loadCredits: "+loadCredits);
 	}
 	
 	public void editSearch(Boolean all){
