@@ -19,6 +19,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.jboss.resteasy.client.ClientRequest;
 import org.jboss.resteasy.client.ClientResponse;
 import org.jboss.resteasy.util.GenericType;
+import org.primefaces.context.RequestContext;
 
 import com.mconnti.moneymanager.entity.CreditCard;
 import com.mconnti.moneymanager.entity.Currency;
@@ -107,6 +108,8 @@ public class RegisterMBean implements Serializable {
 	private Boolean loadSearchFooter = false;
 	
 	private String nrParcels;
+	
+	private Boolean hasParcels;
 	
 	public RegisterMBean() {
 		this.register = new Register();
@@ -545,6 +548,7 @@ public class RegisterMBean implements Serializable {
 		register.setCreditCard(new CreditCard());
 		register.setSearch(false);
 		if(!search){
+			searchRegister = null;
 			setDefaultValues();
 		}
 	}
@@ -601,6 +605,10 @@ public class RegisterMBean implements Serializable {
 		this.register = new Register();
 		return "/common/index.xhtml/faces-redirect=true";
 	}
+	
+	public void cancelEditSearch(){
+		hasParcels = null;
+	}
 
 	public void edit(Boolean fromSearch) {
 		if(register.getCreditCard() == null){
@@ -608,20 +616,47 @@ public class RegisterMBean implements Serializable {
 		}
 		
 		if(fromSearch){
-			Object prams[] = {register.getNumberParcel()};
-			nrParcels = MessageFactory.getMessage("lb_multiple_edition", superUser().getLanguage(), prams);
+			RequestContext context = RequestContext.getCurrentInstance();
+			if(register.getTypeAccount().getDescription().equals(MessageFactory.getMessage("lb_debit_", superUser().getLanguage(),null))){
+				loadCredits = false;
+				loadDebits = true;
+			} else {
+				loadDebits = false;
+				loadCredits = true;
+			}
+			
+			if(register.getNumberParcel() > 1){
+				Object prams[] = {register.getNumberParcel()};
+				nrParcels = MessageFactory.getMessage("lb_multiple_edition", superUser().getLanguage(), prams);
+				context.execute("confirmation.show();");
+				context.update("formSearchRegister:confirmationDialog"); 
+				
+				hasParcels = true;
+			} else {
+				context.execute("registerModal.show();");
+				context.update("formRegister:panelg"); 
+				hasParcels = false;
+			}
 		}
+		System.out.println("hasParcels: "+hasParcels);
+		System.out.println("loadDebits: "+loadDebits);
+		System.out.println("loadCredits: "+loadCredits);
 	}
 	
 	public void editSearch(Boolean all){
+		RequestContext context = RequestContext.getCurrentInstance();
+		
 		if(!all){
 			register.setNumberParcel(1);
 		}
-		register.setAmount(new BigDecimal(2.55));
+		
+		context.execute("registerModal.show();");
 	}
 	
 	public void saveFromSearch(){
 		save();
+		createRegister(true);
+		searchRegister = register;
 		search();
 	}
 
@@ -1009,5 +1044,13 @@ public class RegisterMBean implements Serializable {
 
 	public void setSearchRegister(Register searchRegister) {
 		this.searchRegister = searchRegister;
+	}
+
+	public Boolean getHasParcels() {
+		return hasParcels;
+	}
+
+	public void setHasParcels(Boolean hasParcels) {
+		this.hasParcels = hasParcels;
 	}
 }
