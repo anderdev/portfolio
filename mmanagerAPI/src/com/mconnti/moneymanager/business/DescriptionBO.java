@@ -1,6 +1,7 @@
 package com.mconnti.moneymanager.business;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,8 @@ public interface DescriptionBO extends GenericBO<Description>{
 	public MessageReturn delete (Long id);
 	
 	public Description getById(Long id);
+	
+	public Description getByDescription(Map<String, String> request) throws Exception;
 	
 }
 

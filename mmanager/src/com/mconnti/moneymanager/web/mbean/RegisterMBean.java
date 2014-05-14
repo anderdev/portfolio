@@ -5,7 +5,9 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -180,20 +182,14 @@ public class RegisterMBean implements Serializable {
 	}
 
 	public void checkCreditDescription() {
-		boolean contain = false;
 		if (register.getDescription().getDescription() != null && !"".equals(register.getDescription().getDescription())) {
 			if (creditList.size() > 0) {
-				ArrayList<String> descLista = new ArrayList<String>();
-				for (Description desc : creditList) {
-					if (desc.getDescription().equalsIgnoreCase(register.getDescription().getDescription())) {
-						register.setDescription(desc);
-						contain = true;
-					}
-					descLista.add(desc.getDescription());
-				}
-
-				if (!contain && !descLista.contains(register.getDescription().getDescription())) {
+				Description descriptionRet = existsDescription(superUser().getId(), getTypeAccount(MessageFactory.getMessage("lb_credit_", superUser().getLanguage(),null)).getId(), register.getDescription().getDescription());
+				
+				if (descriptionRet == null) {
 					newDescription(description.getDescription(), MessageFactory.getMessage("lb_credit_", superUser().getLanguage(),null));
+				} else {
+					register.setDescription(descriptionRet);
 				}
 			} else {
 				newDescription(register.getDescription().getDescription(), MessageFactory.getMessage("lb_credit_", superUser().getLanguage(),null));
@@ -203,20 +199,14 @@ public class RegisterMBean implements Serializable {
 	}
 
 	public void checkDebitDescription() {
-		boolean contain = false;
 		if (register.getDescription().getDescription() != null && !"".equals(register.getDescription().getDescription())) {
 			if (debitList.size() > 0) {
-				ArrayList<String> descLista = new ArrayList<String>();
-				for (Description desc : debitList) {
-					if (desc.getDescription().equalsIgnoreCase(register.getDescription().getDescription())) {
-						register.setDescription(desc);
-						contain = true;
-					}
-					descLista.add(desc.getDescription());
-				}
-
-				if (!contain && !descLista.contains(register.getDescription().getDescription())) {
+				Description descriptionRet = existsDescription(superUser().getId(), getTypeAccount(MessageFactory.getMessage("lb_debit_", superUser().getLanguage(),null)).getId(), register.getDescription().getDescription());
+				
+				if (descriptionRet == null) {
 					newDescription(description.getDescription(), MessageFactory.getMessage("lb_debit_", superUser().getLanguage(),null));
+				} else {
+					register.setDescription(descriptionRet);
 				}
 			} else {
 				newDescription(register.getDescription().getDescription(), MessageFactory.getMessage("lb_debit_", superUser().getLanguage(),null));
@@ -229,19 +219,14 @@ public class RegisterMBean implements Serializable {
 	}
 
 	public void checkGroupDescription() {
-		boolean contain = false;
 		if (register.getGroup().getDescription() != null && !"".equals(register.getGroup().getDescription())) {
 			if (groupList.size() > 0) {
-				ArrayList<String> descLista = new ArrayList<String>();
-				for (Description desc : groupList) {
-					if (desc.getDescription().equalsIgnoreCase(register.getGroup().getDescription())) {
-						register.setGroup(desc);
-						contain = true;
-					}
-					descLista.add(desc.getDescription());
-				}
-				if (!contain && !descLista.contains(register.getGroup().getDescription())) {
+				Description descriptionRet = existsDescription(superUser().getId(), getTypeAccount(MessageFactory.getMessage("lb_group_", superUser().getLanguage(),null)).getId(), register.getGroup().getDescription());
+					
+				if (descriptionRet == null) {
 					newDescription(register.getGroup().getDescription(), MessageFactory.getMessage("lb_group_", superUser().getLanguage(),null));
+				} else {
+					register.setGroup(descriptionRet);
 				}
 			} else {
 				newDescription(register.getGroup().getDescription(), MessageFactory.getMessage("lb_group_", superUser().getLanguage(),null));
@@ -250,19 +235,14 @@ public class RegisterMBean implements Serializable {
 	}
 
 	public void checkSuperGroupDescription() {
-		boolean contain = false;
 		if (register.getSuperGroup().getDescription() != null && !"".equals(register.getSuperGroup().getDescription())) {
 			if (superGroupList.size() > 0) {
-				ArrayList<String> descLista = new ArrayList<String>();
-				for (Description desc : superGroupList) {
-					if (desc.getDescription().equalsIgnoreCase(register.getSuperGroup().getDescription())) {
-						register.setSuperGroup(desc);
-						contain = true;
-					}
-					descLista.add(desc.getDescription());
-				}
-				if (!contain && !descLista.contains(register.getSuperGroup().getDescription())) {
+				Description descriptionRet = existsDescription(superUser().getId(), getTypeAccount(MessageFactory.getMessage("lb_super_group_", superUser().getLanguage(),null)).getId(), register.getSuperGroup().getDescription());
+				
+				if (descriptionRet == null) {
 					newDescription(register.getSuperGroup().getDescription(), MessageFactory.getMessage("lb_super_group_", superUser().getLanguage(),null));
+				} else {
+					register.setSuperGroup(descriptionRet);
 				}
 			} else {
 				newDescription(register.getSuperGroup().getDescription(), MessageFactory.getMessage("lb_super_group_", superUser().getLanguage(),null));
@@ -298,6 +278,36 @@ public class RegisterMBean implements Serializable {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	private Description existsDescription(Long userId, Long typeAccountId, String description){
+		
+		Description descriptionReturn = null;
+		try {
+			Map<String, String> map = new HashMap<String, String>();
+			map.put("user", userId+"");
+			map.put("typeAccount", typeAccountId+"");
+			map.put("description", description);
+			
+			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/description/getbydescription");
+
+			request.body(MediaType.APPLICATION_JSON, map);
+			ClientResponse<Description> response = request.put(Description.class);
+			
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+			
+			descriptionReturn = response.getEntity(Description.class);
+			
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return descriptionReturn;
 	}
 
 	private List<Description> loadDescriptionList(String typeAccountDescription) {

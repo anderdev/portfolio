@@ -8,9 +8,17 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 @Entity
 @Table(name="typeaccount")
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(propOrder = {"id", "description", "locale", "showType"})
 public class TypeAccount implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -18,12 +26,16 @@ public class TypeAccount implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(nullable = false, insertable = true, updatable = false)
+	@XmlAttribute
 	private Long id;
 	
+	@XmlAttribute
 	private String description;
 	
+	@XmlAttribute
 	private String locale;
 	
+	@XmlAttribute
 	private Boolean showType;
 	
 	public Long getId() {

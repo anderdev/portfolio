@@ -561,6 +561,20 @@ public class RestService {
 
 		return Response.status(200).entity(list).build();
 	}
+	
+	@PUT
+	@Path("/description/getbydescription")
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response getDescriptionByDescription(Map<String, String> request) {
+		Description ret = new Description();
+		try {
+			ret = descriptionBO.getByDescription(request);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Response.status(200).entity(ret).build();
+	}
 
 	@POST
 	@Path("/description")

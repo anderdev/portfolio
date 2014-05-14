@@ -1,9 +1,11 @@
 package com.mconnti.moneymanager.business.impl;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +18,7 @@ import com.mconnti.moneymanager.entity.xml.MessageReturn;
 import com.mconnti.moneymanager.persistence.DescriptionDAO;
 import com.mconnti.moneymanager.persistence.TypeAccountDAO;
 import com.mconnti.moneymanager.persistence.UserDAO;
+import com.mconnti.moneymanager.utils.Crypt;
 import com.mconnti.moneymanager.utils.MessageFactory;
 
 public class DescriptionBOImpl extends GenericBOImpl<Description> implements DescriptionBO {
@@ -215,5 +218,40 @@ public class DescriptionBOImpl extends GenericBOImpl<Description> implements Des
 		}
 
 		return list;
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public Description getByDescription(Map<String, String> request) throws Exception {
+		String userId = null;
+		String typeAccountId = null;
+		String description = null;
+		Iterator it = request.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry<String, String> pairs = (Entry<String, String>) it.next();
+
+			switch (pairs.getKey()) {
+			case "user":
+				userId = (String) pairs.getValue();
+				break;
+			case "typeAccount":
+				typeAccountId = (String) pairs.getValue();
+				break;
+			case "description":
+				description = (String) pairs.getValue();
+				break;
+			}
+
+			it.remove(); // avoids a ConcurrentModificationException
+		}
+		
+		Map<String, String> queryParams = new LinkedHashMap<>();
+		
+		queryParams.put(" where x.user = ", userId);
+		queryParams.put(" and x.typeAccount = ", typeAccountId);
+		queryParams.put(" and lower(x.description) = '", Crypt.encrypt(description)+"'");
+		
+		Description desc = findByParameter(Description.class, queryParams);
+		return desc;
 	}
 }
