@@ -25,7 +25,7 @@
 								readonlyInput="false"
 							    maxlength="10"
 								pattern="dd/MM/yyyy" 
-								disabled="#{registerMBean.register.id != null}"/>
+								disabled="#{registerMBean.register.id != null and registerMBean.register.creditCard.id != null}"/>
 							
 					        <h:outputText value="#{messages['lb_description']}" />
 				            <p:autoComplete label="#{messages['lb_description_']}" dropdown="true" value="#{registerMBean.register.description.description}" completeMethod="#{registerMBean.debitComplete}" rendered="#{registerMBean.loadDebits}" required="true" style="width:90%">
