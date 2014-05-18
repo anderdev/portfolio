@@ -32,7 +32,8 @@
 							            <f:selectItems value="#{registerMBean.currencies}"  var="desc" itemLabel="#{desc.acronymn}" itemValue="#{desc}"/>  
 							        </p:selectOneMenu>
 							    </h:panelGrid>
-			        			<h:panelGrid columns="6"  border="0" columnClasses="column90,column90,column90,column90,column90,column90" >
+							    
+			        			<h:panelGrid columns="8"  border="0" columnClasses="column90,column90,column90,column90,column90,column90,column100percentC,column90" >
 			        				<p:selectOneMenu value="#{registerMBean.searchRegister.description.id}" label="#{messages['lb_description_']}"  >
 							            <f:selectItem itemLabel="#{messages['lb_description_']}" itemValue="" />
 							            <f:selectItems value="#{registerMBean.creditsDebits}"  var="desc" itemLabel="#{desc.name}" itemValue="#{desc}"/>  
@@ -56,6 +57,7 @@
 											yearRange="1950:2050"/>		
 							        	<p:watermark for="from" value="#{messages['lb_from']}" style="width:100px"/>
 							        </h:panelGroup>
+							        
 							        <h:panelGroup>
 							        	<p:calendar id="to"  value="#{registerMBean.searchRegister.date}"  
 								        	maxlength="10"
@@ -64,8 +66,11 @@
 											yearRange="1950:2050"/>	
 							      	  <p:watermark for="to" value="#{messages['lb_to']}" />
 							      	</h:panelGroup>
-							      	<p:commandButton value="#{messages['lb_search_']}" styleClass="button" ajax="true"
-							      	 action="#{registerMBean.search}" update=":formSearchRegister" />
+							      	
+							      	<p:commandButton value="#{messages['lb_search_']}" styleClass="button" ajax="true" 
+    												 action="#{registerMBean.search}" update="registerList" />
+					      			<h:outputText value=""/>
+					      			<p:commandButton value="#{messages['lb_delete']}" styleClass="button" onclick="confirmDelete.show()" />
 					            </h:panelGrid>
 			        		</h:panelGroup>
 					    </h:panelGrid>
@@ -75,7 +80,8 @@
 				    		rows="10" rowKey="#{reg}"
 				    		paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
                  			rowsPerPageTemplate="5,10,15"
-                 			paginatorPosition="top" >
+                 			paginatorPosition="top" 
+                 			selection="#{registerMBean.selectedRegister}" selectionMode="multiple">
                  			
                  			<f:facet name="footer">
                  				<h:panelGroup rendered="#{registerMBean.loadSearchFooter}">
@@ -176,6 +182,12 @@
 					    </p:dataTable>
 					</div>	
 				</h:panelGroup>
+				<p:confirmDialog message="#{messages['lb_multiple_exclusion']}" header="#{messages['lb_header_confirmation']}" severity="alert" widgetVar="confirmDelete">  
+	            	<div align="center">
+				        <p:commandButton value="#{messages['lb_yes']}" update="registerList" oncomplete="confirmDelete.hide()" action="#{registerMBean.delete}"/>  
+				        <p:commandButton value="#{messages['lb_no']}" onclick="confirmDelete.hide()" type="button" />   
+	                </div> 
+	    		</p:confirmDialog>  
     		</h:form>
     		
     		<p:dialog header="#{messages['lb_header_confirmation']}" widgetVar="confirmation" modal="true" id="confirmationDialog" appendTo="@(body)" closable="false" resizable="false">

@@ -423,6 +423,7 @@ div#boxLoggedUser{
 .column30percent{width: 30%;}
 .column40percentC{width: 40%; text-align: center;}
 .column60percentC{width: 60%; text-align: center;}
+.column100percentC{width: 100%; text-align: center;}
 
 .column80{
 	width: 80px;
