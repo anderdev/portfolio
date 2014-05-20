@@ -29,13 +29,13 @@
 							
 					        <h:outputText value="#{messages['lb_description']}" />
 				            <p:autoComplete label="#{messages['lb_description_']}" dropdown="true" value="#{registerMBean.register.description.description}" completeMethod="#{registerMBean.debitComplete}" rendered="#{registerMBean.loadDebits}" required="true" style="width:90%">
-				            	<p:ajax event="itemSelect" process="@this" listener="#{registerMBean.checkDebitDescription}" />
-				            	<p:ajax process="@this" listener="#{registerMBean.checkDebitDescription}" />
+				            	<p:ajax event="itemSelect" process="@this" listener="#{registerMBean.checkDebitDescription}" update=":formRegister"/>
+				            	<p:ajax process="@this" listener="#{registerMBean.checkDebitDescription}" update=":formRegister"/>
 				            </p:autoComplete>  
 				            
 					        <p:autoComplete label="#{messages['lb_description_']}" dropdown="true" value="#{registerMBean.register.description.description}" completeMethod="#{registerMBean.creditComplete}" rendered="#{registerMBean.loadCredits}" required="true" style="width:90%">
-				            	<p:ajax event="itemSelect" process="@this" listener="#{registerMBean.checkCreditDescription}" />
-				            	<p:ajax process="@this" listener="#{registerMBean.checkCreditDescription}" />
+				            	<p:ajax event="itemSelect" process="@this" listener="#{registerMBean.checkCreditDescription}" update=":formRegister"/>
+				            	<p:ajax process="@this" listener="#{registerMBean.checkCreditDescription}" update=":formRegister"/>
 				            </p:autoComplete>  
 					        
 					        <h:outputText value="#{messages['lb_group']}" rendered="#{registerMBean.loadDebits}" />

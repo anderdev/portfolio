@@ -7,6 +7,6 @@ import com.mconnti.moneymanager.entity.User;
 
 public interface RegisterDAO  extends GenericDAO<Register>{
 	
-	public Register getByDescription(Description description, User user, TypeAccount typeAccount );
+	public Register getByDescription(Description description, User user, TypeAccount typeAccount ) throws Exception;
 	
 }

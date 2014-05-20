@@ -1,5 +1,6 @@
 package com.mconnti.moneymanager.persistence.impl;
 
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import org.springframework.stereotype.Repository;
@@ -14,7 +15,7 @@ import com.mconnti.moneymanager.persistence.RegisterDAO;
 public class RegisterDAOImpl extends GenericDAOImpl<Register> implements RegisterDAO{
 	
 	@Override
-	public Register getByDescription(Description description, User user, TypeAccount typeAccount ){
+	public Register getByDescription(Description description, User user, TypeAccount typeAccount ) throws Exception{
 		
 		StringBuilder sql = new StringBuilder();
 		sql.append(" select d from Register d ");
@@ -27,7 +28,14 @@ public class RegisterDAOImpl extends GenericDAOImpl<Register> implements Registe
 		System.out.println("Query: "+sql.toString());
 		
 		Query query = em.createQuery(sql.toString());
-		Register res = (Register) query.getSingleResult();
+		Register res;
+		try {
+			res = (Register) query.getSingleResult();
+		}  catch (NoResultException nre) {
+			res = null;
+		} catch (Exception e) {
+			throw new Exception(e.getMessage(), e);
+		}
 		return res;
 	}
 	

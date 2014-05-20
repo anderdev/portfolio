@@ -190,6 +190,12 @@ public class RegisterMBean implements Serializable {
 					newDescription(description.getDescription(), MessageFactory.getMessage("lb_credit_", superUser().getLanguage(), null));
 				} else {
 					register.setDescription(descriptionRet);
+					Register registerTemp = getRegisterByDescription(superUser().getId(), getTypeAccount(MessageFactory.getMessage("lb_credit_", superUser().getLanguage(), null)).getId(), descriptionRet.getId());
+					if(registerTemp != null){
+						register.setSuperGroup(registerTemp.getSuperGroup());
+					} else {
+						register.setSuperGroup(new Description());
+					}
 				}
 			} else {
 				newDescription(register.getDescription().getDescription(), MessageFactory.getMessage("lb_credit_", superUser().getLanguage(), null));
@@ -207,6 +213,14 @@ public class RegisterMBean implements Serializable {
 					newDescription(description.getDescription(), MessageFactory.getMessage("lb_debit_", superUser().getLanguage(), null));
 				} else {
 					register.setDescription(descriptionRet);
+					Register registerTemp = getRegisterByDescription(superUser().getId(), getTypeAccount(MessageFactory.getMessage("lb_debit_", superUser().getLanguage(), null)).getId(), descriptionRet.getId());
+					if(registerTemp != null){
+						register.setGroup(registerTemp.getGroup());
+						register.setSuperGroup(registerTemp.getSuperGroup());
+					} else {
+						register.setGroup(new Description());
+						register.setSuperGroup(new Description());
+					}
 				}
 			} else {
 				newDescription(register.getDescription().getDescription(), MessageFactory.getMessage("lb_debit_", superUser().getLanguage(), null));
@@ -308,6 +322,36 @@ public class RegisterMBean implements Serializable {
 			e.printStackTrace();
 		}
 		return descriptionReturn;
+	}
+	
+	private Register getRegisterByDescription(Long userId, Long typeAccountId, Long descriptionId) {
+
+		Register registerReturn = null;
+		try {
+			Map<String, String> map = new HashMap<String, String>();
+			map.put("userId", userId + "");
+			map.put("typeAccountId", typeAccountId + "");
+			map.put("descriptionId", descriptionId +"");
+
+			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/register/getbydescription");
+
+			request.body(MediaType.APPLICATION_JSON, map);
+			ClientResponse<Register> response = request.put(Register.class);
+
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+
+			registerReturn = response.getEntity(Register.class);
+
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return registerReturn;
 	}
 
 	private List<Description> loadDescriptionList(String typeAccountDescription) {
