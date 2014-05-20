@@ -189,7 +189,7 @@ public class ClosureMBean implements Serializable {
 		createClosure();
 		loadList();
 		loadCombos();
-		return "/common/formClosure.xhtml?faces-redirect=true";
+		return "/common/listClosure.xhtml?faces-redirect=true";
 	}
 
 
