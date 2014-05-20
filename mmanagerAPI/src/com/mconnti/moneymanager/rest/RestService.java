@@ -742,6 +742,22 @@ public class RestService {
 
 		return Response.status(200).entity(list).build();
 	}
+	
+	@PUT
+	@Path("/register/getbydescription")
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response getRegisterByDescription(Map<String, String> request) {
+
+		Register register = new Register();
+		try {
+			register = registerBO.getByDescription(request);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return Response.status(200).entity(register).build();
+	}
 
 	@POST
 	@Path("/register")

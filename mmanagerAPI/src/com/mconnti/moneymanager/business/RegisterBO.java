@@ -1,6 +1,7 @@
 package com.mconnti.moneymanager.business;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,8 @@ public interface RegisterBO extends GenericBO<Register>{
 	public MessageReturn save(final Register debit) throws Exception;
 	
 	public MessageReturn delete (Long id);
+	
+	public Register getByDescription(Map<String, String> request);
 	
 }
 

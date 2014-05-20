@@ -11,8 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mconnti.moneymanager.business.RegisterBO;
 import com.mconnti.moneymanager.entity.CreditCard;
+import com.mconnti.moneymanager.entity.Description;
 import com.mconnti.moneymanager.entity.Parcel;
 import com.mconnti.moneymanager.entity.Register;
+import com.mconnti.moneymanager.entity.TypeAccount;
 import com.mconnti.moneymanager.entity.TypeClosure;
 import com.mconnti.moneymanager.entity.User;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
@@ -298,6 +300,25 @@ public class RegisterBOImpl extends GenericBOImpl<Register> implements RegisterB
 		List<Register> list = list(Register.class, queryParams, " x.date desc");
 
 		return list;
+	}
+
+	@Override
+	public Register getByDescription(Map<String, String> request) {
+		Register register = new Register();
+		Long userId = new Long(request.get("userId"));
+		Long typeAccountId = new Long(request.get("typeAccountId"));
+		Long descriptionId = new Long(request.get("descriptionId"));
+		Description description;
+		try {
+			description = findById(Description.class, descriptionId);
+			User user = findById(User.class, userId);
+			TypeAccount typeAccount = findById(TypeAccount.class, typeAccountId);
+			register = registerDAO.getByDescription(description, user, typeAccount);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return register;
 	}
 
 }
