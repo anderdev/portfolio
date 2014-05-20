@@ -29,23 +29,23 @@
 							
 					        <h:outputText value="#{messages['lb_description']}" />
 				            <p:autoComplete label="#{messages['lb_description_']}" dropdown="true" value="#{registerMBean.register.description.description}" completeMethod="#{registerMBean.debitComplete}" rendered="#{registerMBean.loadDebits}" required="true" style="width:90%">
-				            	<p:ajax event="itemSelect" process="@this" listener="#{registerMBean.checkDebitDescription}" update=":formRegister"/>
-				            	<p:ajax process="@this" listener="#{registerMBean.checkDebitDescription}" update=":formRegister"/>
+				            	<p:ajax event="itemSelect" process="@this" listener="#{registerMBean.checkDebitDescription}" update="groupDescription,superGroupDescription"/>
+				            	<p:ajax process="@this" listener="#{registerMBean.checkDebitDescription}" update="groupDescription,superGroupDescription"/>
 				            </p:autoComplete>  
 				            
 					        <p:autoComplete label="#{messages['lb_description_']}" dropdown="true" value="#{registerMBean.register.description.description}" completeMethod="#{registerMBean.creditComplete}" rendered="#{registerMBean.loadCredits}" required="true" style="width:90%">
-				            	<p:ajax event="itemSelect" process="@this" listener="#{registerMBean.checkCreditDescription}" update=":formRegister"/>
-				            	<p:ajax process="@this" listener="#{registerMBean.checkCreditDescription}" update=":formRegister"/>
+				            	<p:ajax event="itemSelect" process="@this" listener="#{registerMBean.checkCreditDescription}" update="superGroupDescription"/>
+				            	<p:ajax process="@this" listener="#{registerMBean.checkCreditDescription}" update="superGroupDescription"/>
 				            </p:autoComplete>  
 					        
 					        <h:outputText value="#{messages['lb_group']}" rendered="#{registerMBean.loadDebits}" />
-					        <p:autoComplete label="#{messages['lb_group_']}" dropdown="true" value="#{registerMBean.register.group.description}" completeMethod="#{registerMBean.groupComplete}" rendered="#{registerMBean.loadDebits}" required="true" style="width:90%">
+					        <p:autoComplete id="groupDescription" label="#{messages['lb_group_']}" dropdown="true" value="#{registerMBean.register.group.description}" completeMethod="#{registerMBean.groupComplete}" rendered="#{registerMBean.loadDebits}" required="true" style="width:90%">
 				            	<p:ajax event="itemSelect" listener="#{registerMBean.checkGroupDescription}" />
 				            	<p:ajax process="@this" listener="#{registerMBean.checkGroupDescription}" />
 				            </p:autoComplete> 
 							
 					        <h:outputText value="#{messages['lb_super_group']}" />
-					        <p:autoComplete label="#{messages['lb_super_group_']}" dropdown="true" value="#{registerMBean.register.superGroup.description}" completeMethod="#{registerMBean.superGroupComplete}" required="true" style="width:90%">
+					        <p:autoComplete id="superGroupDescription" label="#{messages['lb_super_group_']}" dropdown="true" value="#{registerMBean.register.superGroup.description}" completeMethod="#{registerMBean.superGroupComplete}" required="true" style="width:90%">
 				            	<p:ajax event="itemSelect" process="@this" listener="#{registerMBean.checkSuperGroupDescription}" />
 				            	<p:ajax process="@this" listener="#{registerMBean.checkSuperGroupDescription}" />
 				            </p:autoComplete> 
