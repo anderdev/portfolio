@@ -789,7 +789,7 @@ public class RestService {
 
 	// CLOSURE AREA
 	@PUT
-	@Path("/closure/list")
+	@Path("/closure/all")
 	@Consumes({ MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Response listClosure(Closure closure) {
@@ -797,6 +797,22 @@ public class RestService {
 		List<Closure> list = new ArrayList<>();
 		try {
 			list = closureBO.list(closure.getUser());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return Response.status(200).entity(list).build();
+	}
+	
+	@PUT
+	@Path("/closure/list")
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response listClosureByParameter(Closure closure) {
+
+		List<Closure> list = new ArrayList<>();
+		try {
+			list = closureBO.listByParameter(closure);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

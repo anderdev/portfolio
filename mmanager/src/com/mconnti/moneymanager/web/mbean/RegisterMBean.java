@@ -809,7 +809,7 @@ public class RegisterMBean implements Serializable {
 			if (selectedRegister.length > 1) {
 				FacesUtil.showSuccessMessage(MessageFactory.getMessage("lb_register_deleted_successfully_mult", userMBean.getLoggedUser().getLanguage(), null));
 			} else {
-				FacesUtil.showSuccessMessage(MessageFactory.getMessage("lb_register_deleted_successfully", userMBean.getLoggedUser().getLanguage(), null));
+				FacesUtil.showSuccessMessage(MessageFactory.getMessage("lb_deleted_successfully", userMBean.getLoggedUser().getLanguage(), null));
 			}
 			loadList(null);
 		} catch (Exception e) {

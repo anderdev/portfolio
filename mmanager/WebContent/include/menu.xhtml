@@ -15,7 +15,7 @@
 					<p:menuitem value="#{messages['lb_closure_']}" immediate="true" action="#{closureMBean.list}"   ajax="true" />
 				</p:submenu>
 				<p:submenu label="#{messages['lb_tools_']}" styleClass="menuItem" rendered="#{!userMBean.loggedUser.defaultPassword}">
-					<p:menuitem value="#{messages['lb_closure_']}" immediate="true" action="#{closureMBean.list}" ajax="true"/>
+					<p:menuitem value="#{messages['lb_closure_']}" immediate="true" action="#{closureMBean.closure}" ajax="true"/>
 					<p:menuitem value="#{messages['lb_planning_']}" immediate="true" action="#{planningMBean.list}"   ajax="true" />
 				</p:submenu>
 				<p:submenu label="#{messages['lb_configuration_']}" styleClass="menuItem" rendered="#{!userMBean.loggedUser.defaultPassword}">

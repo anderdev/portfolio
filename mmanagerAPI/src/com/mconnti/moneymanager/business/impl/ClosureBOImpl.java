@@ -346,5 +346,52 @@ public class ClosureBOImpl extends GenericBOImpl<Closure> implements ClosureBO {
 
 		return closure;
 	}
+	
+	private String addAndOr(Boolean isAnd){
+		String andOr = "";
+		if(isAnd){
+			andOr = "and";
+		}else{
+			andOr = "or";
+		}
+		return andOr;
+	}
+
+	@Override
+	public List<Closure> listByParameter(Closure closure) throws Exception {
+		Map<String, String> queryParams = new LinkedHashMap<>();
+		queryParams.put(" where "," 1=1 ");
+		queryParams.put(" and x.user = ", closure.getUser().getId()+"");
+		
+		Boolean isAnd = true;
+		
+		
+		if (closure.getSearch() != null && closure.getSearch()){
+			if(closure.getCurrency() != null && closure.getCurrency().getId() != null && closure.getCurrency().getId() > 0){
+				queryParams.put(" "+addAndOr(isAnd)+"  x.currency = ", closure.getCurrency().getId()+ "");
+				isAnd = false;
+			}
+			
+			if(closure.getTypeClosure() != null && closure.getTypeClosure().getId() != null && closure.getTypeClosure().getId() > 0){
+				queryParams.put(" "+addAndOr(isAnd)+"  x.typeClosure = ", closure.getTypeClosure().getId()+ "");
+				isAnd = false;
+			}
+			
+			if(closure.getStartDate() != null && closure.getDate() == null){
+				queryParams.put(" and x.date = ", " str_to_date('"+Utils.dateToString(closure.getStartDate())+ "', '%d/%m/%Y')");
+			}
+			
+			if(closure.getStartDate() == null && closure.getDate() != null){
+				queryParams.put(" and x.date = ", " str_to_date('"+Utils.dateToString(closure.getDate())+"', '%d/%m/%Y') ");
+			}
+			
+			if(closure.getStartDate() != null && closure.getDate() != null){
+				queryParams.put(" and x.date between ", " str_to_date('"+Utils.dateToString(closure.getStartDate())+ "', '%d/%m/%Y') and str_to_date('"+Utils.dateToString(closure.getDate())+"', '%d/%m/%Y') ");
+			}
+		}
+		
+		List<Closure> list = list(Closure.class, queryParams, " x.date desc");
+		return list;
+	}
 
 }

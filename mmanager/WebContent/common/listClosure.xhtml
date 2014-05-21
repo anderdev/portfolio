@@ -18,18 +18,17 @@
 	        		
 		        		<h:panelGrid columns="2" width="100%" border="0" columnClasses="alignLeft,alignRight">
 			        		<h:panelGroup>
-			        			<h:panelGrid columns="3" width="30%" border="0" columnClasses=",,,">
-									<p:selectOneMenu value="#{closureMBean.searchClosure.typeClosure.id}" label="#{messages['lb_type_closure_']}" >
+			        			<h:panelGrid columns="7"  border="0" columnClasses="column90,column90,column90,column90,column90,column100percentC,column90" >
+			        				
+			        				<p:selectOneMenu value="#{closureMBean.searchClosure.typeClosure.id}" label="#{messages['lb_type_closure_']}" >
 							            <f:selectItem itemLabel="#{messages['lb_type_closure_']}" itemValue="" />
 							            <f:selectItems value="#{closureMBean.typeClosures}"  var="desc" itemLabel="#{desc.type}" itemValue="#{desc}"/>  
 							        </p:selectOneMenu>
+							        
 									<p:selectOneMenu value="#{closureMBean.searchClosure.currency.id}" label="#{messages['lb_currency_']}"  >
 							            <f:selectItem itemLabel="#{messages['lb_currency_']}" itemValue="" />
 							            <f:selectItems value="#{closureMBean.currencies}"  var="desc" itemLabel="#{desc.acronymn}" itemValue="#{desc}"/>  
 							        </p:selectOneMenu>
-							    </h:panelGrid>
-							    
-			        			<h:panelGrid columns="5"  border="0" columnClasses="column90,column90,column90,column90,column90,column90,column100percentC,column90" >
 			        				
 							        <h:panelGroup>
 								        <p:calendar id="from" value="#{closureMBean.searchClosure.startDate}"  
@@ -41,7 +40,7 @@
 							        </h:panelGroup>
 							        
 							        <h:panelGroup>
-							        	<p:calendar id="to"  value="#{closureMBean.searchClosure.date}"  
+							        	<p:calendar id="to"  value="#{closureMBean.searchClosure.endDate}"  
 								        	maxlength="10"
 											pattern="dd/MM/yyyy"
 											size="7"
@@ -49,21 +48,22 @@
 							      	  <p:watermark for="to" value="#{messages['lb_to']}" />
 							      	</h:panelGroup>
 							      	
-							      	<p:commandButton value="#{messages['lb_search_']}" styleClass="button" ajax="true" 
-    												 action="#{closureMBean.search}" update="closureList" />
+							      	<p:commandButton value="#{messages['lb_search_']}" styleClass="button" ajax="true"  action="#{closureMBean.search}" update="closureList" />
 					      			<h:outputText value=""/>
 					      			<p:commandButton value="#{messages['lb_delete']}" styleClass="button" onclick="confirmDelete.show()" />
 					            </h:panelGrid>
 			        		</h:panelGroup>
 					    </h:panelGrid>
 					   
-					    <p:dataTable var="closure" value="#{closureMBean.closureList}" style="width:100%" id="closureList"
+					    <p:dataTable var="closure" value="#{closureMBean.searchClosureList}" style="width:100%" id="closureList"
 				    		paginatorAlwaysVisible="false" paginator="true" emptyMessage="#{messages['lb_empty_list']}"
 				    		rows="10" rowKey="#{closure}"
 				    		paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
                  			rowsPerPageTemplate="5,10,15,25,50"
                  			paginatorPosition="top" 
-                 			selection="#{closureMBean.selectedClosure}" selectionMode="multiple">
+                 			selection="#{closureMBean.selectedClosure}" >
+                 			
+                 			<p:column selectionMode="multiple" style="width:3%;text-align:center"  />
                  			
                  			<f:facet name="footer">
                  				<h:panelGroup rendered="#{closureMBean.loadSearchFooter}">

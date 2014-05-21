@@ -25,6 +25,7 @@ import com.mconnti.moneymanager.entity.Currency;
 import com.mconnti.moneymanager.entity.TypeClosure;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
 import com.mconnti.moneymanager.util.FacesUtil;
+import com.mconnti.moneymanager.util.MessageFactory;
 
 @SessionScoped
 @ManagedBean(name = "closureMBean")
@@ -36,6 +37,8 @@ public class ClosureMBean implements Serializable {
 	private UserMBean userMBean;
 
 	private List<Closure> closureList;
+	
+	private List<Closure> searchClosureList;
 
 	private Closure closure;
 	
@@ -71,7 +74,10 @@ public class ClosureMBean implements Serializable {
 		this.closure = new Closure();
 		this.currency = new Currency();
 		this.typeClosure = new TypeClosure();
-
+		this.searchClosure = new Closure();
+		this.searchClosure.setTypeClosure(typeClosure);
+		this.searchClosure.setCurrency(currency);
+		
 		Object request = FacesContext.getCurrentInstance().getExternalContext().getRequest();
 		if (request instanceof HttpServletRequest) {
 			String[] str = ((HttpServletRequest) request).getRequestURL().toString().split("mmanager");
@@ -97,16 +103,6 @@ public class ClosureMBean implements Serializable {
 		return itens.toArray(new SelectItem[itens.size()]);
 	}
 	
-	public void search() {
-		loadSearchFooter = false;
-		searchTotal = new BigDecimal(0.0);
-		debitTotal = new BigDecimal(0.0);
-		creditTotal = new BigDecimal(0.0);
-		searchClosure.setSearch(true);
-		loadList();
-		searchClosure.setSearch(false);
-	}
-
 	private List<Currency> loadCurrencyList() {
 		try {
 
@@ -172,7 +168,7 @@ public class ClosureMBean implements Serializable {
 		this.closure.setCurrency(new Currency());
 		setDefaultValues();
 	}
-
+	
 	private void setDefaultValues() {
 		if(userMBean.getConfigLoggedUser() != null){
 			closure.setTypeClosure(userMBean.getConfigLoggedUser().getTypeClosure());
@@ -181,11 +177,11 @@ public class ClosureMBean implements Serializable {
 		closure.setDate(new Date());
 	}
 	
-	private List<Closure> loadList() {
+	private List<Closure> loadList(Boolean useSearch) {
 		try {
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/closure/list");
 			
-			if (searchClosure != null) {
+			if (useSearch) {
 				closure = searchClosure;
 			}
 			
@@ -197,8 +193,12 @@ public class ClosureMBean implements Serializable {
 			if (response.getStatus() != 200) {
 				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
 			}
-			closureList = response.getEntity(new GenericType<List<Closure>>() {
-			});
+			if (useSearch) {
+				searchClosureList = response.getEntity(new GenericType<List<Closure>>() { });
+			}else{
+				closureList = response.getEntity(new GenericType<List<Closure>>() { });
+			}
+			
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -212,9 +212,32 @@ public class ClosureMBean implements Serializable {
 	public String list() {
 		showMaths = false;
 		createClosure();
-		loadList();
+		this.searchClosure = this.closure;
+		closure.setSearch(true);
 		loadCombos();
+		searchClosureList = new ArrayList<>();
 		return "/common/listClosure.xhtml?faces-redirect=true";
+	}
+	
+	public void search() {
+		loadSearchFooter = false;
+		searchTotal = new BigDecimal(0.0);
+		debitTotal = new BigDecimal(0.0);
+		creditTotal = new BigDecimal(0.0);
+		searchClosure.setSearch(true);
+		loadList(true);
+		showMaths = true;
+		searchClosure.setSearch(false);
+	}
+	
+	
+	public String closure(){
+		createClosure();
+		closure.setSearch(false);
+		loadList(false);
+		loadCombos();
+		searchClosure = null;
+		return "/common/formClosure.xhtml?faces-redirect=true";
 	}
 
 
@@ -286,7 +309,7 @@ public class ClosureMBean implements Serializable {
 				FacesUtil.showSuccessMessage(ret.getMessage());
 			}
 			createClosure();
-			loadList();
+			loadList(closure.getSearch());
 			showMaths = false;
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
@@ -311,11 +334,11 @@ public class ClosureMBean implements Serializable {
 			}
 
 			if (selectedClosure.length > 1) {
-				// FacesUtil.showSuccessMessage(MessageFactory.getMessage("lb_debit_deleted_successfully_mult", userMBean.getLoggedUser().getLanguage()));
+				 FacesUtil.showSuccessMessage(MessageFactory.getMessage("lb_closure_successfully_mult", userMBean.getLoggedUser().getLanguage(),null));
 			} else {
-				// FacesUtil.showSuccessMessage(MessageFactory.getMessage("lb_deleted_successfully", userMBean.getLoggedUser().getLanguage()));
+				 FacesUtil.showSuccessMessage(MessageFactory.getMessage("lb_deleted_successfully", userMBean.getLoggedUser().getLanguage(),null));
 			}
-			// loadList();
+			loadList(true);
 		} catch (Exception e) {
 			e.printStackTrace();
 			FacesUtil.showAErrorMessage(ret.getMessage());
@@ -449,5 +472,13 @@ public class ClosureMBean implements Serializable {
 
 	public void setLoadSearchFooter(Boolean loadSearchFooter) {
 		this.loadSearchFooter = loadSearchFooter;
+	}
+
+	public List<Closure> getSearchClosureList() {
+		return searchClosureList;
+	}
+
+	public void setSearchClosureList(List<Closure> searchClosureList) {
+		this.searchClosureList = searchClosureList;
 	}
 }
