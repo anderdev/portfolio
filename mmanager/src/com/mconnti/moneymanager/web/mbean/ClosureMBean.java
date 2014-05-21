@@ -2,6 +2,7 @@ package com.mconnti.moneymanager.web.mbean;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -37,6 +38,8 @@ public class ClosureMBean implements Serializable {
 	private List<Closure> closureList;
 
 	private Closure closure;
+	
+	private Closure searchClosure;
 
 	private Closure[] selectedClosure;
 
@@ -55,6 +58,14 @@ public class ClosureMBean implements Serializable {
 	private TypeClosure typeClosure;
 	
 	private Boolean showMaths = false;
+	
+	private BigDecimal debitTotal;
+
+	private BigDecimal creditTotal;
+
+	private BigDecimal searchTotal;
+
+	private Boolean loadSearchFooter = false;
 
 	public ClosureMBean() {
 		this.closure = new Closure();
@@ -84,6 +95,16 @@ public class ClosureMBean implements Serializable {
 			itens.add(new SelectItem(c.getId(), c.getAcronym()));
 		}
 		return itens.toArray(new SelectItem[itens.size()]);
+	}
+	
+	public void search() {
+		loadSearchFooter = false;
+		searchTotal = new BigDecimal(0.0);
+		debitTotal = new BigDecimal(0.0);
+		creditTotal = new BigDecimal(0.0);
+		searchClosure.setSearch(true);
+		loadList();
+		searchClosure.setSearch(false);
 	}
 
 	private List<Currency> loadCurrencyList() {
@@ -163,6 +184,10 @@ public class ClosureMBean implements Serializable {
 	private List<Closure> loadList() {
 		try {
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/closure/list");
+			
+			if (searchClosure != null) {
+				closure = searchClosure;
+			}
 			
 			closure.setUser(userMBean.getLoggedUser().getSuperUser() == null ? userMBean.getLoggedUser() : userMBean.getLoggedUser().getSuperUser());
 			request.body(MediaType.APPLICATION_JSON, closure);
@@ -384,5 +409,45 @@ public class ClosureMBean implements Serializable {
 
 	public void setShowMaths(Boolean showMaths) {
 		this.showMaths = showMaths;
+	}
+
+	public Closure getSearchClosure() {
+		return searchClosure;
+	}
+
+	public void setSearchClosure(Closure searchClosure) {
+		this.searchClosure = searchClosure;
+	}
+
+	public BigDecimal getDebitTotal() {
+		return debitTotal;
+	}
+
+	public void setDebitTotal(BigDecimal debitTotal) {
+		this.debitTotal = debitTotal;
+	}
+
+	public BigDecimal getCreditTotal() {
+		return creditTotal;
+	}
+
+	public void setCreditTotal(BigDecimal creditTotal) {
+		this.creditTotal = creditTotal;
+	}
+
+	public BigDecimal getSearchTotal() {
+		return searchTotal;
+	}
+
+	public void setSearchTotal(BigDecimal searchTotal) {
+		this.searchTotal = searchTotal;
+	}
+
+	public Boolean getLoadSearchFooter() {
+		return loadSearchFooter;
+	}
+
+	public void setLoadSearchFooter(Boolean loadSearchFooter) {
+		this.loadSearchFooter = loadSearchFooter;
 	}
 }

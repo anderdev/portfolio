@@ -64,6 +64,9 @@ public class Closure implements Serializable {
 	
 	@Transient
 	private Collection<Register> creditsAlreadyClosed;
+	
+	@Transient
+	private Boolean search;
 
 	public Closure() {
 		super();
@@ -163,5 +166,13 @@ public class Closure implements Serializable {
 
 	public void setCreditsAlreadyClosed(Collection<Register> creditsAlreadyClosed) {
 		this.creditsAlreadyClosed = creditsAlreadyClosed;
+	}
+
+	public Boolean getSearch() {
+		return search;
+	}
+
+	public void setSearch(Boolean search) {
+		this.search = search;
 	}
 }

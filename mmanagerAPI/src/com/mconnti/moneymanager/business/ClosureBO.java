@@ -14,6 +14,8 @@ public interface ClosureBO extends GenericBO<Closure>{
 	
 	public List<Closure> list(User user) throws Exception;
 	
+	public List<Closure> listByParameter(Closure closure) throws Exception;
+	
 	public MessageReturn save(final Closure closure) throws Exception;
 	
 	public MessageReturn delete (Long id);

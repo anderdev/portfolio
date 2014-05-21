@@ -19,11 +19,11 @@
 		        		<h:panelGrid columns="2" width="100%" border="0" columnClasses="alignLeft,alignRight">
 			        		<h:panelGroup>
 			        			<h:panelGrid columns="3" width="30%" border="0" columnClasses=",,,">
-									<p:selectOneMenu value="#{closureMBean.closure.typeClosure.id}" label="#{messages['lb_type_closure_']}" >
+									<p:selectOneMenu value="#{closureMBean.searchClosure.typeClosure.id}" label="#{messages['lb_type_closure_']}" >
 							            <f:selectItem itemLabel="#{messages['lb_type_closure_']}" itemValue="" />
 							            <f:selectItems value="#{closureMBean.typeClosures}"  var="desc" itemLabel="#{desc.type}" itemValue="#{desc}"/>  
 							        </p:selectOneMenu>
-									<p:selectOneMenu value="#{closureMBean.closure.currency.id}" label="#{messages['lb_currency_']}"  >
+									<p:selectOneMenu value="#{closureMBean.searchClosure.currency.id}" label="#{messages['lb_currency_']}"  >
 							            <f:selectItem itemLabel="#{messages['lb_currency_']}" itemValue="" />
 							            <f:selectItems value="#{closureMBean.currencies}"  var="desc" itemLabel="#{desc.acronymn}" itemValue="#{desc}"/>  
 							        </p:selectOneMenu>
@@ -32,7 +32,7 @@
 			        			<h:panelGrid columns="5"  border="0" columnClasses="column90,column90,column90,column90,column90,column90,column100percentC,column90" >
 			        				
 							        <h:panelGroup>
-								        <p:calendar id="from" value="#{closureMBean.closure.strDate}"  
+								        <p:calendar id="from" value="#{closureMBean.searchClosure.startDate}"  
 								        	maxlength="10"
 											pattern="dd/MM/yyyy"
 											size="7"
@@ -41,7 +41,7 @@
 							        </h:panelGroup>
 							        
 							        <h:panelGroup>
-							        	<p:calendar id="to"  value="#{closureMBean.closure.date}"  
+							        	<p:calendar id="to"  value="#{closureMBean.searchClosure.date}"  
 								        	maxlength="10"
 											pattern="dd/MM/yyyy"
 											size="7"
