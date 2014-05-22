@@ -40,12 +40,13 @@
 		            <f:selectItem itemLabel="#{messages['lb_select']}" itemValue="" />
 		            <f:selectItem itemLabel="#{messages['lb_english']}" itemValue="en" />
 		            <f:selectItem itemLabel="#{messages['lb_portuguese']}" itemValue="pt_BR" />
+		            <p:ajax update="countries" event="change" listener="#{userMBean.loadCountries}"/>
 		        </p:selectOneMenu>
 		   </h:panelGrid>
 		   
 		   <h:panelGrid columns="2" columnClasses="column120RightWithPaddingRigth,column350" styleClass="boldFont" border="0">		
 				<h:outputText value="#{messages['lb_country']}" />
-				<p:selectOneMenu value="#{userMBean.country.id}" label="#{messages['lb_country_']}" required="true" style="width:100%">
+				<p:selectOneMenu value="#{userMBean.country.id}" label="#{messages['lb_country_']}" required="true" style="width:100%" id="countries">
 		            <f:selectItem itemLabel="#{messages['lb_select']}" itemValue="" />
 		            <f:selectItems value="#{userMBean.countries}"  var="country" itemLabel="#{country.name}" itemValue="#{country}"/>  
 		            <p:ajax update="states" event="change" listener="#{userMBean.loadStates}"/>

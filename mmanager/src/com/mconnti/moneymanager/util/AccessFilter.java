@@ -39,7 +39,7 @@ public class AccessFilter implements Filter {
 				// // logger.warn("Enviar e-mail ViewExpiredException: " + e1.getMessage());
 				// }
 				System.out.println("send email - EXPIRED EXCEPTION!");
-				((HttpServletResponse) response).sendRedirect("../expired.jsf");
+				((HttpServletResponse) response).sendRedirect("/expired.jsf");
 			} catch (Exception e) {
 				// try {
 				// // contato.enviarEmail("ander.dev@gmail.com", "organizer@gmail.com", "Organizer", "Exce��o Gerada", e.getMessage());
@@ -56,7 +56,7 @@ public class AccessFilter implements Filter {
 			// envia uma mensagem caso o usu�rio
 			// n�o tenha se logado
 			// redireciona para a p�gina de login
-			((HttpServletResponse) response).sendRedirect("../loginRequired.jsf");
+			((HttpServletResponse) response).sendRedirect("/loginRequired.jsf");
 		}
 	}
 

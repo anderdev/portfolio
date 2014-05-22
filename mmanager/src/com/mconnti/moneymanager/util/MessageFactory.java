@@ -8,10 +8,18 @@ public abstract class MessageFactory {
 	private static Locale locale;
 	
 	public static String getMessage(String key, String language, Object params[]) {
+		
 		if(language == null || !"pt_BR".equals(language)){
 			language = "en";
 		}
-		locale = new Locale(language);
+		
+		if("pt_BR".equals(language)){
+			String[] lang = language.split("_");
+			locale = new Locale(lang[0], lang[1]);
+		} else {
+			locale = new Locale(language);
+		}
+		
     	bundle = ResourceBundle.getBundle("com.mconnti.moneymanager.web.bundle.messages", locale);
     	if(params == null){
     		return bundle.getString(key);

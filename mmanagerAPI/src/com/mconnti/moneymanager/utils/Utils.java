@@ -1,6 +1,7 @@
 package com.mconnti.moneymanager.utils;
 
 import java.io.UnsupportedEncodingException;
+import java.text.Normalizer;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -18,6 +19,11 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 public abstract class Utils {
+	
+	public static String clearString(String string){
+		String retString = Normalizer.normalize(string, Normalizer.Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+		return retString;
+	}
 
 	public static Calendar stringToDate(String data, Boolean mostraHora) {
 

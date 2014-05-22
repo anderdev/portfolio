@@ -33,6 +33,7 @@ import com.mconnti.moneymanager.entity.User;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
 import com.mconnti.moneymanager.util.FacesUtil;
 import com.mconnti.moneymanager.util.MessageFactory;
+import com.mconnti.moneymanager.util.Utils;
 
 @SessionScoped
 @ManagedBean(name = "registerMBean")
@@ -138,8 +139,8 @@ public class RegisterMBean implements Serializable {
 			this.groups = loadGroups();
 			this.superGroups = loadSuperGroups();
 		} else {
-			this.creditList = loadDescriptionList(MessageFactory.getMessage("lb_credit_", superUser().getLanguage(), null));
-			this.debitList = loadDescriptionList(MessageFactory.getMessage("lb_debit_", superUser().getLanguage(), null));
+			this.creditList = loadDescriptionList(Utils.clearString(MessageFactory.getMessage("lb_credit_", superUser().getLanguage(), null)));
+			this.debitList = loadDescriptionList(Utils.clearString(MessageFactory.getMessage("lb_debit_", superUser().getLanguage(), null)));
 			this.groupList = loadDescriptionList(MessageFactory.getMessage("lb_group_", superUser().getLanguage(), null));
 			this.superGroupList = loadDescriptionList(MessageFactory.getMessage("lb_super_group_", superUser().getLanguage(), null));
 		}
@@ -178,19 +179,35 @@ public class RegisterMBean implements Serializable {
 			desc.setIsSuperGroup(true);
 			register.setSuperGroup(desc);
 			break;
+		case "credito":
+			desc.setIsCredit(true);
+			register.setDescription(desc);
+			break;
+		case "debito":
+			desc.setIsDebit(true);
+			register.setDescription(desc);
+			break;
+		case "grupo":
+			desc.setIsGroup(true);
+			register.setGroup(desc);
+			break;
+		case "super grupo":
+			desc.setIsSuperGroup(true);
+			register.setSuperGroup(desc);
+			break;
 		}
 	}
 
 	public void checkCreditDescription() {
 		if (register.getDescription().getDescription() != null && !"".equals(register.getDescription().getDescription())) {
 			if (creditList.size() > 0) {
-				Description descriptionRet = existsDescription(superUser().getId(), getTypeAccount(MessageFactory.getMessage("lb_credit_", superUser().getLanguage(), null)).getId(), register.getDescription().getDescription());
+				Description descriptionRet = existsDescription(superUser().getId(), getTypeAccount(Utils.clearString(MessageFactory.getMessage("lb_credit_", superUser().getLanguage(), null))).getId(), register.getDescription().getDescription());
 
 				if (descriptionRet == null) {
-					newDescription(description.getDescription(), MessageFactory.getMessage("lb_credit_", superUser().getLanguage(), null));
+					newDescription(description.getDescription(), Utils.clearString(MessageFactory.getMessage("lb_credit_", superUser().getLanguage(), null)));
 				} else {
 					register.setDescription(descriptionRet);
-					Register registerTemp = getRegisterByDescription(superUser().getId(), getTypeAccount(MessageFactory.getMessage("lb_credit_", superUser().getLanguage(), null)).getId(), descriptionRet.getId());
+					Register registerTemp = getRegisterByDescription(superUser().getId(), getTypeAccount(Utils.clearString(MessageFactory.getMessage("lb_credit_", superUser().getLanguage(), null))).getId(), descriptionRet.getId());
 					if(registerTemp != null){
 						register.setSuperGroup(registerTemp.getSuperGroup());
 					} else {
@@ -198,7 +215,7 @@ public class RegisterMBean implements Serializable {
 					}
 				}
 			} else {
-				newDescription(register.getDescription().getDescription(), MessageFactory.getMessage("lb_credit_", superUser().getLanguage(), null));
+				newDescription(register.getDescription().getDescription(), Utils.clearString(MessageFactory.getMessage("lb_credit_", superUser().getLanguage(), null)));
 			}
 		}
 
@@ -207,13 +224,13 @@ public class RegisterMBean implements Serializable {
 	public void checkDebitDescription() {
 		if (register.getDescription().getDescription() != null && !"".equals(register.getDescription().getDescription())) {
 			if (debitList.size() > 0) {
-				Description descriptionRet = existsDescription(superUser().getId(), getTypeAccount(MessageFactory.getMessage("lb_debit_", superUser().getLanguage(), null)).getId(), register.getDescription().getDescription());
+				Description descriptionRet = existsDescription(superUser().getId(), getTypeAccount(Utils.clearString(MessageFactory.getMessage("lb_debit_", superUser().getLanguage(), null))).getId(), register.getDescription().getDescription());
 
 				if (descriptionRet == null) {
-					newDescription(description.getDescription(), MessageFactory.getMessage("lb_debit_", superUser().getLanguage(), null));
+					newDescription(description.getDescription(), Utils.clearString(MessageFactory.getMessage("lb_debit_", superUser().getLanguage(), null)));
 				} else {
 					register.setDescription(descriptionRet);
-					Register registerTemp = getRegisterByDescription(superUser().getId(), getTypeAccount(MessageFactory.getMessage("lb_debit_", superUser().getLanguage(), null)).getId(), descriptionRet.getId());
+					Register registerTemp = getRegisterByDescription(superUser().getId(), getTypeAccount(Utils.clearString(MessageFactory.getMessage("lb_debit_", superUser().getLanguage(), null))).getId(), descriptionRet.getId());
 					if(registerTemp != null){
 						register.setGroup(registerTemp.getGroup());
 						register.setSuperGroup(registerTemp.getSuperGroup());
@@ -223,7 +240,7 @@ public class RegisterMBean implements Serializable {
 					}
 				}
 			} else {
-				newDescription(register.getDescription().getDescription(), MessageFactory.getMessage("lb_debit_", superUser().getLanguage(), null));
+				newDescription(register.getDescription().getDescription(), Utils.clearString(MessageFactory.getMessage("lb_debit_", superUser().getLanguage(), null)));
 			}
 		}
 	}
@@ -554,9 +571,9 @@ public class RegisterMBean implements Serializable {
 				registerSearchList = (List<Register>) response.getEntity(new GenericType<List<Register>>() {
 				});
 				for (Register reg : registerSearchList) {
-					if (reg.getTypeAccount().getDescription().equals(MessageFactory.getMessage("lb_credit_", superUser().getLanguage(), null))) {
+					if (reg.getTypeAccount().getDescription().equals(Utils.clearString(MessageFactory.getMessage("lb_credit_", superUser().getLanguage(), null)))) {
 						creditTotal = creditTotal.add(reg.getAmount());
-					} else if (reg.getTypeAccount().getDescription().equals(MessageFactory.getMessage("lb_debit_", superUser().getLanguage(), null))) {
+					} else if (reg.getTypeAccount().getDescription().equals(Utils.clearString(MessageFactory.getMessage("lb_debit_", superUser().getLanguage(), null)))) {
 						debitTotal = debitTotal.add(reg.getAmount());
 					}
 				}
@@ -635,7 +652,7 @@ public class RegisterMBean implements Serializable {
 		loadDebits = false;
 		loadCredits = true;
 		loadDefaultCombos(false);
-		createTypeAccount(MessageFactory.getMessage("lb_credit_", superUser().getLanguage(), null));
+		createTypeAccount(Utils.clearString(MessageFactory.getMessage("lb_credit_", superUser().getLanguage(), null)));
 		loadList(register.getTypeAccount());
 		return "/common/formRegister.xhtml?faces-redirect=true";
 	}
@@ -650,7 +667,7 @@ public class RegisterMBean implements Serializable {
 		loadDebits = true;
 		loadCredits = false;
 		loadDefaultCombos(false);
-		createTypeAccount(MessageFactory.getMessage("lb_debit_", superUser().getLanguage(), null));
+		createTypeAccount(Utils.clearString(MessageFactory.getMessage("lb_debit_", superUser().getLanguage(), null)));
 		loadList(register.getTypeAccount());
 		return "/common/formRegister.xhtml?faces-redirect=true";
 	}
@@ -673,7 +690,7 @@ public class RegisterMBean implements Serializable {
 
 		if (fromSearch) {
 			RequestContext context = RequestContext.getCurrentInstance();
-			if (register.getTypeAccount().getDescription().equals(MessageFactory.getMessage("lb_debit_", superUser().getLanguage(), null))) {
+			if (register.getTypeAccount().getDescription().equals(Utils.clearString(MessageFactory.getMessage("lb_debit_", superUser().getLanguage(), null)))) {
 				loadCredits = false;
 				loadDebits = true;
 			} else {
@@ -755,14 +772,14 @@ public class RegisterMBean implements Serializable {
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/register");
 
 			if (loadDebits) {
-				createTypeAccount(MessageFactory.getMessage("lb_debit_", superUser().getLanguage(), null));// debit
+				createTypeAccount(Utils.clearString(MessageFactory.getMessage("lb_debit_", superUser().getLanguage(), null)));// debit
 				if (register.getCreditCard().getId() == null || register.getCreditCard().getId() == 0) {
 					register.setCreditCard(null);
 				}
 			} else {
 				register.setGroup(null);
 				register.setCreditCard(null);
-				createTypeAccount(MessageFactory.getMessage("lb_credit_", superUser().getLanguage(), null));// credit
+				createTypeAccount(Utils.clearString(MessageFactory.getMessage("lb_credit_", superUser().getLanguage(), null)));// credit
 			}
 
 			register.setUser(superUser());

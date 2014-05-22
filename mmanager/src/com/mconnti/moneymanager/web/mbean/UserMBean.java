@@ -384,6 +384,10 @@ public class UserMBean implements Serializable {
 	private void loadDefaultCombos() {
 		this.countries = getCountriesByLocale(locale);
 	}
+	
+	public void loadCountries(){
+		this.countries = getCountriesByLocale(user.getLanguage());
+	}
 
 	public void newUser() {
 		loggedUser = null;
@@ -397,7 +401,6 @@ public class UserMBean implements Serializable {
 		this.user.setRole(role);
 		this.showPassword = true;
 		this.showFormUser = true;
-		loadDefaultCombos();
 	}
 
 	public void newParentUser() {

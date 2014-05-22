@@ -1,6 +1,7 @@
 package com.mconnti.moneymanager.util;
 
 import java.math.BigDecimal;
+import java.text.Normalizer;
 
 public class Main {
 	
@@ -18,5 +19,7 @@ public class Main {
 		
 		BigDecimal result = value.subtract(minusValue);
 		System.out.println("Result: "+new BigDecimal(result.toString().split("-")[1]));
+		
+		System.out.println(Normalizer.normalize("חצאטי", Normalizer.Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", ""));
 	}
 }
