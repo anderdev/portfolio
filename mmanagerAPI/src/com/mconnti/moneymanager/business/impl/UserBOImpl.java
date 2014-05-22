@@ -51,9 +51,11 @@ public class UserBOImpl extends GenericBOImpl<User> implements UserBO {
 		City city = getCity(user);
 		
 		//check username/email
+		/* TODO check way to update username and email on editting
 		try {
 			Map<String, String> queryParams = new LinkedHashMap<String, String>();
-			queryParams.put(" where x.username", "= '" + user.getUsername()+"'");
+			queryParams.put(" where x.username ", "= '" + user.getUsername()+"'");
+			queryParams.put(" and x.id ", "<> " + user.getId());
 			User testUsername = findByParameter(User.class, queryParams);
 			if(testUsername != null){
 				libReturn.setMessage(MessageFactory.getMessage("error_username_in_use", user.getLanguage()));
@@ -62,7 +64,7 @@ public class UserBOImpl extends GenericBOImpl<User> implements UserBO {
 			
 			queryParams.clear();
 			queryParams.put(" where x.email", "= '" + user.getEmail()+"'");
-			
+			queryParams.put(" and x.id ", "<> " + user.getId());
 			User testEmail = findByParameter(User.class, queryParams);
 			if(testEmail != null){
 				libReturn.setMessage(MessageFactory.getMessage("error_email_in_use", user.getLanguage()));
@@ -72,6 +74,7 @@ public class UserBOImpl extends GenericBOImpl<User> implements UserBO {
 			e1.printStackTrace();
 			libReturn.setMessage("Error testing email or username.");
 		}
+		*/
 		if (city != null) {
 			try {
 				if (user.getId() == null) {

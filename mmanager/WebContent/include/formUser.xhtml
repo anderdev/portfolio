@@ -12,7 +12,7 @@
 				<p:inputText id="name" label="#{messages['lb_name_']}" required="true"  value="#{userMBean.user.name}" style="width:100%" />
 
 				<h:outputText value="#{messages['lb_email']}" />
-				<p:inputText id="email" label="#{messages['lb_email_']}" required="true" value="#{userMBean.user.email}" style="width:100%" >
+				<p:inputText id="email" label="#{messages['lb_email_']}"  required="#{!userMBean.disableUsername}" disabled="#{userMBean.disableUsername}" value="#{userMBean.user.email}" style="width:100%" >
 					<p:ajax event="blur" update="msg"  listener="#{userMBean.checkEmail}" />  
 					<p:ajax event="blur" update="msg"  listener="#{userMBean.existsEmail}" /> 
 				</p:inputText>
@@ -70,7 +70,7 @@
 		        
 		    <h:panelGrid columns="2" columnClasses="column120RightWithPaddingRigth,column350" styleClass="boldFont" border="0">	    
 		        <h:outputText value="#{messages['lb_username']}" />
-				<p:inputText id="username" label="#{messages['lb_username_']}" required="true"  value="#{userMBean.user.username}" style="width:100%" >
+				<p:inputText id="username" label="#{messages['lb_username_']}" required="#{!userMBean.disableUsername}" disabled="#{userMBean.disableUsername}"  value="#{userMBean.user.username}" style="width:100%" >
 					<p:ajax event="blur" update="msg"  listener="#{userMBean.existsUsername}" /> 
 				</p:inputText>
 				

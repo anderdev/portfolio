@@ -105,6 +105,8 @@ public class UserMBean implements Serializable {
 	
 	private Boolean disableSecretPhrase = false;
 	
+	private Boolean disableUsername = false;
+	
 	public UserMBean() {
 		this.user = new User();
 		this.user.setRole(new Role());
@@ -367,6 +369,7 @@ public class UserMBean implements Serializable {
 	public String listAdm() {
 		showEditNewButton = false;
 		this.showFormUser = false;
+		this.disableUsername = false;
 		loadList();
 		return "/common/listUser.xhtml?faces-redirect=true";
 	}
@@ -374,8 +377,8 @@ public class UserMBean implements Serializable {
 	public String listSuperUser() {
 		this.showEditNewButton = true;
 		this.showFormUser = false;
+		this.disableUsername = false;
 		loadListByParameter();
-
 		return "/common/listUser.xhtml?faces-redirect=true";
 	}
 
@@ -426,6 +429,7 @@ public class UserMBean implements Serializable {
 		this.refreshList = true;
 		this.showFormUser = true;
 		this.disableSecretPhrase = true;
+		this.disableUsername = false;
 		loadDefaultCombos();
 		loadRoles();
 	}
@@ -450,6 +454,7 @@ public class UserMBean implements Serializable {
 		this.cities = getCityByState(state);
 		showPassword = false;
 		this.showFormUser = true;
+		this.disableUsername = true;
 		loadRoles();
 	}
 	
@@ -518,6 +523,7 @@ public class UserMBean implements Serializable {
 			if (refreshList) {
 				loadListByParameter();
 			}
+			this.disableUsername = false;
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -851,5 +857,13 @@ public class UserMBean implements Serializable {
 
 	public void setDisableSecretPhrase(Boolean disableSecretPhrase) {
 		this.disableSecretPhrase = disableSecretPhrase;
+	}
+
+	public Boolean getDisableUsername() {
+		return disableUsername;
+	}
+
+	public void setDisableUsername(Boolean disableUsername) {
+		this.disableUsername = disableUsername;
 	}
 }
