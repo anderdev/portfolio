@@ -130,8 +130,8 @@ public abstract class Utils {
 			sb.append("Email sent by: ").append(nameFrom+" &lt;"+emailFrom+"&gt;");
 			sb.append("<br/><br/> "+body);
 			
-			message.setSubject(subject);
-			message.setContent(sb.toString(), "text/HTML");
+			message.setSubject(subject, "UTF-8");
+			message.setContent(sb.toString(), "text/HTML; charset=UTF-8");
 
 			
 			Transport.send(message);

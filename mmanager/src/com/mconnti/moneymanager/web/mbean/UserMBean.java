@@ -103,6 +103,8 @@ public class UserMBean implements Serializable {
 	
 	private Boolean usernameInUse = false;
 	
+	private Boolean disableSecretPhrase = false;
+	
 	public UserMBean() {
 		this.user = new User();
 		this.user.setRole(new Role());
@@ -125,6 +127,10 @@ public class UserMBean implements Serializable {
 		} else {
 			locale = loggedUser.getLanguage();
 		}
+	}
+	
+	private User superUser() {
+		return getLoggedUser().getSuperUser() == null ? getLoggedUser() : getLoggedUser().getSuperUser();
 	}
 
 	public SelectItem[] getCountriesByLocale(String locale) {
@@ -401,6 +407,7 @@ public class UserMBean implements Serializable {
 		this.user.setRole(role);
 		this.showPassword = true;
 		this.showFormUser = true;
+		this.disableSecretPhrase = false;
 	}
 
 	public void newParentUser() {
@@ -414,9 +421,11 @@ public class UserMBean implements Serializable {
 		this.user.setRole(role);
 		this.user.setSuperUser(loggedUser);
 		this.user.setDefaultPassword(true);
+		user.setSecretPhrase(superUser().getSecretPhrase());
 		this.showPassword = false;
 		this.refreshList = true;
 		this.showFormUser = true;
+		this.disableSecretPhrase = true;
 		loadDefaultCombos();
 		loadRoles();
 	}
@@ -536,7 +545,11 @@ public class UserMBean implements Serializable {
 			} else {
 				FacesUtil.showSuccessMessage(MessageFactory.getMessage("lb_deleted_successfully", loggedUser.getLanguage(), null));
 			}
-			loadList();
+			if (showEditNewButton) {
+				loadListByParameter();
+			} else {
+				loadList();
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			FacesUtil.showAErrorMessage(ret.getMessage());
@@ -830,5 +843,13 @@ public class UserMBean implements Serializable {
 
 	public void setUsernameInUse(Boolean usernameInUse) {
 		this.usernameInUse = usernameInUse;
+	}
+
+	public Boolean getDisableSecretPhrase() {
+		return disableSecretPhrase;
+	}
+
+	public void setDisableSecretPhrase(Boolean disableSecretPhrase) {
+		this.disableSecretPhrase = disableSecretPhrase;
 	}
 }

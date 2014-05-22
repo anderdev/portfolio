@@ -76,7 +76,7 @@
 		       	
 				<p:confirmDialog message="#{messages['lb_multiple_exclusion']}" header="#{messages['lb_header_confirmation']}" severity="alert" widgetVar="confirmation">  
 	            	<div align="center">
-				        <p:commandButton value="#{messages['lb_yes']}" update="userList,msg" oncomplete="confirmation.hide()" action="#{userMBean.delete}"/>  
+				        <p:commandButton value="#{messages['lb_yes']}" update=":formUser" oncomplete="confirmation.hide()" action="#{userMBean.delete}"/>  
 				        <p:commandButton value="#{messages['lb_no']}" onclick="confirmation.hide()" type="button" />   
 	                </div> 
 	    		</p:confirmDialog>  

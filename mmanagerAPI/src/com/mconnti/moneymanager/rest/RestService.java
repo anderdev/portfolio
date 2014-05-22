@@ -209,7 +209,7 @@ public class RestService {
 
 	@GET
 	@Path("/city")
-	@Produces({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON})
 	public Response listCity() {
 
 		List<City> list = new ArrayList<>();

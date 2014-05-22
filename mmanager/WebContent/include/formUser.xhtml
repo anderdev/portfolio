@@ -78,7 +78,7 @@
 				<p:password id="senha" label="#{messages['lb_password_']}" required="true"  value="#{userMBean.user.password}"  size="27"  rendered="#{userMBean.showPassword}" style="width:100%"/>
 				
 				<h:outputText value="#{messages['lb_secret_phrase']}" />
-				<p:inputText id="secret_phrase" label="#{messages['lb_secret_phrase_']}" required="true"  value="#{userMBean.user.secretPhrase}" style="width:100%" />
+				<p:inputText id="secret_phrase" label="#{messages['lb_secret_phrase_']}" required="#{!userMBean.disableSecretPhrase}" disabled="#{userMBean.disableSecretPhrase}"  value="#{userMBean.user.secretPhrase}" style="width:100%" />
 				
 				<h:outputText value="#{messages['lb_admin']}" rendered="#{userMBean.loggedUser.admin}" />
 				<p:selectOneMenu value="#{userMBean.user.role.id}" label="#{messages['lb_admin_']}" required="true" rendered="#{userMBean.loggedUser.admin}">
