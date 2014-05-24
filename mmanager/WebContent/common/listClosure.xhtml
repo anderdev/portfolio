@@ -50,7 +50,9 @@
 							      	
 							      	<p:commandButton value="#{messages['lb_search_']}" styleClass="button" ajax="true"  action="#{closureMBean.search}" update="closureList" />
 					      			<h:outputText value=""/>
+					      			<!-- 
 					      			<p:commandButton value="#{messages['lb_delete']}" styleClass="button" onclick="confirmDelete.show()" />
+					      			 -->
 					            </h:panelGrid>
 			        		</h:panelGroup>
 					    </h:panelGrid>
@@ -142,7 +144,7 @@
 						            </h:outputText>
 					            </div>
 					        </p:column>
-					        
+					        <!-- 
 					        <p:column style="width:5%">
 					        	<p:commandLink action="#{closureMBean.edit(true)}" 
 					        		id="editButton" ajax="true" 
@@ -152,6 +154,7 @@
 									<p:graphicImage value="#{messages['img_update']}" style="border: 0px" />
 								</p:commandLink>
 					        </p:column>
+					         -->
 					    </p:dataTable>
 					</div>	
 				</h:panelGroup>

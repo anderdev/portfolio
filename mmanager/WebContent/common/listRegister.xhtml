@@ -83,7 +83,7 @@
                  			paginatorPosition="top" 
                  			selection="#{registerMBean.selectedRegister}" >
                  			
-                 			<p:column selectionMode="multiple" style="width:3%;text-align:center"  />
+                 			<p:column selectionMode="multiple" style="width:3%;text-align:center" disabledSelection="#{reg.closed}"/>
                  			
                  			<f:facet name="footer">
                  				<h:panelGroup rendered="#{registerMBean.loadSearchFooter}">
@@ -270,7 +270,7 @@
 							<p:inputText  label="#{messages['lb_parcels_']}" disabled="true" styleClass="numeric" maxlength="3" value="#{registerMBean.register.numberParcel}" style="width:25px;text-align:right;" />
 
 							<h:outputText value="#{messages['lb_amount']}" />
-							<p:inputText id="amount"  label="#{messages['lb_amount_']}" required="true" maxlength="10"  value="#{registerMBean.register.amount}" style="width:80px;text-align:right;" />
+							<p:inputText id="amount"  label="#{messages['lb_amount_']}" required="#{!registerMBean.register.closed}" maxlength="10" disabled="#{registerMBean.register.closed}"  value="#{registerMBean.register.amount}" style="width:80px;text-align:right;" />
 						</h:panelGrid>
 
 						<br />

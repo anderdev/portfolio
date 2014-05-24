@@ -377,20 +377,23 @@ public class ClosureBOImpl extends GenericBOImpl<Closure> implements ClosureBO {
 				isAnd = false;
 			}
 			
-			if(closure.getStartDate() != null && closure.getDate() == null){
+			if(closure.getStartDate() != null && closure.getEndDate() == null){
 				queryParams.put(" and x.date = ", " str_to_date('"+Utils.dateToString(closure.getStartDate())+ "', '%d/%m/%Y')");
 			}
 			
-			if(closure.getStartDate() == null && closure.getDate() != null){
-				queryParams.put(" and x.date = ", " str_to_date('"+Utils.dateToString(closure.getDate())+"', '%d/%m/%Y') ");
+			if(closure.getStartDate() == null && closure.getEndDate() != null){
+				queryParams.put(" and x.date = ", " str_to_date('"+Utils.dateToString(closure.getEndDate())+"', '%d/%m/%Y') ");
 			}
 			
-			if(closure.getStartDate() != null && closure.getDate() != null){
-				queryParams.put(" and x.date between ", " str_to_date('"+Utils.dateToString(closure.getStartDate())+ "', '%d/%m/%Y') and str_to_date('"+Utils.dateToString(closure.getDate())+"', '%d/%m/%Y') ");
+			if(closure.getStartDate() != null && closure.getEndDate() != null){
+				queryParams.put(" and x.date between ", " str_to_date('"+Utils.dateToString(closure.getStartDate())+ "', '%d/%m/%Y') and str_to_date('"+Utils.dateToString(closure.getEndDate())+"', '%d/%m/%Y') ");
 			}
 		}
 		
 		List<Closure> list = list(Closure.class, queryParams, " x.date desc");
+		for (Closure closure2 : list) {
+			System.out.println(closure2.getDate());
+		}
 		return list;
 	}
 

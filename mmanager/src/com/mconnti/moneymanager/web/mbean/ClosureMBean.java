@@ -162,11 +162,13 @@ public class ClosureMBean implements Serializable {
 		return typeClosureList;
 	}
 
-	private void createClosure() {
+	private void createClosure(Boolean search) {
 		this.closure = new Closure();
 		this.closure.setTypeClosure(new TypeClosure());
 		this.closure.setCurrency(new Currency());
-		setDefaultValues();
+		if(!search){
+			setDefaultValues();
+		}
 	}
 	
 	private void setDefaultValues() {
@@ -211,9 +213,9 @@ public class ClosureMBean implements Serializable {
 
 	public String list() {
 		showMaths = false;
-		createClosure();
+		createClosure(true);
 		this.searchClosure = this.closure;
-		closure.setSearch(true);
+		this.searchClosure.setSearch(true);
 		loadCombos();
 		searchClosureList = new ArrayList<>();
 		return "/common/listClosure.xhtml?faces-redirect=true";
@@ -232,7 +234,7 @@ public class ClosureMBean implements Serializable {
 	
 	
 	public String closure(){
-		createClosure();
+		createClosure(false);
 		closure.setSearch(false);
 		loadList(false);
 		loadCombos();
@@ -308,7 +310,7 @@ public class ClosureMBean implements Serializable {
 			} else {
 				FacesUtil.showSuccessMessage(ret.getMessage());
 			}
-			createClosure();
+			createClosure(closure.getSearch());
 			loadList(closure.getSearch());
 			showMaths = false;
 		} catch (ClientProtocolException e) {
