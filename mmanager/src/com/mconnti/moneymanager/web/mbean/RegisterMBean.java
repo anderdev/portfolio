@@ -717,7 +717,7 @@ public class RegisterMBean implements Serializable {
 		RequestContext context = RequestContext.getCurrentInstance();
 
 		if (!all) {
-			register.setNumberParcel(1);
+			register.setMultipleParcel(false);
 		}
 
 		context.execute("registerModal.show();");

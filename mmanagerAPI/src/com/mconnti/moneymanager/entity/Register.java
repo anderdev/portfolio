@@ -89,6 +89,9 @@ public class Register implements Serializable {
 	@JoinColumn(name = "user_id")
 	@ForeignKey(name = "FK_DEBIT_USER")
 	private User user;
+	
+	@Transient
+	private Boolean multipleParcel;
 
 	public Long getId() {
 		return id;
@@ -224,5 +227,13 @@ public class Register implements Serializable {
 
 	public void setSearch(Boolean search) {
 		this.search = search;
+	}
+
+	public Boolean getMultipleParcel() {
+		return multipleParcel;
+	}
+
+	public void setMultipleParcel(Boolean multipleParcel) {
+		this.multipleParcel = multipleParcel;
 	}
 }

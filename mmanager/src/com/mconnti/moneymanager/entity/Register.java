@@ -47,6 +47,8 @@ public class Register implements Serializable {
 	private User user;
 	
 	private Parcel parcel;
+	
+	private Boolean multipleParcel;
 
 	public Long getId() {
 		return id;
@@ -182,5 +184,13 @@ public class Register implements Serializable {
 
 	public void setParcel(Parcel parcel) {
 		this.parcel = parcel;
+	}
+
+	public Boolean getMultipleParcel() {
+		return multipleParcel;
+	}
+
+	public void setMultipleParcel(Boolean multipleParcel) {
+		this.multipleParcel = multipleParcel;
 	}
 }
