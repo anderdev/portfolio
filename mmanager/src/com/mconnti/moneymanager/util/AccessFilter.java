@@ -39,7 +39,7 @@ public class AccessFilter implements Filter {
 				// // logger.warn("Enviar e-mail ViewExpiredException: " + e1.getMessage());
 				// }
 				System.out.println("send email - EXPIRED EXCEPTION!");
-				((HttpServletResponse) response).sendRedirect("/expired.jsf");
+				((HttpServletResponse) response).sendRedirect("/mmanager/expired.jsf");
 			} catch (Exception e) {
 				// try {
 				// // contato.enviarEmail("ander.dev@gmail.com", "organizer@gmail.com", "Organizer", "Exce��o Gerada", e.getMessage());
@@ -49,14 +49,14 @@ public class AccessFilter implements Filter {
 				// e1.printStackTrace();
 				// }
 				System.out.println("send email - UNCAUGHT EXCEPTION!");
-				((HttpServletResponse) response).sendRedirect("uncaughtException.jsf");
+				((HttpServletResponse) response).sendRedirect("/mmanager/uncaughtException.jsf");
 			}
 		} else {
 			System.out.println("necessary login");
 			// envia uma mensagem caso o usu�rio
 			// n�o tenha se logado
 			// redireciona para a p�gina de login
-			((HttpServletResponse) response).sendRedirect("/loginRequired.jsf");
+			((HttpServletResponse) response).sendRedirect("/mmanager/loginRequired.jsf");
 		}
 	}
 

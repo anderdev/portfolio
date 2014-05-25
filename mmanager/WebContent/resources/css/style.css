@@ -418,11 +418,18 @@ div#boxLoggedUser{
 .column3percent{width: 3%;}
 .column4percent{width: 4%;}
 .column5percent{width: 5%;}
+.column6percent{width: 6%;}
+.column7percent{width: 7%;}
+.column10percent{width: 10%;}
 
 .column20percent{width: 20%;}
 .column30percent{width: 30%;}
 .column40percentC{width: 40%; text-align: center;}
+.column50percent{width: 50%;}
+.column56percent{width: 56%;}
 .column60percentC{width: 60%; text-align: center;}
+.column66percent{width: 60%;}
+.column100percent{width: 100%;}
 .column100percentC{width: 100%; text-align: center;}
 
 .column80{
@@ -460,8 +467,9 @@ div#boxLoggedUser{
 	width: 90px;
 }
 
-.column100percent{
-	width: 100%;
+.column110R{
+	width: 110px;
+	text-align: right;
 }
 
 .column120{

@@ -179,6 +179,15 @@ public class ClosureMBean implements Serializable {
 		closure.setDate(new Date());
 	}
 	
+	private void getTotals(List<Closure> searchClosureList){
+		for (Closure closure : searchClosureList) {
+			creditTotal = creditTotal.add(closure.getTotalCredit());
+			debitTotal = debitTotal.add(closure.getTotalDebit());
+			searchTotal = searchTotal.add(closure.getTotalGeneral());
+		}
+		
+	}
+	
 	private List<Closure> loadList(Boolean useSearch) {
 		try {
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/closure/list");
@@ -197,6 +206,7 @@ public class ClosureMBean implements Serializable {
 			}
 			if (useSearch) {
 				searchClosureList = response.getEntity(new GenericType<List<Closure>>() { });
+				getTotals(searchClosureList);
 			}else{
 				closureList = response.getEntity(new GenericType<List<Closure>>() { });
 			}

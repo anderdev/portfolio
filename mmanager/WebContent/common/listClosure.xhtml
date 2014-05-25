@@ -68,30 +68,27 @@
                  			<p:column selectionMode="multiple" style="width:3%;text-align:center"  />
                  			
                  			<f:facet name="footer">
-                 				<h:panelGroup rendered="#{closureMBean.loadSearchFooter}">
-					    	 		<div style="text-align:right;">
-					    	 			<h:panelGrid columns="3" styleClass="gridNoLayout" columnClasses=",column90,column4percent" rendered="#{closureMBean.debitTotal gt 0}">
-						    	 			<h:outputText value="#{messages['lb_totalDebit_']}" />
-						    	 			<h:outputText value="#{closureMBean.debitTotal}" style="color:red;" >
+                 				<h:panelGroup rendered="#{closureMBean.showMaths}">
+                 					<h:panelGrid columns="5" styleClass="gridNoLayout"  border="0" columnClasses="column56percent,column110R,column110R,column110R">
+                 						<p:column  >
+                 							<h:outputText value=""/>
+                 						</p:column>
+	                 					 <p:column>
+	                 					 	<h:outputText value="#{closureMBean.creditTotal}" style="color:blue;">
 						    	 				<f:convertNumber pattern="###,##0.00"/>
 						    	 			</h:outputText>
-						    	 			<h:outputText value="" />
-					    	 			</h:panelGrid>
-					    	 			<h:panelGrid columns="3" styleClass="gridNoLayout" columnClasses=",column90,column4percent" rendered="#{closureMBean.creditTotal gt 0}">
-						    	 			<h:outputText value="#{messages['lb_totalCredit_']}" />
-						    	 			<h:outputText value="#{closureMBean.creditTotal}" style="color:blue;">
+	                 					 </p:column>
+	                 					 <p:column>
+	                 					 	<h:outputText value="#{closureMBean.debitTotal}" style="color:red;" >
 						    	 				<f:convertNumber pattern="###,##0.00"/>
 						    	 			</h:outputText>
-						    	 			<h:outputText value="" />
-					    	 			</h:panelGrid>
-					    	 			<h:panelGrid columns="3" styleClass="gridNoLayout" columnClasses=",column90,column4percent" rendered="#{closureMBean.searchTotal gt 0 or closureMBean.searchTotal lt 0}">
-						    	 			<h:outputText value="#{messages['lb_total_']}" />
-						    	 			<h:outputText value="#{closureMBean.searchTotal}" >
-						    	 				<f:convertNumber pattern="###,##0.00"/>
-						    	 			</h:outputText>
-						    	 			<h:outputText value="" />
-					    	 			</h:panelGrid>
-					                </div>
+	                 					 </p:column>
+	                 					 <p:column>
+	                 					 	<h:outputText value="#{closureMBean.searchTotal}" >
+							    	 				<f:convertNumber pattern="###,##0.00"/>
+							    	 			</h:outputText>
+	                 					 </p:column>
+	                 				</h:panelGrid>
 				                </h:panelGroup>
 				            </f:facet>
                  			
