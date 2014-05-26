@@ -7,6 +7,11 @@
         	
 		<ui:define name="contentAPP">
         	<h:form prependId="false" id="formPlanning">
+        	<script type="text/javascript">
+					$(function() {
+					    $('#planDescription').numeric();
+					  });
+					</script>
 	        	<h:outputText value="#{messages['lb_planning_registration']}" styleClass="boxTitle" />
 
 				<p:growl id="msg" showDetail="true" showSummary="false" autoUpdate="true" sticky="true" /> 
@@ -28,7 +33,14 @@
 	        			<h:panelGroup id="tabForm" rendered="#{planningMBean.showForm}">
 							<h:panelGrid columns="4" styleClass="boldFont" columnClasses="column120RightWithPaddingRigth,column80" border="0">
 								<h:outputText value="#{messages['lb_description']}" />
-								<p:inputText label="#{messages['lb_description_']}" required="true" maxlength="10"  value="#{planningMBean.planning.description}" style="width:80px;text-align:right;" />
+								<p:inputText id="planDescription" 
+											label="#{messages['lb_description_']}" 
+											required="true" 
+											maxlength="10"  
+											value="#{planningMBean.planning.description}" 
+											style="width:80px;text-align:right;" >
+											<p:watermark for="planDescription" value="#{messages['lb_year']}"/>
+								</p:inputText>
 								<p:commandButton value="#{messages['lb_post']}" id="post" action="#{planningMBean.save}" ajax="true" update=":formPlanning" styleClass="button" />  
 								<p:commandButton value="#{messages['lb_cancel']}" update=":formPlanning" immediate="true" id="back" ajax="true"  styleClass="button" action="#{planningMBean.cancelTab}"/>
 							</h:panelGrid>
@@ -65,7 +77,7 @@
 					        <h:outputText value="#{messages['lb_description']}"/>
 							<p:selectOneMenu id="descriptions" value="#{planningMBean.planningGroup.description.id}" label="#{messages['lb_description_']}" style="width:100%">
 					            <f:selectItem itemLabel="#{messages['lb_select']}" itemValue="" />
-					            <f:selectItems value="#{planningMBean.descriptions}"  var="desc" itemLabel="#{desc.description}" itemValue="#{desc}"/>  
+					            <f:selectItems value="#{planningMBean.descriptions}"  var="desc" itemLabel="#{desc.description}" itemValue="#{desc}"/>
 					        </p:selectOneMenu>
 					        
 						</h:panelGrid>

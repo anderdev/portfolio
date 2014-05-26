@@ -189,7 +189,7 @@ public class DescriptionBOImpl extends GenericBOImpl<Description> implements Des
 		queryParams.put(" where "," 1=1 ");
 		queryParams.put(" and x.user.id = ", description.getUser().getId()+"");
 		
-		if( description.getTypeAccount() != null){
+		if( description.getTypeAccount() != null && description.getTypeAccount().getDescription() != null){
 			List<TypeAccount> typeAccountList = getTypeAccountByDescription(description);
 			
 			if(typeAccountList.size() > 1){
@@ -197,6 +197,8 @@ public class DescriptionBOImpl extends GenericBOImpl<Description> implements Des
 			} else{
 				queryParams.put(" and x.typeAccount.id = ", typeAccountList.get(0).getId()+ "");
 			}
+		} else if (description.getTypeAccount() != null && description.getTypeAccount().getId() != null){
+			queryParams.put(" and x.typeAccount.id = ", description.getTypeAccount().getId()+ "");
 		}
 		
 		List<Description> list = list(Description.class, queryParams, "x.description");
