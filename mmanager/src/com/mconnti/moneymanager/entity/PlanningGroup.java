@@ -1,7 +1,7 @@
 package com.mconnti.moneymanager.entity;
 
 import java.io.Serializable;
-import java.util.Set;
+import java.util.Map;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -23,7 +23,7 @@ public class PlanningGroup implements Serializable {
 
 	private User user;
 	
-	private Set<PlanningItem> plannigItemList;
+	private Map<Long,PlanningItem> plannigItemMap;
 
 	public Long getId() {
 		return id;
@@ -65,11 +65,11 @@ public class PlanningGroup implements Serializable {
 		this.planning = planning;
 	}
 
-	public Set<PlanningItem> getPlannigItemList() {
-		return plannigItemList;
+	public Map<Long, PlanningItem> getPlannigItemMap() {
+		return plannigItemMap;
 	}
 
-	public void setPlannigItemList(Set<PlanningItem> plannigItemList) {
-		this.plannigItemList = plannigItemList;
+	public void setPlannigItemMap(Map<Long, PlanningItem> plannigItemMap) {
+		this.plannigItemMap = plannigItemMap;
 	}
 }

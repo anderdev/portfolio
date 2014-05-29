@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -37,6 +38,8 @@ public class PlanningMBean implements Serializable {
 	private UserMBean userMBean;
 
 	private List<Planning> planningList;
+	
+	private List<PlanningGroup> planningGroupList;
 
 	private Planning planning;
 
@@ -45,6 +48,8 @@ public class PlanningMBean implements Serializable {
 	private Description description;
 
 	private PlanningGroup planningGroup;
+	
+	private PlanningGroup selectedPlanningGroup;
 
 	private PlanningItem planningItem;
 
@@ -61,12 +66,17 @@ public class PlanningMBean implements Serializable {
 	private SelectItem[] typeAccounts;
 
 	private SelectItem[] descriptions;
+	
+	private Integer activedIndex;
 
 	public PlanningMBean() {
 		this.planning = new Planning();
 		this.planningGroup = new PlanningGroup();
 		this.planningGroup.setTypeAccount(new TypeAccount());
 		this.planningGroup.setDescription(new Description());
+		this.selectedPlanningGroup = new PlanningGroup();
+		this.selectedPlanningGroup.setTypeAccount(new TypeAccount());
+		this.selectedPlanningGroup.setDescription(new Description());
 		this.planningItem = new PlanningItem();
 		this.typeAccount = new TypeAccount();
 		this.description = new Description();
@@ -108,11 +118,70 @@ public class PlanningMBean implements Serializable {
 		}
 		return planningList;
 	}
+	
+	private Planning getSelected() {
+		Planning plan = new Planning();
+		try {
+			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/planning/selected");
+
+			planning.setUser(userMBean.getLoggedUser().getSuperUser() == null ? userMBean.getLoggedUser() : userMBean.getLoggedUser().getSuperUser());
+			planning.setSelected(true);
+			request.body(MediaType.APPLICATION_JSON, planning);
+
+			ClientResponse<Planning> response = request.put(Planning.class);
+
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+			
+			plan = response.getEntity(new GenericType<Planning>() {
+			});
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return plan;
+	}
+	
+	private Description getDescriptionById(Long id) {
+
+		Description descriptionReturn = null;
+		try {
+
+			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/description/getbyid");
+
+			request.body(MediaType.APPLICATION_JSON, id);
+			ClientResponse<Description> response = request.put(Description.class);
+
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			}
+
+			descriptionReturn = response.getEntity(Description.class);
+
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return descriptionReturn;
+	}
 
 	public String list() {
 		showForm = false;
 		createPlanning();
-		loadList();
+		List<Planning> planList = loadList();
+		for (int x = 0; x < planList.size(); x++) {
+			Planning plan = planList.get(x);
+			if(plan.getSelected()){
+				activedIndex = x;
+			}
+		}
 		return "/common/formPlanning.xhtml?faces-redirect=true";
 	}
 
@@ -123,6 +192,8 @@ public class PlanningMBean implements Serializable {
 
 	public void newItem() {
 		createPlanning();
+		Planning plan = getSelected();
+		planningGroup.setPlanning(plan);
 		loadTypeAccount();
 	}
 
@@ -133,7 +204,7 @@ public class PlanningMBean implements Serializable {
 	public void edit() {
 	}
 
-	public void save() {
+	public void saveTab() {
 		MessageReturn ret = new MessageReturn();
 
 		try {
@@ -141,6 +212,7 @@ public class PlanningMBean implements Serializable {
 
 			planning.setDate(new GregorianCalendar());
 			planning.setUser(userMBean.getLoggedUser().getSuperUser() == null ? userMBean.getLoggedUser() : userMBean.getLoggedUser().getSuperUser());
+			planning.setSelected(true);
 			request.body(MediaType.APPLICATION_JSON, planning);
 
 			ClientResponse<Planning> response = request.post(Planning.class);
@@ -193,9 +265,23 @@ public class PlanningMBean implements Serializable {
 		}
 
 	}
+	
+	public void saveGroup(){
+		Description desc = getDescriptionById(planningGroup.getDescription().getId());
+		planningGroup.setDescription(desc);
+		
+		planningItem.setPlanningGroup(planningGroup);
+		if(planningGroupList == null){
+			planningGroupList = new LinkedList<>();
+		}
+		
+		planningGroupList.add(planningGroup);
+	}
 
 	public void saveItem() {
-
+		planningGroupList.size();
+		
+		System.out.println(selectedPlanningGroup);
 	}
 
 	public SelectItem[] loadTypeAccounts() {
@@ -382,5 +468,29 @@ public class PlanningMBean implements Serializable {
 
 	public void setDescription(Description description) {
 		this.description = description;
+	}
+
+	public Integer getActivedIndex() {
+		return activedIndex;
+	}
+
+	public void setActivedIndex(Integer activedIndex) {
+		this.activedIndex = activedIndex;
+	}
+
+	public PlanningGroup getSelectedPlanningGroup() {
+		return selectedPlanningGroup;
+	}
+
+	public void setSelectedPlanningGroup(PlanningGroup selectedPlanningGroup) {
+		this.selectedPlanningGroup = selectedPlanningGroup;
+	}
+
+	public List<PlanningGroup> getPlanningGroupList() {
+		return planningGroupList;
+	}
+
+	public void setPlanningGroupList(List<PlanningGroup> planningGroupList) {
+		this.planningGroupList = planningGroupList;
 	}
 }

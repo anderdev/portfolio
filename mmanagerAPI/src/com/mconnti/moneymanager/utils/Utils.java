@@ -20,6 +20,14 @@ import javax.mail.internet.MimeMessage;
 
 public abstract class Utils {
 	
+	public static int setBooleanValue(Boolean value){
+		if(value){
+			return 1;
+		}else {
+			return 0;
+		}
+	}
+	
 	public static String clearString(String string){
 		String retString = Normalizer.normalize(string, Normalizer.Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
 		return retString;

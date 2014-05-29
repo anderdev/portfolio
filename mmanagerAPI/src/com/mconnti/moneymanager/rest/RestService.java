@@ -575,6 +575,20 @@ public class RestService {
 		}
 		return Response.status(200).entity(ret).build();
 	}
+	
+	@PUT
+	@Path("/description/getbyid")
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response getDescriptionById(Long id) {
+		Description ret = new Description();
+		try {
+			ret = descriptionBO.getById(id);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Response.status(200).entity(ret).build();
+	}
 
 	@POST
 	@Path("/description")
@@ -878,6 +892,21 @@ public class RestService {
 		}
 
 		return Response.status(200).entity(list).build();
+	}
+	
+	@PUT
+	@Path("/planning/selected")
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response getSelected(Planning planning) {
+
+		try {
+			planning = planningBO.getSelected(planning);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return Response.status(200).entity(planning).build();
 	}
 
 	@POST

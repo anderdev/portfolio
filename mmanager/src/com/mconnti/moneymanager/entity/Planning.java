@@ -23,6 +23,8 @@ public class Planning implements Serializable {
 	private Set<PlanningGroup> plannigGroupList;
 
 	private User user;
+	
+	private Boolean selected;
 
 	public Long getId() {
 		return id;
@@ -62,5 +64,13 @@ public class Planning implements Serializable {
 
 	public void setPlannigGroupList(Set<PlanningGroup> plannigGroupList) {
 		this.plannigGroupList = plannigGroupList;
+	}
+
+	public Boolean getSelected() {
+		return selected;
+	}
+
+	public void setSelected(Boolean selected) {
+		this.selected = selected;
 	}
 }

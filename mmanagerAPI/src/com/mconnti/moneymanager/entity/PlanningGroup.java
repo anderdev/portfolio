@@ -1,7 +1,7 @@
 package com.mconnti.moneymanager.entity;
 
 import java.io.Serializable;
-import java.util.Set;
+import java.util.Map;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,7 +11,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -54,12 +53,9 @@ public class PlanningGroup implements Serializable {
 	@ForeignKey(name = "FK_PLGROUP_USER")
 	private User user;
 	
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "planninggroup_id")
-	@ForeignKey(name = "FK_PLGROUP_PLITEM")
 	@XmlTransient
 	@Transient
-	private Set<PlanningItem> plannigItemList;
+	private Map<Long,PlanningItem> plannigItemMap;
 
 	public Long getId() {
 		return id;
@@ -101,11 +97,11 @@ public class PlanningGroup implements Serializable {
 		this.planning = planning;
 	}
 
-	public Set<PlanningItem> getPlannigItemList() {
-		return plannigItemList;
+	public Map<Long, PlanningItem> getPlannigItemMap() {
+		return plannigItemMap;
 	}
 
-	public void setPlannigItemList(Set<PlanningItem> plannigItemList) {
-		this.plannigItemList = plannigItemList;
+	public void setPlannigItemMap(Map<Long, PlanningItem> plannigItemMap) {
+		this.plannigItemMap = plannigItemMap;
 	}
 }

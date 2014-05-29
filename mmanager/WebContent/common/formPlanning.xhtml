@@ -10,6 +10,7 @@
         	<script type="text/javascript">
 					$(function() {
 					    $('#planDescription').numeric();
+					    $('.column80rightAlign').maskMoney();
 					  });
 					</script>
 	        	<h:outputText value="#{messages['lb_planning_registration']}" styleClass="boxTitle" />
@@ -41,21 +42,129 @@
 											style="width:80px;text-align:right;" >
 											<p:watermark for="planDescription" value="#{messages['lb_year']}"/>
 								</p:inputText>
-								<p:commandButton value="#{messages['lb_post']}" id="post" action="#{planningMBean.save}" ajax="true" update=":formPlanning" styleClass="button" />  
+								<p:commandButton value="#{messages['lb_post']}" id="post" action="#{planningMBean.saveTab}" ajax="true" update=":formPlanning" styleClass="button" />  
 								<p:commandButton value="#{messages['lb_cancel']}" update=":formPlanning" immediate="true" id="back" ajax="true"  styleClass="button" action="#{planningMBean.cancelTab}"/>
 							</h:panelGrid>
 						</h:panelGroup>
 					</div>
-				
-					<p:tabView id="tabView" var="plan" value="#{planningMBean.planningList}" style="height:430px;"> 
+					
+					<p:tabView id="tabView" var="plan" value="#{planningMBean.planningList}" style="height:430px;" activeIndex="#{planningMBean.activedIndex}"> 
 						<p:tab id="planningItemTab" title="#{plan.description}" >   
-							<h:outputText value="É nois..." /> 
+							
+							<!-- 
+							<h:inputText id="mySelectedColumnId" value="#{planningMBean.selectedPlanningGroup}" style="display:none">
+							    <f:ajax listener="#{planningBean.rowSelected}"></f:ajax>
+							</h:inputText>
+							 -->
+							
+							<p:dataTable var="planGroup" value="#{planningMBean.planningGroupList}" style="width:100%" id="planningGroupList"
+					    		emptyMessage="#{messages['lb_empty_list']}"
+					    		rows="10" rowKey="#{planGroup}"
+	                 			selection="#{planningMBean.selectedPlanningGroup}" >
+	                 			
+	                 			<p:column style="width:40%;">
+							        <f:facet name="header">
+						                <h:outputText value="Description" />
+						            </f:facet>
+						            <h:outputText value="#{planGroup.description.description}" />
+					            </p:column>
+						        
+						        <p:column style="width:5%;">
+						            <f:facet name="header">
+						                <h:outputText value="JAN" />
+						            </f:facet>
+						            <p:inputText styleClass="column80rightAlign" maxlength="10"/>
+						            
+						        </p:column>
+						        
+						        <p:column style="width:5%;">
+						            <f:facet name="header">
+						                <h:outputText value="FEB" />
+						            </f:facet>
+						            <p:inputText styleClass="column80rightAlign" maxlength="10">
+										<p:ajax event="blur" process="@this" listener="#{planningMBean.saveItem}" >
+											<f:setPropertyActionListener value="#{planGroup}" target="#{planningMBean.selectedPlanningGroup}" />
+										</p:ajax>						            
+						            </p:inputText>
+						        </p:column>
+						        
+						        <p:column style="width:5%;">
+						            <f:facet name="header">
+						                <h:outputText value="MAR" />
+						            </f:facet>
+						            <p:inputText styleClass="column80rightAlign" maxlength="10"/>
+						        </p:column>
+						        
+						        <p:column style="width:5%;">
+						            <f:facet name="header">
+						                <h:outputText value="APR" />
+						            </f:facet>
+						            <p:inputText styleClass="column80rightAlign" maxlength="10"/>
+						        </p:column>
+						        
+						       <p:column style="width:5%;">
+						            <f:facet name="header">
+						                <h:outputText value="MAY" />
+						            </f:facet>
+						            <p:inputText styleClass="column80rightAlign" maxlength="10"/>
+						        </p:column>
+						        
+						        <p:column style="width:5%;">
+						            <f:facet name="header">
+						                <h:outputText value="JUN" />
+						            </f:facet>
+						            <p:inputText styleClass="column80rightAlign" maxlength="10"/>
+						        </p:column>
+						        
+						        <p:column style="width:5%;">
+						            <f:facet name="header">
+						                <h:outputText value="JUL" />
+						            </f:facet>
+						            <p:inputText styleClass="column80rightAlign" maxlength="10"/>
+						        </p:column>
+						        
+						        <p:column style="width:5%;">
+						            <f:facet name="header">
+						                <h:outputText value="AUG" />
+						            </f:facet>
+						            <p:inputText styleClass="column80rightAlign" maxlength="10"/>
+						        </p:column>
+						        
+						        <p:column style="width:5%;">
+						            <f:facet name="header">
+						                <h:outputText value="SEP" />
+						            </f:facet>
+						            <p:inputText styleClass="column80rightAlign" maxlength="10"/>
+						        </p:column>
+						        
+						        <p:column style="width:5%;">
+						            <f:facet name="header">
+						                <h:outputText value="OCT" />
+						            </f:facet>
+						            <p:inputText styleClass="column80rightAlign" maxlength="10"/>
+						        </p:column>
+						        
+						        <p:column style="width:5%;">
+						            <f:facet name="header">
+						                <h:outputText value="NOV" />
+						            </f:facet>
+						            <p:inputText styleClass="column80rightAlign" maxlength="10"/>
+						        </p:column>
+						        
+						        <p:column style="width:5%;">
+						            <f:facet name="header">
+						                <h:outputText value="DEC" />
+						            </f:facet>
+						            <p:inputText styleClass="column80rightAlign" maxlength="10"/>
+						        </p:column>
+	
+						    </p:dataTable>
 						</p:tab>
 					</p:tabView>
 				</div>
 			</h:form>
 			
-			<p:dialog header="#{messages['lb_planning_registration']}" resizable="false" widgetVar="newPlanningModal" modal="true" appendTo="@(body)" height="270" width="480">  
+			<p:dialog header="#{messages['lb_planning_registration']}" resizable="false" widgetVar="newPlanningModal" modal="true" appendTo="@(body)" height="150" width="480">  
 			    <h:form prependId="false" id="planningItem">
 			    	<script type="text/javascript">
 					$(function() {
@@ -77,12 +186,14 @@
 					        <h:outputText value="#{messages['lb_description']}"/>
 							<p:selectOneMenu id="descriptions" value="#{planningMBean.planningGroup.description.id}" label="#{messages['lb_description_']}" style="width:100%">
 					            <f:selectItem itemLabel="#{messages['lb_select']}" itemValue="" />
-					            <f:selectItems value="#{planningMBean.descriptions}"  var="desc" itemLabel="#{desc.description}" itemValue="#{desc}"/>
+					            <f:selectItems value="#{planningMBean.descriptions}"  var="desc" itemLabel="#{desc.description}" itemValue="#{desc}" />
 					        </p:selectOneMenu>
 					        
 						</h:panelGrid>
+						
 						<br />
 						<div align="center">
+							<!--  
 					        <p:fieldset>
 					        	<h:panelGrid columns="3" styleClass="boldFont" columnClasses="column140Center,column90rightAlign,column80" border="0">
 					        		<h:outputText value="dd/mm/yyyy" />
@@ -100,8 +211,10 @@
 								</h:panelGrid>
 					        </p:fieldset>
 							<br />
+							
+							-->
 						
-							<p:commandButton value="#{messages['lb_post']}" id="postItem" action="#{planningMBean.saveItem}" oncomplete="if (args &amp;&amp; !args.validationFailed) newPlanningModal.hide();" ajax="true" update=":formPlanning" styleClass="button"/>  
+							<p:commandButton value="#{messages['lb_post']}" id="postItem" action="#{planningMBean.saveGroup}" oncomplete="if (args &amp;&amp; !args.validationFailed) newPlanningModal.hide();" ajax="true" update=":formPlanning" styleClass="button"/>  
 							<p:commandButton value="#{messages['lb_back']}" update=":formPlanning" immediate="true" id="backItem" oncomplete="newPlanningModal.hide()" ajax="true"  styleClass="button" />
 						</div>
 					</h:panelGroup>

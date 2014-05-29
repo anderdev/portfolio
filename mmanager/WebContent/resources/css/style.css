@@ -432,6 +432,16 @@ div#boxLoggedUser{
 .column100percent{width: 100%;}
 .column100percentC{width: 100%; text-align: center;}
 
+.column40{
+	width: 40px;
+	border: 0px dotted #000;
+}
+
+.column60{
+	width: 60px;
+	border: 0px dotted #000;
+}
+
 .column80{
 	width: 80px;
 	border: 0px dotted #000;
@@ -443,6 +453,11 @@ div#boxLoggedUser{
 	text-align: right;
 	margin-right: 5px;
 	border: 0px dotted #000;
+}
+
+.column80R{
+	width: 80px;
+	text-align: right;
 }
 
 .column85{
@@ -583,6 +598,8 @@ div#boxLoggedUser{
 	padding-left: 10px;
 }
 
+.textAlign:{text-align: left;}
+.textRight:{text-align: right;}
 .alignLef{float:left !important;}
 .alignRight{float:right !important;}
 

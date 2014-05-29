@@ -1,14 +1,13 @@
 package com.mconnti.moneymanager.utils;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import static com.mconnti.moneymanager.utils.Utils.getLastDayOfMonth;
+import static com.mconnti.moneymanager.utils.Utils.loadDates;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
 import com.mconnti.moneymanager.entity.User;
-
-import static com.mconnti.moneymanager.utils.Utils.*;
 
 public class Main {
 	
@@ -40,6 +39,7 @@ public class Main {
 		System.out.println(body.toString());
 	}
 	
+	@SuppressWarnings("unused")
 	private static void getRangeOfDates(Date date){
 		HashMap<String,String> range = loadDates(date,  Calendar.DAY_OF_MONTH, -getLastDayOfMonth(date));
 		System.out.println(range);

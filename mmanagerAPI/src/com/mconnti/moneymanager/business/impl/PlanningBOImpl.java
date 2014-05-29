@@ -11,6 +11,7 @@ import com.mconnti.moneymanager.entity.Planning;
 import com.mconnti.moneymanager.entity.User;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
 import com.mconnti.moneymanager.utils.MessageFactory;
+import com.mconnti.moneymanager.utils.Utils;
 
 public class PlanningBOImpl extends GenericBOImpl<Planning> implements PlanningBO {
 
@@ -19,6 +20,11 @@ public class PlanningBOImpl extends GenericBOImpl<Planning> implements PlanningB
 	public MessageReturn save(Planning planning) {
 		MessageReturn libReturn = new MessageReturn();
 		try {
+			Planning planTemp = getSelected(planning);
+			if(planTemp != null){
+				planTemp.setSelected(false);
+				saveGeneric(planTemp);
+			}
 			saveGeneric(planning);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -72,6 +78,20 @@ public class PlanningBOImpl extends GenericBOImpl<Planning> implements PlanningB
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	@Override
+	public Planning getSelected(Planning plannnig) throws Exception {
+		
+		Map<String, String> queryParams = new LinkedHashMap<>();
+		queryParams.put(" where x.user.id = ", plannnig.getUser().getId() + "");
+		queryParams.put(" and x.selected = ", Utils.setBooleanValue(plannnig.getSelected()) + "");
+		List<Planning> result = list(Planning.class, queryParams, null);
+		if(result.size() > 0){
+			return result.get(0);
+		}else {
+			return null;
+		}
 	}
 
 }
