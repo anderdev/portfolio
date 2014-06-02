@@ -18,6 +18,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.ForeignKey;
 
 @Entity
@@ -38,14 +39,10 @@ public class PlanningGroup implements Serializable {
 	@ForeignKey(name = "FK_PLGROUP_DESC")
 	private Description description;
 	
-	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = Description.class)
-	@JoinColumn(name = "typeaccount_id")
-	@ForeignKey(name = "FK_PLGROUP_TYPEACC")
-	private TypeAccount typeAccount;
-	
 	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = Planning.class)
 	@JoinColumn(name = "planning_id")
 	@ForeignKey(name = "FK_PLGROUP_PLANNING")
+	@JsonIgnore
 	private Planning planning;
 
 	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = User.class)
@@ -71,14 +68,6 @@ public class PlanningGroup implements Serializable {
 
 	public void setDescription(Description description) {
 		this.description = description;
-	}
-
-	public TypeAccount getTypeAccount() {
-		return typeAccount;
-	}
-
-	public void setTypeAccount(TypeAccount typeAccount) {
-		this.typeAccount = typeAccount;
 	}
 
 	public User getUser() {

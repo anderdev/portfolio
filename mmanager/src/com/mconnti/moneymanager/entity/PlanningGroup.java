@@ -17,10 +17,8 @@ public class PlanningGroup implements Serializable {
 	
 	private Description description;
 	
-	private TypeAccount typeAccount;
-	
 	private Planning planning;
-
+	
 	private User user;
 	
 	private Map<Long,PlanningItem> plannigItemMap;
@@ -39,14 +37,6 @@ public class PlanningGroup implements Serializable {
 
 	public void setDescription(Description description) {
 		this.description = description;
-	}
-
-	public TypeAccount getTypeAccount() {
-		return typeAccount;
-	}
-
-	public void setTypeAccount(TypeAccount typeAccount) {
-		this.typeAccount = typeAccount;
 	}
 
 	public User getUser() {

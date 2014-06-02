@@ -57,10 +57,12 @@
 							</h:inputText>
 							 -->
 							
-							<p:dataTable var="planGroup" value="#{planningMBean.planningGroupList}" style="width:100%" id="planningGroupList"
+							<p:dataTable var="planGroup" value="#{plan.plannigGroupList}" style="width:100%" id="planningGroupList"
 					    		emptyMessage="#{messages['lb_empty_list']}"
 					    		rows="10" rowKey="#{planGroup}"
 	                 			selection="#{planningMBean.selectedPlanningGroup}" >
+	                 			
+	                 			
 	                 			
 	                 			<p:column style="width:40%;">
 							        <f:facet name="header">
@@ -177,7 +179,7 @@
 			       		<h:panelGrid columns="2" styleClass="boldFont" columnClasses="column120RightWithPaddingRigth,column285" border="0" >
 			       		
 			       			<h:outputText value="#{messages['lb_typeAccount']}" />
-							<p:selectOneMenu value="#{planningMBean.planningGroup.typeAccount.id}" label="#{messages['lb_typeAccount_']}" style="width:100%">
+							<p:selectOneMenu value="#{planningMBean.typeAccount.id}" label="#{messages['lb_typeAccount_']}" style="width:100%">
 					            <f:selectItem itemLabel="#{messages['lb_select']}" itemValue="" />
 					            <f:selectItems value="#{planningMBean.typeAccounts}" var="desc" itemLabel="#{desc.name}" itemValue="#{desc}"/>
 					            <p:ajax update="descriptions" event="change" listener="#{planningMBean.loadDescriptionsByTypeAccount}"/>  

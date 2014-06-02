@@ -43,8 +43,11 @@ public class CountryBOImpl extends GenericBOImpl<Country> implements CountryBO {
 		return libReturn;
 	}
 
+	@Override
+	@Transactional
 	public List<Country> list() throws Exception {
-		return list(Country.class, null, null);
+		List<Country> list = list(Country.class, null, null);
+		return list;
 	}
 
 	@Override

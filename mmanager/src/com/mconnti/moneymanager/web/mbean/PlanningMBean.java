@@ -72,10 +72,8 @@ public class PlanningMBean implements Serializable {
 	public PlanningMBean() {
 		this.planning = new Planning();
 		this.planningGroup = new PlanningGroup();
-		this.planningGroup.setTypeAccount(new TypeAccount());
 		this.planningGroup.setDescription(new Description());
 		this.selectedPlanningGroup = new PlanningGroup();
-		this.selectedPlanningGroup.setTypeAccount(new TypeAccount());
 		this.selectedPlanningGroup.setDescription(new Description());
 		this.planningItem = new PlanningItem();
 		this.typeAccount = new TypeAccount();
@@ -91,7 +89,6 @@ public class PlanningMBean implements Serializable {
 	private void createPlanning() {
 		this.planning = new Planning();
 		this.planningGroup = new PlanningGroup();
-		this.planningGroup.setTypeAccount(new TypeAccount());
 		this.planningGroup.setDescription(new Description());
 	}
 
@@ -194,6 +191,7 @@ public class PlanningMBean implements Serializable {
 		createPlanning();
 		Planning plan = getSelected();
 		planningGroup.setPlanning(plan);
+		planningGroup.setUser(plan.getUser());
 		loadTypeAccount();
 	}
 
@@ -203,19 +201,16 @@ public class PlanningMBean implements Serializable {
 
 	public void edit() {
 	}
-
-	public void saveTab() {
+	
+	private Boolean save(Object obj, String url){
 		MessageReturn ret = new MessageReturn();
 
 		try {
-			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/planning");
+			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/"+url);
 
-			planning.setDate(new GregorianCalendar());
-			planning.setUser(userMBean.getLoggedUser().getSuperUser() == null ? userMBean.getLoggedUser() : userMBean.getLoggedUser().getSuperUser());
-			planning.setSelected(true);
-			request.body(MediaType.APPLICATION_JSON, planning);
+			request.body(MediaType.APPLICATION_JSON, obj);
 
-			ClientResponse<Planning> response = request.post(Planning.class);
+			ClientResponse<Object> response = request.post(Object.class);
 
 			ret = response.getEntity(MessageReturn.class);
 
@@ -228,9 +223,6 @@ public class PlanningMBean implements Serializable {
 			} else {
 				FacesUtil.showSuccessMessage(ret.getMessage());
 			}
-			createPlanning();
-			list();
-			showForm = false;
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -238,6 +230,19 @@ public class PlanningMBean implements Serializable {
 		} catch (Exception e) {
 			e.printStackTrace();
 			FacesUtil.showAErrorMessage(e.getMessage());
+		}
+		return true;
+	}
+
+	public void saveTab() {
+		planning.setDate(new GregorianCalendar());
+		planning.setUser(userMBean.getLoggedUser().getSuperUser() == null ? userMBean.getLoggedUser() : userMBean.getLoggedUser().getSuperUser());
+		planning.setSelected(true);
+		
+		if(save(planning, "planning")){
+			createPlanning();
+			list();
+			showForm = false;
 		}
 	}
 
@@ -269,6 +274,8 @@ public class PlanningMBean implements Serializable {
 	public void saveGroup(){
 		Description desc = getDescriptionById(planningGroup.getDescription().getId());
 		planningGroup.setDescription(desc);
+		
+		save(planningGroup, "planninggroup");
 		
 		planningItem.setPlanningGroup(planningGroup);
 		if(planningGroupList == null){
@@ -346,7 +353,7 @@ public class PlanningMBean implements Serializable {
 
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/description");
 			description.setUser(userMBean.getLoggedUser().getSuperUser() == null ? userMBean.getLoggedUser() : userMBean.getLoggedUser().getSuperUser());
-			description.setTypeAccount(planningGroup.getTypeAccount());
+			description.setTypeAccount(typeAccount);
 
 			request.body(MediaType.APPLICATION_JSON, description);
 			ClientResponse<Description> response = request.put(Description.class);

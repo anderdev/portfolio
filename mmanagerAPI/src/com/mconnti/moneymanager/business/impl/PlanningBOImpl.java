@@ -4,16 +4,27 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mconnti.moneymanager.business.PlanningBO;
 import com.mconnti.moneymanager.entity.Planning;
+import com.mconnti.moneymanager.entity.PlanningGroup;
+import com.mconnti.moneymanager.entity.PlanningItem;
 import com.mconnti.moneymanager.entity.User;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
+import com.mconnti.moneymanager.persistence.PlanningGroupDAO;
+import com.mconnti.moneymanager.persistence.PlanningItemDAO;
 import com.mconnti.moneymanager.utils.MessageFactory;
 import com.mconnti.moneymanager.utils.Utils;
 
 public class PlanningBOImpl extends GenericBOImpl<Planning> implements PlanningBO {
+	
+	@Autowired
+	private PlanningGroupDAO planningGroupDAO;
+	
+	@Autowired
+	private PlanningItemDAO planningItemDAO;
 
 	@Override
 	@Transactional
@@ -42,6 +53,7 @@ public class PlanningBOImpl extends GenericBOImpl<Planning> implements PlanningB
 		return libReturn;
 	}
 
+	@Transactional
 	public List<Planning> list(User user) throws Exception {
 		Map<String, String> queryParams = new LinkedHashMap<>();
 		queryParams.put(" where x.user.id = ", user.getId() + "");
@@ -92,6 +104,50 @@ public class PlanningBOImpl extends GenericBOImpl<Planning> implements PlanningB
 		}else {
 			return null;
 		}
+	}
+
+	@Override
+	@Transactional
+	public MessageReturn saveGroup(PlanningGroup planningGroup) throws Exception {
+		MessageReturn libReturn = new MessageReturn();
+		try {
+			planningGroupDAO.save(planningGroup);
+		} catch (Exception e) {
+			e.printStackTrace();
+			libReturn.setPlanningGroup(planningGroup);
+			libReturn.setMessage(e.getMessage());
+		}
+		if (libReturn.getMessage() == null && planningGroup.getId() == null) {
+			libReturn.setMessage(MessageFactory.getMessage("lb_planning_saved", planningGroup.getUser().getCity().getState().getCountry().getLocale()));
+			libReturn.setPlanningGroup(planningGroup);
+		} else if (libReturn.getMessage() == null && planningGroup.getId() != null) {
+			libReturn.setMessage(MessageFactory.getMessage("lb_planning_updated", planningGroup.getUser().getCity().getState().getCountry().getLocale()));
+			libReturn.setPlanningGroup(planningGroup);
+		}
+
+		return libReturn;
+	}
+
+	@Override
+	@Transactional
+	public MessageReturn saveItem(PlanningItem planningItem) throws Exception {
+		MessageReturn libReturn = new MessageReturn();
+		try {
+			planningItemDAO.save(planningItem);
+		} catch (Exception e) {
+			e.printStackTrace();
+			libReturn.setPlanningItem(planningItem);
+			libReturn.setMessage(e.getMessage());
+		}
+		if (libReturn.getMessage() == null && planningItem.getId() == null) {
+			libReturn.setMessage(MessageFactory.getMessage("lb_planning_saved", planningItem.getUser().getCity().getState().getCountry().getLocale()));
+			libReturn.setPlanningItem(planningItem);
+		} else if (libReturn.getMessage() == null && planningItem.getId() != null) {
+			libReturn.setMessage(MessageFactory.getMessage("lb_planning_updated", planningItem.getUser().getCity().getState().getCountry().getLocale()));
+			libReturn.setPlanningItem(planningItem);
+		}
+
+		return libReturn;
 	}
 
 }

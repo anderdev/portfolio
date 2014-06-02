@@ -236,5 +236,4 @@ public class MessageReturn {
 	public void setPlanningGroup(PlanningGroup planningGroup) {
 		this.planningGroup = planningGroup;
 	}
-
 }

@@ -39,6 +39,8 @@ import com.mconnti.moneymanager.entity.CreditCard;
 import com.mconnti.moneymanager.entity.Currency;
 import com.mconnti.moneymanager.entity.Description;
 import com.mconnti.moneymanager.entity.Planning;
+import com.mconnti.moneymanager.entity.PlanningGroup;
+import com.mconnti.moneymanager.entity.PlanningItem;
 import com.mconnti.moneymanager.entity.Register;
 import com.mconnti.moneymanager.entity.Role;
 import com.mconnti.moneymanager.entity.State;
@@ -883,7 +885,6 @@ public class RestService {
 	@Consumes({ MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Response listPlanning(Planning planning) {
-
 		List<Planning> list = new ArrayList<>();
 		try {
 			list = planningBO.list(planning.getUser());
@@ -917,6 +918,34 @@ public class RestService {
 		MessageReturn ret = new MessageReturn();
 		try {
 			ret = planningBO.save(planning);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Response.status(200).entity(ret).build();
+	}
+	
+	@POST
+	@Path("/planninggroup")
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response savePlanningGroup(PlanningGroup planningGroup) {
+		MessageReturn ret = new MessageReturn();
+		try {
+			ret = planningBO.saveGroup(planningGroup);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Response.status(200).entity(ret).build();
+	}
+	
+	@POST
+	@Path("/planningitem")
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response savePlanningItem(PlanningItem planningItem) {
+		MessageReturn ret = new MessageReturn();
+		try {
+			ret = planningBO.saveItem(planningItem);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
