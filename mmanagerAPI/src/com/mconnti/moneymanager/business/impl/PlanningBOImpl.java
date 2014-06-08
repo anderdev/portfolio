@@ -16,7 +16,6 @@ import com.mconnti.moneymanager.entity.xml.MessageReturn;
 import com.mconnti.moneymanager.persistence.PlanningGroupDAO;
 import com.mconnti.moneymanager.persistence.PlanningItemDAO;
 import com.mconnti.moneymanager.utils.MessageFactory;
-import com.mconnti.moneymanager.utils.Utils;
 
 public class PlanningBOImpl extends GenericBOImpl<Planning> implements PlanningBO {
 	
@@ -31,7 +30,7 @@ public class PlanningBOImpl extends GenericBOImpl<Planning> implements PlanningB
 	public MessageReturn save(Planning planning) {
 		MessageReturn libReturn = new MessageReturn();
 		try {
-			Planning planTemp = getSelected(planning);
+			Planning planTemp = getSelected(planning.getUser());
 			if(planTemp != null){
 				planTemp.setSelected(false);
 				saveGeneric(planTemp);
@@ -93,11 +92,11 @@ public class PlanningBOImpl extends GenericBOImpl<Planning> implements PlanningB
 	}
 
 	@Override
-	public Planning getSelected(Planning plannnig) throws Exception {
+	public Planning getSelected(User user) throws Exception {
 		
 		Map<String, String> queryParams = new LinkedHashMap<>();
-		queryParams.put(" where x.user.id = ", plannnig.getUser().getId() + "");
-		queryParams.put(" and x.selected = ", Utils.setBooleanValue(plannnig.getSelected()) + "");
+		queryParams.put(" where x.user.id = ", user.getId() + "");
+		queryParams.put(" and x.selected = "," 1 ");
 		List<Planning> result = list(Planning.class, queryParams, null);
 		if(result.size() > 0){
 			return result.get(0);
@@ -111,6 +110,7 @@ public class PlanningBOImpl extends GenericBOImpl<Planning> implements PlanningB
 	public MessageReturn saveGroup(PlanningGroup planningGroup) throws Exception {
 		MessageReturn libReturn = new MessageReturn();
 		try {
+			planningGroup.setPlanning(getSelected(planningGroup.getUser()));
 			planningGroupDAO.save(planningGroup);
 		} catch (Exception e) {
 			e.printStackTrace();

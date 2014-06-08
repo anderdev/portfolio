@@ -25,6 +25,6 @@ public interface PlanningBO extends GenericBO<Planning>{
 	
 	public Planning getById(Long id);
 	
-	public Planning getSelected(final Planning plannnig) throws Exception;
+	public Planning getSelected(User user) throws Exception;
 }
 

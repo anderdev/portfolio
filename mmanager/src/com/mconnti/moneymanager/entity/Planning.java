@@ -2,7 +2,7 @@ package com.mconnti.moneymanager.entity;
 
 import java.io.Serializable;
 import java.util.GregorianCalendar;
-import java.util.Set;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -20,7 +20,7 @@ public class Planning implements Serializable {
 	
 	private GregorianCalendar date;
 	
-	private Set<PlanningGroup> plannigGroupList;
+	private List<PlanningGroup> plannigGroupList;
 
 	private User user;
 	
@@ -58,11 +58,11 @@ public class Planning implements Serializable {
 		this.date = date;
 	}
 
-	public Set<PlanningGroup> getPlannigGroupList() {
+	public List<PlanningGroup> getPlannigGroupList() {
 		return plannigGroupList;
 	}
 
-	public void setPlannigGroupList(Set<PlanningGroup> plannigGroupList) {
+	public void setPlannigGroupList(List<PlanningGroup> plannigGroupList) {
 		this.plannigGroupList = plannigGroupList;
 	}
 

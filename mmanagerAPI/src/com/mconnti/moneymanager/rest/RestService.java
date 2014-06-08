@@ -899,10 +899,10 @@ public class RestService {
 	@Path("/planning/selected")
 	@Consumes({ MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response getSelected(Planning planning) {
-
+	public Response getSelected(User user) {
+		Planning planning = new Planning();
 		try {
-			planning = planningBO.getSelected(planning);
+			planning = planningBO.getSelected(user);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

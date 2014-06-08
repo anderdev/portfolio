@@ -16,6 +16,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.ForeignKey;
 
 @Entity
@@ -43,6 +44,7 @@ public class PlanningItem implements Serializable {
 	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = PlanningGroup.class)
 	@JoinColumn(name = "planninggroup_id")
 	@ForeignKey(name = "FK_PLITEM_PLGROUP")
+	@JsonIgnore
 	private PlanningGroup planningGroup;
 
 	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = User.class)

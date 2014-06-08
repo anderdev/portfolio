@@ -25,6 +25,7 @@ import com.mconnti.moneymanager.entity.Planning;
 import com.mconnti.moneymanager.entity.PlanningGroup;
 import com.mconnti.moneymanager.entity.PlanningItem;
 import com.mconnti.moneymanager.entity.TypeAccount;
+import com.mconnti.moneymanager.entity.User;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
 import com.mconnti.moneymanager.util.FacesUtil;
 
@@ -92,11 +93,15 @@ public class PlanningMBean implements Serializable {
 		this.planningGroup.setDescription(new Description());
 	}
 
+	private User superUser() {
+		return userMBean.getLoggedUser().getSuperUser() == null ? userMBean.getLoggedUser() : userMBean.getLoggedUser().getSuperUser();
+	}
+	
 	private List<Planning> loadList() {
 		try {
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/planning/list");
 
-			planning.setUser(userMBean.getLoggedUser().getSuperUser() == null ? userMBean.getLoggedUser() : userMBean.getLoggedUser().getSuperUser());
+			planning.setUser(superUser());
 			request.body(MediaType.APPLICATION_JSON, planning);
 
 			ClientResponse<Planning> response = request.put(Planning.class);
@@ -116,32 +121,30 @@ public class PlanningMBean implements Serializable {
 		return planningList;
 	}
 	
-	private Planning getSelected() {
-		Planning plan = new Planning();
-		try {
-			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/planning/selected");
-
-			planning.setUser(userMBean.getLoggedUser().getSuperUser() == null ? userMBean.getLoggedUser() : userMBean.getLoggedUser().getSuperUser());
-			planning.setSelected(true);
-			request.body(MediaType.APPLICATION_JSON, planning);
-
-			ClientResponse<Planning> response = request.put(Planning.class);
-
-			if (response.getStatus() != 200) {
-				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
-			}
-			
-			plan = response.getEntity(new GenericType<Planning>() {
-			});
-		} catch (ClientProtocolException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return plan;
-	}
+//	private Planning getSelected() {
+//		Planning plan = new Planning();
+//		try {
+//			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/planning/selected");
+//
+//			request.body(MediaType.APPLICATION_JSON, superUser());
+//
+//			ClientResponse<User> response = request.put(User.class);
+//
+//			if (response.getStatus() != 200) {
+//				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+//			}
+//			
+//			plan = response.getEntity(new GenericType<Planning>() {
+//			});
+//		} catch (ClientProtocolException e) {
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		return plan;
+//	}
 	
 	private Description getDescriptionById(Long id) {
 
@@ -189,9 +192,7 @@ public class PlanningMBean implements Serializable {
 
 	public void newItem() {
 		createPlanning();
-		Planning plan = getSelected();
-		planningGroup.setPlanning(plan);
-		planningGroup.setUser(plan.getUser());
+		planningGroup.setUser(superUser());
 		loadTypeAccount();
 	}
 
@@ -236,7 +237,7 @@ public class PlanningMBean implements Serializable {
 
 	public void saveTab() {
 		planning.setDate(new GregorianCalendar());
-		planning.setUser(userMBean.getLoggedUser().getSuperUser() == null ? userMBean.getLoggedUser() : userMBean.getLoggedUser().getSuperUser());
+		planning.setUser(superUser());
 		planning.setSelected(true);
 		
 		if(save(planning, "planning")){

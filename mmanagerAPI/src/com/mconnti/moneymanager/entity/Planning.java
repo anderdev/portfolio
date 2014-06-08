@@ -2,7 +2,7 @@ package com.mconnti.moneymanager.entity;
 
 import java.io.Serializable;
 import java.util.GregorianCalendar;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -42,7 +42,7 @@ public class Planning implements Serializable {
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "planning_id")
 	@ForeignKey(name = "FK_PLANNING_PLGROUP")
-	private Set<PlanningGroup> plannigGroupList;
+	private List<PlanningGroup> plannigGroupList;
 
 	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = User.class)
 	@JoinColumn(name = "user_id")
@@ -83,11 +83,11 @@ public class Planning implements Serializable {
 		this.date = date;
 	}
 
-	public Set<PlanningGroup> getPlannigGroupList() {
+	public List<PlanningGroup> getPlannigGroupList() {
 		return plannigGroupList;
 	}
 
-	public void setPlannigGroupList(Set<PlanningGroup> plannigGroupList) {
+	public void setPlannigGroupList(List<PlanningGroup> plannigGroupList) {
 		this.plannigGroupList = plannigGroupList;
 	}
 

@@ -19,7 +19,6 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.ForeignKey;
 
 @Entity
@@ -48,7 +47,6 @@ public class State implements Serializable{
 	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = Country.class)
 	@JoinColumn(name = "country_id")
 	@ForeignKey(name = "FK_STATE_CONTRY")
-	@JsonIgnore
 	private Country country;
 
 	public Long getId() {
