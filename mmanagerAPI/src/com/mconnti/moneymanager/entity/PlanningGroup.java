@@ -1,6 +1,7 @@
 package com.mconnti.moneymanager.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -91,6 +92,9 @@ public class PlanningGroup implements Serializable {
 	}
 
 	public List<PlanningItem> getPlannigItemList() {
+		if(plannigItemList == null){
+			plannigItemList = new ArrayList<>();
+		}
 		return plannigItemList;
 	}
 

@@ -121,31 +121,6 @@ public class PlanningMBean implements Serializable {
 		return planningList;
 	}
 	
-//	private Planning getSelected() {
-//		Planning plan = new Planning();
-//		try {
-//			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/planning/selected");
-//
-//			request.body(MediaType.APPLICATION_JSON, superUser());
-//
-//			ClientResponse<User> response = request.put(User.class);
-//
-//			if (response.getStatus() != 200) {
-//				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
-//			}
-//			
-//			plan = response.getEntity(new GenericType<Planning>() {
-//			});
-//		} catch (ClientProtocolException e) {
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		return plan;
-//	}
-	
 	private Description getDescriptionById(Long id) {
 
 		Description descriptionReturn = null;
@@ -219,11 +194,12 @@ public class PlanningMBean implements Serializable {
 				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
 			}
 
-			if (ret.getPlanning() == null) {
+			if (ret.getPlanning() == null && ret.getPlanningGroup() == null) {
 				throw new Exception(ret.getMessage());
 			} else {
 				FacesUtil.showSuccessMessage(ret.getMessage());
 			}
+			loadList();
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

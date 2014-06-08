@@ -1,5 +1,7 @@
 package com.mconnti.moneymanager.business.impl;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,10 +20,10 @@ import com.mconnti.moneymanager.persistence.PlanningItemDAO;
 import com.mconnti.moneymanager.utils.MessageFactory;
 
 public class PlanningBOImpl extends GenericBOImpl<Planning> implements PlanningBO {
-	
+
 	@Autowired
 	private PlanningGroupDAO planningGroupDAO;
-	
+
 	@Autowired
 	private PlanningItemDAO planningItemDAO;
 
@@ -31,7 +33,7 @@ public class PlanningBOImpl extends GenericBOImpl<Planning> implements PlanningB
 		MessageReturn libReturn = new MessageReturn();
 		try {
 			Planning planTemp = getSelected(planning.getUser());
-			if(planTemp != null){
+			if (planTemp != null) {
 				planTemp.setSelected(false);
 				saveGeneric(planTemp);
 			}
@@ -93,14 +95,14 @@ public class PlanningBOImpl extends GenericBOImpl<Planning> implements PlanningB
 
 	@Override
 	public Planning getSelected(User user) throws Exception {
-		
+
 		Map<String, String> queryParams = new LinkedHashMap<>();
 		queryParams.put(" where x.user.id = ", user.getId() + "");
-		queryParams.put(" and x.selected = "," 1 ");
+		queryParams.put(" and x.selected = ", " 1 ");
 		List<Planning> result = list(Planning.class, queryParams, null);
-		if(result.size() > 0){
+		if (result.size() > 0) {
 			return result.get(0);
-		}else {
+		} else {
 			return null;
 		}
 	}
@@ -111,6 +113,16 @@ public class PlanningBOImpl extends GenericBOImpl<Planning> implements PlanningB
 		MessageReturn libReturn = new MessageReturn();
 		try {
 			planningGroup.setPlanning(getSelected(planningGroup.getUser()));
+			List<PlanningItem> pItemList = new ArrayList<>();
+			for (int x = 1; x < 13; x++) {
+				PlanningItem pItem = new PlanningItem();
+				pItem.setAmount(BigDecimal.ZERO);
+				pItem.setMonth(x);
+				pItem.setPlanningGroup(planningGroup);
+				pItem.setUser(planningGroup.getUser());
+				pItemList.add(pItem);
+			}
+			planningGroup.getPlannigItemList().addAll(pItemList);
 			planningGroupDAO.save(planningGroup);
 		} catch (Exception e) {
 			e.printStackTrace();
