@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -39,7 +38,7 @@ public class PlanningMBean implements Serializable {
 	private UserMBean userMBean;
 
 	private List<Planning> planningList;
-	
+
 	private List<PlanningGroup> planningGroupList;
 
 	private Planning planning;
@@ -49,10 +48,12 @@ public class PlanningMBean implements Serializable {
 	private Description description;
 
 	private PlanningGroup planningGroup;
-	
+
 	private PlanningGroup selectedPlanningGroup;
 
 	private PlanningItem planningItem;
+	
+	private PlanningItem selectedPlanningItem;
 
 	private Planning[] selectedPlanning;
 
@@ -67,7 +68,7 @@ public class PlanningMBean implements Serializable {
 	private SelectItem[] typeAccounts;
 
 	private SelectItem[] descriptions;
-	
+
 	private Integer activedIndex;
 
 	public PlanningMBean() {
@@ -77,6 +78,7 @@ public class PlanningMBean implements Serializable {
 		this.selectedPlanningGroup = new PlanningGroup();
 		this.selectedPlanningGroup.setDescription(new Description());
 		this.planningItem = new PlanningItem();
+		this.selectedPlanningItem = new PlanningItem();
 		this.typeAccount = new TypeAccount();
 		this.description = new Description();
 
@@ -96,7 +98,7 @@ public class PlanningMBean implements Serializable {
 	private User superUser() {
 		return userMBean.getLoggedUser().getSuperUser() == null ? userMBean.getLoggedUser() : userMBean.getLoggedUser().getSuperUser();
 	}
-	
+
 	private List<Planning> loadList() {
 		try {
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/planning/list");
@@ -120,7 +122,7 @@ public class PlanningMBean implements Serializable {
 		}
 		return planningList;
 	}
-	
+
 	private Description getDescriptionById(Long id) {
 
 		Description descriptionReturn = null;
@@ -153,7 +155,7 @@ public class PlanningMBean implements Serializable {
 		List<Planning> planList = loadList();
 		for (int x = 0; x < planList.size(); x++) {
 			Planning plan = planList.get(x);
-			if(plan.getSelected()){
+			if (plan.getSelected()) {
 				activedIndex = x;
 			}
 		}
@@ -177,12 +179,12 @@ public class PlanningMBean implements Serializable {
 
 	public void edit() {
 	}
-	
-	private Boolean save(Object obj, String url){
+
+	private Boolean save(Object obj, String url) {
 		MessageReturn ret = new MessageReturn();
 
 		try {
-			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/"+url);
+			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/" + url);
 
 			request.body(MediaType.APPLICATION_JSON, obj);
 
@@ -215,8 +217,8 @@ public class PlanningMBean implements Serializable {
 		planning.setDate(new GregorianCalendar());
 		planning.setUser(superUser());
 		planning.setSelected(true);
-		
-		if(save(planning, "planning")){
+
+		if (save(planning, "planning")) {
 			createPlanning();
 			list();
 			showForm = false;
@@ -247,25 +249,16 @@ public class PlanningMBean implements Serializable {
 		}
 
 	}
-	
-	public void saveGroup(){
+
+	public void saveGroup() {
 		Description desc = getDescriptionById(planningGroup.getDescription().getId());
 		planningGroup.setDescription(desc);
-		
+
 		save(planningGroup, "planninggroup");
-		
-		planningItem.setPlanningGroup(planningGroup);
-		if(planningGroupList == null){
-			planningGroupList = new LinkedList<>();
-		}
-		
-		planningGroupList.add(planningGroup);
 	}
 
 	public void saveItem() {
-		planningGroupList.size();
-		
-		System.out.println(selectedPlanningGroup);
+		System.out.println(selectedPlanningItem);
 	}
 
 	public SelectItem[] loadTypeAccounts() {
@@ -307,7 +300,7 @@ public class PlanningMBean implements Serializable {
 		}
 		return typeAccountList;
 	}
-	
+
 	public void loadDescriptionsByTypeAccount() {
 		this.descriptions = loadDescriptions();
 	}
@@ -476,5 +469,13 @@ public class PlanningMBean implements Serializable {
 
 	public void setPlanningGroupList(List<PlanningGroup> planningGroupList) {
 		this.planningGroupList = planningGroupList;
+	}
+
+	public PlanningItem getSelectedPlanningItem() {
+		return selectedPlanningItem;
+	}
+
+	public void setSelectedPlanningItem(PlanningItem selectedPlanningItem) {
+		this.selectedPlanningItem = selectedPlanningItem;
 	}
 }
