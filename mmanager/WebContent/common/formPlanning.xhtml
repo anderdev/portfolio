@@ -52,6 +52,31 @@
 						<p:tab id="planningItemTab" title="#{plan.description}" >   
 							
 							<p:dataTable var="planGroup" value="#{plan.plannigGroupList}" style="width:100%" id="planningGroupList"
+					    		emptyMessage="#{messages['lb_empty_list']}" rows="10">
+					    			
+				    			<p:subTable  value="#{planGroup.plannigItemList}" var="item" editable="true" editMode="cell">
+				    				<f:facet name="header">  
+							            <h:outputText value="#{planGroup.description.description}"/> 
+							        </f:facet>  
+							        <p:column style="width:50px"> 
+					    				<p:cellEditor>
+						    				<f:facet name="output">  
+								             	<div align="right">
+									        		<h:outputText value="#{item.amount}" >
+									            		<f:convertNumber pattern="###,##0.00"/>
+									            	</h:outputText>
+								            	</div> 
+								            </f:facet>  
+								            <f:facet name="input">  
+								                <p:inputText value="#{item.amount}" style="width:96%"/>  
+								            </f:facet>  
+							            </p:cellEditor>
+							    	</p:column>
+				    			</p:subTable>
+						    </p:dataTable>
+						    
+						    <!--
+						    <p:dataTable var="planGroup" value="#{plan.plannigGroupList}" style="width:100%" id="planningGroupList"
 					    		emptyMessage="#{messages['lb_empty_list']}" rows="10" rowKey="#{planGroup}" selection="#{planningMBean.selectedPlanningGroup}" 
 					    		editable="true" editMode="cell">
 					    		
@@ -78,6 +103,7 @@
 						    		</p:dataGrid>
 					    		</p:column>
 						    </p:dataTable>
+						    -->
 						</p:tab>
 					</p:tabView>
 				</div>
