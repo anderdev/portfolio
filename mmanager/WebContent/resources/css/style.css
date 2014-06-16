@@ -46,18 +46,6 @@ h2, h3, h4, h5, h6 {
 }
 
 /* ===========================
-   ======= Anchor style ====== 
-   =========================== */
-a {
-	outline: 0;
-	}
-
-a img {
-	border: 0px; 
-	text-decoration: none;
-}
-
-/* ===========================
    ===== Main Navigation ===== 
    =========================== */
    
@@ -434,6 +422,19 @@ div#boxLoggedUser{
 .column100percentC{width: 100%; text-align: center;}
 .column100percentR{width: 100%; text-align: right;}
 
+.link{
+  text-decoration: none;
+}
+
+.debit{
+	color: red;
+	font-weight: bold;
+}
+
+.credit{
+	color: blue;
+	font-weight: bold;
+}
 .column40{
 	width: 40px;
 	border: 0px dotted #000;
@@ -441,6 +442,12 @@ div#boxLoggedUser{
 
 .column60{
 	width: 60px;
+	border: 0px dotted #000;
+}
+
+.column60R{
+	width: 60px;
+	text-align: right;
 	border: 0px dotted #000;
 }
 
@@ -460,6 +467,7 @@ div#boxLoggedUser{
 .column80R{
 	width: 80px;
 	text-align: right;
+	border: 1px dotted #000;
 }
 
 .column85{
@@ -514,6 +522,12 @@ div#boxLoggedUser{
 	border: 0px dotted #000;
 }
 
+.column185R{
+	width: 185px;
+	border: 0px dotted #000;
+	text-align: right;
+}
+
 .column200{
 	width: 200px;
 	border: 1px dotted #000;
@@ -552,7 +566,6 @@ div#boxLoggedUser{
 .column350{
 	width: 350px;
 }
-
 
 .button{
 	width: 100px;

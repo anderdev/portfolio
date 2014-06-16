@@ -2,7 +2,6 @@ package com.mconnti.moneymanager.web.mbean;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -163,12 +162,12 @@ public class PlanningMBean implements Serializable {
 		return "/common/formPlanning.xhtml?faces-redirect=true";
 	}
 
-	public void newTab() {
+	public void newPlanning() {
 		showForm = true;
 		this.planning = new Planning();
 	}
 
-	public void newItem() {
+	public void newPlanningGroup() {
 		createPlanning();
 		planningGroup.setUser(superUser());
 		loadTypeAccount();
@@ -197,7 +196,7 @@ public class PlanningMBean implements Serializable {
 				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
 			}
 
-			if (ret.getPlanning() == null && ret.getPlanningGroup() == null) {
+			if (ret.getPlanning() == null && ret.getPlanningGroup() == null && ret.getPlanningItem() == null) {
 				throw new Exception(ret.getMessage());
 			} else {
 				FacesUtil.showSuccessMessage(ret.getMessage());
@@ -254,16 +253,11 @@ public class PlanningMBean implements Serializable {
 	public void saveGroup() {
 		Description desc = getDescriptionById(planningGroup.getDescription().getId());
 		planningGroup.setDescription(desc);
-
 		save(planningGroup, "planninggroup");
 	}
 
 	public void saveItem() {
-		selectedPlanningItem.setAmount(new BigDecimal(5.34));
 		save(selectedPlanningItem, "planningitem");
-		System.out.println(selectedPlanningGroup);
-		
-		System.out.println(selectedPlanningItem);
 	}
 
 	public SelectItem[] loadTypeAccounts() {

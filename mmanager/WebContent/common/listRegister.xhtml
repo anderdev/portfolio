@@ -163,12 +163,12 @@
 					                <h:outputText value="#{messages['lb_amount_']}" />
 					            </f:facet>
 					            <div align="right">
-					            <h:outputText value="#{reg.amount}" style="color:red;" rendered="#{reg.typeAccount.description eq 'Debit' or reg.typeAccount.description eq 'Debito'}">
-					            	<f:convertNumber pattern="###,##0.00"/>
-					            </h:outputText>
-					            <h:outputText value="#{reg.amount}" style="color:blue;" rendered="#{reg.typeAccount.description eq 'Credit' or reg.typeAccount.description eq 'Credito'}">
-					            	<f:convertNumber pattern="###,##0.00"/>
-					            </h:outputText>
+						            <h:outputText value="#{reg.amount}" styleClass="debit" rendered="#{reg.typeAccount.description eq 'Debit' or reg.typeAccount.description eq 'Debito'}">
+						            	<f:convertNumber pattern="###,##0.00"/>
+						            </h:outputText>
+						            <h:outputText value="#{reg.amount}" styleClass="credit" rendered="#{reg.typeAccount.description eq 'Credit' or reg.typeAccount.description eq 'Credito'}">
+						            	<f:convertNumber pattern="###,##0.00"/>
+						            </h:outputText>
 					            </div>
 					        </p:column>
 
