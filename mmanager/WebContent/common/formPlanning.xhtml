@@ -61,11 +61,14 @@
 					    		<p:column>
 						    		<p:dataGrid value="#{planGroup.plannigItemList}" var="item" columns="12" >
 						    			<p:column> 
-						    				<p:inputText value="#{item.amount}" styleClass="column100percentR">
-						    					<p:ajax event="blur" process="@this" listener="#{planningMBean.saveItem}" >
-													<f:setPropertyActionListener value="#{item}" target="#{planningMBean.selectedPlanningItem}" />
-												</p:ajax>
-						    				</p:inputText> 
+						    				<p:commandLink action="#{planningMBean.saveItem}" 
+								        		ajax="true" immediate="true" >
+								        		<f:setPropertyActionListener value="#{item}" target="#{planningMBean.selectedPlanningItem}" />
+								        		<f:setPropertyActionListener value="#{planGroup}" target="#{planningMBean.selectedPlanningGroup}" />
+												<h:outputText value="#{item.amount}" styleClass="column100percentR">
+													<f:convertNumber pattern="###,##0.00"/>
+												</h:outputText>
+											</p:commandLink>
 								        </p:column> 
 						    		</p:dataGrid>
 					    		</p:column>

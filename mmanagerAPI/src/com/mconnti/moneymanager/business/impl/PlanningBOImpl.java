@@ -145,6 +145,8 @@ public class PlanningBOImpl extends GenericBOImpl<Planning> implements PlanningB
 	public MessageReturn saveItem(PlanningItem planningItem) throws Exception {
 		MessageReturn libReturn = new MessageReturn();
 		try {
+			PlanningItem itemTemp = planningItemDAO.findById(PlanningItem.class, planningItem.getId());
+			planningItem.setPlanningGroup(itemTemp.getPlanningGroup());
 			planningItemDAO.save(planningItem);
 		} catch (Exception e) {
 			e.printStackTrace();

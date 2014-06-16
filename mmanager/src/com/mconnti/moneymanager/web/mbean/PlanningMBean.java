@@ -2,6 +2,7 @@ package com.mconnti.moneymanager.web.mbean;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -258,6 +259,10 @@ public class PlanningMBean implements Serializable {
 	}
 
 	public void saveItem() {
+		selectedPlanningItem.setAmount(new BigDecimal(5.34));
+		save(selectedPlanningItem, "planningitem");
+		System.out.println(selectedPlanningGroup);
+		
 		System.out.println(selectedPlanningItem);
 	}
 
