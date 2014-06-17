@@ -10,6 +10,7 @@ import com.mconnti.moneymanager.business.TypeAccountBO;
 import com.mconnti.moneymanager.entity.TypeAccount;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
 import com.mconnti.moneymanager.utils.MessageFactory;
+import com.mconnti.moneymanager.utils.Utils;
 
 public class TypeAccountBOImpl extends GenericBOImpl<TypeAccount> implements TypeAccountBO {
 
@@ -50,6 +51,9 @@ public class TypeAccountBOImpl extends GenericBOImpl<TypeAccount> implements Typ
 	public List<TypeAccount> list(TypeAccount typeAccount) throws Exception {
 		Map<String, String> queryParams = new LinkedHashMap<>();
 		queryParams.put(" where x.locale = ", "'" + typeAccount.getLocale() + "'");
+		if(typeAccount.getShowType() != null){
+			queryParams.put(" and x.showType = ", Utils.setBooleanValue(typeAccount.getShowType())+"");
+		}
 		return list(TypeAccount.class, queryParams, null);
 	}
 

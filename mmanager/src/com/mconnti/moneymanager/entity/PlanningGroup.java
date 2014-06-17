@@ -19,6 +19,8 @@ public class PlanningGroup implements Serializable {
 	
 	private Planning planning;
 	
+	private TypeAccount typeAccount;
+	
 	private User user;
 	
 	private List<PlanningItem> plannigItemList;
@@ -61,5 +63,13 @@ public class PlanningGroup implements Serializable {
 
 	public void setPlannigItemList(List<PlanningItem> plannigItemList) {
 		this.plannigItemList = plannigItemList;
+	}
+
+	public TypeAccount getTypeAccount() {
+		return typeAccount;
+	}
+
+	public void setTypeAccount(TypeAccount typeAccount) {
+		this.typeAccount = typeAccount;
 	}
 }

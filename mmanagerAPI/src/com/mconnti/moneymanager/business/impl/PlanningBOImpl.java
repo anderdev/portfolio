@@ -10,9 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mconnti.moneymanager.business.PlanningBO;
+import com.mconnti.moneymanager.entity.Description;
 import com.mconnti.moneymanager.entity.Planning;
 import com.mconnti.moneymanager.entity.PlanningGroup;
 import com.mconnti.moneymanager.entity.PlanningItem;
+import com.mconnti.moneymanager.entity.TypeAccount;
 import com.mconnti.moneymanager.entity.User;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
 import com.mconnti.moneymanager.persistence.PlanningGroupDAO;
@@ -26,7 +28,7 @@ public class PlanningBOImpl extends GenericBOImpl<Planning> implements PlanningB
 
 	@Autowired
 	private PlanningItemDAO planningItemDAO;
-
+	
 	@Override
 	@Transactional
 	public MessageReturn save(Planning planning) {
@@ -122,7 +124,15 @@ public class PlanningBOImpl extends GenericBOImpl<Planning> implements PlanningB
 				pItem.setUser(planningGroup.getUser());
 				pItemList.add(pItem);
 			}
+			
 			planningGroup.getPlannigItemList().addAll(pItemList);
+			
+			Description description = findById(Description.class, planningGroup.getDescription().getId());
+			TypeAccount typeAccount = findById(TypeAccount.class, planningGroup.getTypeAccount().getId());
+			
+			planningGroup.setDescription(description);
+			planningGroup.setTypeAccount(typeAccount);
+			
 			planningGroupDAO.save(planningGroup);
 		} catch (Exception e) {
 			e.printStackTrace();

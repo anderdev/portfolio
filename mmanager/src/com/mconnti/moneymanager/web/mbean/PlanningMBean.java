@@ -27,6 +27,7 @@ import com.mconnti.moneymanager.entity.TypeAccount;
 import com.mconnti.moneymanager.entity.User;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
 import com.mconnti.moneymanager.util.FacesUtil;
+import com.mconnti.moneymanager.util.MessageFactory;
 
 @SessionScoped
 @ManagedBean(name = "planningMBean")
@@ -63,20 +64,21 @@ public class PlanningMBean implements Serializable {
 
 	private List<TypeAccount> typeAccountList;
 
-	private List<Description> descriptionList;
+	private List<Description> superGroupList;
 
 	private SelectItem[] typeAccounts;
 
-	private SelectItem[] descriptions;
+	private SelectItem[] superGroups;
 
 	private Integer activedIndex;
+	
+	private String selectedMonth;
 
 	public PlanningMBean() {
-		this.planning = new Planning();
-		this.planningGroup = new PlanningGroup();
-		this.planningGroup.setDescription(new Description());
+		createPlanning();
 		this.selectedPlanningGroup = new PlanningGroup();
 		this.selectedPlanningGroup.setDescription(new Description());
+		this.selectedPlanningGroup.setTypeAccount(new TypeAccount());
 		this.planningItem = new PlanningItem();
 		this.selectedPlanningItem = new PlanningItem();
 		this.typeAccount = new TypeAccount();
@@ -93,6 +95,7 @@ public class PlanningMBean implements Serializable {
 		this.planning = new Planning();
 		this.planningGroup = new PlanningGroup();
 		this.planningGroup.setDescription(new Description());
+		this.planningGroup.setTypeAccount(new TypeAccount());
 	}
 
 	private User superUser() {
@@ -123,32 +126,6 @@ public class PlanningMBean implements Serializable {
 		return planningList;
 	}
 
-	private Description getDescriptionById(Long id) {
-
-		Description descriptionReturn = null;
-		try {
-
-			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/description/getbyid");
-
-			request.body(MediaType.APPLICATION_JSON, id);
-			ClientResponse<Description> response = request.put(Description.class);
-
-			if (response.getStatus() != 200) {
-				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
-			}
-
-			descriptionReturn = response.getEntity(Description.class);
-
-		} catch (ClientProtocolException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return descriptionReturn;
-	}
-
 	public String list() {
 		showForm = false;
 		createPlanning();
@@ -171,6 +148,51 @@ public class PlanningMBean implements Serializable {
 		createPlanning();
 		planningGroup.setUser(superUser());
 		loadTypeAccount();
+	}
+	
+	public void newPlanningItem(){
+		setCurrentMonth();
+	}
+	
+	private void setCurrentMonth(){
+		switch (selectedPlanningItem.getMonth()) {
+		case 1:
+			selectedMonth = MessageFactory.getMessage("lb_month_january", userMBean.getLoggedUser().getLanguage(), null);
+			break;
+		case 2:
+			selectedMonth = MessageFactory.getMessage("lb_month_february", userMBean.getLoggedUser().getLanguage(), null);
+			break;
+		case 3:
+			selectedMonth = MessageFactory.getMessage("lb_month_march", userMBean.getLoggedUser().getLanguage(), null);
+			break;
+		case 4:
+			selectedMonth = MessageFactory.getMessage("lb_month_april", userMBean.getLoggedUser().getLanguage(), null);
+			break;
+		case 5:
+			selectedMonth = MessageFactory.getMessage("lb_month_may", userMBean.getLoggedUser().getLanguage(), null);
+			break;
+		case 6:
+			selectedMonth = MessageFactory.getMessage("lb_month_june", userMBean.getLoggedUser().getLanguage(), null);
+			break;
+		case 7:
+			selectedMonth = MessageFactory.getMessage("lb_month_july", userMBean.getLoggedUser().getLanguage(), null);
+			break;
+		case 8:
+			selectedMonth = MessageFactory.getMessage("lb_month_august", userMBean.getLoggedUser().getLanguage(), null);
+			break;
+		case 9:
+			selectedMonth = MessageFactory.getMessage("lb_month_september", userMBean.getLoggedUser().getLanguage(), null);
+			break;
+		case 10:
+			selectedMonth = MessageFactory.getMessage("lb_month_october", userMBean.getLoggedUser().getLanguage(), null);
+			break;
+		case 11:
+			selectedMonth = MessageFactory.getMessage("lb_month_november", userMBean.getLoggedUser().getLanguage(), null);
+			break;
+		case 12:
+			selectedMonth = MessageFactory.getMessage("lb_month_december", userMBean.getLoggedUser().getLanguage(), null);
+			break;
+		}
 	}
 
 	public void cancelTab() {
@@ -251,9 +273,9 @@ public class PlanningMBean implements Serializable {
 	}
 
 	public void saveGroup() {
-		Description desc = getDescriptionById(planningGroup.getDescription().getId());
-		planningGroup.setDescription(desc);
 		save(planningGroup, "planninggroup");
+		superGroups = null;
+		createPlanning();
 	}
 
 	public void saveItem() {
@@ -282,6 +304,7 @@ public class PlanningMBean implements Serializable {
 
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/typeaccount");
 			typeAccount.setLocale(userMBean.getLoggedUser().getLanguage());
+			typeAccount.setShowType(true);
 			request.body(MediaType.APPLICATION_JSON, typeAccount);
 			ClientResponse<TypeAccount> response = request.put(TypeAccount.class);
 
@@ -300,28 +323,31 @@ public class PlanningMBean implements Serializable {
 		return typeAccountList;
 	}
 
-	public void loadDescriptionsByTypeAccount() {
-		this.descriptions = loadDescriptions();
+	public void loadSuperGroups() {
+		this.superGroups = superGroups();
 	}
 
-	public SelectItem[] loadDescriptions() {
-		descriptionList = loadDescriptionList();
+	public SelectItem[] superGroups() {
 
-		List<SelectItem> itens = new ArrayList<SelectItem>(descriptionList.size());
+		superGroupList = loadDescriptionList(MessageFactory.getMessage("lb_super_group_", superUser().getLanguage(), null));
 
-		this.descriptions = new SelectItem[itens.size()];
+		List<SelectItem> itens = new ArrayList<SelectItem>(superGroupList.size());
 
-		for (Description c : descriptionList) {
-			itens.add(new SelectItem(c.getId(), c.getDescription()));
+		this.superGroups = new SelectItem[itens.size()];
+
+		for (Description d : superGroupList) {
+			itens.add(new SelectItem(d.getId(), d.getDescription()));
 		}
 		return itens.toArray(new SelectItem[itens.size()]);
 	}
 
-	private List<Description> loadDescriptionList() {
+	private List<Description> loadDescriptionList(String typeAccountDescription) {
 		try {
-
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/description");
-			description.setUser(userMBean.getLoggedUser().getSuperUser() == null ? userMBean.getLoggedUser() : userMBean.getLoggedUser().getSuperUser());
+			TypeAccount typeAccount = new TypeAccount();
+			typeAccount.setDescription(typeAccountDescription);
+
+			description.setUser(superUser());
 			description.setTypeAccount(typeAccount);
 
 			request.body(MediaType.APPLICATION_JSON, description);
@@ -330,7 +356,7 @@ public class PlanningMBean implements Serializable {
 			if (response.getStatus() != 200) {
 				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
 			}
-			descriptionList = response.getEntity(new GenericType<List<Description>>() {
+			superGroupList = response.getEntity(new GenericType<List<Description>>() {
 			});
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
@@ -339,7 +365,7 @@ public class PlanningMBean implements Serializable {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return descriptionList;
+		return superGroupList;
 	}
 
 	public UserMBean getUserMBean() {
@@ -414,22 +440,6 @@ public class PlanningMBean implements Serializable {
 		this.typeAccounts = typeAccounts;
 	}
 
-	public List<Description> getDescriptionList() {
-		return descriptionList;
-	}
-
-	public void setDescriptionList(List<Description> descriptionList) {
-		this.descriptionList = descriptionList;
-	}
-
-	public SelectItem[] getDescriptions() {
-		return descriptions;
-	}
-
-	public void setDescriptions(SelectItem[] descriptions) {
-		this.descriptions = descriptions;
-	}
-
 	public TypeAccount getTypeAccount() {
 		return typeAccount;
 	}
@@ -476,5 +486,29 @@ public class PlanningMBean implements Serializable {
 
 	public void setSelectedPlanningItem(PlanningItem selectedPlanningItem) {
 		this.selectedPlanningItem = selectedPlanningItem;
+	}
+
+	public String getSelectedMonth() {
+		return selectedMonth;
+	}
+
+	public void setSelectedMonth(String selectedMonth) {
+		this.selectedMonth = selectedMonth;
+	}
+
+	public List<Description> getSuperGroupList() {
+		return superGroupList;
+	}
+
+	public void setSuperGroupList(List<Description> superGroupList) {
+		this.superGroupList = superGroupList;
+	}
+
+	public void setSuperGroups(SelectItem[] superGroups) {
+		this.superGroups = superGroups;
+	}
+
+	public SelectItem[] getSuperGroups() {
+		return superGroups;
 	}
 }

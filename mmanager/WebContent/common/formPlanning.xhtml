@@ -54,13 +54,14 @@
 					    		
 					    		<p:column style="width:85%">
 						    		<p:dataGrid value="#{planGroup.plannigItemList}" var="item" columns="12">
-					    				<p:commandLink oncomplete="newPlanningItemModal.show()" ajax="true" immediate="true" styleClass="link" update=":planningItem">
+					    				<p:commandLink action="#{planningMBean.newPlanningItem}" oncomplete="newPlanningItemModal.show()" ajax="true" immediate="true" styleClass="link" update=":planningItem">
 							        		<f:setPropertyActionListener value="#{item}" target="#{planningMBean.selectedPlanningItem}" />
+							        		<f:setPropertyActionListener value="#{planGroup}" target="#{planningMBean.selectedPlanningGroup}" />
 							        		<div class="column60R" >
-							        			<h:outputText value="#{item.amount}" styleClass="debit" rendered="#{planGroup.description.typeAccount.description eq 'Debit' or planGroup.description.typeAccount.description eq 'Debito'}">
+							        			<h:outputText value="#{item.amount}" styleClass="debit" rendered="#{planGroup.typeAccount.description eq 'Debit' or planGroup.description.typeAccount.description eq 'Debito'}">
 									            	<f:convertNumber pattern="###,##0.00"/>
 									            </h:outputText>
-									            <h:outputText value="#{item.amount}" styleClass="credit" rendered="#{planGroup.description.typeAccount.description eq 'Credit' or planGroup.description.typeAccount.description eq 'Credito'}">
+									            <h:outputText value="#{item.amount}" styleClass="credit" rendered="#{planGroup.typeAccount.description eq 'Credit' or planGroup.description.typeAccount.description eq 'Credito'}">
 									            	<f:convertNumber pattern="###,##0.00"/>
 									            </h:outputText>
 											</div>
@@ -73,7 +74,7 @@
 				</div>
 			</h:form>
 			
-			<p:dialog header="#{messages['lb_planning_amount_registration']}" resizable="false" widgetVar="newPlanningItemModal" modal="true" appendTo="@(body)" height="130" width="280">  
+			<p:dialog header="#{messages['lb_planning_amount_registration']}" resizable="false" widgetVar="newPlanningItemModal" modal="true" appendTo="@(body)" height="170" width="380">  
 			    <h:form prependId="false" id="planningItem">
 			    	<script type="text/javascript">
 					$(function() {
@@ -83,6 +84,10 @@
 					</script>
 			    	<h:panelGroup id="panelItem">
 			    		<h:panelGrid columns="2" styleClass="boldFont" columnClasses="column120RightWithPaddingRigth,column185R" border="0" >
+			    			<h:outputText value="#{messages['lb_description']}" />
+			    			<h:outputText value="#{planningMBean.selectedPlanningGroup.description.description}" />
+			    			<h:outputText value="#{messages['lb_month']}" />
+			    			<h:outputText value="#{planningMBean.selectedMonth}" />
 			    			<h:outputText value="#{messages['lb_amount_last_month']}" />
 			    			<h:panelGroup>
 			    				<div align="right">
@@ -111,16 +116,16 @@
 			       		<h:panelGrid columns="2" styleClass="boldFont" columnClasses="column120RightWithPaddingRigth,column285" border="0" >
 			       		
 			       			<h:outputText value="#{messages['lb_typeAccount']}" />
-							<p:selectOneMenu value="#{planningMBean.typeAccount.id}" label="#{messages['lb_typeAccount_']}" style="width:100%">
+							<p:selectOneMenu value="#{planningMBean.planningGroup.typeAccount.id}" label="#{messages['lb_typeAccount_']}" style="width:100%">
 					            <f:selectItem itemLabel="#{messages['lb_select']}" itemValue="" />
 					            <f:selectItems value="#{planningMBean.typeAccounts}" var="desc" itemLabel="#{desc.name}" itemValue="#{desc}"/>
-					            <p:ajax update="descriptions" event="change" listener="#{planningMBean.loadDescriptionsByTypeAccount}"/>  
+					            <p:ajax update="descriptions" event="change" listener="#{planningMBean.loadSuperGroups}"/>  
 					        </p:selectOneMenu>
 		
 					        <h:outputText value="#{messages['lb_description']}"/>
 							<p:selectOneMenu id="descriptions" value="#{planningMBean.planningGroup.description.id}" label="#{messages['lb_description_']}" style="width:100%">
 					            <f:selectItem itemLabel="#{messages['lb_select']}" itemValue="" />
-					            <f:selectItems value="#{planningMBean.descriptions}"  var="desc" itemLabel="#{desc.description}" itemValue="#{desc}" />
+					            <f:selectItems value="#{planningMBean.superGroups}"  var="desc" itemLabel="#{desc.description}" itemValue="#{desc}" />
 					        </p:selectOneMenu>
 					        
 						</h:panelGrid>
