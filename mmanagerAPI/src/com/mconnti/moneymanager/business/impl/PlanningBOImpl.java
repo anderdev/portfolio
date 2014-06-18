@@ -66,18 +66,12 @@ public class PlanningBOImpl extends GenericBOImpl<Planning> implements PlanningB
 
 	@Override
 	@Transactional
-	public MessageReturn delete(Long id) {
+	public MessageReturn delete(final PlanningGroup planningGroup) {
 		MessageReturn libReturn = new MessageReturn();
-		Planning planning = null;
 		try {
-			planning = findById(Planning.class, id);
-			if (planning == null) {
-				libReturn.setMessage(MessageFactory.getMessage("lb_planning_not_found", "en"));
-			} else {
-				String locale = planning.getUser().getCity().getState().getCountry().getLocale();
-				remove(planning);
-				libReturn.setMessage(MessageFactory.getMessage("lb_planning_deleted", locale));
-			}
+			String locale = planningGroup.getUser().getCity().getState().getCountry().getLocale();
+			planningGroupDAO.remove(planningGroup);
+			libReturn.setMessage(MessageFactory.getMessage("lb_planning_deleted", locale));
 		} catch (Exception e) {
 			e.printStackTrace();
 			libReturn.setMessage(e.getMessage());

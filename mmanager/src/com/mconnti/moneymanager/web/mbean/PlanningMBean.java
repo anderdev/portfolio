@@ -53,7 +53,7 @@ public class PlanningMBean implements Serializable {
 	private PlanningGroup selectedPlanningGroup;
 
 	private PlanningItem planningItem;
-	
+
 	private PlanningItem selectedPlanningItem;
 
 	private Planning[] selectedPlanning;
@@ -71,7 +71,7 @@ public class PlanningMBean implements Serializable {
 	private SelectItem[] superGroups;
 
 	private Integer activedIndex;
-	
+
 	private String selectedMonth;
 
 	public PlanningMBean() {
@@ -149,12 +149,12 @@ public class PlanningMBean implements Serializable {
 		planningGroup.setUser(superUser());
 		loadTypeAccount();
 	}
-	
-	public void newPlanningItem(){
+
+	public void newPlanningItem() {
 		setCurrentMonth();
 	}
-	
-	private void setCurrentMonth(){
+
+	private void setCurrentMonth() {
 		switch (selectedPlanningItem.getMonth()) {
 		case 1:
 			selectedMonth = MessageFactory.getMessage("lb_month_january", userMBean.getLoggedUser().getLanguage(), null);
@@ -246,25 +246,23 @@ public class PlanningMBean implements Serializable {
 			showForm = false;
 		}
 	}
+	
+	public void setSelectedGroup(){
+		System.out.println(selectedPlanningGroup);
+	}
 
 	public void delete() {
 		MessageReturn ret = new MessageReturn();
 		try {
-			for (Planning planning : selectedPlanning) {
-				ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/planning");
-				request.body(MediaType.APPLICATION_JSON, planning);
+			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/planning");
+			request.body(MediaType.APPLICATION_JSON, selectedPlanningGroup);
 
-				ClientResponse<Planning> response = request.delete(Planning.class);
+			ClientResponse<PlanningGroup> response = request.delete(PlanningGroup.class);
 
-				ret = response.getEntity(MessageReturn.class);
-			}
+			ret = response.getEntity(MessageReturn.class);
 
-			if (selectedPlanning.length > 1) {
-				// FacesUtil.showSuccessMessage(MessageFactory.getMessage("lb_debit_deleted_successfully_mult", userMBean.getLoggedUser().getLanguage()));
-			} else {
-				// FacesUtil.showSuccessMessage(MessageFactory.getMessage("lb_deleted_successfully", userMBean.getLoggedUser().getLanguage()));
-			}
-			// loadList();
+			FacesUtil.showSuccessMessage(MessageFactory.getMessage("lb_deleted_successfully", userMBean.getLoggedUser().getLanguage(), null));
+			loadList();
 		} catch (Exception e) {
 			e.printStackTrace();
 			FacesUtil.showAErrorMessage(ret.getMessage());

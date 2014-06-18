@@ -956,10 +956,10 @@ public class RestService {
 	@Path("/planning")
 	@Consumes({ MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response deletePlanning(Planning planning) {
+	public Response deletePlanning(PlanningGroup planningGroup) {
 		MessageReturn ret = new MessageReturn();
 		try {
-			ret = planningBO.delete(planning.getId());
+			ret = planningBO.delete(planningGroup);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

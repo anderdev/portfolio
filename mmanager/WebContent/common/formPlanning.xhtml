@@ -48,6 +48,13 @@
 					    		emptyMessage="#{messages['lb_empty_list']}" rows="10" rowKey="#{planGroup}" 
 					    		selection="#{planningMBean.selectedPlanningGroup}">
 					    		
+					    		<p:column width="1%">
+									<p:commandLink action="#{planningMBean.setSelectedGroup}" oncomplete="confirmDelete.show()" ajax="true" id="deleteButton" immediate="true">
+						        		<f:setPropertyActionListener value="#{planGroup}" target="#{planningMBean.selectedPlanningGroup}" />
+										<p:graphicImage value="#{messages['img_delete']}" style="border: 0px" />
+									</p:commandLink>
+					            </p:column>
+					    		
 					    		<p:column style="width:15%"> 
 					    			 <h:outputText value="#{planGroup.description.description}"/> 
 					    		</p:column>
@@ -69,6 +76,13 @@
 						    		</p:dataGrid>
 					    		</p:column>
 						    </p:dataTable>
+						    
+						    <p:confirmDialog message="#{messages['lb_multiple_exclusion']}" header="#{messages['lb_header_confirmation']}" severity="alert" widgetVar="confirmDelete">  
+				            	<div align="center">
+							        <p:commandButton value="#{messages['lb_yes']}" update="planningGroupList" oncomplete="confirmDelete.hide()" action="#{planningMBean.delete}"/>  
+							        <p:commandButton value="#{messages['lb_no']}" onclick="confirmDelete.hide()" type="button" />   
+				                </div> 
+				    		</p:confirmDialog>  
 						</p:tab>
 					</p:tabView>
 				</div>

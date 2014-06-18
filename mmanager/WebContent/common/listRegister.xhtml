@@ -173,10 +173,7 @@
 					        </p:column>
 
 					        <p:column style="width:5%">
-					       		<p:commandLink action="#{registerMBean.edit(true)}" 
-					        		id="editButton" ajax="true" 
-					        		immediate="true" >
-
+					       		<p:commandLink action="#{registerMBean.edit(true)}" id="editButton" ajax="true" immediate="true" >
 					        		<f:setPropertyActionListener value="#{reg}" target="#{registerMBean.register}" />  
 									<p:graphicImage value="#{messages['img_update']}" style="border: 0px" />
 								</p:commandLink>

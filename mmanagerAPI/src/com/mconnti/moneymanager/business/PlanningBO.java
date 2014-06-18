@@ -21,7 +21,7 @@ public interface PlanningBO extends GenericBO<Planning>{
 	
 	public MessageReturn saveItem(final PlanningItem planningItem) throws Exception;
 	
-	public MessageReturn delete (Long id);
+	public MessageReturn delete (final PlanningGroup planningGroup);
 	
 	public Planning getById(Long id);
 	
