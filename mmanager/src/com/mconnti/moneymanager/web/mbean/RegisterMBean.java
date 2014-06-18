@@ -781,6 +781,10 @@ public class RegisterMBean implements Serializable {
 				register.setCreditCard(null);
 				createTypeAccount(Utils.clearString(MessageFactory.getMessage("lb_credit_", superUser().getLanguage(), null)));// credit
 			}
+			
+			if(register.getNumberParcel() > 1){
+				register.setMultipleParcel(true);
+			}
 
 			register.setUser(superUser());
 			request.body(MediaType.APPLICATION_JSON, register);
