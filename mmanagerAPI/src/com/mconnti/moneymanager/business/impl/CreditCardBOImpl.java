@@ -62,10 +62,10 @@ public class CreditCardBOImpl extends GenericBOImpl<CreditCard> implements Credi
 			}
 			
 			if (libReturn.getMessage() == null && creditCard.getId() == null) {
-				libReturn.setMessage( MessageFactory.getMessage("lb_creditCard_saved", user.getCity().getState().getCountry().getLocale()));
+				libReturn.setMessage( MessageFactory.getMessage("lb_creditCard_saved", user.getLanguage()));
 				libReturn.setCreditCard(creditCard);
 			} else if (libReturn.getMessage() == null && creditCard.getId() != null) {
-				libReturn.setMessage( MessageFactory.getMessage("lb_creditCard_updated", user.getCity().getState().getCountry().getLocale()));
+				libReturn.setMessage( MessageFactory.getMessage("lb_creditCard_updated", user.getLanguage()));
 				libReturn.setCreditCard(creditCard);
 			}
 		}else{
@@ -88,7 +88,7 @@ public class CreditCardBOImpl extends GenericBOImpl<CreditCard> implements Credi
 			if (creditCard == null) {
 				libReturn.setMessage( MessageFactory.getMessage("lb_creditCard_not_found", "en"));
 			} else {
-				String locale = creditCard.getUser().getCity().getState().getCountry().getLocale();
+				String locale = creditCard.getUser().getLanguage();
 				remove(creditCard);
 				libReturn.setMessage( MessageFactory.getMessage("lb_creditCard_deleted", locale));
 			}

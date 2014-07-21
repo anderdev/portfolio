@@ -23,11 +23,8 @@ import org.jboss.resteasy.client.ClientRequest;
 import org.jboss.resteasy.client.ClientResponse;
 import org.jboss.resteasy.util.GenericType;
 
-import com.mconnti.moneymanager.entity.City;
 import com.mconnti.moneymanager.entity.Config;
-import com.mconnti.moneymanager.entity.Country;
 import com.mconnti.moneymanager.entity.Role;
-import com.mconnti.moneymanager.entity.State;
 import com.mconnti.moneymanager.entity.User;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
 import com.mconnti.moneymanager.util.FacesUtil;
@@ -51,12 +48,6 @@ public class UserMBean implements Serializable {
 
 	private List<User> userList;
 
-	private List<Country> countryList;
-
-	private List<State> stateList;
-
-	private List<City> cityList;
-
 	private List<Role> roleList;
 
 	private User user;
@@ -67,19 +58,7 @@ public class UserMBean implements Serializable {
 
 	private User[] selectedUsers;
 
-	private SelectItem[] countries;
-
-	private SelectItem[] states;
-
-	private SelectItem[] cities;
-
 	private SelectItem[] roles;
-
-	private Country country = new Country();
-
-	private State state = new State();
-
-	private City city = new City();
 
 	private Role role = new Role();
 
@@ -110,9 +89,6 @@ public class UserMBean implements Serializable {
 	public UserMBean() {
 		this.user = new User();
 		this.user.setRole(new Role());
-		this.country = new Country();
-		this.state = new State();
-		this.city = new City();
 		this.role = new Role();
 		
 		Object request = FacesContext.getCurrentInstance().getExternalContext().getRequest();
@@ -135,18 +111,6 @@ public class UserMBean implements Serializable {
 		return getLoggedUser().getSuperUser() == null ? getLoggedUser() : getLoggedUser().getSuperUser();
 	}
 
-	public SelectItem[] getCountriesByLocale(String locale) {
-		Collection<Country> countryList = loadCountryList(locale);
-		List<SelectItem> itens = new ArrayList<SelectItem>(countryList.size());
-
-		this.countries = new SelectItem[itens.size()];
-
-		for (Country c : countryList) {
-			itens.add(new SelectItem(c.getId(), c.getName()));
-		}
-		return itens.toArray(new SelectItem[itens.size()]);
-	}
-
 	public SelectItem[] getRolesSI() {
 		Collection<Role> roleList = loadRoleList();
 		List<SelectItem> itens = new ArrayList<SelectItem>(roleList.size());
@@ -161,40 +125,6 @@ public class UserMBean implements Serializable {
 
 	public void loadRoles() {
 		this.roles = getRolesSI();
-	}
-
-	public void loadStates() {
-		this.cities = new SelectItem[1];
-
-		this.states = getStateByCountry(country);
-	}
-
-	public void loadCities() {
-		this.cities = getCityByState(state);
-	}
-
-	public SelectItem[] getStateByCountry(Country country) {
-		Collection<State> stateList = loadStateListByCountry(country);
-		List<SelectItem> itens = new ArrayList<SelectItem>(countryList.size());
-
-		this.states = new SelectItem[itens.size()];
-
-		for (State c : stateList) {
-			itens.add(new SelectItem(c.getId(), c.getName()));
-		}
-		return itens.toArray(new SelectItem[itens.size()]);
-	}
-
-	public SelectItem[] getCityByState(State state) {
-		Collection<City> cityList = loadCityListByState(state);
-		List<SelectItem> itens = new ArrayList<SelectItem>(countryList.size());
-
-		this.cities = new SelectItem[itens.size()];
-
-		for (City c : cityList) {
-			itens.add(new SelectItem(c.getId(), c.getName()));
-		}
-		return itens.toArray(new SelectItem[itens.size()]);
 	}
 
 	public String login() {
@@ -300,72 +230,6 @@ public class UserMBean implements Serializable {
 		}
 	}
 
-	private Collection<Country> loadCountryList(String locale) {
-		try {
-
-			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/country");
-			request.body(MediaType.APPLICATION_JSON, "'" + locale + "'");
-			ClientResponse<String> response = request.put(String.class);
-
-			if (response.getStatus() != 200) {
-				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
-			}
-			countryList = response.getEntity(new GenericType<List<Country>>() {
-			});
-		} catch (ClientProtocolException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return countryList;
-	}
-
-	private Collection<State> loadStateListByCountry(Country country) {
-		try {
-
-			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/state");
-			request.body(MediaType.APPLICATION_JSON, country);
-			ClientResponse<Country> response = request.put(Country.class);
-
-			if (response.getStatus() != 200) {
-				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
-			}
-			stateList = response.getEntity(new GenericType<List<State>>() {
-			});
-		} catch (ClientProtocolException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return stateList;
-	}
-
-	private Collection<City> loadCityListByState(State state) {
-		try {
-
-			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/city");
-			request.body(MediaType.APPLICATION_JSON, state);
-			ClientResponse<State> response = request.put(State.class);
-
-			if (response.getStatus() != 200) {
-				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
-			}
-			cityList = response.getEntity(new GenericType<List<City>>() {
-			});
-		} catch (ClientProtocolException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return cityList;
-	}
-
 	public String listAdm() {
 		showEditNewButton = false;
 		this.showFormUser = false;
@@ -390,20 +254,9 @@ public class UserMBean implements Serializable {
 		return "/index.xhtml?faces-redirect=true";
 	}
 
-	private void loadDefaultCombos() {
-		this.countries = getCountriesByLocale(locale);
-	}
-	
-	public void loadCountries(){
-		this.countries = getCountriesByLocale(user.getLanguage());
-	}
-
 	public void newUser() {
 		loggedUser = null;
 		this.user = new User();
-		this.country = new Country();
-		this.state = new State();
-		this.city = new City();
 		this.user.setAdmin(false);
 		this.role = new Role();
 		this.role.setId(SUPER_USER);
@@ -415,9 +268,6 @@ public class UserMBean implements Serializable {
 
 	public void newParentUser() {
 		this.user = new User();
-		this.country = new Country();
-		this.state = new State();
-		this.city = new City();
 		this.user.setAdmin(false);
 		this.role = new Role();
 		this.role.setId(USER);
@@ -430,7 +280,6 @@ public class UserMBean implements Serializable {
 		this.showFormUser = true;
 		this.disableSecretPhrase = true;
 		this.disableUsername = false;
-		loadDefaultCombos();
 		loadRoles();
 	}
 
@@ -446,12 +295,6 @@ public class UserMBean implements Serializable {
 	}
 	
 	public void edit() {
-		loadDefaultCombos();
-		this.city = user.getCity();
-		this.state = city.getState();
-		this.country = state.getCountry();
-		this.states = getStateByCountry(country);
-		this.cities = getCityByState(state);
 		showPassword = false;
 		this.showFormUser = true;
 		this.disableUsername = true;
@@ -503,7 +346,6 @@ public class UserMBean implements Serializable {
 		try {
 
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/user");
-			user.setCity(city);
 			request.body(MediaType.APPLICATION_JSON, user);
 
 			ClientResponse<User> response = request.post(User.class);
@@ -689,78 +531,6 @@ public class UserMBean implements Serializable {
 
 	public void setLoggedUser(User loggedUser) {
 		this.loggedUser = loggedUser;
-	}
-
-	public SelectItem[] getCountries() {
-		return countries;
-	}
-
-	public void setCountries(SelectItem[] countries) {
-		this.countries = countries;
-	}
-
-	public SelectItem[] getStates() {
-		return states;
-	}
-
-	public void setStates(SelectItem[] states) {
-		this.states = states;
-	}
-
-	public SelectItem[] getCities() {
-		return cities;
-	}
-
-	public void setCities(SelectItem[] cities) {
-		this.cities = cities;
-	}
-
-	public Country getCountry() {
-		return country;
-	}
-
-	public void setCountry(Country country) {
-		this.country = country;
-	}
-
-	public State getState() {
-		return state;
-	}
-
-	public void setState(State state) {
-		this.state = state;
-	}
-
-	public City getCity() {
-		return city;
-	}
-
-	public void setCity(City city) {
-		this.city = city;
-	}
-
-	public List<Country> getCountryList() {
-		return countryList;
-	}
-
-	public void setCountryList(List<Country> countryList) {
-		this.countryList = countryList;
-	}
-
-	public List<State> getStateList() {
-		return stateList;
-	}
-
-	public void setStateList(List<State> stateList) {
-		this.stateList = stateList;
-	}
-
-	public List<City> getCityList() {
-		return cityList;
-	}
-
-	public void setCityList(List<City> cityList) {
-		this.cityList = cityList;
 	}
 
 	public Boolean getRefreshList() {

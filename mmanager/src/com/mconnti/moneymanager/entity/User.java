@@ -39,7 +39,7 @@ public class User extends SearchObject implements Serializable{
 	
 	private String secretPhrase;
 	
-	private City city;
+//	private City city;
 	
 	private String username;
 	
@@ -116,13 +116,13 @@ public class User extends SearchObject implements Serializable{
 		this.secretPhrase = secretPhrase;
 	}
 
-	public City getCity() {
-		return city;
-	}
-
-	public void setCity(City city) {
-		this.city = city;
-	}
+//	public City getCity() {
+//		return city;
+//	}
+//
+//	public void setCity(City city) {
+//		this.city = city;
+//	}
 
 	public String getUsername() {
 		return username;

@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -114,6 +115,8 @@ public class RegisterMBean implements Serializable {
 
 	private Boolean hasParcels;
 
+	private Integer pageIndex;
+
 	public RegisterMBean() {
 		this.register = new Register();
 		this.description = new Description();
@@ -208,9 +211,11 @@ public class RegisterMBean implements Serializable {
 				} else {
 					register.setDescription(descriptionRet);
 					Register registerTemp = getRegisterByDescription(superUser().getId(), getTypeAccount(Utils.clearString(MessageFactory.getMessage("lb_credit_", superUser().getLanguage(), null))).getId(), descriptionRet.getId());
-					if(registerTemp != null){
+					if (registerTemp != null) {
+						register.setGroup(registerTemp.getGroup());
 						register.setSuperGroup(registerTemp.getSuperGroup());
 					} else {
+						register.setGroup(new Description());
 						register.setSuperGroup(new Description());
 					}
 				}
@@ -231,7 +236,7 @@ public class RegisterMBean implements Serializable {
 				} else {
 					register.setDescription(descriptionRet);
 					Register registerTemp = getRegisterByDescription(superUser().getId(), getTypeAccount(Utils.clearString(MessageFactory.getMessage("lb_debit_", superUser().getLanguage(), null))).getId(), descriptionRet.getId());
-					if(registerTemp != null){
+					if (registerTemp != null) {
 						register.setGroup(registerTemp.getGroup());
 						register.setSuperGroup(registerTemp.getSuperGroup());
 					} else {
@@ -340,7 +345,7 @@ public class RegisterMBean implements Serializable {
 		}
 		return descriptionReturn;
 	}
-	
+
 	private Register getRegisterByDescription(Long userId, Long typeAccountId, Long descriptionId) {
 
 		Register registerReturn = null;
@@ -348,7 +353,7 @@ public class RegisterMBean implements Serializable {
 			Map<String, String> map = new HashMap<String, String>();
 			map.put("userId", userId + "");
 			map.put("typeAccountId", typeAccountId + "");
-			map.put("descriptionId", descriptionId +"");
+			map.put("descriptionId", descriptionId + "");
 
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/register/getbydescription");
 
@@ -688,6 +693,10 @@ public class RegisterMBean implements Serializable {
 			register.setCreditCard(new CreditCard());
 		}
 
+		if (register.getGroup() == null) {
+			register.setGroup(new Description());
+		}
+
 		if (fromSearch) {
 			RequestContext context = RequestContext.getCurrentInstance();
 			if (register.getTypeAccount().getDescription().equals(Utils.clearString(MessageFactory.getMessage("lb_debit_", superUser().getLanguage(), null)))) {
@@ -777,12 +786,11 @@ public class RegisterMBean implements Serializable {
 					register.setCreditCard(null);
 				}
 			} else {
-				register.setGroup(null);
 				register.setCreditCard(null);
 				createTypeAccount(Utils.clearString(MessageFactory.getMessage("lb_credit_", superUser().getLanguage(), null)));// credit
 			}
-			
-			if(register.getNumberParcel() > 1){
+
+			if (register.getNumberParcel() > 1) {
 				register.setMultipleParcel(true);
 			}
 
@@ -1126,5 +1134,24 @@ public class RegisterMBean implements Serializable {
 
 	public void setHasParcels(Boolean hasParcels) {
 		this.hasParcels = hasParcels;
+	}
+	
+	public Integer getPageIndex() {
+		
+		if (!registerList.isEmpty()) {
+			Integer nrRegister = 0;
+			for (Register reg : registerList) {
+				nrRegister ++;
+				if(Utils.compareEqualDates(new Date(), reg.getDate())){
+					break;
+				}
+			}
+			pageIndex = nrRegister / 10;
+		}
+		return pageIndex;
+	}
+
+	public void setPageIndex(Integer pageIndex) {
+		this.pageIndex = pageIndex;
 	}
 }

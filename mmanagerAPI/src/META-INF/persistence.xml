@@ -16,9 +16,6 @@
 		<class>com.mconnti.moneymanager.entity.TypeClosure</class>
 		<class>com.mconnti.moneymanager.entity.User</class>
 		<class>com.mconnti.moneymanager.entity.Role</class>
-		<class>com.mconnti.moneymanager.entity.Country</class>
-		<class>com.mconnti.moneymanager.entity.State</class>
-		<class>com.mconnti.moneymanager.entity.City</class>
 		<class>com.mconnti.moneymanager.entity.Planning</class>
 		<class>com.mconnti.moneymanager.entity.PlanningGroup</class>
 		<class>com.mconnti.moneymanager.entity.PlanningItem</class>

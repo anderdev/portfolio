@@ -97,10 +97,10 @@ public class ClosureBOImpl extends GenericBOImpl<Closure> implements ClosureBO {
 				libReturn.setMessage(e.getMessage());
 			}
 			if (libReturn.getMessage() == null && closure.getId() == null) {
-				libReturn.setMessage(MessageFactory.getMessage("lb_closure_saved", closure.getUser().getCity().getState().getCountry().getLocale()));
+				libReturn.setMessage(MessageFactory.getMessage("lb_closure_saved", closure.getUser().getLanguage()));
 				libReturn.setClosure(closure);
 			} else if (libReturn.getMessage() == null && closure.getId() != null) {
-				libReturn.setMessage(MessageFactory.getMessage("lb_closure_updated", closure.getUser().getCity().getState().getCountry().getLocale()));
+				libReturn.setMessage(MessageFactory.getMessage("lb_closure_updated", closure.getUser().getLanguage()));
 				libReturn.setClosure(closure);
 			}
 		} else {
@@ -264,7 +264,7 @@ public class ClosureBOImpl extends GenericBOImpl<Closure> implements ClosureBO {
 			if (closure == null) {
 				libReturn.setMessage(MessageFactory.getMessage("lb_closure_not_found", "en"));
 			} else {
-				String locale = closure.getUser().getCity().getState().getCountry().getLocale();
+				String locale = closure.getUser().getLanguage();
 				remove(closure);
 				libReturn.setMessage(MessageFactory.getMessage("lb_closure_deleted", locale));
 			}

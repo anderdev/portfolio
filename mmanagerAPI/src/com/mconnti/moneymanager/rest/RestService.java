@@ -1,7 +1,6 @@
 package com.mconnti.moneymanager.rest;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,25 +15,22 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import com.mconnti.moneymanager.business.CityBO;
 import com.mconnti.moneymanager.business.ClosureBO;
 import com.mconnti.moneymanager.business.ConfigBO;
-import com.mconnti.moneymanager.business.CountryBO;
 import com.mconnti.moneymanager.business.CreditCardBO;
 import com.mconnti.moneymanager.business.CurrencyBO;
 import com.mconnti.moneymanager.business.DescriptionBO;
 import com.mconnti.moneymanager.business.PlanningBO;
+import com.mconnti.moneymanager.business.PlanningGroupBO;
+import com.mconnti.moneymanager.business.PlanningItemBO;
 import com.mconnti.moneymanager.business.RegisterBO;
 import com.mconnti.moneymanager.business.RoleBO;
-import com.mconnti.moneymanager.business.StateBO;
 import com.mconnti.moneymanager.business.TypeAccountBO;
 import com.mconnti.moneymanager.business.TypeClosureBO;
 import com.mconnti.moneymanager.business.UserBO;
 import com.mconnti.moneymanager.context.SpringApplicationContext;
-import com.mconnti.moneymanager.entity.City;
 import com.mconnti.moneymanager.entity.Closure;
 import com.mconnti.moneymanager.entity.Config;
-import com.mconnti.moneymanager.entity.Country;
 import com.mconnti.moneymanager.entity.CreditCard;
 import com.mconnti.moneymanager.entity.Currency;
 import com.mconnti.moneymanager.entity.Description;
@@ -43,7 +39,6 @@ import com.mconnti.moneymanager.entity.PlanningGroup;
 import com.mconnti.moneymanager.entity.PlanningItem;
 import com.mconnti.moneymanager.entity.Register;
 import com.mconnti.moneymanager.entity.Role;
-import com.mconnti.moneymanager.entity.State;
 import com.mconnti.moneymanager.entity.TypeAccount;
 import com.mconnti.moneymanager.entity.TypeClosure;
 import com.mconnti.moneymanager.entity.User;
@@ -51,9 +46,6 @@ import com.mconnti.moneymanager.entity.xml.MessageReturn;
 
 @Path("/rest")
 public class RestService {
-	private CountryBO countryBO;
-	private StateBO stateBO;
-	private CityBO cityBO;
 	private UserBO userBO;
 	private CurrencyBO currencyBO;
 	private TypeAccountBO typeAccountBO;
@@ -64,12 +56,11 @@ public class RestService {
 	private RegisterBO registerBO;
 	private ClosureBO closureBO;
 	private PlanningBO planningBO;
+	private PlanningGroupBO planningGroupBO;
+	private PlanningItemBO planningItemBO;
 	private RoleBO roleBO;
 
 	public RestService() {
-		countryBO = (CountryBO) SpringApplicationContext.getBean("countryBO");
-		stateBO = (StateBO) SpringApplicationContext.getBean("stateBO");
-		cityBO = (CityBO) SpringApplicationContext.getBean("cityBO");
 		userBO = (UserBO) SpringApplicationContext.getBean("userBO");
 		currencyBO = (CurrencyBO) SpringApplicationContext.getBean("currencyBO");
 		typeAccountBO = (TypeAccountBO) SpringApplicationContext.getBean("typeAccountBO");
@@ -80,193 +71,10 @@ public class RestService {
 		registerBO = (RegisterBO) SpringApplicationContext.getBean("registerBO");
 		closureBO = (ClosureBO) SpringApplicationContext.getBean("closureBO");
 		planningBO = (PlanningBO) SpringApplicationContext.getBean("planningBO");
+		planningGroupBO = (PlanningGroupBO) SpringApplicationContext.getBean("planningGroupBO");
+		planningItemBO = (PlanningItemBO) SpringApplicationContext.getBean("planningItemBO");
 		roleBO = (RoleBO) SpringApplicationContext.getBean("roleBO");
-	}
-
-	// COUNTRY AREA
-
-	@GET
-	@Path("/country")
-	@Produces({ MediaType.APPLICATION_JSON })
-	public Response listCountry() {
-
-		List<Country> list = new ArrayList<>();
-		try {
-			list = countryBO.list();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return Response.status(200).entity(list).build();
-	}
-
-	@PUT
-	@Path("/country")
-	@Produces({ MediaType.APPLICATION_JSON })
-	public Response listCountryByLocale(String locale) {
-
-		List<Country> list = new ArrayList<>();
-		try {
-			Map<String, String> queryParams = new HashMap<>();
-			queryParams.put(" where x.locale", "= " + locale);
-			list = countryBO.list(Country.class, queryParams, "x.name asc");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return Response.status(200).entity(list).build();
-	}
-
-	@POST
-	@Path("/country")
-	@Consumes({ MediaType.APPLICATION_JSON })
-	@Produces({ MediaType.APPLICATION_JSON })
-	public Response saveCountry(Country country) {
-		MessageReturn ret = new MessageReturn();
-		try {
-			ret = countryBO.save(country);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return Response.status(200).entity(ret).build();
-	}
-
-	@DELETE
-	@Path("/country")
-	@Consumes({ MediaType.APPLICATION_JSON })
-	@Produces({ MediaType.APPLICATION_JSON })
-	public Response deleteCountry(Country country) {
-		MessageReturn ret = new MessageReturn();
-		try {
-			ret = countryBO.delete(country.getId());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return Response.status(200).entity(ret).build();
-	}
-
-	// STATE AREA
-
-	@GET
-	@Path("/state")
-	@Produces({ MediaType.APPLICATION_JSON })
-	public Response listState() {
-
-		List<State> state = new ArrayList<>();
-		try {
-			state = stateBO.list();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return Response.status(200).entity(state).build();
-	}
-
-	@PUT
-	@Path("/state")
-	@Produces({ MediaType.APPLICATION_JSON })
-	public Response listStateByCountry(Country country) {
-
-		List<State> list = new ArrayList<>();
-		try {
-			Map<String, String> queryParams = new HashMap<>();
-			queryParams.put(" where x.country", "= " + country.getId());
-			list = stateBO.list(State.class, queryParams, "x.name asc");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return Response.status(200).entity(list).build();
-	}
-
-	@POST
-	@Path("/state")
-	@Consumes({ MediaType.APPLICATION_JSON })
-	@Produces({ MediaType.APPLICATION_JSON })
-	public Response saveState(State state) {
-		MessageReturn ret = new MessageReturn();
-		try {
-			ret = stateBO.save(state);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return Response.status(200).entity(ret).build();
-	}
-
-	@DELETE
-	@Path("/state")
-	@Consumes({ MediaType.APPLICATION_JSON })
-	@Produces({ MediaType.APPLICATION_JSON })
-	public Response deleteState(State state) {
-		MessageReturn ret = new MessageReturn();
-		try {
-			ret = stateBO.delete(state.getId());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return Response.status(200).entity(ret).build();
-	}
-
-	// CITY AREA
-
-	@GET
-	@Path("/city")
-	@Produces({ MediaType.APPLICATION_JSON})
-	public Response listCity() {
-
-		List<City> list = new ArrayList<>();
-		try {
-			list = cityBO.list();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return Response.status(200).entity(list).build();
-	}
-
-	@PUT
-	@Path("/city")
-	@Produces({ MediaType.APPLICATION_JSON })
-	public Response listCityByState(State state) {
-
-		List<City> list = new ArrayList<>();
-		try {
-			Map<String, String> queryParams = new HashMap<>();
-			queryParams.put(" where x.state", "= " + state.getId());
-			list = cityBO.list(City.class, queryParams, "x.name asc");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return Response.status(200).entity(list).build();
-	}
-
-	@POST
-	@Path("/city")
-	@Consumes({ MediaType.APPLICATION_JSON })
-	@Produces({ MediaType.APPLICATION_JSON })
-	public Response saveCity(City city) {
-		MessageReturn ret = new MessageReturn();
-		try {
-			ret = cityBO.save(city);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return Response.status(200).entity(ret).build();
-	}
-
-	@DELETE
-	@Path("/city")
-	@Consumes({ MediaType.APPLICATION_JSON })
-	@Produces({ MediaType.APPLICATION_JSON })
-	public Response deleteCity(City city) {
-		MessageReturn ret = new MessageReturn();
-		try {
-			ret = cityBO.delete(city.getId());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return Response.status(200).entity(ret).build();
+		
 	}
 
 	// USER AREA
@@ -959,7 +767,10 @@ public class RestService {
 	public Response deletePlanning(PlanningGroup planningGroup) {
 		MessageReturn ret = new MessageReturn();
 		try {
-			ret = planningBO.delete(planningGroup);
+			for (PlanningItem planningItem : planningGroup.getPlannigItemList()) {
+				ret = planningItemBO.delete(planningItem.getId());
+			}
+			ret = planningGroupBO.delete(planningGroup.getId());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

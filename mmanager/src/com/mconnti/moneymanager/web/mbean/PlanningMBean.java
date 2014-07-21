@@ -56,7 +56,7 @@ public class PlanningMBean implements Serializable {
 
 	private PlanningItem selectedPlanningItem;
 
-	private Planning[] selectedPlanning;
+	private Planning selectedPlanning;
 
 	private String host = null;
 
@@ -248,6 +248,7 @@ public class PlanningMBean implements Serializable {
 	}
 	
 	public void setSelectedGroup(){
+		System.out.println(activedIndex);
 		System.out.println(selectedPlanningGroup);
 	}
 
@@ -255,6 +256,11 @@ public class PlanningMBean implements Serializable {
 		MessageReturn ret = new MessageReturn();
 		try {
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/planning");
+			
+			selectedPlanning = planningList.get(activedIndex);
+			
+//			selectedPlanningGroup.setPlanning(selectedPlanning);
+			
 			request.body(MediaType.APPLICATION_JSON, selectedPlanningGroup);
 
 			ClientResponse<PlanningGroup> response = request.delete(PlanningGroup.class);
@@ -390,14 +396,6 @@ public class PlanningMBean implements Serializable {
 		this.planning = planning;
 	}
 
-	public Planning[] getSelectedPlanning() {
-		return selectedPlanning;
-	}
-
-	public void setSelectedPlanning(Planning[] selectedPlanning) {
-		this.selectedPlanning = selectedPlanning;
-	}
-
 	public Boolean getShowForm() {
 		return showForm;
 	}
@@ -508,5 +506,13 @@ public class PlanningMBean implements Serializable {
 
 	public SelectItem[] getSuperGroups() {
 		return superGroups;
+	}
+
+	public Planning getSelectedPlanning() {
+		return selectedPlanning;
+	}
+
+	public void setSelectedPlanning(Planning selectedPlanning) {
+		this.selectedPlanning = selectedPlanning;
 	}
 }

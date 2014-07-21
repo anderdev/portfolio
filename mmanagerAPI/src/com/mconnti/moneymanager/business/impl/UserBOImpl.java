@@ -12,11 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mconnti.moneymanager.business.UserBO;
-import com.mconnti.moneymanager.entity.City;
 import com.mconnti.moneymanager.entity.Config;
 import com.mconnti.moneymanager.entity.User;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
-import com.mconnti.moneymanager.persistence.CityDAO;
 import com.mconnti.moneymanager.persistence.ConfigDAO;
 import com.mconnti.moneymanager.persistence.UserDAO;
 import com.mconnti.moneymanager.utils.Constants;
@@ -30,25 +28,22 @@ public class UserBOImpl extends GenericBOImpl<User> implements UserBO {
 	private UserDAO userDAO;
 
 	@Autowired
-	private CityDAO cityDAO;
-	
-	@Autowired
 	private ConfigDAO configDAO;
 
-	private City getCity(User user) {
-		try {
-			return cityDAO.findById(City.class, user.getCity().getId());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+//	private City getCity(User user) {
+//		try {
+//			return cityDAO.findById(City.class, user.getCity().getId());
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		return null;
+//	}
 
 	@Override
 	@Transactional
 	public MessageReturn save(User user) {
 		MessageReturn libReturn = new MessageReturn();
-		City city = getCity(user);
+//		City city = getCity(user);
 		
 		//check username/email
 		/* TODO check way to update username and email on editting
@@ -75,7 +70,7 @@ public class UserBOImpl extends GenericBOImpl<User> implements UserBO {
 			libReturn.setMessage("Error testing email or username.");
 		}
 		*/
-		if (city != null) {
+		if (user.getLanguage() != null) {
 			try {
 				if (user.getId() == null) {
 					if (user.getBirth() != null && !user.getBirth().isEmpty()) {
@@ -171,7 +166,7 @@ public class UserBOImpl extends GenericBOImpl<User> implements UserBO {
 			if (user == null) {
 				libReturn.setMessage(MessageFactory.getMessage("lb_user_not_found", "en"));
 			} else {
-				String locale = user.getCity().getState().getCountry().getLocale();
+				String locale = user.getLanguage();
 				remove(user);
 				libReturn.setMessage(MessageFactory.getMessage("lb_user_deleted", locale));
 			}

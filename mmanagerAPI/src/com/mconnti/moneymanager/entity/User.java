@@ -64,10 +64,10 @@ public class User extends SearchObject implements Serializable{
 	@Column(name="phrase")
 	private String secretPhrase;
 	
-	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = City.class)
-	@JoinColumn(name = "city_id")
-	@ForeignKey(name = "FK_USER_CITY")
-	private City city;
+//	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = City.class)
+//	@JoinColumn(name = "city_id")
+//	@ForeignKey(name = "FK_USER_CITY")
+//	private City city;
 	
 	private String username;
 	
@@ -151,13 +151,13 @@ public class User extends SearchObject implements Serializable{
 		this.secretPhrase = secretPhrase;
 	}
 
-	public City getCity() {
-		return city;
-	}
-
-	public void setCity(City city) {
-		this.city = city;
-	}
+//	public City getCity() {
+//		return city;
+//	}
+//
+//	public void setCity(City city) {
+//		this.city = city;
+//	}
 
 	public String getUsername() {
 		return username;

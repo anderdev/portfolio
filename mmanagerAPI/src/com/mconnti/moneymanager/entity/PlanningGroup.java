@@ -37,28 +37,28 @@ public class PlanningGroup implements Serializable {
 	@Column(nullable = false, insertable = true, updatable = false)
 	private Long id;
 	
-	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = Description.class)
+	@ManyToOne(cascade = { CascadeType.REFRESH }, targetEntity = Description.class)
 	@JoinColumn(name = "description_id")
 	@ForeignKey(name = "FK_PLGROUP_DESC")
 	private Description description;
 	
-	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = Planning.class)
+	@ManyToOne(cascade = { CascadeType.REFRESH }, targetEntity = Planning.class)
 	@JoinColumn(name = "planning_id")
 	@ForeignKey(name = "FK_PLGROUP_PLANNING")
 	@JsonIgnore
 	private Planning planning;
 	
-	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = TypeAccount.class)
+	@ManyToOne(cascade = { CascadeType.REFRESH }, targetEntity = TypeAccount.class)
 	@JoinColumn(name = "typeaccount_id")
 	@ForeignKey(name = "FK_PLGROUP_TYPEACC")
 	private TypeAccount typeAccount;
 
-	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = User.class)
+	@ManyToOne(cascade = { CascadeType.REFRESH }, targetEntity = User.class)
 	@JoinColumn(name = "user_id")
 	@ForeignKey(name = "FK_PLGROUP_USER")
 	private User user;
 	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
 	@JoinColumn(name = "planninggroup_id")
 	@ForeignKey(name = "FK_PLGROUP_PLANITEM")
 	@Fetch(value = FetchMode.SUBSELECT)

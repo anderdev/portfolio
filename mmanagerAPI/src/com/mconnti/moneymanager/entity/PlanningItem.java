@@ -41,13 +41,13 @@ public class PlanningItem implements Serializable {
 	
 	private Integer day;
 	
-	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = PlanningGroup.class)
+	@ManyToOne(cascade = { CascadeType.REFRESH }, targetEntity = PlanningGroup.class)
 	@JoinColumn(name = "planninggroup_id")
 	@ForeignKey(name = "FK_PLITEM_PLGROUP")
 	@JsonIgnore
 	private PlanningGroup planningGroup;
 
-	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = User.class)
+	@ManyToOne(cascade = { CascadeType.REFRESH }, targetEntity = User.class)
 	@JoinColumn(name = "user_id")
 	@ForeignKey(name = "FK_PLITEM_USER")
 	private User user;

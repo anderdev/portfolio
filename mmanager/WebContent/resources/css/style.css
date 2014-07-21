@@ -20,6 +20,11 @@ body {
 	width: 90%;
 }
 
+.ui-widget-overlay {
+    filter:alpha(opacity=20);  /* works in IE 7 */
+    opacity: 0.2;  /* works in Firefox */
+}
+
 
 /* ===========================
    ========= Menu ======== 

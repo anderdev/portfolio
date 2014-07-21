@@ -40,34 +40,9 @@
 		            <f:selectItem itemLabel="#{messages['lb_select']}" itemValue="" />
 		            <f:selectItem itemLabel="#{messages['lb_english']}" itemValue="en" />
 		            <f:selectItem itemLabel="#{messages['lb_portuguese']}" itemValue="pt_BR" />
-		            <p:ajax update="countries" event="change" listener="#{userMBean.loadCountries}"/>
 		        </p:selectOneMenu>
-		   </h:panelGrid>
-		   
-		   <h:panelGrid columns="2" columnClasses="column120RightWithPaddingRigth,column350" styleClass="boldFont" border="0">		
-				<h:outputText value="#{messages['lb_country']}" />
-				<p:selectOneMenu value="#{userMBean.country.id}" label="#{messages['lb_country_']}" required="true" style="width:100%" id="countries">
-		            <f:selectItem itemLabel="#{messages['lb_select']}" itemValue="" />
-		            <f:selectItems value="#{userMBean.countries}"  var="country" itemLabel="#{country.name}" itemValue="#{country}"/>  
-		            <p:ajax update="states" event="change" listener="#{userMBean.loadStates}"/>
-		        </p:selectOneMenu>
-		   </h:panelGrid>  
-		   
-		   <h:panelGrid columns="4" columnClasses="column120RightWithPaddingRigth,column80,column120RightWithPaddingRigth,column150" styleClass="boldFont" border="0">   
-		        <h:outputText value="#{messages['lb_state']}"  />
-				<p:selectOneMenu value="#{userMBean.state.id}" label="#{messages['lb_state_']}" required="true" id="states" style="width:100%">
-		            <f:selectItem itemLabel="#{messages['lb_select']}" itemValue="" />
-		            <f:selectItems value="#{userMBean.states}" var="state" itemLabel="#{state.name}" itemValue="#{state}"/>  
-		            <p:ajax update="cities" event="change" listener="#{userMBean.loadCities}"/>
-		        </p:selectOneMenu>
-		        
-		        <h:outputText value="#{messages['lb_city']}"  />
-				<p:selectOneMenu value="#{userMBean.city.id}" label="#{messages['lb_city_']}" required="true" id="cities" style="width:90%">
-		            <f:selectItem itemLabel="#{messages['lb_select']}" itemValue="" />
-		            <f:selectItems value="#{userMBean.cities}" var="city" itemLabel="#{city.name}" itemValue="#{city}"/>  
-		        </p:selectOneMenu>
-		    </h:panelGrid>     
-		        
+		   	</h:panelGrid>
+
 		    <h:panelGrid columns="2" columnClasses="column120RightWithPaddingRigth,column350" styleClass="boldFont" border="0">	    
 		        <h:outputText value="#{messages['lb_username']}" />
 				<p:inputText id="username" label="#{messages['lb_username_']}" required="#{!userMBean.disableUsername}" disabled="#{userMBean.disableUsername}"  value="#{userMBean.user.username}" style="width:100%" >

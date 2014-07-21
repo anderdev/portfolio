@@ -41,10 +41,10 @@ public class ConfigBOImpl extends GenericBOImpl<Config> implements ConfigBO {
 				libReturn.setMessage(e.getMessage());
 			}
 			if (libReturn.getMessage() == null && config.getId() == null) {
-				libReturn.setMessage(MessageFactory.getMessage("lb_config_saved", user.getCity().getState().getCountry().getLocale()));
+				libReturn.setMessage(MessageFactory.getMessage("lb_config_saved", user.getLanguage()));
 				libReturn.setConfig(conf);
 			} else if (libReturn.getMessage() == null && config.getId() != null) {
-				libReturn.setMessage(MessageFactory.getMessage("lb_config_updated", user.getCity().getState().getCountry().getLocale()));
+				libReturn.setMessage(MessageFactory.getMessage("lb_config_updated", user.getLanguage()));
 				libReturn.setConfig(conf);
 			}
 		} else {
@@ -68,7 +68,7 @@ public class ConfigBOImpl extends GenericBOImpl<Config> implements ConfigBO {
 			if (config == null) {
 				libReturn.setMessage(MessageFactory.getMessage("lb_config_not_found", "en"));
 			} else {
-				String locale = config.getUser().getCity().getState().getCountry().getLocale();
+				String locale = config.getUser().getLanguage();
 				remove(config);
 				libReturn.setMessage(MessageFactory.getMessage("lb_config_deleted", locale));
 			}

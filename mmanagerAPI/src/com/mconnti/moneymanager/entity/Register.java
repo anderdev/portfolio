@@ -55,22 +55,22 @@ public class Register implements Serializable {
 	@ForeignKey(name = "FK_DEBIT_SGROUP")
 	private Description superGroup;
 
-	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = Currency.class)
+	@ManyToOne(cascade = { CascadeType.REFRESH }, targetEntity = Currency.class)
 	@JoinColumn(name = "currency_id")
 	@ForeignKey(name = "FK_DEBIT_CURRENCY")
 	private Currency currency;
 	
-	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = TypeAccount.class)
+	@ManyToOne(cascade = { CascadeType.REFRESH }, targetEntity = TypeAccount.class)
 	@JoinColumn(name = "typeaccount_id")
 	@ForeignKey(name = "FK_DEBIT_TYPEACCOUNT")
 	private TypeAccount typeAccount;
 
-	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = TypeClosure.class)
+	@ManyToOne(cascade = { CascadeType.REFRESH }, targetEntity = TypeClosure.class)
 	@JoinColumn(name = "typeclosure_id")
 	@ForeignKey(name = "FK_DEBIT_TYPECLOSURE")
 	private TypeClosure typeClosure;
 
-	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = Parcel.class)
+	@ManyToOne(cascade = { CascadeType.REFRESH }, targetEntity = Parcel.class)
 	@JoinColumn(name = "parcel_id")
 	@ForeignKey(name = "FK_DEBIT_PARCEL")
 	private Parcel parcel;
@@ -80,12 +80,12 @@ public class Register implements Serializable {
 
 	private Boolean closed;
 
-	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = CreditCard.class)
+	@ManyToOne(cascade = { CascadeType.REFRESH }, targetEntity = CreditCard.class)
 	@JoinColumn(name = "creditcard_id")
 	@ForeignKey(name = "FK_DEBIT_CREDIT_CARD")
 	private CreditCard creditCard;
 
-	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = User.class)
+	@ManyToOne(cascade = { CascadeType.REFRESH }, targetEntity = User.class)
 	@JoinColumn(name = "user_id")
 	@ForeignKey(name = "FK_DEBIT_USER")
 	private User user;

@@ -34,12 +34,12 @@
 				            </p:autoComplete>  
 				            
 					        <p:autoComplete label="#{messages['lb_description_']}" dropdown="true" value="#{registerMBean.register.description.description}" completeMethod="#{registerMBean.creditComplete}" rendered="#{registerMBean.loadCredits}" required="true" style="width:90%">
-				            	<p:ajax event="itemSelect" process="@this" listener="#{registerMBean.checkCreditDescription}" update="superGroupDescription"/>
-				            	<p:ajax process="@this" listener="#{registerMBean.checkCreditDescription}" update="superGroupDescription"/>
+				            	<p:ajax event="itemSelect" process="@this" listener="#{registerMBean.checkCreditDescription}" update="groupDescription,superGroupDescription"/>
+				            	<p:ajax process="@this" listener="#{registerMBean.checkCreditDescription}" update="groupDescription,superGroupDescription"/>
 				            </p:autoComplete>  
 					        
-					        <h:outputText value="#{messages['lb_group']}" rendered="#{registerMBean.loadDebits}" />
-					        <p:autoComplete id="groupDescription" label="#{messages['lb_group_']}" dropdown="true" value="#{registerMBean.register.group.description}" completeMethod="#{registerMBean.groupComplete}" rendered="#{registerMBean.loadDebits}" required="true" style="width:90%">
+					        <h:outputText value="#{messages['lb_group']}"  />
+					        <p:autoComplete id="groupDescription" label="#{messages['lb_group_']}" dropdown="true" value="#{registerMBean.register.group.description}" completeMethod="#{registerMBean.groupComplete}" required="true" style="width:90%">
 				            	<p:ajax event="itemSelect" listener="#{registerMBean.checkGroupDescription}" />
 				            	<p:ajax process="@this" listener="#{registerMBean.checkGroupDescription}" />
 				            </p:autoComplete> 
@@ -90,8 +90,7 @@
 				<div class="formListContant">
 					<p:dataTable var="reg" value="#{registerMBean.registerList}" style="width:100%" id="registerList"
 				    		paginatorAlwaysVisible="false" paginator="true" emptyMessage="#{messages['lb_empty_list']}"
-				    		rows="10" rowKey="#{reg}" paginatorPosition="top" >
-				    	
+				    		rows="10" rowKey="#{reg}" paginatorPosition="top" widgetVar="regList">
 				        <p:column>
 				            <f:facet name="header">
 				                <h:outputText value="#{messages['lb_description_']}" />
@@ -99,7 +98,7 @@
 				            <h:outputText value="#{reg.description.description}" />
 				        </p:column>
 				        
-				        <p:column rendered="#{registerMBean.loadDebits}" >
+				        <p:column >
 				            <f:facet name="header">
 				                <h:outputText value="#{messages['lb_group_']}" />
 				            </f:facet>
@@ -142,5 +141,10 @@
 				    </p:dataTable>
 				</div>
 			</h:form>
+			<script type="text/javascript">
+				$(document).ready(function () {
+					regList.paginator.setPage('#{registerMBean.pageIndex}');
+	            });
+	      </script>
 		</ui:define>
 </ui:composition>

@@ -102,10 +102,10 @@ public class DescriptionBOImpl extends GenericBOImpl<Description> implements Des
 				libReturn.setMessage(e.getMessage());
 			}
 			if (libReturn.getMessage() == null && description.getId() == null) {
-				libReturn.setMessage(MessageFactory.getMessage("lb_description_saved", user.getCity().getState().getCountry().getLocale()));
+				libReturn.setMessage(MessageFactory.getMessage("lb_description_saved", user.getLanguage()));
 				libReturn.setDescription(description);
 			} else if (libReturn.getMessage() == null && description.getId() != null) {
-				libReturn.setMessage(MessageFactory.getMessage("lb_description_updated", user.getCity().getState().getCountry().getLocale()));
+				libReturn.setMessage(MessageFactory.getMessage("lb_description_updated", user.getLanguage()));
 				libReturn.setDescription(description);
 			}
 		} else {
@@ -145,7 +145,7 @@ public class DescriptionBOImpl extends GenericBOImpl<Description> implements Des
 			if (description == null) {
 				libReturn.setMessage(MessageFactory.getMessage("lb_description_not_found", "en"));
 			} else {
-				String locale = description.getUser().getCity().getState().getCountry().getLocale();
+				String locale = description.getUser().getLanguage();
 				remove(description);
 				libReturn.setMessage(MessageFactory.getMessage("lb_description_deleted", locale));
 			}

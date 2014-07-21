@@ -154,8 +154,6 @@ public class RegisterBOImpl extends GenericBOImpl<Register> implements RegisterB
 						for (Register reg : registerParcels) {
 							Long id = reg.getId();
 							Calendar date = reg.getDate();
-							System.out.println("ID: "+id);
-							System.out.println("Date: "+(Utils.dateToString(date)));
 							reg = register;
 							reg.setId(id);
 							reg.setDate(date);

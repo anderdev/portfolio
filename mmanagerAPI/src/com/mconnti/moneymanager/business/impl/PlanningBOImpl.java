@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mconnti.moneymanager.business.PlanningBO;
+import com.mconnti.moneymanager.business.PlanningGroupBO;
+import com.mconnti.moneymanager.business.PlanningItemBO;
 import com.mconnti.moneymanager.entity.Description;
 import com.mconnti.moneymanager.entity.Planning;
 import com.mconnti.moneymanager.entity.PlanningGroup;
@@ -17,17 +19,15 @@ import com.mconnti.moneymanager.entity.PlanningItem;
 import com.mconnti.moneymanager.entity.TypeAccount;
 import com.mconnti.moneymanager.entity.User;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
-import com.mconnti.moneymanager.persistence.PlanningGroupDAO;
-import com.mconnti.moneymanager.persistence.PlanningItemDAO;
 import com.mconnti.moneymanager.utils.MessageFactory;
 
 public class PlanningBOImpl extends GenericBOImpl<Planning> implements PlanningBO {
 
 	@Autowired
-	private PlanningGroupDAO planningGroupDAO;
+	private PlanningGroupBO planningGroupBO;
 
 	@Autowired
-	private PlanningItemDAO planningItemDAO;
+	private PlanningItemBO planningItemBO;
 	
 	@Override
 	@Transactional
@@ -46,10 +46,10 @@ public class PlanningBOImpl extends GenericBOImpl<Planning> implements PlanningB
 			libReturn.setMessage(e.getMessage());
 		}
 		if (libReturn.getMessage() == null && planning.getId() == null) {
-			libReturn.setMessage(MessageFactory.getMessage("lb_planning_saved", planning.getUser().getCity().getState().getCountry().getLocale()));
+			libReturn.setMessage(MessageFactory.getMessage("lb_planning_saved", planning.getUser().getLanguage()));
 			libReturn.setPlanning(planning);
 		} else if (libReturn.getMessage() == null && planning.getId() != null) {
-			libReturn.setMessage(MessageFactory.getMessage("lb_planning_updated", planning.getUser().getCity().getState().getCountry().getLocale()));
+			libReturn.setMessage(MessageFactory.getMessage("lb_planning_updated", planning.getUser().getLanguage()));
 			libReturn.setPlanning(planning);
 		}
 
@@ -65,12 +65,16 @@ public class PlanningBOImpl extends GenericBOImpl<Planning> implements PlanningB
 	}
 
 	@Override
-	@Transactional
 	public MessageReturn delete(final PlanningGroup planningGroup) {
 		MessageReturn libReturn = new MessageReturn();
 		try {
-			String locale = planningGroup.getUser().getCity().getState().getCountry().getLocale();
-			planningGroupDAO.remove(planningGroup);
+			for (PlanningItem item : planningGroup.getPlannigItemList()) {
+				item.setPlanningGroup(null);
+				planningItemBO.delete(item.getId());
+			}
+			String locale = planningGroup.getUser().getLanguage();
+			planningGroupBO.delete(planningGroup.getId());
+			
 			libReturn.setMessage(MessageFactory.getMessage("lb_planning_deleted", locale));
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -127,17 +131,17 @@ public class PlanningBOImpl extends GenericBOImpl<Planning> implements PlanningB
 			planningGroup.setDescription(description);
 			planningGroup.setTypeAccount(typeAccount);
 			
-			planningGroupDAO.save(planningGroup);
+			planningGroupBO.save(planningGroup);
 		} catch (Exception e) {
 			e.printStackTrace();
 			libReturn.setPlanningGroup(planningGroup);
 			libReturn.setMessage(e.getMessage());
 		}
 		if (libReturn.getMessage() == null && planningGroup.getId() == null) {
-			libReturn.setMessage(MessageFactory.getMessage("lb_planning_saved", planningGroup.getUser().getCity().getState().getCountry().getLocale()));
+			libReturn.setMessage(MessageFactory.getMessage("lb_planning_saved", planningGroup.getUser().getLanguage()));
 			libReturn.setPlanningGroup(planningGroup);
 		} else if (libReturn.getMessage() == null && planningGroup.getId() != null) {
-			libReturn.setMessage(MessageFactory.getMessage("lb_planning_updated", planningGroup.getUser().getCity().getState().getCountry().getLocale()));
+			libReturn.setMessage(MessageFactory.getMessage("lb_planning_updated", planningGroup.getUser().getLanguage()));
 			libReturn.setPlanningGroup(planningGroup);
 		}
 
@@ -149,19 +153,19 @@ public class PlanningBOImpl extends GenericBOImpl<Planning> implements PlanningB
 	public MessageReturn saveItem(PlanningItem planningItem) throws Exception {
 		MessageReturn libReturn = new MessageReturn();
 		try {
-			PlanningItem itemTemp = planningItemDAO.findById(PlanningItem.class, planningItem.getId());
+			PlanningItem itemTemp = planningItemBO.findById(PlanningItem.class, planningItem.getId());
 			planningItem.setPlanningGroup(itemTemp.getPlanningGroup());
-			planningItemDAO.save(planningItem);
+			planningItemBO.save(planningItem);
 		} catch (Exception e) {
 			e.printStackTrace();
 			libReturn.setPlanningItem(planningItem);
 			libReturn.setMessage(e.getMessage());
 		}
 		if (libReturn.getMessage() == null && planningItem.getId() == null) {
-			libReturn.setMessage(MessageFactory.getMessage("lb_planning_saved", planningItem.getUser().getCity().getState().getCountry().getLocale()));
+			libReturn.setMessage(MessageFactory.getMessage("lb_planning_saved", planningItem.getUser().getLanguage()));
 			libReturn.setPlanningItem(planningItem);
 		} else if (libReturn.getMessage() == null && planningItem.getId() != null) {
-			libReturn.setMessage(MessageFactory.getMessage("lb_planning_updated", planningItem.getUser().getCity().getState().getCountry().getLocale()));
+			libReturn.setMessage(MessageFactory.getMessage("lb_planning_updated", planningItem.getUser().getLanguage()));
 			libReturn.setPlanningItem(planningItem);
 		}
 

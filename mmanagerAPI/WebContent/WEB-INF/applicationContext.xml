@@ -10,9 +10,6 @@
 	
 	<bean class="com.mconnti.moneymanager.context.SpringApplicationContext"/>
 
-	<bean id="countryBO" 	 	class="com.mconnti.moneymanager.business.impl.CountryBOImpl"/>
-	<bean id="stateBO" 		 	class="com.mconnti.moneymanager.business.impl.StateBOImpl"/>
-	<bean id="cityBO" 		 	class="com.mconnti.moneymanager.business.impl.CityBOImpl"/>
 	<bean id="userBO" 		 	class="com.mconnti.moneymanager.business.impl.UserBOImpl"/>
 	<bean id="currencyBO" 	 	class="com.mconnti.moneymanager.business.impl.CurrencyBOImpl"/>
 	<bean id="typeAccountBO" 	class="com.mconnti.moneymanager.business.impl.TypeAccountBOImpl"/>

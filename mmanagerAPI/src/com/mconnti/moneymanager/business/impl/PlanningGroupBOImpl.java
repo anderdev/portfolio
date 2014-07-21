@@ -23,10 +23,10 @@ public class PlanningGroupBOImpl extends GenericBOImpl<PlanningGroup> implements
 			libReturn.setMessage(e.getMessage());
 		}
 		if (libReturn.getMessage() == null && planningGroup.getId() == null) {
-			libReturn.setMessage(MessageFactory.getMessage("lb_planning_saved", planningGroup.getUser().getCity().getState().getCountry().getLocale()));
+			libReturn.setMessage(MessageFactory.getMessage("lb_planning_saved", planningGroup.getUser().getLanguage()));
 			libReturn.setPlanningGroup(planningGroup);
 		} else if (libReturn.getMessage() == null && planningGroup.getId() != null) {
-			libReturn.setMessage(MessageFactory.getMessage("lb_planning_updated", planningGroup.getUser().getCity().getState().getCountry().getLocale()));
+			libReturn.setMessage(MessageFactory.getMessage("lb_planning_updated", planningGroup.getUser().getLanguage()));
 			libReturn.setPlanningGroup(planningGroup);
 		}
 
@@ -47,7 +47,7 @@ public class PlanningGroupBOImpl extends GenericBOImpl<PlanningGroup> implements
 			if (planningGroup == null) {
 				libReturn.setMessage(MessageFactory.getMessage("lb_planning_not_found", "en"));
 			} else {
-				String locale = planningGroup.getUser().getCity().getState().getCountry().getLocale();
+				String locale = planningGroup.getUser().getLanguage();
 				remove(planningGroup);
 				libReturn.setMessage(MessageFactory.getMessage("lb_planning_deleted", locale));
 			}
