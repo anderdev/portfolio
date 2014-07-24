@@ -39,12 +39,12 @@ public class Planning implements Serializable {
 	
 	private GregorianCalendar date;
 	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
 	@JoinColumn(name = "planning_id")
 	@ForeignKey(name = "FK_PLANNING_PLGROUP")
 	private List<PlanningGroup> plannigGroupList;
 
-	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = User.class)
+	@ManyToOne(cascade = { CascadeType.REFRESH }, targetEntity = User.class)
 	@JoinColumn(name = "user_id")
 	@ForeignKey(name = "FK_PLANNING_USER")
 	private User user;
