@@ -25,17 +25,17 @@ public class Config implements Serializable {
 	@Column(nullable = false, insertable = true, updatable = false)
 	private Long id;
 	
-	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = Currency.class)
+	@ManyToOne(cascade = { CascadeType.REFRESH }, targetEntity = Currency.class)
 	@JoinColumn(name = "currency_id")
 	@ForeignKey(name = "FK_CONFIG_CURRENCY")
 	private Currency currency;
 	
-	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = TypeClosure.class)
+	@ManyToOne(cascade = { CascadeType.REFRESH }, targetEntity = TypeClosure.class)
 	@JoinColumn(name = "typeclosure_id")
 	@ForeignKey(name = "FK_CONFIG_TYPE_CLOSURE")
 	private TypeClosure typeClosure;
 	
-	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = User.class)
+	@ManyToOne(cascade = { CascadeType.REFRESH }, targetEntity = User.class)
 	@JoinColumn(name = "user_id")
 	@ForeignKey(name = "FK_CONFIG_USER")
 	private User user;

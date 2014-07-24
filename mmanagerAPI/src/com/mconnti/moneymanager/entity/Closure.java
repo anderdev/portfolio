@@ -35,12 +35,12 @@ public class Closure implements Serializable {
 	
 	private Calendar endDate;
 
-	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = TypeClosure.class)
+	@ManyToOne(cascade = { CascadeType.REFRESH }, targetEntity = TypeClosure.class)
 	@JoinColumn(name = "typeclosure_id")
 	@ForeignKey(name = "FK_CLOSURE_TYPECLOSURE")
 	private TypeClosure typeClosure;
 
-	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = Currency.class)
+	@ManyToOne(cascade = { CascadeType.REFRESH }, targetEntity = Currency.class)
 	@JoinColumn(name = "currency_id")
 	@ForeignKey(name = "FK_CLOSURE_CURRENCY")
 	private Currency currency;
@@ -54,7 +54,7 @@ public class Closure implements Serializable {
 	@Column(length = 13, precision = 13, scale = 2)
 	private BigDecimal totalGeneral;
 
-	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = User.class)
+	@ManyToOne(cascade = { CascadeType.REFRESH }, targetEntity = User.class)
 	@JoinColumn(name = "user_id")
 	@ForeignKey(name = "FK_CLOSURE_USER")
 	private User user;

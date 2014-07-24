@@ -30,12 +30,12 @@ public class Description implements Serializable {
 
 	private String description;
 
-	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = TypeAccount.class)
+	@ManyToOne(cascade = { CascadeType.REFRESH }, targetEntity = TypeAccount.class)
 	@JoinColumn(name = "account_id")
 	@ForeignKey(name = "FK_DESCRIPTION_ACCOUNT")
 	private TypeAccount typeAccount;
 
-	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = User.class)
+	@ManyToOne(cascade = { CascadeType.REFRESH }, targetEntity = User.class)
 	@JoinColumn(name = "user_id")
 	@ForeignKey(name = "FK_DESCRIPTION_USER")
 	private User user;

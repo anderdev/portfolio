@@ -43,12 +43,12 @@ public class CreditCard implements Serializable {
 	@Transient
 	private String expire;
 	
-	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = User.class)
+	@ManyToOne(cascade = { CascadeType.REFRESH }, targetEntity = User.class)
 	@JoinColumn(name = "user_id")
 	@ForeignKey(name = "FK_CREDITCARD_USER")
 	private User user;
 	
-	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = User.class)
+	@ManyToOne(cascade = { CascadeType.REFRESH }, targetEntity = User.class)
 	@JoinColumn(name = "master_id")
 	@ForeignKey(name = "FK_CREDITCARD_MASTER_USER")
 	private User masterUser;

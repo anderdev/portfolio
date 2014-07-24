@@ -64,16 +64,11 @@ public class User extends SearchObject implements Serializable{
 	@Column(name="phrase")
 	private String secretPhrase;
 	
-//	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = City.class)
-//	@JoinColumn(name = "city_id")
-//	@ForeignKey(name = "FK_USER_CITY")
-//	private City city;
-	
 	private String username;
 	
 	private String password;
 	
-	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = Role.class)
+	@ManyToOne(cascade = { CascadeType.REFRESH }, targetEntity = Role.class)
 	@JoinColumn(name = "role_id")
 	@ForeignKey(name = "FK_USER_ROLE")
 	private Role role;
@@ -150,14 +145,6 @@ public class User extends SearchObject implements Serializable{
 	public void setSecretPhrase(String secretPhrase) {
 		this.secretPhrase = secretPhrase;
 	}
-
-//	public City getCity() {
-//		return city;
-//	}
-//
-//	public void setCity(City city) {
-//		this.city = city;
-//	}
 
 	public String getUsername() {
 		return username;

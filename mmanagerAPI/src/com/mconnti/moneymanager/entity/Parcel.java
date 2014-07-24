@@ -28,7 +28,7 @@ public class Parcel implements Serializable {
 	@Column(name="parcels")
 	private Integer parcels;
 	
-	@ManyToOne(cascade = { CascadeType.PERSIST }, targetEntity = User.class)
+	@ManyToOne(cascade = { CascadeType.REFRESH }, targetEntity = User.class)
 	@JoinColumn(name = "user_id")
 	@ForeignKey(name = "FK_PARCEL_USER")
 	private User user;
