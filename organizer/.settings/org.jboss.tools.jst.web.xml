@@ -43,78 +43,80 @@
  <file-system NAME="lib-spring.jar"
   location="%workspace.home%/lib/spring.jar" model-entity="FileSystemJar"/>
  <file-system NAME="richOrganizer" location="%eclipse.project%" model-entity="FileSystemFolder"/>
- <file-system NAME="lib-annotations-api.jar"
-  location="D:\softwares\java\apache-tomcat-7.0.23\lib\annotations-api.jar" model-entity="FileSystemJar"/>
- <file-system NAME="lib-catalina-ant.jar"
-  location="D:\softwares\java\apache-tomcat-7.0.23\lib\catalina-ant.jar" model-entity="FileSystemJar"/>
- <file-system NAME="lib-catalina-ha.jar"
-  location="D:\softwares\java\apache-tomcat-7.0.23\lib\catalina-ha.jar" model-entity="FileSystemJar"/>
- <file-system NAME="lib-catalina-tribes.jar"
-  location="D:\softwares\java\apache-tomcat-7.0.23\lib\catalina-tribes.jar" model-entity="FileSystemJar"/>
- <file-system NAME="lib-catalina.jar"
-  location="D:\softwares\java\apache-tomcat-7.0.23\lib\catalina.jar" model-entity="FileSystemJar"/>
- <file-system NAME="lib-ecj-3.7.jar"
-  location="D:\softwares\java\apache-tomcat-7.0.23\lib\ecj-3.7.jar" model-entity="FileSystemJar"/>
- <file-system NAME="lib-el-api.jar"
-  location="D:\softwares\java\apache-tomcat-7.0.23\lib\el-api.jar" model-entity="FileSystemJar"/>
- <file-system NAME="lib-jasper-el.jar"
-  location="D:\softwares\java\apache-tomcat-7.0.23\lib\jasper-el.jar" model-entity="FileSystemJar"/>
- <file-system NAME="lib-jasper.jar"
-  location="D:\softwares\java\apache-tomcat-7.0.23\lib\jasper.jar" model-entity="FileSystemJar"/>
- <file-system NAME="lib-jsp-api.jar"
-  location="D:\softwares\java\apache-tomcat-7.0.23\lib\jsp-api.jar" model-entity="FileSystemJar"/>
- <file-system NAME="lib-servlet-api.jar"
-  location="D:\softwares\java\apache-tomcat-7.0.23\lib\servlet-api.jar" model-entity="FileSystemJar"/>
- <file-system NAME="lib-tomcat-api.jar"
-  location="D:\softwares\java\apache-tomcat-7.0.23\lib\tomcat-api.jar" model-entity="FileSystemJar"/>
- <file-system NAME="lib-tomcat-coyote.jar"
-  location="D:\softwares\java\apache-tomcat-7.0.23\lib\tomcat-coyote.jar" model-entity="FileSystemJar"/>
- <file-system NAME="lib-tomcat-dbcp.jar"
-  location="D:\softwares\java\apache-tomcat-7.0.23\lib\tomcat-dbcp.jar" model-entity="FileSystemJar"/>
- <file-system NAME="lib-tomcat-i18n-es.jar"
-  location="D:\softwares\java\apache-tomcat-7.0.23\lib\tomcat-i18n-es.jar" model-entity="FileSystemJar"/>
- <file-system NAME="lib-tomcat-i18n-fr.jar"
-  location="D:\softwares\java\apache-tomcat-7.0.23\lib\tomcat-i18n-fr.jar" model-entity="FileSystemJar"/>
- <file-system NAME="lib-tomcat-i18n-ja.jar"
-  location="D:\softwares\java\apache-tomcat-7.0.23\lib\tomcat-i18n-ja.jar" model-entity="FileSystemJar"/>
- <file-system NAME="lib-tomcat-jdbc.jar"
-  location="D:\softwares\java\apache-tomcat-7.0.23\lib\tomcat-jdbc.jar" model-entity="FileSystemJar"/>
- <file-system NAME="lib-tomcat-util.jar"
-  location="D:\softwares\java\apache-tomcat-7.0.23\lib\tomcat-util.jar" model-entity="FileSystemJar"/>
  <file-system NAME="lib-spring-beans.jar"
-  location="D:\java\workspace\portfolio\organizer\WebContent\WEB-INF\lib\spring-beans.jar" model-entity="FileSystemJar"/>
+  location="C:\Users\asantos\workspace\portfolio\organizer\WebContent\WEB-INF\lib\spring-beans.jar" model-entity="FileSystemJar"/>
  <file-system NAME="lib-spring-context.jar"
-  location="D:\java\workspace\portfolio\organizer\WebContent\WEB-INF\lib\spring-context.jar" model-entity="FileSystemJar"/>
+  location="C:\Users\asantos\workspace\portfolio\organizer\WebContent\WEB-INF\lib\spring-context.jar" model-entity="FileSystemJar"/>
  <file-system NAME="lib-spring-core.jar"
-  location="D:\java\workspace\portfolio\organizer\WebContent\WEB-INF\lib\spring-core.jar" model-entity="FileSystemJar"/>
+  location="C:\Users\asantos\workspace\portfolio\organizer\WebContent\WEB-INF\lib\spring-core.jar" model-entity="FileSystemJar"/>
  <file-system NAME="lib-spring-web.jar"
-  location="D:\java\workspace\portfolio\organizer\WebContent\WEB-INF\lib\spring-web.jar" model-entity="FileSystemJar"/>
+  location="C:\Users\asantos\workspace\portfolio\organizer\WebContent\WEB-INF\lib\spring-web.jar" model-entity="FileSystemJar"/>
  <file-system NAME="lib-jstl.jar"
-  location="D:\java\workspace\portfolio\organizer\WebContent\WEB-INF\lib\jstl.jar" model-entity="FileSystemJar"/>
+  location="C:\Users\asantos\workspace\portfolio\organizer\WebContent\WEB-INF\lib\jstl.jar" model-entity="FileSystemJar"/>
  <file-system NAME="lib-jta.jar"
-  location="D:\java\workspace\portfolio\organizer\WebContent\WEB-INF\lib\jta.jar" model-entity="FileSystemJar"/>
+  location="C:\Users\asantos\workspace\portfolio\organizer\WebContent\WEB-INF\lib\jta.jar" model-entity="FileSystemJar"/>
  <file-system NAME="lib-richfaces-api-3.3.3.Final.jar"
-  location="D:\java\workspace\portfolio\organizer\WebContent\WEB-INF\lib\richfaces-api-3.3.3.Final.jar" model-entity="FileSystemJar"/>
+  location="C:\Users\asantos\workspace\portfolio\organizer\WebContent\WEB-INF\lib\richfaces-api-3.3.3.Final.jar" model-entity="FileSystemJar"/>
  <file-system NAME="lib-richfaces-impl-3.3.3.Final.jar"
-  location="D:\java\workspace\portfolio\organizer\WebContent\WEB-INF\lib\richfaces-impl-3.3.3.Final.jar" model-entity="FileSystemJar"/>
+  location="C:\Users\asantos\workspace\portfolio\organizer\WebContent\WEB-INF\lib\richfaces-impl-3.3.3.Final.jar" model-entity="FileSystemJar"/>
  <file-system NAME="lib-richfaces-ui-3.3.3.Final.jar"
-  location="D:\java\workspace\portfolio\organizer\WebContent\WEB-INF\lib\richfaces-ui-3.3.3.Final.jar" model-entity="FileSystemJar"/>
+  location="C:\Users\asantos\workspace\portfolio\organizer\WebContent\WEB-INF\lib\richfaces-ui-3.3.3.Final.jar" model-entity="FileSystemJar"/>
  <file-system NAME="lib-log4j-1.2.16.jar"
-  location="D:\java\workspace\portfolio\organizer\WebContent\WEB-INF\lib\log4j-1.2.16.jar" model-entity="FileSystemJar"/>
+  location="C:\Users\asantos\workspace\portfolio\organizer\WebContent\WEB-INF\lib\log4j-1.2.16.jar" model-entity="FileSystemJar"/>
  <file-system NAME="lib-slf4j-api-1.5.5.jar"
-  location="D:\java\workspace\portfolio\organizer\WebContent\WEB-INF\lib\slf4j-api-1.5.5.jar" model-entity="FileSystemJar"/>
+  location="C:\Users\asantos\workspace\portfolio\organizer\WebContent\WEB-INF\lib\slf4j-api-1.5.5.jar" model-entity="FileSystemJar"/>
  <file-system NAME="lib-slf4j-simple-1.5.5.jar"
-  location="D:\java\workspace\portfolio\organizer\WebContent\WEB-INF\lib\slf4j-simple-1.5.5.jar" model-entity="FileSystemJar"/>
+  location="C:\Users\asantos\workspace\portfolio\organizer\WebContent\WEB-INF\lib\slf4j-simple-1.5.5.jar" model-entity="FileSystemJar"/>
  <file-system NAME="lib-dom4j-1.6.1.jar"
-  location="D:\java\workspace\portfolio\organizer\WebContent\WEB-INF\lib\dom4j-1.6.1.jar" model-entity="FileSystemJar"/>
+  location="C:\Users\asantos\workspace\portfolio\organizer\WebContent\WEB-INF\lib\dom4j-1.6.1.jar" model-entity="FileSystemJar"/>
  <file-system NAME="lib-cglib-2.1.3.jar"
-  location="D:\java\workspace\portfolio\organizer\WebContent\WEB-INF\lib\cglib-2.1.3.jar" model-entity="FileSystemJar"/>
+  location="C:\Users\asantos\workspace\portfolio\organizer\WebContent\WEB-INF\lib\cglib-2.1.3.jar" model-entity="FileSystemJar"/>
  <file-system NAME="lib-asm.jar"
-  location="D:\java\workspace\portfolio\organizer\WebContent\WEB-INF\lib\asm.jar" model-entity="FileSystemJar"/>
+  location="C:\Users\asantos\workspace\portfolio\organizer\WebContent\WEB-INF\lib\asm.jar" model-entity="FileSystemJar"/>
  <file-system NAME="lib-antlr-2.7.6.jar"
-  location="D:\java\workspace\portfolio\organizer\WebContent\WEB-INF\lib\antlr-2.7.6.jar" model-entity="FileSystemJar"/>
+  location="C:\Users\asantos\workspace\portfolio\organizer\WebContent\WEB-INF\lib\antlr-2.7.6.jar" model-entity="FileSystemJar"/>
+ <file-system NAME="lib-annotations-api.jar"
+  location="C:\Users\asantos\servers\apache-tomcat-7.0.47\lib\annotations-api.jar" model-entity="FileSystemJar"/>
+ <file-system NAME="lib-catalina-ant.jar"
+  location="C:\Users\asantos\servers\apache-tomcat-7.0.47\lib\catalina-ant.jar" model-entity="FileSystemJar"/>
+ <file-system NAME="lib-catalina-ha.jar"
+  location="C:\Users\asantos\servers\apache-tomcat-7.0.47\lib\catalina-ha.jar" model-entity="FileSystemJar"/>
+ <file-system NAME="lib-catalina-tribes.jar"
+  location="C:\Users\asantos\servers\apache-tomcat-7.0.47\lib\catalina-tribes.jar" model-entity="FileSystemJar"/>
+ <file-system NAME="lib-catalina.jar"
+  location="C:\Users\asantos\servers\apache-tomcat-7.0.47\lib\catalina.jar" model-entity="FileSystemJar"/>
  <file-system NAME="lib-ecj-4.2.2.jar"
-  location="D:\Softwares\java\apache-tomcat-7.0.42\lib\ecj-4.2.2.jar" model-entity="FileSystemJar"/>
+  location="C:\Users\asantos\servers\apache-tomcat-7.0.47\lib\ecj-4.2.2.jar" model-entity="FileSystemJar"/>
+ <file-system NAME="lib-el-api.jar"
+  location="C:\Users\asantos\servers\apache-tomcat-7.0.47\lib\el-api.jar" model-entity="FileSystemJar"/>
+ <file-system NAME="lib-jasper-el.jar"
+  location="C:\Users\asantos\servers\apache-tomcat-7.0.47\lib\jasper-el.jar" model-entity="FileSystemJar"/>
+ <file-system NAME="lib-jasper.jar"
+  location="C:\Users\asantos\servers\apache-tomcat-7.0.47\lib\jasper.jar" model-entity="FileSystemJar"/>
+ <file-system NAME="lib-jsp-api.jar"
+  location="C:\Users\asantos\servers\apache-tomcat-7.0.47\lib\jsp-api.jar" model-entity="FileSystemJar"/>
+ <file-system NAME="lib-servlet-api.jar"
+  location="C:\Users\asantos\servers\apache-tomcat-7.0.47\lib\servlet-api.jar" model-entity="FileSystemJar"/>
+ <file-system NAME="lib-tomcat-api.jar"
+  location="C:\Users\asantos\servers\apache-tomcat-7.0.47\lib\tomcat-api.jar" model-entity="FileSystemJar"/>
+ <file-system NAME="lib-tomcat-coyote.jar"
+  location="C:\Users\asantos\servers\apache-tomcat-7.0.47\lib\tomcat-coyote.jar" model-entity="FileSystemJar"/>
+ <file-system NAME="lib-tomcat-dbcp.jar"
+  location="C:\Users\asantos\servers\apache-tomcat-7.0.47\lib\tomcat-dbcp.jar" model-entity="FileSystemJar"/>
+ <file-system NAME="lib-tomcat-i18n-es.jar"
+  location="C:\Users\asantos\servers\apache-tomcat-7.0.47\lib\tomcat-i18n-es.jar" model-entity="FileSystemJar"/>
+ <file-system NAME="lib-tomcat-i18n-fr.jar"
+  location="C:\Users\asantos\servers\apache-tomcat-7.0.47\lib\tomcat-i18n-fr.jar" model-entity="FileSystemJar"/>
+ <file-system NAME="lib-tomcat-i18n-ja.jar"
+  location="C:\Users\asantos\servers\apache-tomcat-7.0.47\lib\tomcat-i18n-ja.jar" model-entity="FileSystemJar"/>
+ <file-system NAME="lib-tomcat-jdbc.jar"
+  location="C:\Users\asantos\servers\apache-tomcat-7.0.47\lib\tomcat-jdbc.jar" model-entity="FileSystemJar"/>
+ <file-system NAME="lib-tomcat-util.jar"
+  location="C:\Users\asantos\servers\apache-tomcat-7.0.47\lib\tomcat-util.jar" model-entity="FileSystemJar"/>
+ <file-system NAME="lib-tomcat7-websocket.jar"
+  location="C:\Users\asantos\servers\apache-tomcat-7.0.47\lib\tomcat7-websocket.jar" model-entity="FileSystemJar"/>
+ <file-system NAME="lib-websocket-api.jar"
+  location="C:\Users\asantos\servers\apache-tomcat-7.0.47\lib\websocket-api.jar" model-entity="FileSystemJar"/>
  <web SERVLET_VERSION="2.5" model-entity="JstWeb" model-path="/web.xml">
   <module URI="/WEB-INF/faces-config.xml" model-entity="WebJSFModule"
    model-path="/faces-config.xml" src="src" web-root="WEB-ROOT"/>
