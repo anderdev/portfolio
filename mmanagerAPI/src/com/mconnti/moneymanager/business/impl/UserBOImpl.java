@@ -186,4 +186,10 @@ public class UserBOImpl extends GenericBOImpl<User> implements UserBO {
 		}
 		return messageReturn;
 	}
+
+	@Override
+	public User getSuperUser(User user) {
+		User userRet = getById(user.getId());
+		return userRet.getSuperUser() == null ? userRet : userRet.getSuperUser();
+	}
 }

@@ -695,7 +695,7 @@ public class RestService {
 	public Response listPlanning(Planning planning) {
 		List<Planning> list = new ArrayList<>();
 		try {
-			list = planningBO.list(planning.getUser());
+			list = planningBO.list(planning);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -707,10 +707,9 @@ public class RestService {
 	@Path("/planning/selected")
 	@Consumes({ MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response getSelected(User user) {
-		Planning planning = new Planning();
+	public Response getSelected(Planning planning) {
 		try {
-			planning = planningBO.getSelected(user);
+			planning = planningBO.getSelected(planning);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

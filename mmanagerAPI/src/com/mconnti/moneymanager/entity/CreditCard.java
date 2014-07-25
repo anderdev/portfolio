@@ -47,11 +47,6 @@ public class CreditCard implements Serializable {
 	@JoinColumn(name = "user_id")
 	@ForeignKey(name = "FK_CREDITCARD_USER")
 	private User user;
-	
-	@ManyToOne(cascade = { CascadeType.REFRESH }, targetEntity = User.class)
-	@JoinColumn(name = "master_id")
-	@ForeignKey(name = "FK_CREDITCARD_MASTER_USER")
-	private User masterUser;
 
 	public Long getId() {
 		return id;
@@ -100,14 +95,6 @@ public class CreditCard implements Serializable {
 
 	public void setUser(User user) {
 		this.user = user;
-	}
-
-	public User getMasterUser() {
-		return masterUser;
-	}
-
-	public void setMasterUser(User masterUser) {
-		this.masterUser = masterUser;
 	}
 
 	public String getExpire() {

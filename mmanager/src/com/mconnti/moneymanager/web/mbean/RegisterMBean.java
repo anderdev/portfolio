@@ -164,8 +164,9 @@ public class RegisterMBean implements Serializable {
 		Description desc = new Description();
 		desc.setUser(superUser());
 		desc.setDescription(description);
-		desc.setTypeAccount(getTypeAccount(typeAccount));
-		switch (typeAccount.toLowerCase()) {
+		desc.setTypeAccount(createTypeAccount(typeAccount));
+		
+		switch (desc.getTypeAccount().getDescription().toLowerCase()) {
 		case "credit":
 			desc.setIsCredit(true);
 			register.setDescription(desc);
@@ -204,13 +205,13 @@ public class RegisterMBean implements Serializable {
 	public void checkCreditDescription() {
 		if (register.getDescription().getDescription() != null && !"".equals(register.getDescription().getDescription())) {
 			if (creditList.size() > 0) {
-				Description descriptionRet = existsDescription(superUser().getId(), getTypeAccount(Utils.clearString(MessageFactory.getMessage("lb_credit_", superUser().getLanguage(), null))).getId(), register.getDescription().getDescription());
+				Description descriptionRet = existsDescription(superUser().getId(), createTypeAccount(Utils.clearString(MessageFactory.getMessage("lb_credit_", superUser().getLanguage(), null))).getId(), register.getDescription().getDescription());
 
 				if (descriptionRet == null) {
 					newDescription(description.getDescription(), Utils.clearString(MessageFactory.getMessage("lb_credit_", superUser().getLanguage(), null)));
 				} else {
 					register.setDescription(descriptionRet);
-					Register registerTemp = getRegisterByDescription(superUser().getId(), getTypeAccount(Utils.clearString(MessageFactory.getMessage("lb_credit_", superUser().getLanguage(), null))).getId(), descriptionRet.getId());
+					Register registerTemp = getRegisterByDescription(superUser().getId(), createTypeAccount(Utils.clearString(MessageFactory.getMessage("lb_credit_", superUser().getLanguage(), null))).getId(), descriptionRet.getId());
 					if (registerTemp != null) {
 						register.setGroup(registerTemp.getGroup());
 						register.setSuperGroup(registerTemp.getSuperGroup());
@@ -229,13 +230,13 @@ public class RegisterMBean implements Serializable {
 	public void checkDebitDescription() {
 		if (register.getDescription().getDescription() != null && !"".equals(register.getDescription().getDescription())) {
 			if (debitList.size() > 0) {
-				Description descriptionRet = existsDescription(superUser().getId(), getTypeAccount(Utils.clearString(MessageFactory.getMessage("lb_debit_", superUser().getLanguage(), null))).getId(), register.getDescription().getDescription());
+				Description descriptionRet = existsDescription(superUser().getId(), createTypeAccount(Utils.clearString(MessageFactory.getMessage("lb_debit_", superUser().getLanguage(), null))).getId(), register.getDescription().getDescription());
 
 				if (descriptionRet == null) {
 					newDescription(description.getDescription(), Utils.clearString(MessageFactory.getMessage("lb_debit_", superUser().getLanguage(), null)));
 				} else {
 					register.setDescription(descriptionRet);
-					Register registerTemp = getRegisterByDescription(superUser().getId(), getTypeAccount(Utils.clearString(MessageFactory.getMessage("lb_debit_", superUser().getLanguage(), null))).getId(), descriptionRet.getId());
+					Register registerTemp = getRegisterByDescription(superUser().getId(), createTypeAccount(Utils.clearString(MessageFactory.getMessage("lb_debit_", superUser().getLanguage(), null))).getId(), descriptionRet.getId());
 					if (registerTemp != null) {
 						register.setGroup(registerTemp.getGroup());
 						register.setSuperGroup(registerTemp.getSuperGroup());
@@ -251,13 +252,13 @@ public class RegisterMBean implements Serializable {
 	}
 
 	private User superUser() {
-		return userMBean.getLoggedUser().getSuperUser() == null ? userMBean.getLoggedUser() : userMBean.getLoggedUser().getSuperUser();
+		return userMBean.getLoggedUser();
 	}
 
 	public void checkGroupDescription() {
 		if (register.getGroup().getDescription() != null && !"".equals(register.getGroup().getDescription())) {
 			if (groupList.size() > 0) {
-				Description descriptionRet = existsDescription(superUser().getId(), getTypeAccount(MessageFactory.getMessage("lb_group_", superUser().getLanguage(), null)).getId(), register.getGroup().getDescription());
+				Description descriptionRet = existsDescription(superUser().getId(), createTypeAccount(MessageFactory.getMessage("lb_group_", superUser().getLanguage(), null)).getId(), register.getGroup().getDescription());
 
 				if (descriptionRet == null) {
 					newDescription(register.getGroup().getDescription(), MessageFactory.getMessage("lb_group_", superUser().getLanguage(), null));
@@ -273,7 +274,7 @@ public class RegisterMBean implements Serializable {
 	public void checkSuperGroupDescription() {
 		if (register.getSuperGroup().getDescription() != null && !"".equals(register.getSuperGroup().getDescription())) {
 			if (superGroupList.size() > 0) {
-				Description descriptionRet = existsDescription(superUser().getId(), getTypeAccount(MessageFactory.getMessage("lb_super_group_", superUser().getLanguage(), null)).getId(), register.getSuperGroup().getDescription());
+				Description descriptionRet = existsDescription(superUser().getId(), createTypeAccount(MessageFactory.getMessage("lb_super_group_", superUser().getLanguage(), null)).getId(), register.getSuperGroup().getDescription());
 
 				if (descriptionRet == null) {
 					newDescription(register.getSuperGroup().getDescription(), MessageFactory.getMessage("lb_super_group_", superUser().getLanguage(), null));
@@ -286,13 +287,13 @@ public class RegisterMBean implements Serializable {
 		}
 	}
 
-	private TypeAccount getTypeAccount(String description) {
+	private TypeAccount getTypeAccount(Description description) {
 		MessageReturn ret = new MessageReturn();
 		try {
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/typeaccount/getbydescription");
 
 			request.body(MediaType.APPLICATION_JSON, description);
-			ClientResponse<String> response = request.put(String.class);
+			ClientResponse<Description> response = request.put(Description.class);
 
 			if (response.getStatus() != 200) {
 				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
@@ -657,14 +658,21 @@ public class RegisterMBean implements Serializable {
 		loadDebits = false;
 		loadCredits = true;
 		loadDefaultCombos(false);
-		createTypeAccount(Utils.clearString(MessageFactory.getMessage("lb_credit_", superUser().getLanguage(), null)));
+		register.setTypeAccount(createTypeAccount(Utils.clearString(MessageFactory.getMessage("lb_credit_", superUser().getLanguage(), null))));
 		loadList(register.getTypeAccount());
 		return "/common/formRegister.xhtml?faces-redirect=true";
 	}
 
-	private void createTypeAccount(final String description) {
-		TypeAccount typeAccount = getTypeAccount(description);
-		register.setTypeAccount(typeAccount);
+	private TypeAccount createTypeAccount(final String description) {
+		TypeAccount typeAccount = new TypeAccount();
+		typeAccount.setDescription(description);
+		Description desc = new Description();		
+		desc.setUser(superUser());
+		desc.setTypeAccount(typeAccount);
+				
+		typeAccount = getTypeAccount(desc);
+		
+		return typeAccount;
 	}
 
 	public String newDebit() {
@@ -672,7 +680,7 @@ public class RegisterMBean implements Serializable {
 		loadDebits = true;
 		loadCredits = false;
 		loadDefaultCombos(false);
-		createTypeAccount(Utils.clearString(MessageFactory.getMessage("lb_debit_", superUser().getLanguage(), null)));
+		register.setTypeAccount(createTypeAccount(Utils.clearString(MessageFactory.getMessage("lb_debit_", superUser().getLanguage(), null))));
 		loadList(register.getTypeAccount());
 		return "/common/formRegister.xhtml?faces-redirect=true";
 	}

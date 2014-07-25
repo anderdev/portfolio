@@ -11,20 +11,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mconnti.moneymanager.business.DescriptionBO;
+import com.mconnti.moneymanager.business.UserBO;
 import com.mconnti.moneymanager.entity.Description;
 import com.mconnti.moneymanager.entity.TypeAccount;
 import com.mconnti.moneymanager.entity.User;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
 import com.mconnti.moneymanager.persistence.DescriptionDAO;
 import com.mconnti.moneymanager.persistence.TypeAccountDAO;
-import com.mconnti.moneymanager.persistence.UserDAO;
 import com.mconnti.moneymanager.utils.Crypt;
 import com.mconnti.moneymanager.utils.MessageFactory;
 
 public class DescriptionBOImpl extends GenericBOImpl<Description> implements DescriptionBO {
 
 	@Autowired
-	private UserDAO userDAO;
+	private UserBO userBO;
 
 	@Autowired
 	private DescriptionDAO descriptionDAO;
@@ -33,12 +33,7 @@ public class DescriptionBOImpl extends GenericBOImpl<Description> implements Des
 	private TypeAccountDAO typeAccountDAO;
 
 	private User getUser(Description description) {
-		try {
-			return userDAO.findById(User.class, description.getUser().getId());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
+		return userBO.getSuperUser(description.getUser());
 	}
 
 	@Override

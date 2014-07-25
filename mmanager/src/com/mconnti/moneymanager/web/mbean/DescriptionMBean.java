@@ -17,6 +17,7 @@ import org.jboss.resteasy.client.ClientResponse;
 import org.jboss.resteasy.util.GenericType;
 
 import com.mconnti.moneymanager.entity.Description;
+import com.mconnti.moneymanager.entity.User;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
 import com.mconnti.moneymanager.util.FacesUtil;
 import com.mconnti.moneymanager.util.MessageFactory;
@@ -48,13 +49,17 @@ public class DescriptionMBean implements Serializable {
 			host = str[0];
 		}
 	}
+	
+	private User superUser() {
+		return userMBean.getLoggedUser();
+	}
 
 	private void loadList() {
 		try {
 			
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/description");
 			description.setTypeAccount(null);
-			description.setUser(userMBean.getLoggedUser().getSuperUser() == null ? userMBean.getLoggedUser() : userMBean.getLoggedUser().getSuperUser());
+			description.setUser(superUser());
 
 			request.body(MediaType.APPLICATION_JSON, description);
 			ClientResponse<Description> response = request.put(Description.class);
@@ -100,7 +105,7 @@ public class DescriptionMBean implements Serializable {
 		try {
 			
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/description");
-			description.setUser(userMBean.getLoggedUser().getSuperUser() == null ? userMBean.getLoggedUser() : userMBean.getLoggedUser().getSuperUser());
+			description.setUser(superUser());
 			request.body(MediaType.APPLICATION_JSON, description);
 			
 			ClientResponse<Description> response = request.post(Description.class);
@@ -141,9 +146,9 @@ public class DescriptionMBean implements Serializable {
 			}
 
 			if (selectedDescriptions.length > 1) {
-				FacesUtil.showSuccessMessage(MessageFactory.getMessage("lb_description_deleted_successfully_mult", userMBean.getLoggedUser().getLanguage(), null));
+				FacesUtil.showSuccessMessage(MessageFactory.getMessage("lb_description_deleted_successfully_mult", superUser().getLanguage(), null));
 			} else {
-				FacesUtil.showSuccessMessage(MessageFactory.getMessage("lb_deleted_successfully", userMBean.getLoggedUser().getLanguage(), null));
+				FacesUtil.showSuccessMessage(MessageFactory.getMessage("lb_deleted_successfully", superUser().getLanguage(), null));
 			}
 			loadList();
 		} catch (Exception e) {

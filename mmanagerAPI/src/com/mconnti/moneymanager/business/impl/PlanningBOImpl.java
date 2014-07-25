@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.mconnti.moneymanager.business.PlanningBO;
 import com.mconnti.moneymanager.business.PlanningGroupBO;
 import com.mconnti.moneymanager.business.PlanningItemBO;
+import com.mconnti.moneymanager.business.UserBO;
 import com.mconnti.moneymanager.entity.Description;
 import com.mconnti.moneymanager.entity.Planning;
 import com.mconnti.moneymanager.entity.PlanningGroup;
@@ -29,12 +30,19 @@ public class PlanningBOImpl extends GenericBOImpl<Planning> implements PlanningB
 	@Autowired
 	private PlanningItemBO planningItemBO;
 	
+	@Autowired
+	private UserBO userBO;
+	
+	private User getSuperUser(Planning planning) {
+		return userBO.getSuperUser(planning.getUser());
+	}
+	
 	@Override
 	@Transactional
 	public MessageReturn save(Planning planning) {
 		MessageReturn libReturn = new MessageReturn();
 		try {
-			Planning planTemp = getSelected(planning.getUser());
+			Planning planTemp = getSelected(planning);
 			if (planTemp != null) {
 				planTemp.setSelected(false);
 				saveGeneric(planTemp);
@@ -57,9 +65,9 @@ public class PlanningBOImpl extends GenericBOImpl<Planning> implements PlanningB
 	}
 
 	@Transactional
-	public List<Planning> list(User user) throws Exception {
+	public List<Planning> list(Planning plannig) throws Exception {
 		Map<String, String> queryParams = new LinkedHashMap<>();
-		queryParams.put(" where x.user.id = ", user.getId() + "");
+		queryParams.put(" where x.user.id = ", getSuperUser(plannig) + "");
 		List<Planning> result = list(Planning.class, queryParams, null);
 		return result;
 	}
@@ -94,10 +102,10 @@ public class PlanningBOImpl extends GenericBOImpl<Planning> implements PlanningB
 	}
 
 	@Override
-	public Planning getSelected(User user) throws Exception {
+	public Planning getSelected(Planning planning) throws Exception {
 
 		Map<String, String> queryParams = new LinkedHashMap<>();
-		queryParams.put(" where x.user.id = ", user.getId() + "");
+		queryParams.put(" where x.user.id = ", getSuperUser(planning).getId() + "");
 		queryParams.put(" and x.selected = ", " 1 ");
 		List<Planning> result = list(Planning.class, queryParams, null);
 		if (result.size() > 0) {
@@ -112,7 +120,7 @@ public class PlanningBOImpl extends GenericBOImpl<Planning> implements PlanningB
 	public MessageReturn saveGroup(PlanningGroup planningGroup) throws Exception {
 		MessageReturn libReturn = new MessageReturn();
 		try {
-			planningGroup.setPlanning(getSelected(planningGroup.getUser()));
+			planningGroup.setPlanning(getSelected(planningGroup.getPlanning()));
 			List<PlanningItem> pItemList = new ArrayList<>();
 			for (int x = 1; x < 13; x++) {
 				PlanningItem pItem = new PlanningItem();
@@ -155,6 +163,7 @@ public class PlanningBOImpl extends GenericBOImpl<Planning> implements PlanningB
 		try {
 			PlanningItem itemTemp = planningItemBO.findById(PlanningItem.class, planningItem.getId());
 			planningItem.setPlanningGroup(itemTemp.getPlanningGroup());
+			planningItem.setUser(getSuperUser(planningItem.getPlanningGroup().getPlanning()));
 			planningItemBO.save(planningItem);
 		} catch (Exception e) {
 			e.printStackTrace();

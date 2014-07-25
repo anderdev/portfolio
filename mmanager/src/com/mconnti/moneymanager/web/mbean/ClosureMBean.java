@@ -23,6 +23,7 @@ import org.jboss.resteasy.util.GenericType;
 import com.mconnti.moneymanager.entity.Closure;
 import com.mconnti.moneymanager.entity.Currency;
 import com.mconnti.moneymanager.entity.TypeClosure;
+import com.mconnti.moneymanager.entity.User;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
 import com.mconnti.moneymanager.util.FacesUtil;
 import com.mconnti.moneymanager.util.MessageFactory;
@@ -84,6 +85,10 @@ public class ClosureMBean implements Serializable {
 			host = str[0];
 		}
 	}
+	
+	private User superUser() {
+		return userMBean.getLoggedUser();
+	}
 
 	private void loadCombos() {
 		this.typeClosures = loadTypeClosures();
@@ -107,7 +112,7 @@ public class ClosureMBean implements Serializable {
 		try {
 
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/currency");
-			currency.setLocale(userMBean.getLoggedUser().getLanguage());
+			currency.setLocale(superUser().getLanguage());
 			request.body(MediaType.APPLICATION_JSON, currency);
 			ClientResponse<Currency> response = request.put(Currency.class);
 
@@ -143,7 +148,7 @@ public class ClosureMBean implements Serializable {
 		try {
 
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/typeclosure");
-			typeClosure.setLocale(userMBean.getLoggedUser().getLanguage());
+			typeClosure.setLocale(superUser().getLanguage());
 			request.body(MediaType.APPLICATION_JSON, typeClosure);
 			ClientResponse<TypeClosure> response = request.put(TypeClosure.class);
 
@@ -196,7 +201,7 @@ public class ClosureMBean implements Serializable {
 				closure = searchClosure;
 			}
 			
-			closure.setUser(userMBean.getLoggedUser().getSuperUser() == null ? userMBean.getLoggedUser() : userMBean.getLoggedUser().getSuperUser());
+			closure.setUser(superUser());
 			request.body(MediaType.APPLICATION_JSON, closure);
 			
 			ClientResponse<Closure> response = request.put(Closure.class);
@@ -269,7 +274,7 @@ public class ClosureMBean implements Serializable {
 
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/closure");
 
-			closure.setUser(userMBean.getLoggedUser().getSuperUser() == null ? userMBean.getLoggedUser() : userMBean.getLoggedUser().getSuperUser());
+			closure.setUser(superUser());
 			request.body(MediaType.APPLICATION_JSON, closure);
 			
 			ClientResponse<Closure> response = request.put(Closure.class);
@@ -304,7 +309,7 @@ public class ClosureMBean implements Serializable {
 		try {
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/closure");
 
-			closure.setUser(userMBean.getLoggedUser().getSuperUser() == null ? userMBean.getLoggedUser() : userMBean.getLoggedUser().getSuperUser());
+			closure.setUser(superUser());
 			request.body(MediaType.APPLICATION_JSON, closure);
 
 			ClientResponse<Closure> response = request.post(Closure.class);
@@ -346,9 +351,9 @@ public class ClosureMBean implements Serializable {
 			}
 
 			if (selectedClosure.length > 1) {
-				 FacesUtil.showSuccessMessage(MessageFactory.getMessage("lb_closure_successfully_mult", userMBean.getLoggedUser().getLanguage(),null));
+				 FacesUtil.showSuccessMessage(MessageFactory.getMessage("lb_closure_successfully_mult", superUser().getLanguage(),null));
 			} else {
-				 FacesUtil.showSuccessMessage(MessageFactory.getMessage("lb_deleted_successfully", userMBean.getLoggedUser().getLanguage(),null));
+				 FacesUtil.showSuccessMessage(MessageFactory.getMessage("lb_deleted_successfully", superUser().getLanguage(),null));
 			}
 			loadList(true);
 		} catch (Exception e) {

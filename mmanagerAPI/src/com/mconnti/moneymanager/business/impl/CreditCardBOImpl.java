@@ -8,42 +8,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mconnti.moneymanager.business.CreditCardBO;
+import com.mconnti.moneymanager.business.UserBO;
 import com.mconnti.moneymanager.entity.CreditCard;
 import com.mconnti.moneymanager.entity.User;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
-import com.mconnti.moneymanager.persistence.UserDAO;
 import com.mconnti.moneymanager.utils.MessageFactory;
 import com.mconnti.moneymanager.utils.Utils;
 
 public class CreditCardBOImpl extends GenericBOImpl<CreditCard> implements CreditCardBO {
 
 	@Autowired
-	private UserDAO userDAO;
+	private UserBO userBO;
 	
 	private User getUser(CreditCard creditCard) {
-		try {
-			return userDAO.findById(User.class, creditCard.getUser().getId());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
+		return userBO.getSuperUser(creditCard.getUser());
 	}
 	
-	private User getMasterUser(CreditCard creditCard) {
-		try {
-			return userDAO.findById(User.class, creditCard.getMasterUser().getId());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
 	@Override
 	@Transactional
 	public MessageReturn save(CreditCard creditCard) {
 		MessageReturn libReturn = new MessageReturn();
 		User user = getUser(creditCard);
-		User masterUser = getMasterUser(creditCard);
 		if(user != null){
 			try {
 				if(creditCard.getExpire() != null){
@@ -52,7 +37,6 @@ public class CreditCardBOImpl extends GenericBOImpl<CreditCard> implements Credi
 					creditCard.setExpireDate(Utils.getCreditCardExpiredDate(creditCard.getExpire()).getTime());
 				}
 				
-				creditCard.setMasterUser(masterUser);
 				creditCard.setUser(user);
 				saveGeneric(creditCard);
 			} catch (Exception e) {

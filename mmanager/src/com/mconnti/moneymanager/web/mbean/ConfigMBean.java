@@ -22,6 +22,7 @@ import org.jboss.resteasy.util.GenericType;
 import com.mconnti.moneymanager.entity.Config;
 import com.mconnti.moneymanager.entity.Currency;
 import com.mconnti.moneymanager.entity.TypeClosure;
+import com.mconnti.moneymanager.entity.User;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
 import com.mconnti.moneymanager.util.FacesUtil;
 
@@ -63,6 +64,10 @@ public class ConfigMBean implements Serializable {
 			host = str[0];
 		}
 	}
+	
+	private User superUser() {
+		return userMBean.getLoggedUser();
+	}
 
 	private void createConfig() {
 		this.config = new Config();
@@ -89,7 +94,7 @@ public class ConfigMBean implements Serializable {
 		try {
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/config/save");
 
-			config.setUser(userMBean.getLoggedUser());
+			config.setUser(superUser());
 			request.body(MediaType.APPLICATION_JSON, config);
 
 			ClientResponse<Config> response = request.put(Config.class);
@@ -143,7 +148,7 @@ public class ConfigMBean implements Serializable {
 		try {
 
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/typeclosure");
-			typeClosure.setLocale(userMBean.getLoggedUser().getLanguage());
+			typeClosure.setLocale(superUser().getLanguage());
 			request.body(MediaType.APPLICATION_JSON, typeClosure);
 			ClientResponse<TypeClosure> response = request.put(TypeClosure.class);
 
@@ -179,7 +184,7 @@ public class ConfigMBean implements Serializable {
 		try {
 
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/currency");
-			currency.setLocale(userMBean.getLoggedUser().getLanguage());
+			currency.setLocale(superUser().getLanguage());
 			request.body(MediaType.APPLICATION_JSON, currency);
 			ClientResponse<Currency> response = request.put(Currency.class);
 

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mconnti.moneymanager.business.RegisterBO;
+import com.mconnti.moneymanager.business.UserBO;
 import com.mconnti.moneymanager.entity.CreditCard;
 import com.mconnti.moneymanager.entity.Description;
 import com.mconnti.moneymanager.entity.Parcel;
@@ -24,7 +25,6 @@ import com.mconnti.moneymanager.persistence.DescriptionDAO;
 import com.mconnti.moneymanager.persistence.ParcelDAO;
 import com.mconnti.moneymanager.persistence.RegisterDAO;
 import com.mconnti.moneymanager.persistence.TypeClosureDAO;
-import com.mconnti.moneymanager.persistence.UserDAO;
 import com.mconnti.moneymanager.utils.Constants;
 import com.mconnti.moneymanager.utils.MessageFactory;
 import com.mconnti.moneymanager.utils.Utils;
@@ -33,9 +33,6 @@ public class RegisterBOImpl extends GenericBOImpl<Register> implements RegisterB
 
 	@Autowired
 	private RegisterDAO registerDAO;
-
-	@Autowired
-	private UserDAO userDAO;
 
 	@Autowired
 	private CurrencyDAO currencyDAO;
@@ -52,13 +49,11 @@ public class RegisterBOImpl extends GenericBOImpl<Register> implements RegisterB
 	@Autowired
 	private CreditCardDAO creditCardDAO;
 
-	private User getUser(Register debit) {
-		try {
-			return userDAO.findById(User.class, debit.getUser().getId());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
+	@Autowired
+	private UserBO userBO;
+	
+	private User getSuperUser(Register register) {
+		return userBO.getSuperUser(register.getUser());
 	}
 
 	private CreditCard getCreditCard(Register debit) {
@@ -101,7 +96,7 @@ public class RegisterBOImpl extends GenericBOImpl<Register> implements RegisterB
 	@Transactional
 	public MessageReturn save(Register register) {
 		MessageReturn libReturn = new MessageReturn();
-		User user = getUser(register);
+		User user = getSuperUser(register);
 		if (user != null && register.getCurrency() != null && register.getSuperGroup() != null) {
 			try {
 				if (register.getCreditCard() != null) {
@@ -146,8 +141,8 @@ public class RegisterBOImpl extends GenericBOImpl<Register> implements RegisterB
 					} else {
 						Map<String, String> queryParams = new LinkedHashMap<>();
 						queryParams.put(" where "," 1=1 ");
-						queryParams.put(" and x.user = ", register.getUser().getId()+"");
-						queryParams.put(" and x.parcel = ", register.getParcel().getId()+"");
+						queryParams.put(" and x.user = ", user.getId()+"");
+						queryParams.put(" and x.parcel = ", user.getId()+"");
 						
 						List<Register> registerParcels = list(Register.class, queryParams, " x.date");
 						
@@ -176,10 +171,10 @@ public class RegisterBOImpl extends GenericBOImpl<Register> implements RegisterB
 				libReturn.setMessage(e.getMessage());
 			}
 			if (libReturn.getMessage() == null && register.getId() == null) {
-				libReturn.setMessage(MessageFactory.getMessage("lb_debit_saved", user.getLanguage()));
+				libReturn.setMessage(MessageFactory.getMessage("lb_debit_saved", register.getUser().getLanguage()));
 				libReturn.setRegister(register);
 			} else if (libReturn.getMessage() == null && register.getId() != null) {
-				libReturn.setMessage(MessageFactory.getMessage("lb_debit_updated", user.getLanguage()));
+				libReturn.setMessage(MessageFactory.getMessage("lb_debit_updated", register.getUser().getLanguage()));
 				libReturn.setRegister(register);
 			}
 		} else {
@@ -191,12 +186,15 @@ public class RegisterBOImpl extends GenericBOImpl<Register> implements RegisterB
 	
 	private Register saveDescription(Register register) throws Exception{
 		if(register.getDescription() != null && register.getDescription().getId() == null){
+			register.getDescription().setUser(getSuperUser(register));
 			register.setDescription(descriptionDAO.save(register.getDescription()));
 		} 
 		if(register.getGroup() != null && register.getGroup().getId() == null){
+			register.getGroup().setUser(getSuperUser(register));
 			register.setGroup(descriptionDAO.save(register.getGroup()));
 		} 
 		if(register.getSuperGroup() != null && register.getSuperGroup().getId() == null) {
+			register.getSuperGroup().setUser(getSuperUser(register));
 			register.setSuperGroup(descriptionDAO.save(register.getSuperGroup()));
 		}
 		return register;
@@ -205,7 +203,7 @@ public class RegisterBOImpl extends GenericBOImpl<Register> implements RegisterB
 	@Override
 	public List<Register> list(Register register) throws Exception {
 		Map<String, String> queryParams = new LinkedHashMap<>();
-		queryParams.put(" where x.user.id = ", register.getUser().getId()+"");
+		queryParams.put(" where x.user.id = ", getSuperUser(register).getId()+"");
 		return list(Register.class, queryParams, " x.date ");
 	}
 
@@ -242,9 +240,12 @@ public class RegisterBOImpl extends GenericBOImpl<Register> implements RegisterB
 
 	@Override
 	public List<Register> listByParameter(Register register) throws Exception {
+		
+		User user = getSuperUser(register);
+		
 		Map<String, String> queryParams = new LinkedHashMap<>();
 		queryParams.put(" where "," 1=1 ");
-		queryParams.put(" and x.user = ", register.getUser().getId()+"");
+		queryParams.put(" and x.user = ", user.getId()+"");
 		
 		if( register.getTypeAccount() != null && register.getTypeAccount().getId() != null && register.getTypeAccount().getId() > 0){
 			queryParams.put(" and x.typeAccount = ", register.getTypeAccount().getId()+ "");
@@ -302,16 +303,18 @@ public class RegisterBOImpl extends GenericBOImpl<Register> implements RegisterB
 
 	@Override
 	public Register getByDescription(Map<String, String> request) {
+		User user = userBO.getById(new Long(request.get("userId")));
+		
 		Register register = new Register();
-		Long userId = new Long(request.get("userId"));
+		register.setUser(user);
+
 		Long typeAccountId = new Long(request.get("typeAccountId"));
 		Long descriptionId = new Long(request.get("descriptionId"));
 		Description description;
 		try {
 			description = findById(Description.class, descriptionId);
-			User user = findById(User.class, userId);
 			TypeAccount typeAccount = findById(TypeAccount.class, typeAccountId);
-			register = registerDAO.getByDescription(description, user, typeAccount);
+			register = registerDAO.getByDescription(description, getSuperUser(register), typeAccount);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

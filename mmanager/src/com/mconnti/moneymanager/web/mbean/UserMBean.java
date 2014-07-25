@@ -108,7 +108,7 @@ public class UserMBean implements Serializable {
 	}
 	
 	private User superUser() {
-		return getLoggedUser().getSuperUser() == null ? getLoggedUser() : getLoggedUser().getSuperUser();
+		return getLoggedUser();
 	}
 
 	public SelectItem[] getRolesSI() {

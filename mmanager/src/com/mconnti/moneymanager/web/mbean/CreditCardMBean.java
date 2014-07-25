@@ -17,6 +17,7 @@ import org.jboss.resteasy.client.ClientResponse;
 import org.jboss.resteasy.util.GenericType;
 
 import com.mconnti.moneymanager.entity.CreditCard;
+import com.mconnti.moneymanager.entity.User;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
 import com.mconnti.moneymanager.util.FacesUtil;
 import com.mconnti.moneymanager.util.MessageFactory;
@@ -48,12 +49,16 @@ public class CreditCardMBean implements Serializable {
 			host = str[0];
 		}
 	}
+	
+	private User superUser() {
+		return userMBean.getLoggedUser();
+	}
 
 	private void loadList() {
 		try {
 
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/creditcard");
-			creditCard.setUser(userMBean.getLoggedUser().getSuperUser() == null ? userMBean.getLoggedUser() : userMBean.getLoggedUser().getSuperUser() );
+			creditCard.setUser(superUser());
 			ClientResponse<CreditCard> response = request.get(CreditCard.class);
 
 			if (response.getStatus() != 200) {
@@ -136,9 +141,9 @@ public class CreditCardMBean implements Serializable {
 			}
 
 			if (selectedCreditCard.length > 1) {
-				FacesUtil.showSuccessMessage(MessageFactory.getMessage("lb_creditcard_deleted_successfully_mult", userMBean.getLoggedUser().getLanguage(), null));
+				FacesUtil.showSuccessMessage(MessageFactory.getMessage("lb_creditcard_deleted_successfully_mult", superUser().getLanguage(), null));
 			} else {
-				FacesUtil.showSuccessMessage(MessageFactory.getMessage("lb_deleted_successfully", userMBean.getLoggedUser().getLanguage(), null));
+				FacesUtil.showSuccessMessage(MessageFactory.getMessage("lb_deleted_successfully", superUser().getLanguage(), null));
 			}
 			loadList();
 		} catch (Exception e) {

@@ -6,24 +6,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mconnti.moneymanager.business.ConfigBO;
+import com.mconnti.moneymanager.business.UserBO;
 import com.mconnti.moneymanager.entity.Config;
 import com.mconnti.moneymanager.entity.User;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
-import com.mconnti.moneymanager.persistence.UserDAO;
 import com.mconnti.moneymanager.utils.MessageFactory;
 
 public class ConfigBOImpl extends GenericBOImpl<Config> implements ConfigBO {
 
 	@Autowired
-	private UserDAO userDAO;
+	private UserBO userBO;
 
 	private User getUser(Config config) {
-		try {
-			return userDAO.findById(User.class, config.getUser().getId());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
+		return userBO.getSuperUser(config.getUser());
 	}
 
 	@Override

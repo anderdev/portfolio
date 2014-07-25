@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.mconnti.moneymanager.business.ClosureBO;
 import com.mconnti.moneymanager.business.DescriptionBO;
 import com.mconnti.moneymanager.business.RegisterBO;
+import com.mconnti.moneymanager.business.UserBO;
 import com.mconnti.moneymanager.entity.Closure;
 import com.mconnti.moneymanager.entity.Description;
 import com.mconnti.moneymanager.entity.Register;
@@ -24,7 +25,6 @@ import com.mconnti.moneymanager.entity.xml.MessageReturn;
 import com.mconnti.moneymanager.persistence.ClosureDAO;
 import com.mconnti.moneymanager.persistence.RegisterDAO;
 import com.mconnti.moneymanager.persistence.TypeAccountDAO;
-import com.mconnti.moneymanager.persistence.UserDAO;
 import com.mconnti.moneymanager.utils.Constants;
 import com.mconnti.moneymanager.utils.Crypt;
 import com.mconnti.moneymanager.utils.MessageFactory;
@@ -33,7 +33,7 @@ import com.mconnti.moneymanager.utils.Utils;
 public class ClosureBOImpl extends GenericBOImpl<Closure> implements ClosureBO {
 
 	@Autowired
-	private UserDAO userDAO;
+	private UserBO userBO;
 
 	@Autowired
 	private RegisterBO registerBO;
@@ -51,12 +51,7 @@ public class ClosureBOImpl extends GenericBOImpl<Closure> implements ClosureBO {
 	private TypeAccountDAO typeAccountDAO;
 
 	private User getUser(Closure closure) {
-		try {
-			return userDAO.findById(User.class, closure.getUser().getId());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
+		return userBO.getSuperUser(closure.getUser());
 	}
 
 	private Description getDescriptionByParameter(Map<String, String> queryParams) {

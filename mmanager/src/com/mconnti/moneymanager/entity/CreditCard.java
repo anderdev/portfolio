@@ -27,8 +27,6 @@ public class CreditCard implements Serializable {
 	
 	private User user;
 	
-	private User masterUser;
-
 	public Long getId() {
 		return id;
 	}
@@ -75,14 +73,6 @@ public class CreditCard implements Serializable {
 
 	public void setUser(User user) {
 		this.user = user;
-	}
-
-	public User getMasterUser() {
-		return masterUser;
-	}
-
-	public void setMasterUser(User masterUser) {
-		this.masterUser = masterUser;
 	}
 
 	public String getExpire() {

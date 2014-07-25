@@ -99,7 +99,7 @@ public class PlanningMBean implements Serializable {
 	}
 
 	private User superUser() {
-		return userMBean.getLoggedUser().getSuperUser() == null ? userMBean.getLoggedUser() : userMBean.getLoggedUser().getSuperUser();
+		return userMBean.getLoggedUser();
 	}
 
 	private List<Planning> loadList() {
@@ -157,40 +157,40 @@ public class PlanningMBean implements Serializable {
 	private void setCurrentMonth() {
 		switch (selectedPlanningItem.getMonth()) {
 		case 1:
-			selectedMonth = MessageFactory.getMessage("lb_month_january", userMBean.getLoggedUser().getLanguage(), null);
+			selectedMonth = MessageFactory.getMessage("lb_month_january", superUser().getLanguage(), null);
 			break;
 		case 2:
-			selectedMonth = MessageFactory.getMessage("lb_month_february", userMBean.getLoggedUser().getLanguage(), null);
+			selectedMonth = MessageFactory.getMessage("lb_month_february", superUser().getLanguage(), null);
 			break;
 		case 3:
-			selectedMonth = MessageFactory.getMessage("lb_month_march", userMBean.getLoggedUser().getLanguage(), null);
+			selectedMonth = MessageFactory.getMessage("lb_month_march", superUser().getLanguage(), null);
 			break;
 		case 4:
-			selectedMonth = MessageFactory.getMessage("lb_month_april", userMBean.getLoggedUser().getLanguage(), null);
+			selectedMonth = MessageFactory.getMessage("lb_month_april", superUser().getLanguage(), null);
 			break;
 		case 5:
-			selectedMonth = MessageFactory.getMessage("lb_month_may", userMBean.getLoggedUser().getLanguage(), null);
+			selectedMonth = MessageFactory.getMessage("lb_month_may", superUser().getLanguage(), null);
 			break;
 		case 6:
-			selectedMonth = MessageFactory.getMessage("lb_month_june", userMBean.getLoggedUser().getLanguage(), null);
+			selectedMonth = MessageFactory.getMessage("lb_month_june", superUser().getLanguage(), null);
 			break;
 		case 7:
-			selectedMonth = MessageFactory.getMessage("lb_month_july", userMBean.getLoggedUser().getLanguage(), null);
+			selectedMonth = MessageFactory.getMessage("lb_month_july", superUser().getLanguage(), null);
 			break;
 		case 8:
-			selectedMonth = MessageFactory.getMessage("lb_month_august", userMBean.getLoggedUser().getLanguage(), null);
+			selectedMonth = MessageFactory.getMessage("lb_month_august", superUser().getLanguage(), null);
 			break;
 		case 9:
-			selectedMonth = MessageFactory.getMessage("lb_month_september", userMBean.getLoggedUser().getLanguage(), null);
+			selectedMonth = MessageFactory.getMessage("lb_month_september", superUser().getLanguage(), null);
 			break;
 		case 10:
-			selectedMonth = MessageFactory.getMessage("lb_month_october", userMBean.getLoggedUser().getLanguage(), null);
+			selectedMonth = MessageFactory.getMessage("lb_month_october", superUser().getLanguage(), null);
 			break;
 		case 11:
-			selectedMonth = MessageFactory.getMessage("lb_month_november", userMBean.getLoggedUser().getLanguage(), null);
+			selectedMonth = MessageFactory.getMessage("lb_month_november", superUser().getLanguage(), null);
 			break;
 		case 12:
-			selectedMonth = MessageFactory.getMessage("lb_month_december", userMBean.getLoggedUser().getLanguage(), null);
+			selectedMonth = MessageFactory.getMessage("lb_month_december", superUser().getLanguage(), null);
 			break;
 		}
 	}
@@ -267,7 +267,7 @@ public class PlanningMBean implements Serializable {
 
 			ret = response.getEntity(MessageReturn.class);
 
-			FacesUtil.showSuccessMessage(MessageFactory.getMessage("lb_deleted_successfully", userMBean.getLoggedUser().getLanguage(), null));
+			FacesUtil.showSuccessMessage(MessageFactory.getMessage("lb_deleted_successfully", superUser().getLanguage(), null));
 			loadList();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -307,7 +307,7 @@ public class PlanningMBean implements Serializable {
 		try {
 
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/typeaccount");
-			typeAccount.setLocale(userMBean.getLoggedUser().getLanguage());
+			typeAccount.setLocale(superUser().getLanguage());
 			typeAccount.setShowType(true);
 			request.body(MediaType.APPLICATION_JSON, typeAccount);
 			ClientResponse<TypeAccount> response = request.put(TypeAccount.class);

@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mconnti.moneymanager.business.PlanningItemBO;
+import com.mconnti.moneymanager.business.UserBO;
 import com.mconnti.moneymanager.entity.PlanningItem;
+import com.mconnti.moneymanager.entity.User;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
 import com.mconnti.moneymanager.persistence.PlanningItemDAO;
 import com.mconnti.moneymanager.utils.MessageFactory;
@@ -15,12 +17,20 @@ public class PlanningItemBOImpl extends GenericBOImpl<PlanningItem> implements P
 	
 	@Autowired
 	private PlanningItemDAO planningItemDAO;
+	
+	@Autowired
+	private UserBO userBO;
+	
+	private User getSuperUser(PlanningItem planningItem) {
+		return userBO.getSuperUser(planningItem.getUser());
+	}
 
 	@Override
 	@Transactional
 	public MessageReturn save(PlanningItem planningItem) {
 		MessageReturn libReturn = new MessageReturn();
 		try {
+			planningItem.setUser(getSuperUser(planningItem));
 			saveGeneric(planningItem);
 		} catch (Exception e) {
 			e.printStackTrace();

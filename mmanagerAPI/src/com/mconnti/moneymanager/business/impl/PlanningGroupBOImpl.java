@@ -2,20 +2,31 @@ package com.mconnti.moneymanager.business.impl;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mconnti.moneymanager.business.PlanningGroupBO;
+import com.mconnti.moneymanager.business.UserBO;
 import com.mconnti.moneymanager.entity.PlanningGroup;
+import com.mconnti.moneymanager.entity.User;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
 import com.mconnti.moneymanager.utils.MessageFactory;
 
 public class PlanningGroupBOImpl extends GenericBOImpl<PlanningGroup> implements PlanningGroupBO {
+	
+	@Autowired
+	private UserBO userBO;
+	
+	private User getSuperUser(PlanningGroup planningGroup) {
+		return userBO.getSuperUser(planningGroup.getUser());
+	}
 
 	@Override
 	@Transactional
 	public MessageReturn save(PlanningGroup planningGroup) {
 		MessageReturn libReturn = new MessageReturn();
 		try {
+			planningGroup.setUser(getSuperUser(planningGroup));
 			saveGeneric(planningGroup);
 		} catch (Exception e) {
 			e.printStackTrace();
