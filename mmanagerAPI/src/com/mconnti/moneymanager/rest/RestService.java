@@ -255,7 +255,7 @@ public class RestService {
 	@Path("/typeaccount/getbydescription")
 	@Consumes({ MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response getAccountByDescription(String description) {
+	public Response getAccountByDescription(Description description) {
 		MessageReturn ret = new MessageReturn();
 		try {
 			ret = typeAccountBO.getByDescription(description);

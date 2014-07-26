@@ -165,7 +165,7 @@ public class RegisterMBean implements Serializable {
 		desc.setUser(superUser());
 		desc.setDescription(description);
 		desc.setTypeAccount(createTypeAccount(typeAccount));
-		
+
 		switch (desc.getTypeAccount().getDescription().toLowerCase()) {
 		case "credit":
 			desc.setIsCredit(true);
@@ -292,6 +292,7 @@ public class RegisterMBean implements Serializable {
 		try {
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/typeaccount/getbydescription");
 
+			description.setUser(superUser());
 			request.body(MediaType.APPLICATION_JSON, description);
 			ClientResponse<Description> response = request.put(Description.class);
 
@@ -666,12 +667,12 @@ public class RegisterMBean implements Serializable {
 	private TypeAccount createTypeAccount(final String description) {
 		TypeAccount typeAccount = new TypeAccount();
 		typeAccount.setDescription(description);
-		Description desc = new Description();		
+		Description desc = new Description();
 		desc.setUser(superUser());
 		desc.setTypeAccount(typeAccount);
-				
+
 		typeAccount = getTypeAccount(desc);
-		
+
 		return typeAccount;
 	}
 
@@ -727,6 +728,8 @@ public class RegisterMBean implements Serializable {
 				context.update("formRegister:panel");
 				hasParcels = false;
 			}
+		} else {
+			hasParcels = false;
 		}
 	}
 
@@ -789,17 +792,19 @@ public class RegisterMBean implements Serializable {
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/register");
 
 			if (loadDebits) {
-				createTypeAccount(Utils.clearString(MessageFactory.getMessage("lb_debit_", superUser().getLanguage(), null)));// debit
+				register.setTypeAccount(createTypeAccount(Utils.clearString(MessageFactory.getMessage("lb_debit_", superUser().getLanguage(), null))));// debit
 				if (register.getCreditCard().getId() == null || register.getCreditCard().getId() == 0) {
 					register.setCreditCard(null);
 				}
 			} else {
 				register.setCreditCard(null);
-				createTypeAccount(Utils.clearString(MessageFactory.getMessage("lb_credit_", superUser().getLanguage(), null)));// credit
+				register.setTypeAccount(createTypeAccount(Utils.clearString(MessageFactory.getMessage("lb_credit_", superUser().getLanguage(), null))));// credit
 			}
 
-			if (register.getNumberParcel() > 1) {
+			if (register.getNumberParcel() > 1 && hasParcels) {
 				register.setMultipleParcel(true);
+			}else{
+				register.setMultipleParcel(false);
 			}
 
 			register.setUser(superUser());
@@ -1143,14 +1148,14 @@ public class RegisterMBean implements Serializable {
 	public void setHasParcels(Boolean hasParcels) {
 		this.hasParcels = hasParcels;
 	}
-	
+
 	public Integer getPageIndex() {
-		
+
 		if (!registerList.isEmpty()) {
 			Integer nrRegister = 0;
 			for (Register reg : registerList) {
-				nrRegister ++;
-				if(Utils.compareEqualDates(new Date(), reg.getDate())){
+				nrRegister++;
+				if (Utils.compareEqualDates(new Date(), reg.getDate())) {
 					break;
 				}
 			}

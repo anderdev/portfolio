@@ -4,15 +4,22 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mconnti.moneymanager.business.TypeAccountBO;
+import com.mconnti.moneymanager.business.UserBO;
+import com.mconnti.moneymanager.entity.Description;
 import com.mconnti.moneymanager.entity.TypeAccount;
+import com.mconnti.moneymanager.entity.User;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
 import com.mconnti.moneymanager.utils.MessageFactory;
 import com.mconnti.moneymanager.utils.Utils;
 
 public class TypeAccountBOImpl extends GenericBOImpl<TypeAccount> implements TypeAccountBO {
+	
+	@Autowired
+	private UserBO userBO;
 
 	@Override
 	@Transactional
@@ -89,11 +96,50 @@ public class TypeAccountBOImpl extends GenericBOImpl<TypeAccount> implements Typ
 	}
 
 	@Override
-	public MessageReturn getByDescription(String description) {
+	public MessageReturn getByDescription(Description description) {
+		User user = userBO.getSuperUser(description.getUser());
+		String strDescription = "";
+		if(!user.getId().equals(description.getUser().getId()) && !user.getLanguage().equals(description.getUser().getLanguage())){
+			if(user.getLanguage().equals("pt_BR")){
+				switch (description.getTypeAccount().getDescription().toLowerCase()) {
+				case "credit":
+					strDescription = "Credito";
+					break;
+				case "debit":
+					strDescription = "Debito";
+					break;
+				case "group":
+					strDescription = "Grupo";
+					break;
+				case "super group":
+					strDescription = "Super Grupo";
+					break;
+				}
+			} else {
+				switch (description.getTypeAccount().getDescription().toLowerCase()) {
+				case "credito":
+					strDescription = "Credit";
+					break;
+				case "debito":
+					strDescription = "Debit";
+					break;
+				case "grupo":
+					strDescription = "Group";
+					break;
+				case "super grupo":
+					strDescription = "Super Group";
+					break;
+				}
+			}
+		} else {
+			strDescription = description.getTypeAccount().getDescription();
+		}
+		
+		
 		MessageReturn ret = new MessageReturn();
 		try {
 			Map<String, String> queryParams = new LinkedHashMap<>();
-			queryParams.put(" where lower(x.description) = ", "'" + description.toLowerCase() + "'");
+			queryParams.put(" where lower(x.description) = ", "'" + strDescription.toLowerCase() + "'");
 			ret.setAccount(findByParameter(TypeAccount.class, queryParams));
 		} catch (Exception e) {
 			ret.setMessage(e.getMessage());

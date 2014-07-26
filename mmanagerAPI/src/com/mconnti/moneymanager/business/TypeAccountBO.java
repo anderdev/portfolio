@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.mconnti.moneymanager.entity.Description;
 import com.mconnti.moneymanager.entity.TypeAccount;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
 
@@ -18,6 +19,6 @@ public interface TypeAccountBO extends GenericBO<TypeAccount>{
 	
 	public TypeAccount getById(Long id);
 	
-	public MessageReturn getByDescription(String description);
+	public MessageReturn getByDescription(Description description);
 }
 

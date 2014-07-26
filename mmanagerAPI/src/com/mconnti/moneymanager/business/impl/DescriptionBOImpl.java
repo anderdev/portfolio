@@ -180,9 +180,50 @@ public class DescriptionBOImpl extends GenericBOImpl<Description> implements Des
 
 	@Override
 	public List<Description> listByParameter(Description description) throws Exception {
+		User user = userBO.getSuperUser(description.getUser());
+		String strDescription = "";
+		if(!user.getId().equals(description.getUser().getId()) && !user.getLanguage().equals(description.getUser().getLanguage())){
+			if(user.getLanguage().equals("pt_BR")){
+				switch (description.getTypeAccount().getDescription().toLowerCase()) {
+				case "credit":
+					strDescription = "Credito";
+					break;
+				case "debit":
+					strDescription = "Debito";
+					break;
+				case "group":
+					strDescription = "Grupo";
+					break;
+				case "super group":
+					strDescription = "Super Grupo";
+					break;
+				}
+			} else {
+				switch (description.getTypeAccount().getDescription().toLowerCase()) {
+				case "credito":
+					strDescription = "Credit";
+					break;
+				case "debito":
+					strDescription = "Debit";
+					break;
+				case "grupo":
+					strDescription = "Group";
+					break;
+				case "super grupo":
+					strDescription = "Super Group";
+					break;
+				}
+			}
+		} else {
+			strDescription = description.getTypeAccount().getDescription();
+		}
+		
+		description.setUser(user);
+		description.getTypeAccount().setDescription(strDescription);
+		
 		Map<String, String> queryParams = new LinkedHashMap<>();
 		queryParams.put(" where "," 1=1 ");
-		queryParams.put(" and x.user.id = ", description.getUser().getId()+"");
+		queryParams.put(" and x.user.id = ", user.getId()+"");
 		
 		if( description.getTypeAccount() != null && description.getTypeAccount().getDescription() != null){
 			List<TypeAccount> typeAccountList = getTypeAccountByDescription(description);

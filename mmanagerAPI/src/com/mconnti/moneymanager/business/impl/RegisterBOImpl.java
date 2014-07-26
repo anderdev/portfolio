@@ -97,7 +97,8 @@ public class RegisterBOImpl extends GenericBOImpl<Register> implements RegisterB
 	public MessageReturn save(Register register) {
 		MessageReturn libReturn = new MessageReturn();
 		User user = getSuperUser(register);
-		if (user != null && register.getCurrency() != null && register.getSuperGroup() != null) {
+		register.setUser(user);
+		if (register.getUser() != null && register.getCurrency() != null && register.getSuperGroup() != null) {
 			try {
 				if (register.getCreditCard() != null) {
 					Map<String, String> queryParams = new LinkedHashMap<>();
@@ -186,15 +187,15 @@ public class RegisterBOImpl extends GenericBOImpl<Register> implements RegisterB
 	
 	private Register saveDescription(Register register) throws Exception{
 		if(register.getDescription() != null && register.getDescription().getId() == null){
-			register.getDescription().setUser(getSuperUser(register));
+			register.getDescription().setUser(register.getUser());
 			register.setDescription(descriptionDAO.save(register.getDescription()));
 		} 
 		if(register.getGroup() != null && register.getGroup().getId() == null){
-			register.getGroup().setUser(getSuperUser(register));
+			register.getGroup().setUser(register.getUser());
 			register.setGroup(descriptionDAO.save(register.getGroup()));
 		} 
 		if(register.getSuperGroup() != null && register.getSuperGroup().getId() == null) {
-			register.getSuperGroup().setUser(getSuperUser(register));
+			register.getSuperGroup().setUser(register.getUser());
 			register.setSuperGroup(descriptionDAO.save(register.getSuperGroup()));
 		}
 		return register;
