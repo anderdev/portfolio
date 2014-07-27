@@ -11,13 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mconnti.moneymanager.business.DescriptionBO;
+import com.mconnti.moneymanager.business.TypeAccountBO;
 import com.mconnti.moneymanager.business.UserBO;
 import com.mconnti.moneymanager.entity.Description;
 import com.mconnti.moneymanager.entity.TypeAccount;
 import com.mconnti.moneymanager.entity.User;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
 import com.mconnti.moneymanager.persistence.DescriptionDAO;
-import com.mconnti.moneymanager.persistence.TypeAccountDAO;
 import com.mconnti.moneymanager.utils.Crypt;
 import com.mconnti.moneymanager.utils.MessageFactory;
 
@@ -30,7 +30,7 @@ public class DescriptionBOImpl extends GenericBOImpl<Description> implements Des
 	private DescriptionDAO descriptionDAO;
 
 	@Autowired
-	private TypeAccountDAO typeAccountDAO;
+	private TypeAccountBO typeAccountBO;
 
 	private User getUser(Description description) {
 		return userBO.getSuperUser(description.getUser());
@@ -52,7 +52,7 @@ public class DescriptionBOImpl extends GenericBOImpl<Description> implements Des
 					queryParams.put(" where x.locale = ", "'" + description.getUser().getLanguage() + "'");
 				}
 
-				List<TypeAccount> typeAccountList = typeAccountDAO.list(TypeAccount.class, queryParams, "");
+				List<TypeAccount> typeAccountList = typeAccountBO.list(TypeAccount.class, queryParams, "");
 
 				Long descriptionId = description.getId();
 
@@ -160,85 +160,49 @@ public class DescriptionBOImpl extends GenericBOImpl<Description> implements Des
 		}
 		return null;
 	}
-	
-	private List<TypeAccount> getTypeAccountByDescription(Description description) throws Exception{
+
+	private List<TypeAccount> getTypeAccountByDescription(Description description) throws Exception {
 		Map<String, String> queryParamsTypeAccoount = new LinkedHashMap<>();
-		
-		if(description.getTypeAccount().getDescription().toLowerCase().equals("credit_debit")){
-			if(description.getUser().getLanguage().equals("pt_BR")){
+
+		if (description.getTypeAccount().getDescription().toLowerCase().equals("credit_debit")) {
+			if (description.getUser().getLanguage().equals("pt_BR")) {
 				queryParamsTypeAccoount.put(" where lower(x.description) in ", "('credito','debito')");
 			} else {
 				queryParamsTypeAccoount.put(" where lower(x.description) in ", "('credit','debit')");
 			}
-		} else{
+		} else {
 			queryParamsTypeAccoount.put(" where lower(x.description) = ", "'" + description.getTypeAccount().getDescription().toLowerCase() + "'");
 		}
-		
-		List<TypeAccount> typeAccountList = typeAccountDAO.list(TypeAccount.class, queryParamsTypeAccoount,"x.description");
+
+		List<TypeAccount> typeAccountList = typeAccountBO.list(TypeAccount.class, queryParamsTypeAccoount, "x.description");
 		return typeAccountList;
 	}
 
 	@Override
 	public List<Description> listByParameter(Description description) throws Exception {
-		User user = userBO.getSuperUser(description.getUser());
-		String strDescription = "";
-		if(!user.getId().equals(description.getUser().getId()) && !user.getLanguage().equals(description.getUser().getLanguage())){
-			if(user.getLanguage().equals("pt_BR")){
-				switch (description.getTypeAccount().getDescription().toLowerCase()) {
-				case "credit":
-					strDescription = "Credito";
-					break;
-				case "debit":
-					strDescription = "Debito";
-					break;
-				case "group":
-					strDescription = "Grupo";
-					break;
-				case "super group":
-					strDescription = "Super Grupo";
-					break;
-				}
-			} else {
-				switch (description.getTypeAccount().getDescription().toLowerCase()) {
-				case "credito":
-					strDescription = "Credit";
-					break;
-				case "debito":
-					strDescription = "Debit";
-					break;
-				case "grupo":
-					strDescription = "Group";
-					break;
-				case "super grupo":
-					strDescription = "Super Group";
-					break;
-				}
-			}
-		} else {
-			strDescription = description.getTypeAccount().getDescription();
-		}
-		
-		description.setUser(user);
-		description.getTypeAccount().setDescription(strDescription);
-		
+		Map<String, Object> map = typeAccountBO.getTypeAccountDescriptionByUserAndDescription(description.getUser(), description.getTypeAccount().getDescription(), false);
+
+		description.setUser((User) map.get("user"));
+		description.getTypeAccount().setDescription((String) map.get("description"));
+
 		Map<String, String> queryParams = new LinkedHashMap<>();
-		queryParams.put(" where "," 1=1 ");
-		queryParams.put(" and x.user.id = ", user.getId()+"");
-		
-		if( description.getTypeAccount() != null && description.getTypeAccount().getDescription() != null){
+		queryParams.put(" where ", " 1=1 ");
+		queryParams.put(" and x.user.id = ", description.getUser().getId() + "");
+
+		if (description.getTypeAccount() != null && description.getTypeAccount().getDescription() != null) {
 			List<TypeAccount> typeAccountList = getTypeAccountByDescription(description);
-			
-			if(typeAccountList.size() > 1){
-				queryParams.put(" and x.typeAccount.id in ", "("+typeAccountList.get(0).getId()+ ","+typeAccountList.get(1).getId()+")");
-			} else{
-				queryParams.put(" and x.typeAccount.id = ", typeAccountList.get(0).getId()+ "");
+
+			if (typeAccountList.size() > 1) {
+				queryParams.put(" and x.typeAccount.id in ", "(" + typeAccountList.get(0).getId() + "," + typeAccountList.get(1).getId() + ")");
+			} else {
+				queryParams.put(" and x.typeAccount.id = ", typeAccountList.get(0).getId() + "");
 			}
-		} else if (description.getTypeAccount() != null && description.getTypeAccount().getId() != null){
-			queryParams.put(" and x.typeAccount.id = ", description.getTypeAccount().getId()+ "");
+		} else if (description.getTypeAccount() != null && description.getTypeAccount().getId() != null) {
+			queryParams.put(" and x.typeAccount.id = ", description.getTypeAccount().getId() + "");
 		}
-		
+
 		List<Description> list = list(Description.class, queryParams, "x.description");
-		
+
 		for (Description desc : list) {
 			if (desc.getTypeAccount().getDescription().startsWith("C")) {
 				desc.setIsCredit(true);
@@ -282,13 +246,23 @@ public class DescriptionBOImpl extends GenericBOImpl<Description> implements Des
 
 			it.remove(); // avoids a ConcurrentModificationException
 		}
-		
+		User user = new User();
+		user.setId(Long.decode(userId));
+		TypeAccount typeAccount = typeAccountBO.getById(Long.decode(typeAccountId));
+		Description descriptionTemp = new Description();
+		descriptionTemp.setTypeAccount(typeAccount);
+		descriptionTemp.setUser(user);
+
+		Map<String, Object> map = typeAccountBO.getTypeAccountDescriptionByUserAndDescription(user, typeAccount.getDescription(), true);
+		user = (User) map.get("user");
+		typeAccount = (TypeAccount) map.get("typeAccount");
+
 		Map<String, String> queryParams = new LinkedHashMap<>();
-		
-		queryParams.put(" where x.user = ", userId);
-		queryParams.put(" and x.typeAccount = ", typeAccountId);
-		queryParams.put(" and lower(x.description) = '", Crypt.encrypt(description)+"'");
-		
+
+		queryParams.put(" where x.user = ", user.getId() + "");
+		queryParams.put(" and x.typeAccount = ", typeAccount.getId() + "");
+		queryParams.put(" and lower(x.description) = '", Crypt.encrypt(description) + "'");
+
 		Description desc = findByParameter(Description.class, queryParams);
 		return desc;
 	}

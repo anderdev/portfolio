@@ -302,10 +302,10 @@ public class RegisterMBean implements Serializable {
 
 			ret = response.getEntity(MessageReturn.class);
 
-			if (ret.getAccount() == null) {
+			if (ret.getTypeAccount() == null) {
 				throw new Exception(ret.getMessage());
 			} else {
-				return ret.getAccount();
+				return ret.getTypeAccount();
 			}
 
 		} catch (ClientProtocolException e) {
@@ -799,6 +799,10 @@ public class RegisterMBean implements Serializable {
 			} else {
 				register.setCreditCard(null);
 				register.setTypeAccount(createTypeAccount(Utils.clearString(MessageFactory.getMessage("lb_credit_", superUser().getLanguage(), null))));// credit
+			}
+			
+			if(hasParcels == null && register.getNumberParcel() > 1){
+				hasParcels = true;
 			}
 
 			if (register.getNumberParcel() > 1 && hasParcels) {

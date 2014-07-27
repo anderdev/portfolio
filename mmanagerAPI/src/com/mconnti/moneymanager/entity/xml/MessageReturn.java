@@ -32,7 +32,7 @@ public class MessageReturn {
 	
 	private List<Currency> currencyList;
 	
-	private TypeAccount account;
+	private TypeAccount typeAccount;
 	
 	private TypeClosure typeClosure;
 	
@@ -86,12 +86,12 @@ public class MessageReturn {
 		this.currencyList = currencyList;
 	}
 
-	public TypeAccount getAccount() {
-		return account;
+	public TypeAccount getTypeAccount() {
+		return typeAccount;
 	}
 
-	public void setAccount(TypeAccount account) {
-		this.account = account;
+	public void setTypeAccount(TypeAccount typeAccount) {
+		this.typeAccount = typeAccount;
 	}
 
 	public TypeClosure getTypeClosure() {

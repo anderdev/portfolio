@@ -1,5 +1,6 @@
 package com.mconnti.moneymanager.business.impl;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,15 +43,15 @@ public class TypeAccountBOImpl extends GenericBOImpl<TypeAccount> implements Typ
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			libReturn.setAccount(typeAccount);
+			libReturn.setTypeAccount(typeAccount);
 			libReturn.setMessage(e.getMessage());
 		}
 		if (libReturn.getMessage() == null && typeAccount.getId() == null) {
 			libReturn.setMessage(MessageFactory.getMessage("lb_typeaccount_saved", typeAccount.getLocale()));
-			libReturn.setAccount(typeAccount);
+			libReturn.setTypeAccount(typeAccount);
 		} else if (libReturn.getMessage() == null && typeAccount.getId() != null) {
 			libReturn.setMessage(MessageFactory.getMessage("lb_typeaccount_updated", typeAccount.getLocale()));
-			libReturn.setAccount(typeAccount);
+			libReturn.setTypeAccount(typeAccount);
 		}
 		return libReturn;
 	}
@@ -97,11 +98,38 @@ public class TypeAccountBOImpl extends GenericBOImpl<TypeAccount> implements Typ
 
 	@Override
 	public MessageReturn getByDescription(Description description) {
-		User user = userBO.getSuperUser(description.getUser());
+		String strDescription = (String) getTypeAccountDescriptionByUserAndDescription(description.getUser(), description.getTypeAccount().getDescription(), false).get("description");
+		
+		MessageReturn ret = new MessageReturn();
+		try {
+			Map<String, String> queryParams = new LinkedHashMap<>();
+			queryParams.put(" where lower(x.description) = ", "'" + strDescription.toLowerCase() + "'");
+			ret.setTypeAccount(findByParameter(TypeAccount.class, queryParams));
+		} catch (Exception e) {
+			ret.setMessage(e.getMessage());
+		}
+		return ret;
+	}
+	
+	private TypeAccount getByDescription(String description){
+		TypeAccount typeAccount = null;
+		try {
+			Map<String, String> queryParams = new LinkedHashMap<>();
+			queryParams.put(" where lower(x.description) = ", "'" + description.toLowerCase() + "'");
+			typeAccount = findByParameter(TypeAccount.class, queryParams);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return typeAccount;
+	}
+
+	@Override
+	public Map<String, Object> getTypeAccountDescriptionByUserAndDescription(User user, String description, Boolean withTypeAccount) {
+		User tempUser = userBO.getSuperUser(user);
 		String strDescription = "";
-		if(!user.getId().equals(description.getUser().getId()) && !user.getLanguage().equals(description.getUser().getLanguage())){
-			if(user.getLanguage().equals("pt_BR")){
-				switch (description.getTypeAccount().getDescription().toLowerCase()) {
+		if(!tempUser.getId().equals(user.getId()) && !tempUser.getLanguage().equals(user.getLanguage())){
+			if(tempUser.getLanguage().equals("pt_BR")){
+				switch (description.toLowerCase()) {
 				case "credit":
 					strDescription = "Credito";
 					break;
@@ -114,9 +142,12 @@ public class TypeAccountBOImpl extends GenericBOImpl<TypeAccount> implements Typ
 				case "super group":
 					strDescription = "Super Grupo";
 					break;
+				default:
+					strDescription = description;
+					break;
 				}
 			} else {
-				switch (description.getTypeAccount().getDescription().toLowerCase()) {
+				switch (description.toLowerCase()) {
 				case "credito":
 					strDescription = "Credit";
 					break;
@@ -129,22 +160,24 @@ public class TypeAccountBOImpl extends GenericBOImpl<TypeAccount> implements Typ
 				case "super grupo":
 					strDescription = "Super Group";
 					break;
+				default:
+					strDescription = description;
+					break;
 				}
 			}
 		} else {
-			strDescription = description.getTypeAccount().getDescription();
+			strDescription = description;
 		}
 		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("description", strDescription);
+		map.put("user", tempUser);
 		
-		MessageReturn ret = new MessageReturn();
-		try {
-			Map<String, String> queryParams = new LinkedHashMap<>();
-			queryParams.put(" where lower(x.description) = ", "'" + strDescription.toLowerCase() + "'");
-			ret.setAccount(findByParameter(TypeAccount.class, queryParams));
-		} catch (Exception e) {
-			ret.setMessage(e.getMessage());
+		if(withTypeAccount){
+			map.put("typeAccount", getByDescription(strDescription));
 		}
-		return ret;
+		
+		return map;
 	}
 
 }
