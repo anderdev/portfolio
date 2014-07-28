@@ -126,56 +126,59 @@ public class TypeAccountBOImpl extends GenericBOImpl<TypeAccount> implements Typ
 	@Override
 	public Map<String, Object> getTypeAccountDescriptionByUserAndDescription(User user, String description, Boolean withTypeAccount) {
 		User tempUser = userBO.getSuperUser(user);
-		String strDescription = "";
-		if(!tempUser.getId().equals(user.getId()) && !tempUser.getLanguage().equals(user.getLanguage())){
-			if(tempUser.getLanguage().equals("pt_BR")){
-				switch (description.toLowerCase()) {
-				case "credit":
-					strDescription = "Credito";
-					break;
-				case "debit":
-					strDescription = "Debito";
-					break;
-				case "group":
-					strDescription = "Grupo";
-					break;
-				case "super group":
-					strDescription = "Super Grupo";
-					break;
-				default:
-					strDescription = description;
-					break;
+		Map<String, Object> map = new HashMap<String, Object>();
+		if(description != null){
+			String strDescription = "";
+			if(!tempUser.getId().equals(user.getId()) && !tempUser.getLanguage().equals(user.getLanguage())){
+				if(tempUser.getLanguage().equals("pt_BR")){
+					switch (description.toLowerCase()) {
+					case "credit":
+						strDescription = "Credito";
+						break;
+					case "debit":
+						strDescription = "Debito";
+						break;
+					case "group":
+						strDescription = "Grupo";
+						break;
+					case "super group":
+						strDescription = "Super Grupo";
+						break;
+					default:
+						strDescription = description;
+						break;
+					}
+				} else {
+					switch (description.toLowerCase()) {
+					case "credito":
+						strDescription = "Credit";
+						break;
+					case "debito":
+						strDescription = "Debit";
+						break;
+					case "grupo":
+						strDescription = "Group";
+						break;
+					case "super grupo":
+						strDescription = "Super Group";
+						break;
+					default:
+						strDescription = description;
+						break;
+					}
 				}
 			} else {
-				switch (description.toLowerCase()) {
-				case "credito":
-					strDescription = "Credit";
-					break;
-				case "debito":
-					strDescription = "Debit";
-					break;
-				case "grupo":
-					strDescription = "Group";
-					break;
-				case "super grupo":
-					strDescription = "Super Group";
-					break;
-				default:
-					strDescription = description;
-					break;
-				}
+				strDescription = description;
 			}
-		} else {
-			strDescription = description;
+			
+			map.put("description", strDescription);
+			
+			if(withTypeAccount){
+				map.put("typeAccount", getByDescription(strDescription));
+			}
 		}
 		
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("description", strDescription);
 		map.put("user", tempUser);
-		
-		if(withTypeAccount){
-			map.put("typeAccount", getByDescription(strDescription));
-		}
 		
 		return map;
 	}

@@ -92,10 +92,10 @@ public class ClosureBOImpl extends GenericBOImpl<Closure> implements ClosureBO {
 				libReturn.setMessage(e.getMessage());
 			}
 			if (libReturn.getMessage() == null && closure.getId() == null) {
-				libReturn.setMessage(MessageFactory.getMessage("lb_closure_saved", closure.getUser().getLanguage()));
+				libReturn.setMessage(MessageFactory.getMessage("lb_closure_saved", user.getLanguage()));
 				libReturn.setClosure(closure);
 			} else if (libReturn.getMessage() == null && closure.getId() != null) {
-				libReturn.setMessage(MessageFactory.getMessage("lb_closure_updated", closure.getUser().getLanguage()));
+				libReturn.setMessage(MessageFactory.getMessage("lb_closure_updated", user.getLanguage()));
 				libReturn.setClosure(closure);
 			}
 		} else {
@@ -119,7 +119,7 @@ public class ClosureBOImpl extends GenericBOImpl<Closure> implements ClosureBO {
 		register.setDate(calendar);
 
 		String language = null;
-		if (closure.getUser().getLanguage().equals("pt_BR")) {
+		if (user.getLanguage().equals("pt_BR")) {
 			language = "pt_BR";
 		} else {
 			language = "en";
@@ -195,7 +195,7 @@ public class ClosureBOImpl extends GenericBOImpl<Closure> implements ClosureBO {
 		register.setTypeAccount(typeAccountRegister);
 		register.setTypeClosure(closure.getTypeClosure());
 		register.setCurrency(closure.getCurrency());
-		register.setUser(closure.getUser());
+		register.setUser(user);
 		register.setAmount(closure.getTotalGeneral().compareTo(BigDecimal.ZERO) > 0 ? closure.getTotalGeneral() : new BigDecimal(closure.getTotalGeneral().toString().split("-")[1]));
 		registerBO.save(register);
 	}
@@ -219,14 +219,15 @@ public class ClosureBOImpl extends GenericBOImpl<Closure> implements ClosureBO {
 	}
 
 	private void closeRegisters(Closure closure, String startDate, String endDate) throws Exception {
+		User user = getUser(closure);
 		
-		closure.setCreditsAlreadyClosed(closureDAO.getRegisters(closure.getUser(), startDate, endDate, true, getTypeAccountByDescription(MessageFactory.getMessage("lb_credit", closure.getUser().getLanguage())).getId()));
+		closure.setCreditsAlreadyClosed(closureDAO.getRegisters(user, startDate, endDate, true, getTypeAccountByDescription(MessageFactory.getMessage("lb_credit", user.getLanguage())).getId()));
 
-		closure.setDebitsAlreadyClosed(closureDAO.getRegisters(closure.getUser(), startDate, endDate, true, getTypeAccountByDescription(MessageFactory.getMessage("lb_debit", closure.getUser().getLanguage())).getId()));
+		closure.setDebitsAlreadyClosed(closureDAO.getRegisters(user, startDate, endDate, true, getTypeAccountByDescription(MessageFactory.getMessage("lb_debit", user.getLanguage())).getId()));
 
-		Collection<Register> collectionCredit = closureDAO.getRegisters(closure.getUser(), startDate, endDate, false, getTypeAccountByDescription(MessageFactory.getMessage("lb_credit", closure.getUser().getLanguage())).getId());
+		Collection<Register> collectionCredit = closureDAO.getRegisters(user, startDate, endDate, false, getTypeAccountByDescription(MessageFactory.getMessage("lb_credit", user.getLanguage())).getId());
 
-		Collection<Register> collectionDebit = closureDAO.getRegisters(closure.getUser(), startDate, endDate, false, getTypeAccountByDescription(MessageFactory.getMessage("lb_debit", closure.getUser().getLanguage())).getId());
+		Collection<Register> collectionDebit = closureDAO.getRegisters(user, startDate, endDate, false, getTypeAccountByDescription(MessageFactory.getMessage("lb_debit", user.getLanguage())).getId());
 
 		for (Register register : collectionCredit) {
 			saveRegister(register, true);
@@ -252,6 +253,7 @@ public class ClosureBOImpl extends GenericBOImpl<Closure> implements ClosureBO {
 	@Override
 	@Transactional
 	public MessageReturn delete(Long id) {
+		
 		MessageReturn libReturn = new MessageReturn();
 		Closure closure = null;
 		try {
@@ -313,16 +315,18 @@ public class ClosureBOImpl extends GenericBOImpl<Closure> implements ClosureBO {
 	}
 
 	private Closure getClosureValues(Closure closure, String startDate, String endDate) {
+		User user = getUser(closure);
+		
 		BigDecimal sumCredit = new BigDecimal(0.00);
 		BigDecimal sumDebit = new BigDecimal(0.00);
 
-		closure.setCreditsAlreadyClosed(closureDAO.getRegisters(closure.getUser(), startDate, endDate, true, getTypeAccountByDescription(MessageFactory.getMessage("lb_credit", closure.getUser().getLanguage())).getId()));
+		closure.setCreditsAlreadyClosed(closureDAO.getRegisters(user, startDate, endDate, true, getTypeAccountByDescription(MessageFactory.getMessage("lb_credit", user.getLanguage())).getId()));
 
-		closure.setDebitsAlreadyClosed(closureDAO.getRegisters(closure.getUser(), startDate, endDate, true, getTypeAccountByDescription(MessageFactory.getMessage("lb_debit", closure.getUser().getLanguage())).getId()));
+		closure.setDebitsAlreadyClosed(closureDAO.getRegisters(user, startDate, endDate, true, getTypeAccountByDescription(MessageFactory.getMessage("lb_debit", user.getLanguage())).getId()));
 
-		Collection<Register> collectionCredit = closureDAO.getRegisters(closure.getUser(), startDate, endDate, false, getTypeAccountByDescription(MessageFactory.getMessage("lb_credit", closure.getUser().getLanguage())).getId());
+		Collection<Register> collectionCredit = closureDAO.getRegisters(user, startDate, endDate, false, getTypeAccountByDescription(MessageFactory.getMessage("lb_credit", user.getLanguage())).getId());
 
-		Collection<Register> collectionDebit = closureDAO.getRegisters(closure.getUser(), startDate, endDate, false, getTypeAccountByDescription(MessageFactory.getMessage("lb_debit", closure.getUser().getLanguage())).getId());
+		Collection<Register> collectionDebit = closureDAO.getRegisters(user, startDate, endDate, false, getTypeAccountByDescription(MessageFactory.getMessage("lb_debit", user.getLanguage())).getId());
 
 		for (Register debit : collectionDebit) {
 			sumDebit = sumDebit.add(debit.getAmount());
@@ -354,9 +358,11 @@ public class ClosureBOImpl extends GenericBOImpl<Closure> implements ClosureBO {
 
 	@Override
 	public List<Closure> listByParameter(Closure closure) throws Exception {
+		User user = getUser(closure);
+		
 		Map<String, String> queryParams = new LinkedHashMap<>();
 		queryParams.put(" where "," 1=1 ");
-		queryParams.put(" and x.user = ", closure.getUser().getId()+"");
+		queryParams.put(" and x.user = ", user.getId()+"");
 		
 		Boolean isAnd = true;
 		
@@ -385,11 +391,7 @@ public class ClosureBOImpl extends GenericBOImpl<Closure> implements ClosureBO {
 			}
 		}
 		
-		List<Closure> list = list(Closure.class, queryParams, " x.date desc");
-		for (Closure closure2 : list) {
-			System.out.println(closure2.getDate());
-		}
-		return list;
+		return list(Closure.class, queryParams, " x.date desc");
 	}
 
 }

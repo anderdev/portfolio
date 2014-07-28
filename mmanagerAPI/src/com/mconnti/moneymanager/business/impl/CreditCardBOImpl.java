@@ -95,8 +95,9 @@ public class CreditCardBOImpl extends GenericBOImpl<CreditCard> implements Credi
 
 	@Override
 	public List<CreditCard> listByParameter(CreditCard creditCard) throws Exception {
+		User user = getUser(creditCard);
 		Map<String, String> queryParams = new HashMap<>();
-		queryParams.put(" where x.user.id = ", creditCard.getUser().getId()+"");
+		queryParams.put(" where x.user.id = ", user.getId()+"");
 
 		return list(CreditCard.class, queryParams, "x.name");
 	}

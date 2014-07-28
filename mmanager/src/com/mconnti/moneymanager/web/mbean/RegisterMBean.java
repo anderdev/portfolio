@@ -577,10 +577,12 @@ public class RegisterMBean implements Serializable {
 			} else {
 				registerSearchList = (List<Register>) response.getEntity(new GenericType<List<Register>>() {
 				});
+				creditTotal = BigDecimal.ZERO;
+				debitTotal = BigDecimal.ZERO;
 				for (Register reg : registerSearchList) {
-					if (reg.getTypeAccount().getDescription().equals(Utils.clearString(MessageFactory.getMessage("lb_credit_", superUser().getLanguage(), null)))) {
+					if (reg.getTypeAccount().getDescription().equals("Credito") || reg.getTypeAccount().getDescription().equals("Credit")) {
 						creditTotal = creditTotal.add(reg.getAmount());
-					} else if (reg.getTypeAccount().getDescription().equals(Utils.clearString(MessageFactory.getMessage("lb_debit_", superUser().getLanguage(), null)))) {
+					} else if (reg.getTypeAccount().getDescription().equals("Debito") || reg.getTypeAccount().getDescription().equals("Debit")) {
 						debitTotal = debitTotal.add(reg.getAmount());
 					}
 				}
@@ -627,6 +629,7 @@ public class RegisterMBean implements Serializable {
 		register.setTypeClosure(new TypeClosure());
 		register.setCreditCard(new CreditCard());
 		register.setSearch(false);
+		hasParcels = null;
 		if (!search) {
 			searchRegister = null;
 			setDefaultValues();
@@ -708,7 +711,7 @@ public class RegisterMBean implements Serializable {
 
 		if (fromSearch) {
 			RequestContext context = RequestContext.getCurrentInstance();
-			if (register.getTypeAccount().getDescription().equals(Utils.clearString(MessageFactory.getMessage("lb_debit_", superUser().getLanguage(), null)))) {
+			if (register.getTypeAccount().getDescription().equals("Debito") || register.getTypeAccount().getDescription().equals("Debit")) {
 				loadCredits = false;
 				loadDebits = true;
 			} else {
@@ -721,13 +724,12 @@ public class RegisterMBean implements Serializable {
 				nrParcels = MessageFactory.getMessage("lb_multiple_edition", superUser().getLanguage(), prams);
 				context.execute("confirmation.show();");
 				context.update("formConfirmation:messageParcels");
-
 				hasParcels = true;
 			} else {
 				context.execute("registerModal.show();");
-				context.update("formRegister:panel");
 				hasParcels = false;
 			}
+			context.update("formRegister:panel");
 		} else {
 			hasParcels = false;
 		}
@@ -738,6 +740,10 @@ public class RegisterMBean implements Serializable {
 
 		if (!all) {
 			register.setMultipleParcel(false);
+			hasParcels = false;
+		} else {
+			register.setMultipleParcel(true);
+			hasParcels = true;
 		}
 
 		context.execute("registerModal.show();");
@@ -800,14 +806,14 @@ public class RegisterMBean implements Serializable {
 				register.setCreditCard(null);
 				register.setTypeAccount(createTypeAccount(Utils.clearString(MessageFactory.getMessage("lb_credit_", superUser().getLanguage(), null))));// credit
 			}
-			
-			if(hasParcels == null && register.getNumberParcel() > 1){
+
+			if (hasParcels == null && register.getNumberParcel() > 1) {
 				hasParcels = true;
 			}
 
 			if (register.getNumberParcel() > 1 && hasParcels) {
 				register.setMultipleParcel(true);
-			}else{
+			} else {
 				register.setMultipleParcel(false);
 			}
 

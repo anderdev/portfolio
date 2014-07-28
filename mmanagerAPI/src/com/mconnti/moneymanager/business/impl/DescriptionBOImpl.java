@@ -180,10 +180,15 @@ public class DescriptionBOImpl extends GenericBOImpl<Description> implements Des
 
 	@Override
 	public List<Description> listByParameter(Description description) throws Exception {
-		Map<String, Object> map = typeAccountBO.getTypeAccountDescriptionByUserAndDescription(description.getUser(), description.getTypeAccount().getDescription(), false);
+		User user = description.getUser();
+		String strDescription = description.getTypeAccount() == null ? null : description.getTypeAccount().getDescription();
+		
+		Map<String, Object> map = typeAccountBO.getTypeAccountDescriptionByUserAndDescription(user, strDescription, false);
 
 		description.setUser((User) map.get("user"));
-		description.getTypeAccount().setDescription((String) map.get("description"));
+		if(strDescription != null){
+			description.getTypeAccount().setDescription((String) map.get("description"));
+		}
 
 		Map<String, String> queryParams = new LinkedHashMap<>();
 		queryParams.put(" where ", " 1=1 ");

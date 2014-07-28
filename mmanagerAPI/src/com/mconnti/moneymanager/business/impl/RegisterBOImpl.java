@@ -143,7 +143,7 @@ public class RegisterBOImpl extends GenericBOImpl<Register> implements RegisterB
 						Map<String, String> queryParams = new LinkedHashMap<>();
 						queryParams.put(" where "," 1=1 ");
 						queryParams.put(" and x.user = ", user.getId()+"");
-						queryParams.put(" and x.parcel = ", user.getId()+"");
+						queryParams.put(" and x.parcel = ", register.getParcel().getId()+"");
 						
 						List<Register> registerParcels = list(Register.class, queryParams, " x.date");
 						

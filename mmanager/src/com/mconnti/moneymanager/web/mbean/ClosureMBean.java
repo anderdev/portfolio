@@ -197,7 +197,7 @@ public class ClosureMBean implements Serializable {
 		try {
 			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/closure/list");
 			
-			if (useSearch) {
+			if (useSearch != null && useSearch) {
 				closure = searchClosure;
 			}
 			
@@ -209,7 +209,7 @@ public class ClosureMBean implements Serializable {
 			if (response.getStatus() != 200) {
 				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
 			}
-			if (useSearch) {
+			if (useSearch != null && useSearch) {
 				searchClosureList = response.getEntity(new GenericType<List<Closure>>() { });
 				getTotals(searchClosureList);
 			}else{
