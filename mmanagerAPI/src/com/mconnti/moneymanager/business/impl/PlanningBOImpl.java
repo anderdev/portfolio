@@ -33,18 +33,20 @@ public class PlanningBOImpl extends GenericBOImpl<Planning> implements PlanningB
 	@Autowired
 	private UserBO userBO;
 	
-	private User getSuperUser(Planning planning) {
-		return userBO.getSuperUser(planning.getUser());
+	private User getSuperUser(User user) {
+		return userBO.getSuperUser(user);
 	}
 	
 	@Override
 	@Transactional
 	public MessageReturn save(Planning planning) {
 		MessageReturn libReturn = new MessageReturn();
+		User user = getSuperUser(planning.getUser());
 		try {
-			Planning planTemp = getSelected(planning);
+			Planning planTemp = getSelectedPlanning(user);
 			if (planTemp != null) {
 				planTemp.setSelected(false);
+				planTemp.setUser(user);
 				saveGeneric(planTemp);
 			}
 			saveGeneric(planning);
@@ -67,7 +69,7 @@ public class PlanningBOImpl extends GenericBOImpl<Planning> implements PlanningB
 	@Transactional
 	public List<Planning> list(Planning plannig) throws Exception {
 		Map<String, String> queryParams = new LinkedHashMap<>();
-		queryParams.put(" where x.user.id = ", getSuperUser(plannig) + "");
+		queryParams.put(" where x.user.id = ", getSuperUser(plannig.getUser()).getId() + "");
 		List<Planning> result = list(Planning.class, queryParams, null);
 		return result;
 	}
@@ -76,10 +78,6 @@ public class PlanningBOImpl extends GenericBOImpl<Planning> implements PlanningB
 	public MessageReturn delete(final PlanningGroup planningGroup) {
 		MessageReturn libReturn = new MessageReturn();
 		try {
-			for (PlanningItem item : planningGroup.getPlannigItemList()) {
-				item.setPlanningGroup(null);
-				planningItemBO.delete(item.getId());
-			}
 			String locale = planningGroup.getUser().getLanguage();
 			planningGroupBO.delete(planningGroup.getId());
 			
@@ -102,17 +100,14 @@ public class PlanningBOImpl extends GenericBOImpl<Planning> implements PlanningB
 	}
 
 	@Override
-	public Planning getSelected(Planning planning) throws Exception {
+	public Planning getSelectedPlanning(User user) throws Exception {
 
 		Map<String, String> queryParams = new LinkedHashMap<>();
-		queryParams.put(" where x.user.id = ", getSuperUser(planning).getId() + "");
+		queryParams.put(" where x.user = ", user.getId() + "");
 		queryParams.put(" and x.selected = ", " 1 ");
-		List<Planning> result = list(Planning.class, queryParams, null);
-		if (result.size() > 0) {
-			return result.get(0);
-		} else {
-			return null;
-		}
+		findByParameter(Planning.class, queryParams);
+
+		return findByParameter(Planning.class, queryParams);
 	}
 
 	@Override
@@ -120,14 +115,15 @@ public class PlanningBOImpl extends GenericBOImpl<Planning> implements PlanningB
 	public MessageReturn saveGroup(PlanningGroup planningGroup) throws Exception {
 		MessageReturn libReturn = new MessageReturn();
 		try {
-			planningGroup.setPlanning(getSelected(planningGroup.getPlanning()));
+			User user = getSuperUser(planningGroup.getUser());
+			planningGroup.setPlanning(getSelectedPlanning(user));
 			List<PlanningItem> pItemList = new ArrayList<>();
 			for (int x = 1; x < 13; x++) {
 				PlanningItem pItem = new PlanningItem();
 				pItem.setAmount(BigDecimal.ZERO);
 				pItem.setMonth(x);
 				pItem.setPlanningGroup(planningGroup);
-				pItem.setUser(planningGroup.getUser());
+				pItem.setUser(user);
 				pItemList.add(pItem);
 			}
 			
@@ -135,6 +131,7 @@ public class PlanningBOImpl extends GenericBOImpl<Planning> implements PlanningB
 			
 			Description description = findById(Description.class, planningGroup.getDescription().getId());
 			TypeAccount typeAccount = findById(TypeAccount.class, planningGroup.getTypeAccount().getId());
+			planningGroup.setUser(user);
 			
 			planningGroup.setDescription(description);
 			planningGroup.setTypeAccount(typeAccount);
@@ -163,7 +160,7 @@ public class PlanningBOImpl extends GenericBOImpl<Planning> implements PlanningB
 		try {
 			PlanningItem itemTemp = planningItemBO.findById(PlanningItem.class, planningItem.getId());
 			planningItem.setPlanningGroup(itemTemp.getPlanningGroup());
-			planningItem.setUser(getSuperUser(planningItem.getPlanningGroup().getPlanning()));
+			planningItem.setUser(getSuperUser(planningItem.getUser()));
 			planningItemBO.save(planningItem);
 		} catch (Exception e) {
 			e.printStackTrace();

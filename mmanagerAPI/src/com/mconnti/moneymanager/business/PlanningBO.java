@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.mconnti.moneymanager.entity.Planning;
 import com.mconnti.moneymanager.entity.PlanningGroup;
 import com.mconnti.moneymanager.entity.PlanningItem;
+import com.mconnti.moneymanager.entity.User;
 import com.mconnti.moneymanager.entity.xml.MessageReturn;
 
 @Service("planningBO")
@@ -24,6 +25,6 @@ public interface PlanningBO extends GenericBO<Planning>{
 	
 	public Planning getById(Long id);
 	
-	public Planning getSelected(final Planning plannig) throws Exception;
+	public Planning getSelectedPlanning(final User user) throws Exception;
 }
 

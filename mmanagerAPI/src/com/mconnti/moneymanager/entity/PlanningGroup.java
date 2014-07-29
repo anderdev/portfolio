@@ -58,7 +58,7 @@ public class PlanningGroup implements Serializable {
 	@ForeignKey(name = "FK_PLGROUP_USER")
 	private User user;
 	
-	@OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "planninggroup_id")
 	@ForeignKey(name = "FK_PLGROUP_PLANITEM")
 	@Fetch(value = FetchMode.SUBSELECT)

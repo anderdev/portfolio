@@ -20,6 +20,7 @@
 			        			styleClass="button" 
 			        			update=":planningGroup" 
 			        			id="newButton"
+			        			rendered="#{planningMBean.showButtonItem}"
 			        			oncomplete="newPlanningModal.show()" >
 			        		</p:commandButton>
 			        		<p:commandButton value="#{messages['lb_new_tab']}" update=":formPlanning" immediate="true" id="newTab" ajax="true" styleClass="button" action="#{planningMBean.newPlanning}"/>
@@ -42,14 +43,15 @@
 						</h:panelGroup>
 					</div>
 					
-					<p:tabView id="tabView" var="plan" value="#{planningMBean.planningList}" style="height:430px;" activeIndex="#{planningMBean.activedIndex}"> 
+					<p:tabView id="tabView" var="plan" value="#{planningMBean.planningList}" style="height:430px;" activeIndex="#{planningMBean.activedIndex}">
+						<p:ajax event="tabChange" listener="#{planningMBean.onChange}" update="tabView"/> 
 						<p:tab id="planningItemTab" title="#{plan.description}" >   
 						    <p:dataTable var="planGroup" value="#{plan.plannigGroupList}" style="width:100%" id="planningGroupList"
 					    		emptyMessage="#{messages['lb_empty_list']}" rows="10" rowKey="#{planGroup}" 
 					    		selection="#{planningMBean.selectedPlanningGroup}">
 					    		
 					    		<p:column width="1%"> <!-- oncomplete="confirmDelete.show()" -->
-									<p:commandLink action="#{planningMBean.delete}"  ajax="true" id="deleteButton" immediate="true">
+									<p:commandLink action="#{planningMBean.delete}"  ajax="true" id="deleteButton" immediate="true" update="planningGroupList">
 										<f:setPropertyActionListener value="#{plan}" target="#{planningMBean.selectedPlanning}" />
 						        		<f:setPropertyActionListener value="#{planGroup}" target="#{planningMBean.selectedPlanningGroup}" />
 										<p:graphicImage value="#{messages['img_delete']}" style="border: 0px" />
@@ -136,13 +138,13 @@
 							<p:selectOneMenu value="#{planningMBean.planningGroup.typeAccount.id}" label="#{messages['lb_typeAccount_']}" style="width:100%">
 					            <f:selectItem itemLabel="#{messages['lb_select']}" itemValue="" />
 					            <f:selectItems value="#{planningMBean.typeAccounts}" var="desc" itemLabel="#{desc.name}" itemValue="#{desc}"/>
-					            <p:ajax update="descriptions" event="change" listener="#{planningMBean.loadSuperGroups}"/>  
+					            <p:ajax update="descriptions" event="change" listener="#{planningMBean.loadGroups}"/>  
 					        </p:selectOneMenu>
 		
 					        <h:outputText value="#{messages['lb_description']}"/>
 							<p:selectOneMenu id="descriptions" value="#{planningMBean.planningGroup.description.id}" label="#{messages['lb_description_']}" style="width:100%">
 					            <f:selectItem itemLabel="#{messages['lb_select']}" itemValue="" />
-					            <f:selectItems value="#{planningMBean.superGroups}"  var="desc" itemLabel="#{desc.description}" itemValue="#{desc}" />
+					            <f:selectItems value="#{planningMBean.groups}"  var="desc" itemLabel="#{desc.description}" itemValue="#{desc}" />
 					        </p:selectOneMenu>
 					        
 						</h:panelGrid>

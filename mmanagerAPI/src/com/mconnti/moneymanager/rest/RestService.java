@@ -22,7 +22,6 @@ import com.mconnti.moneymanager.business.CurrencyBO;
 import com.mconnti.moneymanager.business.DescriptionBO;
 import com.mconnti.moneymanager.business.PlanningBO;
 import com.mconnti.moneymanager.business.PlanningGroupBO;
-import com.mconnti.moneymanager.business.PlanningItemBO;
 import com.mconnti.moneymanager.business.RegisterBO;
 import com.mconnti.moneymanager.business.RoleBO;
 import com.mconnti.moneymanager.business.TypeAccountBO;
@@ -57,7 +56,6 @@ public class RestService {
 	private ClosureBO closureBO;
 	private PlanningBO planningBO;
 	private PlanningGroupBO planningGroupBO;
-	private PlanningItemBO planningItemBO;
 	private RoleBO roleBO;
 
 	public RestService() {
@@ -72,7 +70,6 @@ public class RestService {
 		closureBO = (ClosureBO) SpringApplicationContext.getBean("closureBO");
 		planningBO = (PlanningBO) SpringApplicationContext.getBean("planningBO");
 		planningGroupBO = (PlanningGroupBO) SpringApplicationContext.getBean("planningGroupBO");
-		planningItemBO = (PlanningItemBO) SpringApplicationContext.getBean("planningItemBO");
 		roleBO = (RoleBO) SpringApplicationContext.getBean("roleBO");
 		
 	}
@@ -709,7 +706,7 @@ public class RestService {
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Response getSelected(Planning planning) {
 		try {
-			planning = planningBO.getSelected(planning);
+			planning = planningBO.getSelectedPlanning(planning.getUser());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -760,15 +757,12 @@ public class RestService {
 	}
 
 	@DELETE
-	@Path("/planning")
+	@Path("/planninggroup")
 	@Consumes({ MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Response deletePlanning(PlanningGroup planningGroup) {
 		MessageReturn ret = new MessageReturn();
 		try {
-			for (PlanningItem planningItem : planningGroup.getPlannigItemList()) {
-				ret = planningItemBO.delete(planningItem.getId());
-			}
 			ret = planningGroupBO.delete(planningGroup.getId());
 		} catch (Exception e) {
 			e.printStackTrace();

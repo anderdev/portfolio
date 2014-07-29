@@ -18,6 +18,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.jboss.resteasy.client.ClientRequest;
 import org.jboss.resteasy.client.ClientResponse;
 import org.jboss.resteasy.util.GenericType;
+import org.primefaces.event.TabChangeEvent;
 
 import com.mconnti.moneymanager.entity.Description;
 import com.mconnti.moneymanager.entity.Planning;
@@ -62,13 +63,15 @@ public class PlanningMBean implements Serializable {
 
 	private Boolean showForm = false;
 
+	private Boolean showButtonItem = false;
+
 	private List<TypeAccount> typeAccountList;
 
-	private List<Description> superGroupList;
+	private List<Description> groupList;
 
 	private SelectItem[] typeAccounts;
 
-	private SelectItem[] superGroups;
+	private SelectItem[] groups;
 
 	private Integer activedIndex;
 
@@ -134,8 +137,10 @@ public class PlanningMBean implements Serializable {
 			Planning plan = planList.get(x);
 			if (plan.getSelected()) {
 				activedIndex = x;
+				selectedPlanning = plan;
 			}
 		}
+		showButtonItem = planList.isEmpty() ? false : true;
 		return "/common/formPlanning.xhtml?faces-redirect=true";
 	}
 
@@ -145,7 +150,7 @@ public class PlanningMBean implements Serializable {
 	}
 
 	public void newPlanningGroup() {
-		createPlanning();
+		planningGroup.setPlanning(selectedPlanning);
 		planningGroup.setUser(superUser());
 		loadTypeAccount();
 	}
@@ -202,7 +207,7 @@ public class PlanningMBean implements Serializable {
 	public void edit() {
 	}
 
-	private Boolean save(Object obj, String url) {
+	private Boolean save(Object obj, String url, Boolean showMessage) {
 		MessageReturn ret = new MessageReturn();
 
 		try {
@@ -218,12 +223,14 @@ public class PlanningMBean implements Serializable {
 				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
 			}
 
-			if (ret.getPlanning() == null && ret.getPlanningGroup() == null && ret.getPlanningItem() == null) {
-				throw new Exception(ret.getMessage());
-			} else {
-				FacesUtil.showSuccessMessage(ret.getMessage());
+			if (showMessage) {
+				if (ret.getPlanning() == null && ret.getPlanningGroup() == null && ret.getPlanningItem() == null) {
+					throw new Exception(ret.getMessage());
+				} else {
+					FacesUtil.showSuccessMessage(ret.getMessage());
+				}
+				loadList();
 			}
-			loadList();
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -240,27 +247,31 @@ public class PlanningMBean implements Serializable {
 		planning.setUser(superUser());
 		planning.setSelected(true);
 
-		if (save(planning, "planning")) {
+		if (save(planning, "planning", true)) {
 			createPlanning();
 			list();
 			showForm = false;
 		}
 	}
-	
-	public void setSelectedGroup(){
-		System.out.println(activedIndex);
-		System.out.println(selectedPlanningGroup);
+
+	public void onChange(TabChangeEvent event) {
+		selectedPlanning.setSelected(false);
+		save(selectedPlanning, "planning", false);
+
+		Planning planning = planningList.get(activedIndex);
+		planning.setSelected(true);
+		save(planning, "planning", false);
 	}
 
 	public void delete() {
 		MessageReturn ret = new MessageReturn();
 		try {
-			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/planning");
-			
+			ClientRequest request = new ClientRequest(host + "mmanagerAPI/rest/planninggroup");
+
 			selectedPlanning = planningList.get(activedIndex);
-			
-//			selectedPlanningGroup.setPlanning(selectedPlanning);
-			
+
+			// selectedPlanningGroup.setPlanning(selectedPlanning);
+
 			request.body(MediaType.APPLICATION_JSON, selectedPlanningGroup);
 
 			ClientResponse<PlanningGroup> response = request.delete(PlanningGroup.class);
@@ -277,13 +288,13 @@ public class PlanningMBean implements Serializable {
 	}
 
 	public void saveGroup() {
-		save(planningGroup, "planninggroup");
-		superGroups = null;
+		save(planningGroup, "planninggroup", true);
+		groups = null;
 		createPlanning();
 	}
 
 	public void saveItem() {
-		save(selectedPlanningItem, "planningitem");
+		save(selectedPlanningItem, "planningitem", true);
 	}
 
 	public SelectItem[] loadTypeAccounts() {
@@ -327,19 +338,19 @@ public class PlanningMBean implements Serializable {
 		return typeAccountList;
 	}
 
-	public void loadSuperGroups() {
-		this.superGroups = superGroups();
+	public void loadGroups() {
+		this.groups = siGroups();
 	}
 
-	public SelectItem[] superGroups() {
+	public SelectItem[] siGroups() {
 
-		superGroupList = loadDescriptionList(MessageFactory.getMessage("lb_super_group_", superUser().getLanguage(), null));
+		groupList = loadDescriptionList(MessageFactory.getMessage("lb_group_", superUser().getLanguage(), null));
 
-		List<SelectItem> itens = new ArrayList<SelectItem>(superGroupList.size());
+		List<SelectItem> itens = new ArrayList<SelectItem>(groupList.size());
 
-		this.superGroups = new SelectItem[itens.size()];
+		this.groups = new SelectItem[itens.size()];
 
-		for (Description d : superGroupList) {
+		for (Description d : groupList) {
 			itens.add(new SelectItem(d.getId(), d.getDescription()));
 		}
 		return itens.toArray(new SelectItem[itens.size()]);
@@ -360,7 +371,7 @@ public class PlanningMBean implements Serializable {
 			if (response.getStatus() != 200) {
 				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
 			}
-			superGroupList = response.getEntity(new GenericType<List<Description>>() {
+			groupList = response.getEntity(new GenericType<List<Description>>() {
 			});
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
@@ -369,7 +380,7 @@ public class PlanningMBean implements Serializable {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return superGroupList;
+		return groupList;
 	}
 
 	public UserMBean getUserMBean() {
@@ -492,27 +503,35 @@ public class PlanningMBean implements Serializable {
 		this.selectedMonth = selectedMonth;
 	}
 
-	public List<Description> getSuperGroupList() {
-		return superGroupList;
-	}
-
-	public void setSuperGroupList(List<Description> superGroupList) {
-		this.superGroupList = superGroupList;
-	}
-
-	public void setSuperGroups(SelectItem[] superGroups) {
-		this.superGroups = superGroups;
-	}
-
-	public SelectItem[] getSuperGroups() {
-		return superGroups;
-	}
-
 	public Planning getSelectedPlanning() {
 		return selectedPlanning;
 	}
 
 	public void setSelectedPlanning(Planning selectedPlanning) {
 		this.selectedPlanning = selectedPlanning;
+	}
+
+	public List<Description> getGroupList() {
+		return groupList;
+	}
+
+	public void setGroupList(List<Description> groupList) {
+		this.groupList = groupList;
+	}
+
+	public SelectItem[] getGroups() {
+		return groups;
+	}
+
+	public void setGroups(SelectItem[] groups) {
+		this.groups = groups;
+	}
+
+	public Boolean getShowButtonItem() {
+		return showButtonItem;
+	}
+
+	public void setShowButtonItem(Boolean showButtonItem) {
+		this.showButtonItem = showButtonItem;
 	}
 }
