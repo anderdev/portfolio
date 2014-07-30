@@ -63,6 +63,10 @@
 					    		</p:column>
 					    		
 					    		<p:column style="width:85%">
+					    			<p:dataGrid value="#{planningMBean.months}" var="m" columns="12">
+					    				<h:outputText value="#{m}" />
+					    			</p:dataGrid>
+						    		
 						    		<p:dataGrid value="#{planGroup.plannigItemList}" var="item" columns="12">
 					    				<p:commandLink action="#{planningMBean.newPlanningItem}" oncomplete="newPlanningItemModal.show()" ajax="true" immediate="true" styleClass="link" update=":planningItem">
 							        		<f:setPropertyActionListener value="#{item}" target="#{planningMBean.selectedPlanningItem}" />

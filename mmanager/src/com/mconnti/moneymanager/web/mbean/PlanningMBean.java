@@ -3,6 +3,7 @@ package com.mconnti.moneymanager.web.mbean;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -76,6 +77,8 @@ public class PlanningMBean implements Serializable {
 	private Integer activedIndex;
 
 	private String selectedMonth;
+	
+	private List<String> months;
 
 	public PlanningMBean() {
 		createPlanning();
@@ -86,6 +89,8 @@ public class PlanningMBean implements Serializable {
 		this.selectedPlanningItem = new PlanningItem();
 		this.typeAccount = new TypeAccount();
 		this.description = new Description();
+		String[] monthArray = new String[] {"JAN","FEV","MAR","APR","MAY","JUN","JUL","AUG","SET","OUT","NOV","DEC"};
+		this.months = Arrays.asList(monthArray);
 
 		Object request = FacesContext.getCurrentInstance().getExternalContext().getRequest();
 		if (request instanceof HttpServletRequest) {
@@ -533,5 +538,13 @@ public class PlanningMBean implements Serializable {
 
 	public void setShowButtonItem(Boolean showButtonItem) {
 		this.showButtonItem = showButtonItem;
+	}
+
+	public List<String> getMonths() {
+		return months;
+	}
+
+	public void setMonths(List<String> months) {
+		this.months = months;
 	}
 }
