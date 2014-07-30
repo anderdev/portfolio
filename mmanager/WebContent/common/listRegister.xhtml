@@ -230,8 +230,8 @@
 				            	<p:ajax process="@this" listener="#{registerMBean.checkCreditDescription}" />
 				            </p:autoComplete>  
 
-					        <h:outputText value="#{messages['lb_group']}" rendered="#{registerMBean.loadDebits}" />
-					        <p:autoComplete label="#{messages['lb_group_']}" dropdown="true" value="#{registerMBean.register.group.description}" completeMethod="#{registerMBean.groupComplete}" rendered="#{registerMBean.loadDebits}" required="true" style="width:90%">
+					        <h:outputText value="#{messages['lb_group']}" />
+					        <p:autoComplete label="#{messages['lb_group_']}" dropdown="true" value="#{registerMBean.register.group.description}" completeMethod="#{registerMBean.groupComplete}" required="true" style="width:90%">
 				            	<p:ajax event="itemSelect" listener="#{registerMBean.checkGroupDescription}" />
 				            	<p:ajax process="@this" listener="#{registerMBean.checkGroupDescription}" />
 				            </p:autoComplete> 
