@@ -33,7 +33,7 @@
     "google charts": "",
     "realtime tasks": "",
     "pages": "",
-    "login": "",
+    "login": "Log in",
     "sign up": "",
     "user profile": "",
     "growth": "",

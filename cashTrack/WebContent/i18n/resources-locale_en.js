@@ -33,7 +33,7 @@
     "google charts": "",
     "realtime tasks": "",
     "pages": "",
-    "login": "",
+    "lb_login": "Log in",
     "sign up": "",
     "user profile": "",
     "growth": "",
@@ -89,5 +89,8 @@
     "intro": "",
     "landing": "",
     "landing page": "",
-    "calendar": ""
+    "calendar": "",
+    "lb_forgot_password": "Forgot your password?",
+    "lb_dont_have_account": "Don't have an account yet?",
+    "lb_sign_up":" Sign up"
 }

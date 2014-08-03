@@ -33,7 +33,7 @@
     "google charts": "google gráficos",
     "realtime tasks": "tarefas em tempo real",
     "pages": "páginas",
-    "login": "login",
+    "lb_login": "Acessar",
     "sign up": "inscrever-se",
     "user profile": "perfil de usuário",
     "growth": "crescimento",
@@ -83,5 +83,8 @@
     "intro": "intro",
     "landing": "pouso",
     "landing page": "página de destino",
-    "calendar": "calendário"
+    "calendar": "calendário",
+    "lb_forgot_password": "Esqueceu sua senha?",
+    "lb_dont_have_account": "Ainda não tem uma conta?",
+    "lb_sign_up":" Cadastre-se"
 }
