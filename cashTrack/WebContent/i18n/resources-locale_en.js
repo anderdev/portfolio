@@ -92,5 +92,9 @@
     "calendar": "",
     "lb_forgot_password": "Forgot your password?",
     "lb_dont_have_account": "Don't have an account yet?",
-    "lb_sign_up":" Sign up"
+    "lb_sign_up":" Sign up",
+    "lb_username":"Username",
+    "lb_password":"Password"
+    	
+    	
 }
