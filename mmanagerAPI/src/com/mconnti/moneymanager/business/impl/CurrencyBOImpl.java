@@ -71,4 +71,9 @@ public class CurrencyBOImpl extends GenericBOImpl<Currency> implements CurrencyB
 		return null;
 	}
 
+	@Override
+	public List<Currency> list() throws Exception {
+		return list(Currency.class, null, null);
+	}
+
 }
