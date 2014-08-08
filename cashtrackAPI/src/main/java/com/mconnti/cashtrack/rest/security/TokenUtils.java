@@ -1,4 +1,4 @@
-package com.mconnti.cashtrack.utils;
+package com.mconnti.cashtrack.rest.security;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

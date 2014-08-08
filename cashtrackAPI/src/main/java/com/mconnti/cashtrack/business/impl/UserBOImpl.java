@@ -23,10 +23,10 @@ import com.mconnti.cashtrack.entity.xml.MessageReturn;
 import com.mconnti.cashtrack.entity.xml.TokenTransfer;
 import com.mconnti.cashtrack.persistence.ConfigDAO;
 import com.mconnti.cashtrack.persistence.UserDAO;
+import com.mconnti.cashtrack.rest.security.TokenUtils;
 import com.mconnti.cashtrack.utils.Constants;
 import com.mconnti.cashtrack.utils.Crypt;
 import com.mconnti.cashtrack.utils.MessageFactory;
-import com.mconnti.cashtrack.utils.TokenUtils;
 import com.mconnti.cashtrack.utils.Utils;
 
 public class UserBOImpl extends GenericBOImpl<User> implements UserBO {

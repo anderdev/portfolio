@@ -4,6 +4,8 @@ import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.Query;
 
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import com.mconnti.cashtrack.entity.User;
@@ -25,10 +27,25 @@ public class UserDAOImpl extends GenericDAOImpl<User> implements UserDAO{
 		} catch (NoResultException nre) {
 			messageReturn.setUser(user);
 		} catch (NonUniqueResultException nure) {
-			throw new Exception("Multiples users found using same username, get in contact with support!");
+			messageReturn.setMessage("Multiples users found using same username, get in contact with support!");
 		}catch(Exception e){
 			throw new Exception(e.getMessage());
 		}
 		return messageReturn;
+	}
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		User user = null;
+		try {
+			user = this.getByUsername(username).getUser();
+			if (null == user) {
+				throw new UsernameNotFoundException("The user with name " + username + " was not found");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return (UserDetails) user;
 	}
 }
