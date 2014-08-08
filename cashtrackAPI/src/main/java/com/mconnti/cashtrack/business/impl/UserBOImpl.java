@@ -18,12 +18,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mconnti.cashtrack.business.UserBO;
+import com.mconnti.cashtrack.business.impl.security.TokenUtils;
 import com.mconnti.cashtrack.entity.User;
 import com.mconnti.cashtrack.entity.xml.MessageReturn;
 import com.mconnti.cashtrack.entity.xml.TokenTransfer;
 import com.mconnti.cashtrack.persistence.ConfigDAO;
 import com.mconnti.cashtrack.persistence.UserDAO;
-import com.mconnti.cashtrack.rest.security.TokenUtils;
 import com.mconnti.cashtrack.utils.Constants;
 import com.mconnti.cashtrack.utils.Crypt;
 import com.mconnti.cashtrack.utils.MessageFactory;

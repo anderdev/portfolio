@@ -4,7 +4,6 @@
 	<context-param>
 		<param-name>resteasy.resources</param-name>
 		<param-value>com.mconnti.moneymanager.rest.RestService</param-value>
-		<param-value>com.mconnti.moneymanager.rest.CurrencyService</param-value>
 	</context-param>
 	
 	<listener>

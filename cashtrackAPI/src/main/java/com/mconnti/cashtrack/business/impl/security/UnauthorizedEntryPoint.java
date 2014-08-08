@@ -1,4 +1,4 @@
-package com.mconnti.cashtrack.rest.security;
+package com.mconnti.cashtrack.business.impl.security;
 
 import java.io.IOException;
 

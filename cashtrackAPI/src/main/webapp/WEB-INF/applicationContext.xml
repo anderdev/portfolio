@@ -84,9 +84,9 @@
 		<security:intercept-url method="DELETE" pattern="/rest/news/**" access="hasRole('admin')" />
 	</security:http>
 
-	<bean id="unauthorizedEntryPoint" class="com.mconnti.cashtrack.rest.security.UnauthorizedEntryPoint" />
+	<bean id="unauthorizedEntryPoint" class="com.mconnti.cashtrack.business.impl.security.UnauthorizedEntryPoint" />
 
-	<bean class="com.mconnti.cashtrack.rest.security.AuthenticationTokenProcessingFilter" id="authenticationTokenProcessingFilter">
+	<bean class="com.mconnti.cashtrack.business.impl.security.AuthenticationTokenProcessingFilter" id="authenticationTokenProcessingFilter">
 		<constructor-arg ref="userDAO" />
 	</bean>
 

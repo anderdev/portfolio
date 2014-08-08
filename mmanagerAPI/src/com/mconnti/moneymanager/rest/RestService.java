@@ -188,48 +188,48 @@ public class RestService {
 
 	// CURRENCY AREA
 
-//	@PUT
-//	@Path("/currency")
-//	@Produces({ MediaType.APPLICATION_JSON })
-//	public Response listCurrency(Currency currency) {
-//
-//		List<Currency> list = new ArrayList<>();
-//		try {
-//			list = currencyBO.list(currency);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//
-//		return Response.status(200).entity(list).build();
-//	}
-//
-//	@POST
-//	@Path("/currency")
-//	@Consumes({ MediaType.APPLICATION_JSON })
-//	@Produces({ MediaType.APPLICATION_JSON })
-//	public Response saveCurrency(Currency currency) {
-//		MessageReturn ret = new MessageReturn();
-//		try {
-//			ret = currencyBO.save(currency);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		return Response.status(200).entity(ret).build();
-//	}
-//
-//	@DELETE
-//	@Path("/currency")
-//	@Consumes({ MediaType.APPLICATION_JSON })
-//	@Produces({ MediaType.APPLICATION_JSON })
-//	public Response deleteCurrency(Currency currency) {
-//		MessageReturn ret = new MessageReturn();
-//		try {
-//			ret = currencyBO.delete(currency.getId());
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		return Response.status(200).entity(ret).build();
-//	}
+	@PUT
+	@Path("/currency")
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response listCurrency(Currency currency) {
+
+		List<Currency> list = new ArrayList<>();
+		try {
+			list = currencyBO.list(currency);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return Response.status(200).entity(list).build();
+	}
+
+	@POST
+	@Path("/currency")
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response saveCurrency(Currency currency) {
+		MessageReturn ret = new MessageReturn();
+		try {
+			ret = currencyBO.save(currency);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Response.status(200).entity(ret).build();
+	}
+
+	@DELETE
+	@Path("/currency")
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response deleteCurrency(Currency currency) {
+		MessageReturn ret = new MessageReturn();
+		try {
+			ret = currencyBO.delete(currency.getId());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Response.status(200).entity(ret).build();
+	}
 
 	// TYPE ACCOUNT AREA
 
