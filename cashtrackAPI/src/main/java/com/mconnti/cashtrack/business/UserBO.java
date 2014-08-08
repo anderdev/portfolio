@@ -18,7 +18,7 @@ public interface UserBO extends GenericBO<User>{
 	
 	public User getById(Long id);
 
-	public MessageReturn login(User user);
+	public String login(User user);
 
 	public List<User> listByParameter(User user) throws Exception;
 	

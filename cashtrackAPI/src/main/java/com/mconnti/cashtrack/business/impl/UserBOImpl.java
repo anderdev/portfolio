@@ -2,24 +2,31 @@ package com.mconnti.cashtrack.business.impl;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mconnti.cashtrack.business.UserBO;
-import com.mconnti.cashtrack.entity.Config;
 import com.mconnti.cashtrack.entity.User;
 import com.mconnti.cashtrack.entity.xml.MessageReturn;
+import com.mconnti.cashtrack.entity.xml.TokenTransfer;
 import com.mconnti.cashtrack.persistence.ConfigDAO;
 import com.mconnti.cashtrack.persistence.UserDAO;
 import com.mconnti.cashtrack.utils.Constants;
 import com.mconnti.cashtrack.utils.Crypt;
 import com.mconnti.cashtrack.utils.MessageFactory;
+import com.mconnti.cashtrack.utils.TokenUtils;
 import com.mconnti.cashtrack.utils.Utils;
 
 public class UserBOImpl extends GenericBOImpl<User> implements UserBO {
@@ -29,6 +36,13 @@ public class UserBOImpl extends GenericBOImpl<User> implements UserBO {
 
 	@Autowired
 	private ConfigDAO configDAO;
+	
+	@Autowired
+	@Qualifier("authenticationManager")
+	private AuthenticationManager authManager;
+	
+	@Autowired
+	private UserDetailsService userService;
 
 	@Override
 	@Transactional
@@ -152,39 +166,56 @@ public class UserBOImpl extends GenericBOImpl<User> implements UserBO {
 	}
 
 	@Override
-	public MessageReturn login(User user) {
-		MessageReturn messageReturn = null;
+	public String login(User user) {
+		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
 		try {
-			messageReturn = userDAO.getByUsername(user.getUsername());
-			if (messageReturn.getUser() == null) {
-				messageReturn.setMessage(MessageFactory.getMessage("lb_user_not_found", "en"));
-			} else if (!messageReturn.getUser().getPassword().equals(user.getPassword())) {
-				messageReturn.setUser(null);
-				messageReturn.setMessage(MessageFactory.getMessage("lb_user_incorrect_password", "en"));
-			} else {
-				if("ADMIN".equals(messageReturn.getUser().getRole().getRole())){
-					messageReturn.getUser().setAdmin(true);
-				}
-				
-				Map<String, String> queryParams = new LinkedHashMap<>();
-				queryParams.put(" where x.user = ", messageReturn.getUser().getId()+"");
-				Config config =  configDAO.findByParameter(Config.class, queryParams);
-				messageReturn.setConfig(config);
-				
-				if(messageReturn.getUser().getPassword().equals(Crypt.encrypt(Constants.DEFAULT_PASSWORD))){
-					messageReturn.getUser().setDefaultPassword(true);
-					messageReturn.getUser().setSecretPhrase(null);
-				}else{
-					messageReturn.getUser().setDefaultPassword(false);
-				}
-				
-				messageReturn.setMessage(MessageFactory.getMessage("lb_login_success", messageReturn.getUser().getLanguage()));
-			}
-		} catch (Exception e) {
-			messageReturn = new MessageReturn();
-			messageReturn.setMessage(e.getMessage());
+			Authentication authentication = this.authManager.authenticate(authenticationToken);
+			SecurityContextHolder.getContext().setAuthentication(authentication);
+		} catch (AuthenticationException e) {
+			e.printStackTrace();
+			return e.getMessage();
 		}
-		return messageReturn;
+
+		/*
+		 * Reload user as password of authentication principal will be null after authorization and password is needed for token generation
+		 */
+		UserDetails userDetails = this.userService.loadUserByUsername(user.getUsername());
+
+		return new TokenTransfer(TokenUtils.createToken(userDetails)).getToken();
+		
+		
+//		MessageReturn messageReturn = null;
+//		try {
+//			messageReturn = userDAO.getByUsername(user.getUsername());
+//			if (messageReturn.getUser() == null) {
+//				messageReturn.setMessage(MessageFactory.getMessage("lb_user_not_found", "en"));
+//			} else if (!messageReturn.getUser().getPassword().equals(user.getPassword())) {
+//				messageReturn.setUser(null);
+//				messageReturn.setMessage(MessageFactory.getMessage("lb_user_incorrect_password", "en"));
+//			} else {
+//				if("ADMIN".equals(messageReturn.getUser().getRole().getRole())){
+//					messageReturn.getUser().setAdmin(true);
+//				}
+//				
+//				Map<String, String> queryParams = new LinkedHashMap<>();
+//				queryParams.put(" where x.user = ", messageReturn.getUser().getId()+"");
+//				Config config =  configDAO.findByParameter(Config.class, queryParams);
+//				messageReturn.setConfig(config);
+//				
+//				if(messageReturn.getUser().getPassword().equals(Crypt.encrypt(Constants.DEFAULT_PASSWORD))){
+//					messageReturn.getUser().setDefaultPassword(true);
+//					messageReturn.getUser().setSecretPhrase(null);
+//				}else{
+//					messageReturn.getUser().setDefaultPassword(false);
+//				}
+//				
+//				messageReturn.setMessage(MessageFactory.getMessage("lb_login_success", messageReturn.getUser().getLanguage()));
+//			}
+//		} catch (Exception e) {
+//			messageReturn = new MessageReturn();
+//			messageReturn.setMessage(e.getMessage());
+//		}
+//		return messageReturn;
 	}
 
 	@Override

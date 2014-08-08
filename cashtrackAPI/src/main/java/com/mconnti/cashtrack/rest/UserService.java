@@ -95,13 +95,13 @@ public class UserService {
 	@Consumes({ MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Response login(User user) {
-		MessageReturn ret = new MessageReturn();
+		String ret = "";
 		try {
 			ret = userBO.login(user);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println(ret.getMessage());
+		System.out.println(ret);
 		return Response.status(200).entity(ret).build();
 	}
 
