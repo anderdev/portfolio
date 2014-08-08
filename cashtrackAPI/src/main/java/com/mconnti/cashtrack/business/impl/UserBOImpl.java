@@ -42,7 +42,7 @@ public class UserBOImpl extends GenericBOImpl<User> implements UserBO {
 	private AuthenticationManager authManager;
 	
 	@Autowired
-	private UserDetailsService userService;
+	private UserDetailsService userDetailsService;
 
 	@Override
 	@Transactional
@@ -179,7 +179,7 @@ public class UserBOImpl extends GenericBOImpl<User> implements UserBO {
 		/*
 		 * Reload user as password of authentication principal will be null after authorization and password is needed for token generation
 		 */
-		UserDetails userDetails = this.userService.loadUserByUsername(user.getUsername());
+		UserDetails userDetails = this.userDetailsService.loadUserByUsername(user.getUsername());
 
 		return new TokenTransfer(TokenUtils.createToken(userDetails)).getToken();
 		
@@ -223,4 +223,5 @@ public class UserBOImpl extends GenericBOImpl<User> implements UserBO {
 		User userRet = getById(user.getId());
 		return userRet.getSuperUser() == null ? userRet : userRet.getSuperUser();
 	}
+
 }
