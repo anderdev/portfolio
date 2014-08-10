@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -19,6 +20,7 @@ import com.mconnti.cashtrack.business.UserBO;
 import com.mconnti.cashtrack.context.SpringApplicationContext;
 import com.mconnti.cashtrack.entity.User;
 import com.mconnti.cashtrack.entity.xml.MessageReturn;
+import com.mconnti.cashtrack.entity.xml.TokenTransfer;
 
 @Path("/rest")
 public class UserService {
@@ -90,14 +92,14 @@ public class UserService {
 		return Response.status(200).entity(ret).build();
 	}
 
-	@PUT
+	@POST
 	@Path("/user/login")
-	@Consumes({ MediaType.APPLICATION_JSON })
+	@Consumes({ MediaType.APPLICATION_FORM_URLENCODED })
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response login(User user) {
-		String ret = "";
+	public Response login(@FormParam("username") String username, @FormParam("password") String password) {
+		TokenTransfer ret = null;
 		try {
-			ret = userBO.login(user);
+			ret = userBO.login(username,password);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

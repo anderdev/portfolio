@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.mconnti.cashtrack.entity.User;
 import com.mconnti.cashtrack.entity.xml.MessageReturn;
+import com.mconnti.cashtrack.entity.xml.TokenTransfer;
 
 @Service("userBO")
 public interface UserBO extends GenericBO<User>{
@@ -18,7 +19,7 @@ public interface UserBO extends GenericBO<User>{
 	
 	public User getById(Long id);
 
-	public String login(User user);
+	public TokenTransfer login(String username, String password);
 
 	public List<User> listByParameter(User user) throws Exception;
 	

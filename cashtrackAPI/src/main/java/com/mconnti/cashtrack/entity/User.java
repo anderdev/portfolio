@@ -1,7 +1,10 @@
 package com.mconnti.cashtrack.entity;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -18,6 +21,10 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import com.mconnti.cashtrack.entity.xml.SearchObject;
 import com.mconnti.cashtrack.utils.Crypt;
 
@@ -25,7 +32,7 @@ import com.mconnti.cashtrack.utils.Crypt;
 @Table(name = "user")
 @NamedQueries({@NamedQuery(name = "user.findByUsername", query = "SELECT us FROM User us WHERE us.username = :username")})
 @XmlRootElement
-public class User extends SearchObject implements Serializable{
+public class User extends SearchObject implements Serializable, UserDetails{
 
 	private static final long serialVersionUID = -5645425703632609531L;
 	
@@ -152,6 +159,11 @@ public class User extends SearchObject implements Serializable{
 	}
 
 	public String getPassword() {
+		try {
+			password = Crypt.decrypt(password);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return password;
 	}
 
@@ -209,6 +221,33 @@ public class User extends SearchObject implements Serializable{
 
 	public void setDefaultPassword(Boolean defaultPassword) {
 		this.defaultPassword = defaultPassword;
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		Set<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
+		authorities.add(new SimpleGrantedAuthority(getRole().getRole()));
+		return authorities;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return true;
 	}
 
 }

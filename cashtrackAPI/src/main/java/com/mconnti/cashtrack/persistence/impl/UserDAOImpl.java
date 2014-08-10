@@ -46,6 +46,6 @@ public class UserDAOImpl extends GenericDAOImpl<User> implements UserDAO{
 			e.printStackTrace();
 		}
 
-		return (UserDetails) user;
+		return user;
 	}
 }

@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -166,22 +165,34 @@ public class UserBOImpl extends GenericBOImpl<User> implements UserBO {
 	}
 
 	@Override
-	public String login(User user) {
-		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
-		try {
-			Authentication authentication = this.authManager.authenticate(authenticationToken);
-			SecurityContextHolder.getContext().setAuthentication(authentication);
-		} catch (AuthenticationException e) {
-			e.printStackTrace();
-			return e.getMessage();
-		}
+	public TokenTransfer login(String username, String password) {
+		
+		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
+		Authentication authentication = this.authManager.authenticate(authenticationToken);
+		SecurityContextHolder.getContext().setAuthentication(authentication);
 
 		/*
 		 * Reload user as password of authentication principal will be null after authorization and password is needed for token generation
 		 */
-		UserDetails userDetails = this.userDetailsService.loadUserByUsername(user.getUsername());
+		UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
 
-		return new TokenTransfer(TokenUtils.createToken(userDetails)).getToken();
+		return new TokenTransfer(TokenUtils.createToken(userDetails));
+		
+//		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
+//		try {
+//			Authentication authentication = this.authManager.authenticate(authenticationToken);
+//			SecurityContextHolder.getContext().setAuthentication(authentication);
+//		} catch (AuthenticationException e) {
+//			e.printStackTrace();
+//			return e.getMessage();
+//		}
+//
+//		/*
+//		 * Reload user as password of authentication principal will be null after authorization and password is needed for token generation
+//		 */
+//		UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
+//
+//		return new TokenTransfer(TokenUtils.createToken(userDetails)).getToken();
 		
 		
 //		MessageReturn messageReturn = null;
