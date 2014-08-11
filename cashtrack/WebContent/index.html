@@ -1,5 +1,5 @@
 <!doctype html>
-<!--[if lt IE 8]>         <html class="no-js lt-ie8"> <![endif]-->
+<!--[if lt IE 8]><html class="no-js lt-ie8"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
     <head>
         <meta charset="utf-8">
@@ -9,19 +9,18 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
         <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic" rel="stylesheet" type="text/css">
-        <!-- Needs images, font... therefore can not be part of main.css -->
-        <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
-        <link rel="stylesheet" href="bower_components/weather-icons/css/weather-icons.min.css">
-        <!-- end Needs images -->
-
         <link rel="stylesheet" href="styles/main.css"/>
-
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.17/angular.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     </head>
-    <body data-ng-app="app" id="app" class="app" data-custom-page=""  data-off-canvas-nav="" data-ng-controller="AppCtrl" data-ng-class=" {'layout-boxed': admin.layout === 'boxed' } ">
+    <body ng-app="app" id="app" class="app" data-custom-page=""  data-off-canvas-nav="" >
         <!--[if lt IE 9]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 		
+		<!-- 
 		<div data-ng-controller="LangCtrl" data-ng-init="setLang('english')"></div>
         
         <section data-ng-include=" 'views/header.html' " id="header" class="header-container" data-ng-class=" {'header-fixed': admin.fixedHeader} " data-ng-controller="HeaderCtrl"></section>
@@ -37,11 +36,12 @@
 			<div class="alert alert-danger" ng-show="error">{{error}}</div>
 			<div ng-view></div>
 		</div>
+		 -->
         
-		<script src="scripts/config/localize.js"></script>
-	  	<script src="scripts/config/app.js"></script>
-	  	<script src="scripts/app.js"></script>
-	  	<script src="scripts/ui.js"></script>
-	  	<script src="scripts/vendor.js"></script>
+		<script src="libs/angular-resource.js"></script>
+		<script src="libs/angular-route.js"></script>
+		<script src="libs/angular-cookies.js"></script>
+		<script src="scripts/config.js"></script>
+		<script src="scripts/app.js"></script>
     </body>
 </html>
