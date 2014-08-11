@@ -20,7 +20,6 @@ import com.mconnti.cashtrack.business.UserBO;
 import com.mconnti.cashtrack.context.SpringApplicationContext;
 import com.mconnti.cashtrack.entity.User;
 import com.mconnti.cashtrack.entity.xml.MessageReturn;
-import com.mconnti.cashtrack.entity.xml.TokenTransfer;
 
 @Path("/rest")
 public class UserService {
@@ -97,13 +96,13 @@ public class UserService {
 	@Consumes({ MediaType.APPLICATION_FORM_URLENCODED })
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Response login(@FormParam("username") String username, @FormParam("password") String password) {
-		TokenTransfer ret = null;
+		MessageReturn ret = new MessageReturn();
 		try {
-			ret = userBO.login(username,password);
+			ret = userBO.login(username, password);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println(ret);
+		System.out.println(ret.getMessage());
 		return Response.status(200).entity(ret).build();
 	}
 

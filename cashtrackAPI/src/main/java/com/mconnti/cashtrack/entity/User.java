@@ -19,6 +19,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.ws.rs.DefaultValue;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -26,7 +27,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.mconnti.cashtrack.entity.xml.SearchObject;
-import com.mconnti.cashtrack.utils.Crypt;
 
 @Entity
 @Table(name = "user")
@@ -63,7 +63,7 @@ public class User extends SearchObject implements Serializable, UserDetails{
 	@Transient
 	private Boolean admin;
 	
-	@Transient
+	@DefaultValue(value="false")
 	private Boolean defaultPassword;
 	
 	@Column(name="phrase")
@@ -159,20 +159,11 @@ public class User extends SearchObject implements Serializable, UserDetails{
 	}
 
 	public String getPassword() {
-		try {
-			password = Crypt.decrypt(password);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		return password;
 	}
 
 	public void setPassword(String password) {
-		try {
-			this.password = Crypt.encrypt(password);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		this.password = password;
 	}
 
 	public Boolean getExcluded() {

@@ -2,7 +2,9 @@ package com.mconnti.cashtrack.business.impl;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.mail.MessagingException;
 
@@ -14,10 +16,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mconnti.cashtrack.business.UserBO;
 import com.mconnti.cashtrack.business.impl.security.TokenUtils;
+import com.mconnti.cashtrack.entity.Config;
 import com.mconnti.cashtrack.entity.User;
 import com.mconnti.cashtrack.entity.xml.MessageReturn;
 import com.mconnti.cashtrack.entity.xml.TokenTransfer;
@@ -35,13 +39,16 @@ public class UserBOImpl extends GenericBOImpl<User> implements UserBO {
 
 	@Autowired
 	private ConfigDAO configDAO;
-	
+
 	@Autowired
 	@Qualifier("authenticationManager")
 	private AuthenticationManager authManager;
-	
+
 	@Autowired
 	private UserDetailsService userDetailsService;
+
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	@Override
 	@Transactional
@@ -55,21 +62,23 @@ public class UserBOImpl extends GenericBOImpl<User> implements UserBO {
 					}
 					user.setRegister(new Date());
 					user.setExcluded(false);
-					if (user.getPass() != null && !user.getPass().isEmpty()) {
-						user.setPassword(user.getPass());
-					}
-					if(user.getDefaultPassword() != null && user.getDefaultPassword()){
-						user.setPassword(Constants.DEFAULT_PASSWORD);
+
+					if (user.getDefaultPassword() != null && user.getDefaultPassword()) {
+						user.setPassword(passwordEncoder.encode(Constants.DEFAULT_PASSWORD));
+						user.setDefaultPassword(true);
+					} else {
+						user.setPassword(passwordEncoder.encode(user.getPassword()));
+						user.setDefaultPassword(false);
 					}
 				} else {
-					if(user.getPassword() != null && !user.getPassword().isEmpty()){
-						if(user.getDefaultPassword() == null){
+					if (user.getPassword() != null && !user.getPassword().isEmpty()) {
+						if (user.getDefaultPassword() == null) {
 							user.setDefaultPassword(false);
 						}
-						if(!user.getDefaultPassword()){
-							user.setPassword(Crypt.decrypt(Crypt.decrypt(user.getPassword())));
+						if (!user.getDefaultPassword()) {
+							user.setPassword(passwordEncoder.encode(user.getPassword()));
 						}
-					} 
+					}
 				}
 				saveGeneric(user);
 			} catch (Exception e) {
@@ -99,9 +108,9 @@ public class UserBOImpl extends GenericBOImpl<User> implements UserBO {
 
 		return libReturn;
 	}
-	
-	private void sendEmail(User user) throws Exception{
-		if(user.getDefaultPassword() != null && user.getDefaultPassword()){
+
+	private void sendEmail(User user) throws Exception {
+		if (user.getDefaultPassword() != null && user.getDefaultPassword()) {
 			String emailTo = user.getEmail();
 			String emailFrom = user.getSuperUser().getEmail();
 			String nameFrom = user.getSuperUser().getName();
@@ -118,7 +127,7 @@ public class UserBOImpl extends GenericBOImpl<User> implements UserBO {
 			body.append(MessageFactory.getMessage("lb_email_next_page", user.getLanguage())).append(" <b>").append(user.getSuperUser().getName()).append("</b><br/><br/>");
 			body.append(MessageFactory.getMessage("lb_email_thanks", user.getLanguage())).append("<br/>");
 			body.append("<b>").append(MessageFactory.getMessage("lb_email_signature", user.getLanguage())).append("</b>");
-			
+
 			Utils.sendEmail(emailTo, emailFrom, nameFrom, MessageFactory.getMessage("lb_email_subject", user.getLanguage()), body.toString());
 		}
 	}
@@ -165,8 +174,46 @@ public class UserBOImpl extends GenericBOImpl<User> implements UserBO {
 	}
 
 	@Override
-	public TokenTransfer login(String username, String password) {
-		
+	public MessageReturn login(String username, String password) {
+
+		MessageReturn messageReturn = null;
+		try {
+			messageReturn = userDAO.getByUsername(username);
+			if (messageReturn.getUser() == null) {
+				messageReturn.setMessage(MessageFactory.getMessage("lb_user_not_found", "en"));
+			} else {
+
+				messageReturn.setTokenTransfer(getTokenTransfer(username, password));
+
+				if ("ADMIN".equals(messageReturn.getUser().getRole().getRole())) {
+					messageReturn.getUser().setAdmin(true);
+				}
+
+				Map<String, String> queryParams = new LinkedHashMap<>();
+				queryParams.put(" where x.user = ", messageReturn.getUser().getId() + "");
+				Config config = configDAO.findByParameter(Config.class, queryParams);
+				messageReturn.setConfig(config);
+
+				if (messageReturn.getUser().getDefaultPassword() != null && messageReturn.getUser().getDefaultPassword()) {
+					messageReturn.getUser().setSecretPhrase(null);
+				} else {
+					messageReturn.getUser().setDefaultPassword(false);
+				}
+
+				messageReturn.setMessage(MessageFactory.getMessage("lb_login_success", messageReturn.getUser().getLanguage()));
+			}
+		} catch (Exception e) {
+			messageReturn = new MessageReturn();
+			if (e.getMessage().equals("Bad credentials")) {
+				messageReturn.setMessage(MessageFactory.getMessage("lb_user_incorrect_password", "en"));
+			} else {
+				messageReturn.setMessage(e.getMessage());
+			}
+		}
+		return messageReturn;
+	}
+
+	private TokenTransfer getTokenTransfer(String username, String password) {
 		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
 		Authentication authentication = this.authManager.authenticate(authenticationToken);
 		SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -175,58 +222,7 @@ public class UserBOImpl extends GenericBOImpl<User> implements UserBO {
 		 * Reload user as password of authentication principal will be null after authorization and password is needed for token generation
 		 */
 		UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
-
 		return new TokenTransfer(TokenUtils.createToken(userDetails));
-		
-//		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
-//		try {
-//			Authentication authentication = this.authManager.authenticate(authenticationToken);
-//			SecurityContextHolder.getContext().setAuthentication(authentication);
-//		} catch (AuthenticationException e) {
-//			e.printStackTrace();
-//			return e.getMessage();
-//		}
-//
-//		/*
-//		 * Reload user as password of authentication principal will be null after authorization and password is needed for token generation
-//		 */
-//		UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
-//
-//		return new TokenTransfer(TokenUtils.createToken(userDetails)).getToken();
-		
-		
-//		MessageReturn messageReturn = null;
-//		try {
-//			messageReturn = userDAO.getByUsername(user.getUsername());
-//			if (messageReturn.getUser() == null) {
-//				messageReturn.setMessage(MessageFactory.getMessage("lb_user_not_found", "en"));
-//			} else if (!messageReturn.getUser().getPassword().equals(user.getPassword())) {
-//				messageReturn.setUser(null);
-//				messageReturn.setMessage(MessageFactory.getMessage("lb_user_incorrect_password", "en"));
-//			} else {
-//				if("ADMIN".equals(messageReturn.getUser().getRole().getRole())){
-//					messageReturn.getUser().setAdmin(true);
-//				}
-//				
-//				Map<String, String> queryParams = new LinkedHashMap<>();
-//				queryParams.put(" where x.user = ", messageReturn.getUser().getId()+"");
-//				Config config =  configDAO.findByParameter(Config.class, queryParams);
-//				messageReturn.setConfig(config);
-//				
-//				if(messageReturn.getUser().getPassword().equals(Crypt.encrypt(Constants.DEFAULT_PASSWORD))){
-//					messageReturn.getUser().setDefaultPassword(true);
-//					messageReturn.getUser().setSecretPhrase(null);
-//				}else{
-//					messageReturn.getUser().setDefaultPassword(false);
-//				}
-//				
-//				messageReturn.setMessage(MessageFactory.getMessage("lb_login_success", messageReturn.getUser().getLanguage()));
-//			}
-//		} catch (Exception e) {
-//			messageReturn = new MessageReturn();
-//			messageReturn.setMessage(e.getMessage());
-//		}
-//		return messageReturn;
 	}
 
 	@Override

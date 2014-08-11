@@ -54,6 +54,8 @@ public class MessageReturn {
 	
 	private Role role;
 	
+	private TokenTransfer tokenTransfer;
+	
 	public String getMessage() {
 		return message;
 	}
@@ -172,5 +174,13 @@ public class MessageReturn {
 
 	public void setPlanningGroup(PlanningGroup planningGroup) {
 		this.planningGroup = planningGroup;
+	}
+
+	public TokenTransfer getTokenTransfer() {
+		return tokenTransfer;
+	}
+
+	public void setTokenTransfer(TokenTransfer tokenTransfer) {
+		this.tokenTransfer = tokenTransfer;
 	}
 }
