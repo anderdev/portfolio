@@ -1,0 +1,53 @@
+<div class="page-signin">
+
+    <div class="signin-header">
+        <section class="logo text-center">
+            <a href="#/">{{main.brand}}</a>
+        </section>
+    </div>
+
+    <div class="signin-body">
+        <div class="container">
+            <div class="form-container" data-ng-controller="userCtrl">
+                <form class="form-horizontal" name="form_signin" data-ng-submit="submitForm()" data-ng-controller="signinCtrl">
+                    <fieldset>
+                    	<div class="alert alert-warning" data-ng-show="showInfoOnSubmit">{{message}}</div>
+                        <div class="form-group">
+                            <div class="btn-icon-lined btn-icon-round btn-icon-sm btn-default-light">
+                                <span class="glyphicon glyphicon-user"></span>
+                            </div>
+                            <input type="text"
+                                   class="form-control input-lg input-round text-center"
+                                   data-i18n="i18n-placeholder"
+                                   placeholder="lb_username"
+                                   data-ng-model="user.username"
+                                   required>
+                        </div>
+                        <div class="form-group">
+                            <div class="btn-icon-lined btn-icon-round btn-icon-sm btn-default-light">
+                                <span class="glyphicon glyphicon-lock"></span>
+                            </div>
+                            <input type="password"
+                                   class="form-control input-lg input-round text-center"
+                                   data-i18n="i18n-placeholder"
+                                   placeholder="lb_password"
+                                   data-ng-model="user.password"
+                                   required>
+                        </div>
+                        <div class="form-group">
+                        	<button class="btn btn-primary btn-lg btn-round btn-block text-center" 
+                        		type="submit" data-ng-disabled="!canSubmit()" data-ng-click="login(user)"><span data-i18n="lb_login"></span></button>
+                        </div>
+                    </fieldset>
+                </form>
+
+                <section>
+                    <p class="text-center"><a href="#/pages/forgot-password"><span data-i18n="lb_forgot_password"></span></a></p>
+                    <p class="text-center text-muted text-small"><span data-i18n="lb_dont_have_account"></span><a href="#/pages/signup"><span data-i18n="lb_sign_up"></span></a></p>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+
+</div>
