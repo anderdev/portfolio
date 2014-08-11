@@ -21,7 +21,7 @@ angular.module('app', ['ngRoute', 'ngCookies', 'app.services'])
 				templateUrl: 'pages/dashboard.html',
 				controller: IndexController
 			});
-			
+
 			$locationProvider.hashPrefix('!');
 			
 			/* Register error provider that shows message on failed requests or redirects to login page on
@@ -97,6 +97,7 @@ angular.module('app', ['ngRoute', 'ngCookies', 'app.services'])
 		 /* Try getting valid user from cookie or go to login page */
 		var originalPath = $location.path();
 		$location.path("/login");
+		console.log('here');
 		var authToken = $cookieStore.get('authToken');
 		if (authToken !== undefined) {
 			$rootScope.authToken = authToken;
