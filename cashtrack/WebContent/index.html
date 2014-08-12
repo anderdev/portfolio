@@ -1,6 +1,6 @@
 <!doctype html>
 <!--[if lt IE 8]><html class="no-js lt-ie8"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" > <!--<![endif]-->
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -23,6 +23,7 @@
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
+		<div data-ng-controller="LangCtrl" data-ng-click="setLang('English')"></div>
         <section data-ng-include=" 'views/header.html' " id="header" class="header-container" data-ng-class=" {'header-fixed': admin.fixedHeader} " data-ng-controller="HeaderCtrl"></section>
 
         <div class="main-container">
@@ -37,16 +38,21 @@
         <script src="scripts/vendor.js"></script>
         <script src="scripts/ui.js"></script>
 
-        <script src="scripts/forms.js"></script>
-        <script src="scripts/charts.js"></script>
+		<!-- 
+		<script src="scripts/charts.js"></script>
         <script src="scripts/tables.js"></script>
-        <script src="scripts/tasks.js"></script>
+        
         <script src="scripts/maps.js"></script>
+		 -->
+		 <script src="scripts/tasks.js"></script>	
+        <script src="scripts/forms.js"></script>
         <script src="scripts/messages.js"></script>
         <script src="scripts/language.js"></script>
         <script src="scripts/appController.js"></script>
         <script src="scripts/navigation.js"></script>
         
         <script src="scripts/app.js"></script>
+        <script src="scripts/controllers/userCtrl.js"></script>
+        <script src="scripts/services/userService.js"></script>
     </body>
 </html>
