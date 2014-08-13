@@ -7,7 +7,7 @@
             function($scope, $rootScope) {
                 var $window;
                 return $window = $(window), $scope.main = {
-                    brand: "Rainbow",
+                    brand: "CashTrack",
                     name: "Lisa Doe"
                 }, $scope.pageTransitionOpts = [{
                     name: "Scale up",

@@ -3,7 +3,8 @@
         angular.module("app", 
         		[
         		 "ngRoute", 
-        		 "ngAnimate", 
+        		 "ngAnimate",
+        		 "ngCookies",
         		 "ui.bootstrap", 
 //        		 "easypiechart", 
         		 "textAngular", 
@@ -26,25 +27,107 @@
 //        		 "app.chart.ctrls", 
 //        		 "app.chart.directives", 
         		 "app.page.ctrls"
-        		 ]).config(["$routeProvider",
-            function($routeProvider) {
+        		 ]).config(['$routeProvider', '$locationProvider', '$httpProvider', 
+        	function($routeProvider, $locationProvider, $httpProvider){
                 var routes, setRoutes;
                 return routes = ["dashboard", "ui/typography", "ui/buttons", "ui/icons", "ui/grids", "ui/widgets", "ui/components", "ui/timeline", "ui/nested-lists", "ui/pricing-tables", "ui/maps", "tables/static", "tables/dynamic", "tables/responsive", "forms/elements", "forms/layouts", "forms/validation", "forms/wizard", "charts/charts", "charts/flot", "charts/morris", "pages/404", "pages/500", "pages/blank", "pages/forgot-password", "pages/invoice", "pages/lock-screen", "pages/profile", "pages/signin", "pages/signup", "mail/compose", "mail/inbox", "mail/single", "tasks/tasks"], setRoutes = function(route) {
                     var config, url;
                     return url = "/" + route, config = {
                         templateUrl: "views/" + route + ".html"
-                    }, $routeProvider.when(url, config), $routeProvider
+                    }, 
+                $routeProvider.when(url, config), $routeProvider
                 }, routes.forEach(function(route) {
                     return setRoutes(route)
-                }), $routeProvider.when("/", {
+                }), $routeProvider.when("/login", {
                     redirectTo: "/pages/signin"
                 }).when("/404", {
                     templateUrl: "views/pages/404.html"
                 }).otherwise({
                     redirectTo: "/404"
-                })
-            }
-        ])
+                });
+                
+    			/* Register error provider that shows message on failed requests or redirects to login page on
+    			 * unauthenticated requests */
+    		    $httpProvider.interceptors.push(function ($q, $rootScope, $location) {
+    			        return {
+    			        	'responseError': function(rejection) {
+    			        		var status = rejection.status;
+    			        		var config = rejection.config;
+    			        		var method = config.method;
+    			        		var url = config.url;
+    			        		console.log(status);
+    			        		if (status == 401) {
+    			        			$location.path( "/login" );
+    			        		} else {
+    			        			$rootScope.error = method + " on " + url + " failed with status " + status;
+    			        		}
+    			        		return $q.reject(rejection);
+    			        	}
+    			        };
+    			    }
+    		    );
+    		    
+    		    /* Registers auth token interceptor, auth token is either passed by header or by query parameter
+    		     * as soon as there is an authenticated user */
+    		    $httpProvider.interceptors.push(function ($q, $rootScope, $location) {
+    		        return {
+    		        	'request': function(config) {
+    		        		var isRestCall = config.url.indexOf('rest') == 0;
+    		        		if (isRestCall && angular.isDefined($rootScope.authToken)) {
+    		        			var authToken = $rootScope.authToken;
+    		        			if (exampleAppConfig.useAuthTokenHeader) {
+    		        				config.headers['X-Auth-Token'] = authToken;
+    		        			} else {
+    		        				config.url = config.url + "?token=" + authToken;
+    		        			}
+    		        		}
+    		        		return config || $q.when(config);
+    		        	}
+    		        };
+    		    }
+    	    );
+        }] ).run(function($rootScope, $location, $cookieStore, userService) {
+    		console.log('run');
+    		/* Reset error when a new view is loaded */
+    		$rootScope.$on('$viewContentLoaded', function() {
+    			delete $rootScope.error;
+    		});
+    		
+    		$rootScope.hasRole = function(role) {
+    			
+    			if ($rootScope.user === undefined) {
+    				return false;
+    			}
+    			
+    			if ($rootScope.user.roles[role] === undefined) {
+    				return false;
+    			}
+    			
+    			return $rootScope.user.roles[role];
+    		};
+    		
+    		$rootScope.logout = function() {
+    			delete $rootScope.user;
+    			delete $rootScope.authToken;
+    			$cookieStore.remove('authToken');
+    			$location.path("/login");
+    		};
+    		
+    		 /* Try getting valid user from cookie or go to login page */
+    		var originalPath = $location.path();
+    		$location.path("/login");
+    		console.log(originalPath);
+    		var authToken = $cookieStore.get('authToken');
+    		if (authToken !== undefined) {
+    			$rootScope.authToken = authToken;
+    			userService.get(function(user) {
+    				$rootScope.user = user;
+    				$location.path(originalPath);
+    			});
+    		}
+    		
+    		$rootScope.initialized = true;
+    	})
     }.call(this),
     function() {
         "use strict";
