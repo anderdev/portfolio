@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.mail.MessagingException;
+import javax.persistence.RollbackException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -22,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.mconnti.cashtrack.business.UserBO;
 import com.mconnti.cashtrack.business.impl.security.TokenUtils;
 import com.mconnti.cashtrack.entity.Config;
+import com.mconnti.cashtrack.entity.Role;
 import com.mconnti.cashtrack.entity.User;
 import com.mconnti.cashtrack.entity.xml.MessageReturn;
 import com.mconnti.cashtrack.entity.xml.TokenTransfer;
@@ -80,6 +82,8 @@ public class UserBOImpl extends GenericBOImpl<User> implements UserBO {
 						}
 					}
 				}
+				Role role = findById(Role.class, user.getRole().getId());
+				user.setRole(role);
 				saveGeneric(user);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -156,6 +160,9 @@ public class UserBOImpl extends GenericBOImpl<User> implements UserBO {
 				remove(user);
 				libReturn.setMessage(MessageFactory.getMessage("lb_user_deleted", locale));
 			}
+		} catch (RollbackException r){ 
+			r.printStackTrace();
+			libReturn.setMessage(r.getMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
 			libReturn.setMessage(e.getMessage());

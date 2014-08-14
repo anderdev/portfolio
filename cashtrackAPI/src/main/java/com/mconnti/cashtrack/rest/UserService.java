@@ -12,6 +12,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -78,15 +79,14 @@ public class UserService {
 	}
 
 	@DELETE
-	@Path("/user")
-	@Consumes({ MediaType.APPLICATION_JSON })
+	@Path("/user/{id}")
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response deleteUser(User user) {
+	public Response deleteUser(@PathParam("id") Long id) {
 		MessageReturn ret = new MessageReturn();
 		try {
-			ret = userBO.delete(user.getId());
+			ret = userBO.delete(id);
 		} catch (Exception e) {
-			e.printStackTrace();
+			ret.setMessage(e.getMessage());
 		}
 		return Response.status(200).entity(ret).build();
 	}
