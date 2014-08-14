@@ -1,4 +1,10 @@
 {
+	"lb_username":"Username",
+	"lb_password":"Password",
+	"lb_login":"Log in",
+	"lb_forgot_password":"Forgot your password?",
+	"lb_dont_have_account":"Don't have an account yet? ",
+	"lb_sign_up":"Sign up",
     "john doe": "",
     "my profile": "",
     "settings": "",

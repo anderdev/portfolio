@@ -39,7 +39,8 @@
                 }, routes.forEach(function(route) {
                     return setRoutes(route)
                 }), $routeProvider.when("/login", {
-                    redirectTo: "/pages/signin"
+                    redirectTo: "/pages/signin",
+                    controller: 'userCtrl'
                 }).when("/404", {
                     templateUrl: "views/pages/404.html"
                 }).otherwise({

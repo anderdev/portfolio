@@ -23,7 +23,8 @@
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
-		<div data-ng-controller="LangCtrl" data-ng-click="setLang('English')" role="navigation" ng-show="initialized"></div>
+		<div data-ng-controller="LangCtrl" data-ng-init="setLang('English')" role="navigation" ng-show="initialized"></div>
+        
         <section data-ng-include=" 'views/header.html' " id="header" class="header-container" data-ng-class=" {'header-fixed': admin.fixedHeader} " data-ng-controller="HeaderCtrl"></section>
 
         <div class="main-container">
@@ -37,7 +38,8 @@
         <script src="http://maps.google.com/maps/api/js?sensor=false"></script>
         <script src="scripts/vendor.js"></script>
         <script src="scripts/ui.js"></script>
-        <script src="scripts/angular-cookies.min.js"></script>	
+        <script src="scripts/angular-cookies.min.js"></script>
+        <script src="scripts/angular-resource.min.js"></script>		
 
 		<!-- 
 		<script src="scripts/charts.js"></script>

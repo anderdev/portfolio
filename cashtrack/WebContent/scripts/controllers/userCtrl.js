@@ -19,9 +19,26 @@ angular.module("app.ui.ctrls", []).controller("signinCtrl", ["$scope", function(
         return $scope.showInfoOnSubmit = !0, $scope.user.password=''
     }
 }
-]).controller('userCtrl', function ($scope, userService) {
-    $scope.message = '';
-    $scope.login = function(user){
-        userService.login(user, $scope); // call login service
-    }
+]).controller('userCtrl', function ($scope, $rootScope, $location, $cookieStore, userService) {
+	
+	$scope.rememberMe = false;
+	
+	$scope.login = function() {
+		userService.authenticate($.param({username: $scope.user.username, password: $scope.user.password}), function(authenticationResult) {
+			var authToken = authenticationResult.token;
+			$rootScope.authToken = authToken;
+			if ($scope.rememberMe) {
+				$cookieStore.put('authToken', authToken);
+			}
+			userService.get(function(user) {
+				$rootScope.user = user;
+				$location.path("/");
+			});
+		});
+	};
+//	
+//    $scope.message = '';
+//    $scope.login = function(user){
+//        userService.login(user, $scope); // call login service
+//    }
 })

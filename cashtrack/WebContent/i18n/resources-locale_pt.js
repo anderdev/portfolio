@@ -1,4 +1,9 @@
 {
+	"lb_username":"Usuário",
+	"lb_password":"Senha",
+	"lb_login":"Log in",
+	"lb_forgot_password":"Esqueceu sua senha?",
+	"lb_dont_have_account":"Ainda não tem uma conta? ",
     "john doe": "doe john",
     "my profile": "meu perfil",
     "settings": "Configurações",
