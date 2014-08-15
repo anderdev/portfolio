@@ -23,17 +23,25 @@ angular.module("app.ui.ctrls", []).controller("signinCtrl", ["$scope", function(
 	
 	$scope.rememberMe = false;
 	
-	$scope.login = function() {
-		userService.authenticate($.param({username: $scope.user.username, password: $scope.user.password}), function(authenticationResult) {
-			var authToken = authenticationResult.token;
-			$rootScope.authToken = authToken;
-			if ($scope.rememberMe) {
-				$cookieStore.put('authToken', authToken);
+	$scope.login = function(user) {
+		userService.authenticate($.param({username: user.username, password: user.password}), function(result) {
+			$scope.message = '';
+			console.log(result.message);
+			
+			if(result.tokenTransfer == null){
+				$scope.message = result.message;
+			} else{
+				var authToken = result.tokenTransfer.token;
+				console.log("token: "+authToken);
+				$rootScope.authToken = authToken;
+				if ($scope.rememberMe) {
+					$cookieStore.put('authToken', authToken);
+				}
+				userService.get(function(user) {
+					$rootScope.user = user;
+					$location.path("/");
+				});
 			}
-			userService.get(function(user) {
-				$rootScope.user = user;
-				$location.path("/");
-			});
 		});
 	};
 //	
