@@ -11,7 +11,7 @@
             <div class="form-container" data-ng-controller="userCtrl">
                 <form class="form-horizontal" name="form_signin" data-ng-submit="submitForm()" data-ng-controller="signinCtrl">
                     <fieldset>
-                    	<div class="alert alert-warning" data-ng-show="showInfoOnSubmit">{{message}}</div>
+                    	<div class="alert alert-warning" data-ng-show="showInfoOnSubmit"  >{{message}}</div>
                         <div class="form-group">
                             <div class="btn-icon-lined btn-icon-round btn-icon-sm btn-default-light">
                                 <span class="glyphicon glyphicon-user"></span>
@@ -34,6 +34,14 @@
                                    data-ng-model="user.password"
                                    required>
                         </div>
+                        <div class="form-group">
+							<div class="text-center">
+								<label>
+									<input type="checkbox" data-ng-model="user.rememberMe"> Remember me
+								</label>
+							</div>
+                        </div>
+                        
                         <div class="form-group">
                         	<button class="btn btn-primary btn-lg btn-round btn-block text-center" 
                         		type="submit" data-ng-disabled="!canSubmit()" data-ng-click="login(user)"><span data-i18n="lb_login"></span></button>

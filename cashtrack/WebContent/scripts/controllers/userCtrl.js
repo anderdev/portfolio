@@ -32,21 +32,25 @@ angular.module("app.ui.ctrls", []).controller("signinCtrl", ["$scope", function(
 				$scope.message = result.message;
 			} else{
 				var authToken = result.tokenTransfer.token;
+				
 				console.log("token: "+authToken);
+				
 				$rootScope.authToken = authToken;
+				$scope.rememberMe = user.rememberMe;
+				
 				if ($scope.rememberMe) {
 					$cookieStore.put('authToken', authToken);
+					console.log("token created");
 				}
+				
+				console.log("user: "+result.user.id);
+				
 				userService.get(function(user) {
+					console.log("entrei");
 					$rootScope.user = user;
 					$location.path("/");
 				});
 			}
 		});
 	};
-//	
-//    $scope.message = '';
-//    $scope.login = function(user){
-//        userService.login(user, $scope); // call login service
-//    }
 })

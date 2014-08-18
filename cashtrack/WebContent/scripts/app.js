@@ -47,6 +47,8 @@
                     redirectTo: "/404"
                 });
                 
+                console.log('retornei');
+                
     			/* Register error provider that shows message on failed requests or redirects to login page on
     			 * unauthenticated requests */
     		    $httpProvider.interceptors.push(function ($q, $rootScope, $location) {
@@ -116,12 +118,24 @@
     		
     		 /* Try getting valid user from cookie or go to login page */
     		var originalPath = $location.path();
+    		
     		$location.path("/login");
+    		
     		console.log(originalPath);
+    		
     		var authToken = $cookieStore.get('authToken');
+    		
+    		console.log("app authToken: "+authToken);
+    		
     		if (authToken !== undefined) {
+    			console.log('not undefined');
+    			
     			$rootScope.authToken = authToken;
+    			
+    			console.log('before call get');
+    			
     			userService.get(function(user) {
+    				console.log('inside get');
     				$rootScope.user = user;
     				$location.path(originalPath);
     			});

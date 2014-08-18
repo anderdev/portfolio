@@ -5,6 +5,7 @@
 'use strict';
 
 angular.module("app.ui.services", ['ngResource']).factory('userService', function($resource){
+	console.log('service');
 	return $resource('/cashtrackAPI/rest/user/:action', {},
 			{
 				authenticate: {
@@ -14,15 +15,4 @@ angular.module("app.ui.services", ['ngResource']).factory('userService', functio
 				},
 			}
 		);
-//    return{
-//        login:function(user, scope) {
-//            var $promise=$http.put('/mmanagerAPI/rest/user/login',user);
-//            $promise.then(function (ret) {
-//                if(ret.data.user != null) {
-//                    scope.message = 'need to redirect.';
-//                }
-//                scope.message = ret.data.message;
-//            })
-//        }
-//    }
 });
