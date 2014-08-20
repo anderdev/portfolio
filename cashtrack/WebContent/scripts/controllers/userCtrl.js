@@ -7,7 +7,7 @@
 angular.module("app.ui.ctrls", []).controller("signinCtrl", ["$scope", function($scope) {
     var original;
     return $scope.user = {
-        username: "",
+        username: "x",
         password: ""
     }, $scope.showInfoOnSubmit = !1, original = angular.copy($scope.user), $scope.revert = function() {
         return $scope.user = angular.copy(original), $scope.form_signin.$setPristine()
@@ -30,6 +30,11 @@ angular.module("app.ui.ctrls", []).controller("signinCtrl", ["$scope", function(
 			
 			if(result.tokenTransfer == null){
 				$scope.message = result.message;
+				
+				var username = user.username;
+				
+				console.log("username: "+username);
+				
 			} else{
 				var authToken = result.tokenTransfer.token;
 				
@@ -43,13 +48,12 @@ angular.module("app.ui.ctrls", []).controller("signinCtrl", ["$scope", function(
 					console.log("token created");
 				}
 				
-				console.log("user: "+result.user.id);
+				$scope.message = result.message;
 				
-				userService.get(function(user) {
-					console.log("entrei");
-					$rootScope.user = user;
-					$location.path("/");
-				});
+				console.log("user: "+result.user);
+				
+				$rootScope.user = result.user;
+				$location.path("/dashboard");
 			}
 		});
 	};

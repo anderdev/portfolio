@@ -139,4 +139,18 @@ public class UserService {
 		}
 		return Response.status(200).entity(ret).build();
 	}
+	
+	@PUT
+	@Path("/user/getbyusername")
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response getByUsername(String username) {
+		MessageReturn ret = new MessageReturn();
+		try {
+			ret = userBO.getByUsername(username);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Response.status(200).entity(ret).build();
+	}
 }

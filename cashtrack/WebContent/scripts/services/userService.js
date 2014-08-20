@@ -5,7 +5,7 @@
 'use strict';
 
 angular.module("app.ui.services", ['ngResource']).factory('userService', function($resource){
-	console.log('service');
+	console.log('get user service.');
 	return $resource('/cashtrackAPI/rest/user/:action', {},
 			{
 				authenticate: {
@@ -13,6 +13,11 @@ angular.module("app.ui.services", ['ngResource']).factory('userService', functio
 					params: {'action' : 'login'},
 					headers : {'Content-Type': 'application/x-www-form-urlencoded'}
 				},
+				getbyusername: {
+					method: 'PUT',
+					params: {'action' : 'getbyusername'},
+					headers : {'Content-Type': 'application/json'}
+				}
 			}
 		);
 });

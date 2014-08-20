@@ -185,7 +185,7 @@ public class UserBOImpl extends GenericBOImpl<User> implements UserBO {
 
 		MessageReturn messageReturn = null;
 		try {
-			messageReturn = userDAO.getByUsername(username);
+			messageReturn = getByUsername(username);
 			if (messageReturn.getUser() == null) {
 				messageReturn.setMessage(MessageFactory.getMessage("lb_user_not_found", "en"));
 			} else {
@@ -236,6 +236,11 @@ public class UserBOImpl extends GenericBOImpl<User> implements UserBO {
 	public User getSuperUser(User user) {
 		User userRet = getById(user.getId());
 		return userRet.getSuperUser() == null ? userRet : userRet.getSuperUser();
+	}
+
+	@Override
+	public MessageReturn getByUsername(String username) throws Exception {
+		return userDAO.getByUsername(username);
 	}
 
 }

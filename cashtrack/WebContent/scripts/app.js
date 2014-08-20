@@ -90,7 +90,6 @@
     		    }
     	    );
         }] ).run(function($rootScope, $location, $cookieStore, userService) {
-    		console.log('run');
     		/* Reset error when a new view is loaded */
     		$rootScope.$on('$viewContentLoaded', function() {
     			delete $rootScope.error;
@@ -121,23 +120,16 @@
     		
     		$location.path("/login");
     		
-    		console.log(originalPath);
-    		
     		var authToken = $cookieStore.get('authToken');
     		
-    		console.log("app authToken: "+authToken);
-    		
     		if (authToken !== undefined) {
-    			console.log('not undefined');
-    			
     			$rootScope.authToken = authToken;
     			
-    			console.log('before call get');
+    			var username = authToken.split(':')[0];
     			
-    			userService.get(function(user) {
-    				console.log('inside get');
-    				$rootScope.user = user;
-    				$location.path(originalPath);
+    			userService.getbyusername(username, function(result) {
+    				$rootScope.user = result.user;
+    				$location.path("/dashboard");
     			});
     		}
     		

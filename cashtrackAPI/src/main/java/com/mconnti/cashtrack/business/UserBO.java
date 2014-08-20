@@ -23,5 +23,7 @@ public interface UserBO extends GenericBO<User>{
 	public List<User> listByParameter(User user) throws Exception;
 	
 	public User getSuperUser(User user);
+	
+	public MessageReturn getByUsername(String username) throws Exception;
 }
 
