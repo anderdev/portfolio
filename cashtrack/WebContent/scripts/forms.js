@@ -26,9 +26,9 @@
                 }, $scope.toggleMin(), $scope.open = function($event) {
                     return $event.preventDefault(), $event.stopPropagation(), $scope.opened = !0
                 }, $scope.dateOptions = {
-                    "year-format": "'yy'",
+                    "year-format": "'yyyy'",
                     "starting-day": 1
-                }, $scope.formats = ["dd-MMMM-yyyy", "yyyy/MM/dd", "shortDate"], $scope.format = $scope.formats[0]
+                }, $scope.formats = ["dd/MM/yyyy", "shortDate"], $scope.format = $scope.formats[0]
             }
         ]).controller("TimepickerDemoCtrl", ["$scope",
             function($scope) {

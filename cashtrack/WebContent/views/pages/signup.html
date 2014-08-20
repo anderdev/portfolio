@@ -16,13 +16,21 @@
                             <span class="input-group-addon "><span class="glyphicon glyphicon-user"></span></span>
                             <input  type="text"
                                     class="form-control"
-                                    placeholder="Name"
+                                    data-i18n="i18n-placeholder"
+                                    placeholder="lb_name"
+                                   	name="user.name"
+                                    data-ng-model="user.name"
                                     required>
                         </div>
                         <div class="divider"></div>
                         <div class="input-group">
                     		<span class="input-group-addon "><span class="glyphicon glyphicon-envelope"></span></span>
-                            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+                            <input type="email" class="form-control" 
+                            		data-i18n="i18n-placeholder"
+                                    placeholder="lb_email"
+                                   	name="user.email"
+                                    data-ng-model="user.email"
+                                    required>
                         </div>
                         <div class="divider"></div>
                         <div class="row">
@@ -33,13 +41,17 @@
 				                        <input type="text" 
 				                        	   class="form-control"
 				                               datepicker-popup="{{format}}"
-				                               ng-model="dt"
 				                               is-open="opened"
 				                               min="minDate"
 				                               datepicker-options="dateOptions" 
 				                               date-disabled="disabled(date, mode)"
 				                               ng-required="true" 
-				                               close-text="Close">
+				                               close-text="Close"
+				                               data-i18n="i18n-placeholder"
+			                                   placeholder="lb_birth_date"
+			                                   name="user.birthDate"
+			                                   data-ng-model="clear"
+			                                   required>
 				                        <span class="input-group-addon" ng-click="open($event)"><i class="fa fa-calendar"></i></span>
 				                    </div>
 				                 </div>
@@ -48,10 +60,10 @@
                         <div class="divider"></div>
                         <div class="input-group">
 				            <dl class="dl-horizontal">
-				                <dt>Language</dt>
+				                <dt><span data-i18n="lb_language"></span></dt>
 				                <dd>
-				                    <label class="ui-radio"><input name="radio1" type="radio" value="option1" checked><span>English</span></label>
-				                    <label class="ui-radio"><input name="radio1" type="radio" value="option2" ><span>Portuguese</span></label>
+				                    <label class="ui-radio"><input name="user.language" type="radio" data-ng-model="user.language" checked><span data-i18n="lb_english"></span></label>
+				                    <label class="ui-radio"><input name="user.language" type="radio" data-ng-model="user.language" ><span data-i18n="lb_portuguese"></span></label>
 				                </dd>
 				            </dl>				
 				        </div>
@@ -59,37 +71,45 @@
                             <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
                             <input  type="text"
                                     class="form-control"
-                                    placeholder="Username"
-                                    >
+                                    data-i18n="i18n-placeholder"
+                                    placeholder="lb_username"
+                                   	name="user.username"
+                                    data-ng-model="user.username"
+                                    required>
                         </div>
                         <div class="divider"></div>
                         <div class="input-group">
                             <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
                             <input type="password"
                                    class="form-control"
-                                   placeholder="Password"
-                                   >
+                                   data-i18n="i18n-placeholder"
+                                   placeholder="lb_password"
+                                   name="user.password"
+                                   data-ng-model="user.password"
+                                   required>
                         </div>
                         <div class="divider"></div>
                         <div class="input-group">
                             <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
-                            <input  type="text"
-                                    class="form-control"
-                                    placeholder="Secret phrase"
-                                    >
+                            <input type="text"
+                                   class="form-control"
+                                   data-i18n="i18n-placeholder"
+                                   placeholder="lb_secret_phrase"
+                                   name="user.secretPhrase"
+                                   data-ng-model="user.secretPhrase"
+                                   required>
                         </div>
 						<div class="divider"></div>
                         <div class="form-group">
-                            <p class="text-muted text-small">By clicking on Sign up, you agree to <a href="javascript:;">terms & conditions</a> and <a href="javascript:;">privacy policy</a></p>
                             <div class="divider"></div>
                             <button class="btn btn-primary btn-lg btn-round btn-block text-center" 
-                        		type="submit" data-ng-disabled="!canSubmit()" data-ng-click="login(user)">Sign up</button>
+                        		type="submit" data-ng-disabled="!canSubmit()" data-ng-click="login(user)"><span data-i18n="lb_sign_up"></span></button>
                         </div>
                     </form>
                 </section>
 
                 <section>
-                    <p class="text-center text-muted">Already have an account? <a href="#/pages/signin" >Log in now</a></p>
+                    <p class="text-center text-muted"><span data-i18n="lb_already_have_account"></span> <a href="#/pages/signin" ><span data-i18n="lb_login_now"></span></a></p>
                 </section>
 
             </div>
