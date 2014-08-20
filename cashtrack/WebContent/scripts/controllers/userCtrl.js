@@ -7,7 +7,7 @@
 angular.module("app.ui.ctrls", []).controller("signinCtrl", ["$scope", function($scope) {
     var original;
     return $scope.user = {
-        username: "x",
+        username: "",
         password: ""
     }, $scope.showInfoOnSubmit = !1, original = angular.copy($scope.user), $scope.revert = function() {
         return $scope.user = angular.copy(original), $scope.form_signin.$setPristine()
@@ -57,4 +57,8 @@ angular.module("app.ui.ctrls", []).controller("signinCtrl", ["$scope", function(
 			}
 		});
 	};
+	
+	$scope.login = function(user) {
+		
+	}
 })

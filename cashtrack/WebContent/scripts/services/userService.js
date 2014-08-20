@@ -17,6 +17,11 @@ angular.module("app.ui.services", ['ngResource']).factory('userService', functio
 					method: 'PUT',
 					params: {'action' : 'getbyusername'},
 					headers : {'Content-Type': 'application/json'}
+				},
+				save: {
+					method: 'POST',
+					params: {'action' : ''},
+					headers : {'Content-Type': 'application/json'}
 				}
 			}
 		);
