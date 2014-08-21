@@ -21,6 +21,26 @@ angular.module("app.ui.ctrls", []).controller("signinCtrl", ["$scope", function(
         return $scope.showInfoOnSubmit = !0, $scope.user.password=''
     }
 }
+]).controller("signupCtrl", ["$scope", function($scope) {
+    var original;
+    return $scope.user = {
+        name: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+        birthDate: "",
+        secretPhrase: ""
+    }, $scope.showInfoOnSubmit = !1, original = angular.copy($scope.user), $scope.revert = function() {
+        return $scope.user = angular.copy(original), $scope.form_signup.$setPristine(), $scope.form_signup.confirmPassword.$setPristine()
+    }, $scope.canRevert = function() {
+        return !angular.equals($scope.user, original) || !$scope.form_signup.$pristine
+    }, $scope.canSubmit = function() {
+    	console.log('can I');
+        return $scope.form_signup.$valid && !angular.equals($scope.user, original)
+    }, $scope.submitForm = function() {
+        return $scope.showInfoOnSubmit = !0, $scope.revert();
+    }
+}
 ]).controller('userCtrl', function ($scope, $rootScope, $location, $cookieStore, userService) {
 	
 	$scope.rememberMe = false;
@@ -40,14 +60,11 @@ angular.module("app.ui.ctrls", []).controller("signinCtrl", ["$scope", function(
 			} else{
 				var authToken = result.tokenTransfer.token;
 				
-				console.log("token: "+authToken);
-				
 				$rootScope.authToken = authToken;
 				$scope.rememberMe = user.rememberMe;
 				
 				if ($scope.rememberMe) {
 					$cookieStore.put('authToken', authToken);
-					console.log("token created");
 				}
 				
 				$scope.message = result.message;

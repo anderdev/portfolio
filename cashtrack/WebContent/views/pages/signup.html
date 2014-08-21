@@ -11,7 +11,7 @@
             <div class="form-container" data-ng-controller="userCtrl">
 
                 <section>
-                    <form class="form-horizontal text-left" name="form_signup" data-ng-submit="submitForm()" data-ng-controller="signinCtrl">
+                    <form class="form-horizontal text-left" name="form_signup" data-ng-submit="submitForm()" data-ng-controller="signupCtrl">
                     	<div class="input-group">
                             <span class="input-group-addon "><span class="glyphicon glyphicon-user"></span></span>
                             <input  type="text"
@@ -50,7 +50,7 @@
 				                               data-i18n="i18n-placeholder"
 			                                   placeholder="lb_birth_date"
 			                                   name="user.birthDate"
-			                                   data-ng-model="clear"
+			                                   data-ng-model="user.birthDate"
 			                                   required>
 				                        <span class="input-group-addon" ng-click="open($event)"><i class="fa fa-calendar"></i></span>
 				                    </div>
@@ -86,6 +86,17 @@
                                    placeholder="lb_password"
                                    name="user.password"
                                    data-ng-model="user.password"
+                                   required>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="input-group">
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+                            <input type="password"
+                                   class="form-control"
+                                   data-i18n="i18n-placeholder"
+                                   placeholder="lb_password"
+                                   name="user.confirmPassword"
+                                   data-ng-model="user.confirmPassword"
                                    required>
                         </div>
                         <div class="divider"></div>
