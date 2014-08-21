@@ -78,8 +78,7 @@ public class User extends SearchObject implements Serializable, UserDetails{
 	private Role role;
 	
 	@Transient
-	//Rest password
-	private String pass;
+	private String token;
 	
 	private Boolean excluded;
 
@@ -182,12 +181,12 @@ public class User extends SearchObject implements Serializable, UserDetails{
 		this.birth = birth;
 	}
 
-	public String getPass() {
-		return pass;
+	public String getToken() {
+		return token;
 	}
 
-	public void setPass(String pass) {
-		this.pass = pass;
+	public void setToken(String token) {
+		this.token = token;
 	}
 
 	public Role getRole() {

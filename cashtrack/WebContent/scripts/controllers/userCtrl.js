@@ -15,6 +15,8 @@ angular.module("app.ui.ctrls", []).controller("signinCtrl", ["$scope", function(
         return !angular.equals($scope.user, original) || !$scope.form_signin.$pristine
     }, $scope.canSubmit = function() {
         return $scope.form_signin.$valid && !angular.equals($scope.user, original)
+    }, $scope.canSubmitNewUser = function() {
+        return $scope.form_signup.$valid && !angular.equals($scope.user, original)
     }, $scope.submitForm = function() {
         return $scope.showInfoOnSubmit = !0, $scope.user.password=''
     }
@@ -58,7 +60,11 @@ angular.module("app.ui.ctrls", []).controller("signinCtrl", ["$scope", function(
 		});
 	};
 	
-	$scope.login = function(user) {
-		
+	$scope.save = function(user) {
+		user.token = $rootScope.authToken;
+		userService.save(user, function(result) {
+			$scope.message = result.message;
+			$location.path("/login");
+		});
 	}
 })

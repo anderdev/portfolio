@@ -8,10 +8,10 @@
 
     <div class="signup-body">
         <div class="container">
-            <div class="form-container">
+            <div class="form-container" data-ng-controller="userCtrl">
 
                 <section>
-                    <form class="form-horizontal text-left">
+                    <form class="form-horizontal text-left" name="form_signup" data-ng-submit="submitForm()" data-ng-controller="signinCtrl">
                     	<div class="input-group">
                             <span class="input-group-addon "><span class="glyphicon glyphicon-user"></span></span>
                             <input  type="text"
@@ -103,7 +103,7 @@
                         <div class="form-group">
                             <div class="divider"></div>
                             <button class="btn btn-primary btn-lg btn-round btn-block text-center" 
-                        		type="submit" data-ng-disabled="!canSubmit()" data-ng-click="login(user)"><span data-i18n="lb_sign_up"></span></button>
+                        		type="submit" data-ng-disabled="!canSubmit()" data-ng-click="save(user)"><span data-i18n="lb_sign_up"></span></button>
                         </div>
                     </form>
                 </section>
