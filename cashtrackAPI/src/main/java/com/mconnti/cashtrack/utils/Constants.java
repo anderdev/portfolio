@@ -30,4 +30,9 @@ public abstract class Constants {
 	
 	public static String DATE_END = "endDate";
 	
+	public static String ROLE_ADMIN = "ADMIN";
+	
+	public static String ROLE_SUPER_USER = "SUPER_USER";
+	
+	public static String ROLE_USER = "USER";
 }

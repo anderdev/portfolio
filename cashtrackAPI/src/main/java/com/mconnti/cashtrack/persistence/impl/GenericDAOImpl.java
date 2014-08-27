@@ -18,7 +18,7 @@ import com.mconnti.cashtrack.persistence.GenericDAO;
 @Repository("genericDAO")
 public class GenericDAOImpl<T> implements GenericDAO<T> {
 
-	@PersistenceContext(unitName = "mmanager_PU" )
+	@PersistenceContext(unitName = "cashtrack_PU" )
 	protected EntityManager em;
 
 	@SuppressWarnings("hiding")

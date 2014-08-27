@@ -82,9 +82,18 @@ public class UserBOImpl extends GenericBOImpl<User> implements UserBO {
 						}
 					}
 				}
-				Role role = findById(Role.class, user.getRole().getId());
-				user.setRole(role);
-				saveGeneric(user);
+				Role role = null;
+				if(user.getRole() == null && user.getToken() == null){
+					Map<String, String> queryParams = new LinkedHashMap<>();
+					queryParams.put(" where x.role = '", Constants.ROLE_SUPER_USER+ "'");
+					role = findByParameter(Role.class, queryParams);
+				} else {
+					role = findById(Role.class, user.getRole().getId());
+				}
+				if(role != null){
+					user.setRole(role);
+					saveGeneric(user);
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 				libReturn.setUser(user);
@@ -93,14 +102,16 @@ public class UserBOImpl extends GenericBOImpl<User> implements UserBO {
 			if (libReturn.getMessage() == null && user.getId() == null) {
 				libReturn.setMessage(MessageFactory.getMessage("lb_user_saved", user.getLanguage()));
 				libReturn.setUser(user);
-				try {
-					sendEmail(user);
-				} catch (UnsupportedEncodingException e) {
-					e.printStackTrace();
-				} catch (MessagingException e) {
-					e.printStackTrace();
-				} catch (Exception e) {
-					e.printStackTrace();
+				if(user.getSuperUser() != null){
+					try {
+						sendEmail(user);
+					} catch (UnsupportedEncodingException e) {
+						e.printStackTrace();
+					} catch (MessagingException e) {
+						e.printStackTrace();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
 			} else if (libReturn.getMessage() == null && user.getId() != null) {
 				libReturn.setMessage(MessageFactory.getMessage("lb_user_updated", user.getLanguage()));

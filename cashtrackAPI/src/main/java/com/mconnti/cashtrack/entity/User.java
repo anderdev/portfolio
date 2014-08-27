@@ -80,6 +80,9 @@ public class User extends SearchObject implements Serializable, UserDetails{
 	@Transient
 	private String token;
 	
+	@Transient
+	private String confirmPassword;
+	
 	private Boolean excluded;
 
 	public Long getId() {
@@ -238,6 +241,14 @@ public class User extends SearchObject implements Serializable, UserDetails{
 	@Override
 	public boolean isEnabled() {
 		return true;
+	}
+
+	public String getConfirmPassword() {
+		return confirmPassword;
+	}
+
+	public void setConfirmPassword(String confirmPassword) {
+		this.confirmPassword = confirmPassword;
 	}
 
 }

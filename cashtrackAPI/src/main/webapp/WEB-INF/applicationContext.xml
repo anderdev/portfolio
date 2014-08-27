@@ -41,7 +41,7 @@
 
 	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
 		<property name="jndiName">
-			<value>java:jboss/datasources/MmanagerDS</value>
+			<value>java:jboss/datasources/cashtrackDS</value>
 		</property>
 	</bean>
 
