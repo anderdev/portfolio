@@ -1160,16 +1160,15 @@ public class RegisterMBean implements Serializable {
 	}
 
 	public Integer getPageIndex() {
-
 		if (!registerList.isEmpty()) {
 			Integer nrRegister = 0;
+			Date today = new Date();
 			for (Register reg : registerList) {
-				nrRegister++;
-				if (Utils.compareEqualDates(new Date(), reg.getDate())) {
-					break;
+				if (reg.getDate().equals(today) || reg.getDate().before(today)) {
+					nrRegister++;
 				}
 			}
-			pageIndex = nrRegister / 10;
+			pageIndex = (nrRegister / 10) - (registerList.size() / 10);
 		}
 		return pageIndex;
 	}
