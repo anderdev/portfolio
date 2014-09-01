@@ -251,7 +251,8 @@ public class UserBOImpl extends GenericBOImpl<User> implements UserBO {
 
 	@Override
 	public MessageReturn getByUsername(String username) throws Exception {
-		return userDAO.getByUsername(username);
+		MessageReturn ret =  userDAO.getByUsername(username);
+		return ret;
 	}
 
 }

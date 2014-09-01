@@ -18,12 +18,12 @@
         <link rel="stylesheet" href="styles/main.css"/>
 
     </head>
-    <body data-ng-app="app" id="app" class="app" data-custom-page="" data-off-canvas-nav="" data-ng-controller="AppCtrl" data-ng-class=" {'layout-boxed': admin.layout === 'boxed' } ">
+    <body data-ng-app="app" id="app" class="app" data-custom-page="" data-off-canvas-nav="" data-ng-controller="AppCtrl" data-ng-class=" {'layout-boxed': admin.layout === 'boxed' } " role="navigation" ng-show="initialized">
         <!--[if lt IE 9]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
-		<div data-ng-controller="LangCtrl" data-ng-init="setLang('English')" role="navigation" ng-show="initialized"></div>
+		<div data-ng-controller="LangCtrl" data-ng-init="setLang('English')" ></div>
         
         <section data-ng-include=" 'views/header.html' " id="header" class="header-container" data-ng-class=" {'header-fixed': admin.fixedHeader} " data-ng-controller="HeaderCtrl"></section>
 
@@ -41,12 +41,11 @@
         <script src="scripts/angular-cookies.min.js"></script>
         <script src="scripts/angular-resource.min.js"></script>		
 
-		<!-- 
 		<script src="scripts/charts.js"></script>
         <script src="scripts/tables.js"></script>
         
         <script src="scripts/maps.js"></script>
-		 -->
+		
 		<script src="scripts/tasks.js"></script>	
         <script src="scripts/forms.js"></script>
         <script src="scripts/messages.js"></script>

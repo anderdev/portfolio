@@ -6,7 +6,7 @@
         		 "ngAnimate",
         		 "ngCookies",
         		 "ui.bootstrap", 
-//        		 "easypiechart", 
+        		 "easypiechart", 
         		 "textAngular", 
         		 "ui.tree", 
         		 "ngMap", 
@@ -18,14 +18,14 @@
         		 "app.ui.ctrls", 
         		 "app.ui.directives", 
         		 "app.ui.services", 
-//        		 "app.ui.map", 
+        		 "app.ui.map", 
         		 "app.form.validation", 
         		 "app.ui.form.ctrls", 
         		 "app.ui.form.directives", 
-//        		 "app.tables", 
+        		 "app.tables", 
         		 "app.task", 
-//        		 "app.chart.ctrls", 
-//        		 "app.chart.directives", 
+        		 "app.chart.ctrls", 
+        		 "app.chart.directives", 
         		 "app.page.ctrls"
         		 ]).config(['$routeProvider', '$locationProvider', '$httpProvider', 
         	function($routeProvider, $locationProvider, $httpProvider){
@@ -96,16 +96,16 @@
     		});
     		
     		$rootScope.hasRole = function(role) {
-    			
+    			console.log('hasRole: '+role);
     			if ($rootScope.user === undefined) {
     				return false;
     			}
     			
-    			if ($rootScope.user.roles[role] === undefined) {
+    			if ($rootScope.user.role.role != role ) {
     				return false;
     			}
     			
-    			return $rootScope.user.roles[role];
+    			return $rootScope.user.role.role;
     		};
     		
     		$rootScope.logout = function() {
@@ -128,6 +128,8 @@
     			var username = authToken.split(':')[0];
     			
     			userService.getbyusername(username, function(result) {
+    				console.log('getbyusername: '+result.user.name);
+    				console.log('role: '+result.user.role.role);
     				$rootScope.user = result.user;
     				$location.path("/dashboard");
     			});
