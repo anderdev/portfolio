@@ -89,7 +89,7 @@
     		        };
     		    }
     	    );
-        }] ).run(function($rootScope, $location, $cookieStore, userService) {
+        }] ).run(function($rootScope, $location, $cookieStore, userService, currencyService) {
     		/* Reset error when a new view is loaded */
     		$rootScope.$on('$viewContentLoaded', function() {
     			delete $rootScope.error;
@@ -123,9 +123,21 @@
     		var authToken = $cookieStore.get('authToken');
     		
     		if (authToken !== undefined) {
+    			console.log('testing auth')
     			$rootScope.authToken = authToken;
     			
     			var username = authToken.split(':')[0];
+    			
+    			console.log('before getbylocale');
+    			currencyService.getbylocale('en', function(result) {
+    				console.log('result: '+result);
+    				console.log('result.length: '+result.length);
+    				for (var int = 0; int < result.length; int++) {
+    					console.log('int: '+int);
+						console.log('result['+int+']: '+result[int].id);
+					}
+    			});
+    			console.log('after getbylocale');
     			
     			userService.getbyusername(username, function(result) {
     				console.log('getbyusername: '+result.user.name);

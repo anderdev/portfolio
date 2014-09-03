@@ -12,7 +12,7 @@ public interface CurrencyBO extends GenericBO<Currency>{
 	
 	public List<Currency> list() throws Exception;
 	
-	public List<Currency> list(final Currency currency) throws Exception;
+	public List<Currency> listByLocale(final String locale) throws Exception;
 	
 	public MessageReturn save(final Currency currency) throws Exception;
 	

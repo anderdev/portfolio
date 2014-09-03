@@ -34,9 +34,9 @@ public class CurrencyBOImpl extends GenericBOImpl<Currency> implements CurrencyB
 		return libReturn;
 	}
 
-	public List<Currency> list(final Currency currency) throws Exception {
+	public List<Currency> listByLocale(final String locale) throws Exception {
 		Map<String, String> queryParams = new LinkedHashMap<>();
-		queryParams.put(" where x.locale = ", "'"+currency.getLocale()+"'");
+		queryParams.put(" where x.locale = ", "'"+locale+"'");
 		return list(Currency.class, queryParams, null);
 	}
 
