@@ -37,7 +37,7 @@ public class CurrencyBOImpl extends GenericBOImpl<Currency> implements CurrencyB
 	public List<Currency> listByLocale(final String locale) throws Exception {
 		Map<String, String> queryParams = new LinkedHashMap<>();
 		queryParams.put(" where x.locale = ", "'"+locale+"'");
-		return list(Currency.class, queryParams, null);
+		return list(Currency.class, queryParams, "acronym asc");
 	}
 
 	@Override
@@ -73,7 +73,7 @@ public class CurrencyBOImpl extends GenericBOImpl<Currency> implements CurrencyB
 
 	@Override
 	public List<Currency> list() throws Exception {
-		return list(Currency.class, null, null);
+		return list(Currency.class, null, "acronym asc");
 	}
 
 }

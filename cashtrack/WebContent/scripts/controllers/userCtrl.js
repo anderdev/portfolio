@@ -47,7 +47,7 @@ angular.module("app.ui.ctrls", []).controller("signinCtrl", ["$scope", function(
 	
 	var message = $scope.message;
 	
-	console.log(message);
+//	console.log(message);
 	
 	$scope.login = function(user) {
 		userService.authenticate($.param({username: user.username, password: user.password}), function(result) {

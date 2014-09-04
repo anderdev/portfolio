@@ -33,11 +33,16 @@ public class TypeClosureBOImpl extends GenericBOImpl<TypeClosure> implements Typ
 		}
 		return libReturn;
 	}
+	
+	@Override
+	public List<TypeClosure> list() throws Exception {
+		return list(TypeClosure.class, null, "type asc");
+	}
 
-	public List<TypeClosure> list(final TypeClosure typeClosure) throws Exception {
+	public List<TypeClosure> listByLocale(final String locale) throws Exception {
 		Map<String, String> queryParams = new LinkedHashMap<>();
-		queryParams.put(" where x.locale = ", "'"+typeClosure.getLocale()+"'");
-		return list(TypeClosure.class, queryParams, null);
+		queryParams.put(" where x.locale = ", "'"+locale+"'");
+		return list(TypeClosure.class, queryParams, "type asc");
 	}
 
 	@Override

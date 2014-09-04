@@ -24,8 +24,18 @@ angular.module("app.ui.services", ['ngResource']).factory('userService', functio
 				}
 			}
 		);
-}).factory('currencyService', function($resource,  $routeParams){
+}).factory('currencyService', function($resource){
 	return $resource('/cashtrackAPI/rest/currency/:locale', {},
+			{
+				getbylocale: {
+					method: 'GET',
+					params: {locale : '@locale'},
+					isArray:true
+				}
+			}
+		);
+}).factory('typeClosureService', function($resource){
+	return $resource('/cashtrackAPI/rest/typeclosure/:locale', {},
 			{
 				getbylocale: {
 					method: 'GET',

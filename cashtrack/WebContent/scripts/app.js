@@ -120,14 +120,14 @@
     		var authToken = $cookieStore.get('authToken');
     		
     		if (authToken !== undefined) {
-    			console.log('testing auth')
+//    			console.log('testing auth')
     			$rootScope.authToken = authToken;
     			
     			var username = authToken.split(':')[0];
     			
     			userService.getbyusername(username, function(result) {
-    				console.log('getbyusername: '+result.user.name);
-    				console.log('role: '+result.user.role.role);
+    				console.log('Logged user: '+result.user.name);
+    				console.log('User role: '+result.user.role.role);
     				$rootScope.user = result.user;
     				$location.path("/dashboard");
     			});
