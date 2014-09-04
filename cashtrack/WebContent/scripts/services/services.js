@@ -5,7 +5,6 @@
 'use strict';
 
 angular.module("app.ui.services", ['ngResource']).factory('userService', function($resource){
-	console.log('get user service.');
 	return $resource('/cashtrackAPI/rest/user/:action', {},
 			{
 				authenticate: {
@@ -25,14 +24,12 @@ angular.module("app.ui.services", ['ngResource']).factory('userService', functio
 				}
 			}
 		);
-}).factory('currencyService', function($resource){
-	console.log('get currency service.');
+}).factory('currencyService', function($resource,  $routeParams){
 	return $resource('/cashtrackAPI/rest/currency/:locale', {},
 			{
 				getbylocale: {
 					method: 'GET',
-					locale: '@locale',
-					headers : {'Content-Type': 'application/json'},
+					params: {locale : '@locale'},
 					isArray:true
 				}
 			}

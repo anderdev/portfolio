@@ -59,37 +59,14 @@
             }
         ]).controller("LangCtrl", ["$scope", "localize",
             function($scope, localize) {
-                return $scope.lang = "English", $scope.setLang = function(lang) {
+                return $scope.lang = "en", $scope.setLang = function(lang) {
                     switch (lang) {
-                        case "English":
-                            localize.setLanguage("EN-US");
+                        case "en":
+                            localize.setLanguage("EN");
                             break;
-                        case "Español":
-                            localize.setLanguage("ES-ES");
-                            break;
-                        case "日本語":
-                            localize.setLanguage("JA-JP");
-                            break;
-                        case "中文":
-                            localize.setLanguage("ZH-TW");
-                            break;
-                        case "Deutsch":
-                            localize.setLanguage("DE-DE");
-                            break;
-                        case "français":
-                            localize.setLanguage("FR-FR");
-                            break;
-                        case "Italiano":
-                            localize.setLanguage("IT-IT");
-                            break;
-                        case "Portugal":
+                        case "pt_br":
                             localize.setLanguage("PT-BR");
                             break;
-                        case "Русский язык":
-                            localize.setLanguage("RU-RU");
-                            break;
-                        case "한국어":
-                            localize.setLanguage("KO-KR");
                     }
                     return $scope.lang = lang
                 }, $scope.getFlag = function() {
@@ -97,24 +74,8 @@
                     switch (lang = $scope.lang) {
                         case "English":
                             return "flags-american";
-                        case "Español":
-                            return "flags-spain";
-                        case "日本語":
-                            return "flags-japan";
-                        case "中文":
-                            return "flags-china";
-                        case "Deutsch":
-                            return "flags-germany";
-                        case "français":
-                            return "flags-france";
-                        case "Italiano":
-                            return "flags-italy";
                         case "Portugal":
                             return "flags-portugal";
-                        case "Русский язык":
-                            return "flags-russia";
-                        case "한국어":
-                            return "flags-korea";
                     }
                 }
             }

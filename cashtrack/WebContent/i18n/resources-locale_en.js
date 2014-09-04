@@ -2,6 +2,7 @@
 	"lb_already_have_account":"Already have an account? ",
 	"lb_birth_date":"Birth date",
 	"lb_credit_card":"Credit Card",
+	"lb_dashboard":"Dashboard",
 	"lb_default_values":"Default Values",
 	"lb_description":"Description",
 	"lb_dont_have_account":"Don't have an account yet? ",

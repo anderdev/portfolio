@@ -1,19 +1,18 @@
-        
-<div class="nav-wrapper">
+<div class="nav-wrapper" data-ng-controller="LangCtrl">
     <ul id="nav"
         class="nav"
         data-ng-controller="NavCtrl"
         data-slim-scroll
         data-collapse-nav
         data-highlight-active>
-        <li><a href="#/dashboard"> <i class="fa fa-dashboard"></i><span data-i18n="Dashboard"></span> </a></li>
+        <li><a href="#/dashboard"> <i class="fa fa-dashboard"></i><span data-i18n="lb_dashboard"></span> </a></li>
         <li>
         	 <a href="#/setup"><i class="glyphicon glyphicon-cog"></i><span data-i18n="lb_setup"></span></a>
             <ul>
                 <li><a href="#/setup/user"><i class="fa fa-angle-right"></i><span data-i18n="lb_user"></span></a></li>
                 <li><a href="#/setup/description"><i class="fa fa-angle-right"></i><span data-i18n="lb_description"></span></a></li>
                 <li><a href="#/setup/creditcard"><i class="fa fa-angle-right"></i><span data-i18n="lb_credit_card"></span></a></li>
-                <li><a href="#/setup/defaultvalues"><i class="fa fa-angle-right"></i><span data-i18n="lb_default_values"></span></a></li>
+                <li><a href="#/pages/defaultvalues" ng-click="loadDefaultsCurrency('en')" data-ng-controller="defaultValuesCtrl"><i class="fa fa-angle-right"></i><span data-i18n="lb_default_values"></span></a></li>
             </ul>
         </li>
         <li>

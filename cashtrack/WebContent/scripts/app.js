@@ -30,7 +30,7 @@
         		 ]).config(['$routeProvider', '$locationProvider', '$httpProvider', 
         	function($routeProvider, $locationProvider, $httpProvider){
                 var routes, setRoutes;
-                return routes = ["dashboard", "ui/typography", "ui/buttons", "ui/icons", "ui/grids", "ui/widgets", "ui/components", "ui/timeline", "ui/nested-lists", "ui/pricing-tables", "ui/maps", "tables/static", "tables/dynamic", "tables/responsive", "forms/elements", "forms/layouts", "forms/validation", "forms/wizard", "charts/charts", "charts/flot", "charts/morris", "pages/404", "pages/500", "pages/blank", "pages/forgot-password", "pages/invoice", "pages/lock-screen", "pages/profile", "pages/signin", "pages/signup", "mail/compose", "mail/inbox", "mail/single", "tasks/tasks"], setRoutes = function(route) {
+                return routes = ["dashboard", "pages/defaultvalues", "ui/typography", "ui/buttons", "ui/icons", "ui/grids", "ui/widgets", "ui/components", "ui/timeline", "ui/nested-lists", "ui/pricing-tables", "ui/maps", "tables/static", "tables/dynamic", "tables/responsive", "forms/elements", "forms/layouts", "forms/validation", "forms/wizard", "charts/charts", "charts/flot", "charts/morris", "pages/404", "pages/500", "pages/blank", "pages/forgot-password", "pages/invoice", "pages/lock-screen", "pages/profile", "pages/signin", "pages/signup", "mail/compose", "mail/inbox", "mail/single", "tasks/tasks"], setRoutes = function(route) {
                     var config, url;
                     return url = "/" + route, config = {
                         templateUrl: "views/" + route + ".html"
@@ -46,8 +46,6 @@
                 }).otherwise({
                     redirectTo: "/404"
                 });
-                
-                console.log('retornei');
                 
     			/* Register error provider that shows message on failed requests or redirects to login page on
     			 * unauthenticated requests */
@@ -89,14 +87,13 @@
     		        };
     		    }
     	    );
-        }] ).run(function($rootScope, $location, $cookieStore, userService, currencyService) {
+        }] ).run(function($rootScope, $location, $cookieStore, userService) {
     		/* Reset error when a new view is loaded */
     		$rootScope.$on('$viewContentLoaded', function() {
     			delete $rootScope.error;
     		});
     		
     		$rootScope.hasRole = function(role) {
-    			console.log('hasRole: '+role);
     			if ($rootScope.user === undefined) {
     				return false;
     			}
@@ -127,17 +124,6 @@
     			$rootScope.authToken = authToken;
     			
     			var username = authToken.split(':')[0];
-    			
-    			console.log('before getbylocale');
-    			currencyService.getbylocale('en', function(result) {
-    				console.log('result: '+result);
-    				console.log('result.length: '+result.length);
-    				for (var int = 0; int < result.length; int++) {
-    					console.log('int: '+int);
-						console.log('result['+int+']: '+result[int].id);
-					}
-    			});
-    			console.log('after getbylocale');
     			
     			userService.getbyusername(username, function(result) {
     				console.log('getbyusername: '+result.user.name);
