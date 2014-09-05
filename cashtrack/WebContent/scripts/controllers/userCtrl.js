@@ -1,10 +1,10 @@
 /**
- * Created by asantos on 2/08/2014.
+ * Created by asantos on 02/08/2014.
  */
 
 'use strict';
 
-angular.module("app.ui.ctrls", []).controller("signinCtrl", ["$scope", function($scope) {
+appControllers.controller("signinCtrl", ["$scope", function($scope) {
     var original;
     return $scope.user = {
         username: "",
@@ -52,9 +52,9 @@ angular.module("app.ui.ctrls", []).controller("signinCtrl", ["$scope", function(
 	$scope.login = function(user) {
 		userService.authenticate($.param({username: user.username, password: user.password}), function(result) {
 			$scope.message = '';
-			console.log(result.message);
 			
 			if(result.tokenTransfer == null){
+				
 				$scope.message = result.message;
 				
 				var username = user.username;
@@ -70,10 +70,6 @@ angular.module("app.ui.ctrls", []).controller("signinCtrl", ["$scope", function(
 				if ($scope.rememberMe) {
 					$cookieStore.put('authToken', authToken);
 				}
-				
-				$scope.message = result.message;
-				
-				console.log("user: "+result.user);
 				
 				$rootScope.user = result.user;
 				$location.path("/dashboard");

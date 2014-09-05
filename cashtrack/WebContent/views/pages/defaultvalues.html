@@ -1,120 +1,130 @@
-<div class="page page-invoice" data-ng-controller="invoiceCtrl">
+<div class="page page-invoice" data-ng-controller="defaultValuesCtrl">
 
-    <div class="invoice-wrapper">
-        <section class="invoice-container" id="invoice">
-            
-            <div class="invoice-inner">
-                <div class="row">
-                    <div class="col-xs-6">
-                        <p class="size-h2">{{main.brand}}</p>
-                        <p class="text-muted">Responsive Admin App</p>
-                    </div>
-                    <div class="col-xs-6 text-right">
-                        <p class="size-h2">INVOICE NO. #523423401</p>
-                        <p>1st May 2014</p>                
-                    </div>
-                </div>
+    <div class="signin-header">
+        <section class="logo text-center">
+            <h2>{{main.brand}}</h2>
+        </section>
+    </div>
 
-                <hr>
+    <div class="signup-body">
+        <div class="container">
+            <div class="form-container" data-ng-controller="userCtrl">
 
-                <div class="row">
-                    <div class="col-xs-6">
-                        {{main.name}} <br>
-                        1234 Durfee Ave, El Monte CA, 91732 <br>
-                        (626) 123-4567 <br>
-                        mail@site.com
+                <section>
+                    <form class="form-horizontal text-left" name="form_signup" data-ng-submit="submitForm()" data-ng-controller="signupCtrl">
+                    	<div class="alert alert-warning" data-ng-show="showInfoOnSubmit"  >{{message}}</div>
+                    	<div class="input-group">
+                            <span class="input-group-addon "><span class="glyphicon glyphicon-user"></span></span>
+                            <input  type="text"
+                                    class="form-control"
+                                    data-i18n="i18n-placeholder"
+                                    placeholder="lb_name"
+                                   	name="user.name"
+                                    data-ng-model="user.name"
+                                    required>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="input-group">
+                    		<span class="input-group-addon "><span class="glyphicon glyphicon-envelope"></span></span>
+                            <input type="email" class="form-control" 
+                            		data-i18n="i18n-placeholder"
+                                    placeholder="lb_email"
+                                   	name="user.email"
+                                    data-ng-model="user.email"
+                                    required>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="row">
+			                <div class="col-sm-6">
+		                        <div class="input-group" data-ng-controller="DatepickerDemoCtrl">
+		                            <span class="input-group-addon"><span class="glyphicon glyphicon-gift"></span></span>
+		                            <div class="input-group ui-datepicker">
+				                        <input type="text" 
+				                        	   class="form-control"
+				                               datepicker-popup="{{format}}"
+				                               is-open="opened"
+				                               min="minDate"
+				                               datepicker-options="dateOptions" 
+				                               date-disabled="disabled(date, mode)"
+				                               ng-required="true" 
+				                               close-text="Close"
+				                               data-i18n="i18n-placeholder"
+			                                   placeholder="lb_birth_date"
+			                                   name="user.birthDate"
+			                                   data-ng-model="user.birthDate"
+			                                   required>
+				                        <span class="input-group-addon" ng-click="open($event)"><i class="fa fa-calendar"></i></span>
+				                    </div>
+				                 </div>
+				            </div> 
+                        </div>
+                        <div class="divider"></div>
+                        <div class="input-group">
+				            <dl class="dl-horizontal">
+				                <dt><span data-i18n="lb_language"></span></dt>
+				                <dd>
+				                    <label class="ui-radio"><input name="user.language" type="radio" data-ng-model="user.language" value="en"><span data-i18n="lb_english"></span></label>
+				                    <label class="ui-radio"><input name="user.language" type="radio" data-ng-model="user.language" value="pt_br"><span data-i18n="lb_portuguese"></span></label>
+				                </dd>
+				            </dl>				
+				        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+                            <input  type="text"
+                                    class="form-control"
+                                    data-i18n="i18n-placeholder"
+                                    placeholder="lb_username"
+                                   	name="user.username"
+                                    data-ng-model="user.username"
+                                    required>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="input-group">
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+                            <input type="password"
+                                   class="form-control"
+                                   data-i18n="i18n-placeholder"
+                                   placeholder="lb_password"
+                                   name="user.password"
+                                   data-ng-model="user.password"
+                                   required>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="input-group">
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+                            <input type="password"
+                                   class="form-control"
+                                   data-i18n="i18n-placeholder"
+                                   placeholder="lb_password"
+                                   name="user.confirmPassword"
+                                   data-ng-model="user.confirmPassword"
+                                   required>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="input-group">
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+                            <input type="text"
+                                   class="form-control"
+                                   data-i18n="i18n-placeholder"
+                                   placeholder="lb_secret_phrase"
+                                   name="user.secretPhrase"
+                                   data-ng-model="user.secretPhrase"
+                                   required>
+                        </div>
+						<div class="divider"></div>
+                        <div class="form-group">
+                            <div class="divider"></div>
+                            <button class="btn btn-primary btn-lg btn-round btn-block text-center" 
+                        		type="submit" data-ng-disabled="!canSubmit()" data-ng-click="save(user)"><span data-i18n="lb_sign_up"></span></button>
+                        </div>
+                    </form>
+                </section>
 
-                    </div>
-                    <div class="col-xs-6 text-right">
-                        <p><strong>Order Details:</strong></p>
-                        <strong>Date:</strong> 1st May 2014 <br>
-                        <strong>ID:</strong> 1357995 <br>
-                    </div>            
-                </div>
+                <section>
+                    <p class="text-center text-muted"><span data-i18n="lb_already_have_account"></span> <a href="#/pages/signin" ><span data-i18n="lb_login_now"></span></a></p>
+                </section>
 
-                <div class="divider divider-lg"></div>
-
-                <table class="table table-bordered table-striped">
-                    <thead>
-                        <tr class="bg-dark">
-                            <th class="text-center">#</th>
-                            <th>Product</th>
-                            <th class="text-center">Unit Cost</th>
-                            <th class="text-center">Quantity</th>
-                            <th class="text-center">Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="text-center">1</td>
-                            <td>Product One</td>
-                            <td class="text-center">100</td>
-                            <td class="text-center">1</td>
-                            <td class="text-center">100</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">2</td>
-                            <td>Product Two</td>
-                            <td class="text-center">550</td>
-                            <td class="text-center">2</td>
-                            <td class="text-center">1100</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">3</td>
-                            <td>Product Three</td>
-                            <td class="text-center">320</td>
-                            <td class="text-center">2</td>
-                            <td class="text-center">640</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">4</td>
-                            <td>Product Four</td>
-                            <td class="text-center">80</td>
-                            <td class="text-center">5</td>
-                            <td class="text-center">400</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">5</td>
-                            <td>Product Five</td>
-                            <td class="text-center">90</td>
-                            <td class="text-center">4</td>
-                            <td class="text-center">360</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">6</td>
-                            <td>Product Six</td>
-                            <td class="text-center">35</td>
-                            <td class="text-center">4</td>
-                            <td class="text-center">140</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <div class="row">
-                    <div class="col-xs-8">
-                        <p class="size-h3">Thanks for your business</p>
-                        <ul>
-                            <li>Aeserunt tenetur cum nihil repudiandae perferendis fuga vitae corporis!</li>
-                            <li>Laborum, necessitatibus recusandae ullam at iusto dolore.</li>
-                            <li>Voluptatum aperiam voluptates quasi!</li>
-                            <li>Assumenda, iusto, consequuntur corporis atque culpa saepe magnam recusandae</li>
-                            <li>Possimus odio ipsam magni sint reiciendis unde amet</li>
-                        </ul>
-                    </div>
-                    <div class="col-xs-4 invoice-sum text-right">
-                        <ul class="list-unstyled">
-                            <li>Sub - Total amount: $ 2740</li>
-                            <li>Discount: -----</li>
-                            <li>Tax (12%): $300</li>
-                            <li><strong>Grand Total: $ 3040</strong></li>
-                        </ul>
-                    </div>            
-                </div>
             </div>
-        </section>
-
-        <section class="text-center no-print">
-            <a href="" ng-click="printInvoice()" class="btn btn-primary btn-lg btn-w-lg"><i class="fa fa-print"></i> Print</a>
-        </section>
+        </div>
     </div>
 </div>

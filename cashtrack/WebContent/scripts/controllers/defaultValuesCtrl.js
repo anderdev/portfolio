@@ -4,7 +4,7 @@
 
 'use strict';
 
-angular.module("app.ui.ctrls", []).controller('defaultValuesCtrl', function ($scope, $routeParams, $location, currencyService, typeClosureService) {
+appControllers.controller('defaultValuesCtrl', function ($scope, $routeParams, $location, currencyService, typeClosureService) {
 	
 	$scope.loadDefaultsCurrency = function() {
 		
