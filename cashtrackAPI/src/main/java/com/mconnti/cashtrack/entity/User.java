@@ -77,6 +77,10 @@ public class User extends SearchObject implements Serializable, UserDetails{
 	@JoinColumn(name = "role_id", foreignKey = @ForeignKey(name="FK_USER_ROLE"))
 	private Role role;
 	
+	@ManyToOne(cascade = { CascadeType.REFRESH }, targetEntity = Config.class)
+	@JoinColumn(name = "config_id", foreignKey = @ForeignKey(name="FK_USER_CONFIG"))
+	private Config config;
+	
 	@Transient
 	private String token;
 	
@@ -249,6 +253,14 @@ public class User extends SearchObject implements Serializable, UserDetails{
 
 	public void setConfirmPassword(String confirmPassword) {
 		this.confirmPassword = confirmPassword;
+	}
+
+	public Config getConfig() {
+		return config;
+	}
+
+	public void setConfig(Config config) {
+		this.config = config;
 	}
 
 }

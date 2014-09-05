@@ -120,7 +120,6 @@
     		var authToken = $cookieStore.get('authToken');
     		
     		if (authToken !== undefined) {
-//    			console.log('testing auth')
     			$rootScope.authToken = authToken;
     			
     			var username = authToken.split(':')[0];

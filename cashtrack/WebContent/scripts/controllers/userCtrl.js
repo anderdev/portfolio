@@ -4,6 +4,8 @@
 
 'use strict';
 
+var appControllers = angular.module("app.ui.ctrls", []);
+
 appControllers.controller("signinCtrl", ["$scope", function($scope) {
     var original;
     return $scope.user = {
