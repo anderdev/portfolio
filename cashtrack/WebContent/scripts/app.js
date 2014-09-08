@@ -87,7 +87,7 @@
     		        };
     		    }
     	    );
-        }] ).run(function($rootScope, $location, $cookieStore, userService) {
+        }] ).run(function($rootScope, $location, $cookieStore, userService, localize) {
     		/* Reset error when a new view is loaded */
     		$rootScope.$on('$viewContentLoaded', function() {
     			delete $rootScope.error;
@@ -128,6 +128,8 @@
     				console.log('Logged user: '+result.user.name);
     				console.log('User role: '+result.user.role.role);
     				$rootScope.user = result.user;
+    				$rootScope.config = result.config;
+    				setLanguage(result.user.language);
     				$location.path("/dashboard");
     			});
     		}

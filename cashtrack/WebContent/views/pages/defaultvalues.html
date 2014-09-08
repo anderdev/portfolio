@@ -35,7 +35,7 @@
 	                        <div class="form-group">
 	                            <label for="currency" class="col-sm-4 control-label"><span  data-i18n="lb_currency"></span></label>
 	                            <span class="ui-select">
-			                        <select ng-model="user.config.currency" id="currency" ng-options="currency.id as currency.acronym for currency in currencies">
+			                        <select ng-model="config.currency" id="currency" ng-options="currency.id as currency.acronym for currency in currencies">
 									    <option value="" >Select...</option>
 									</select>
 								</span>
@@ -43,7 +43,7 @@
 			            	<div class="form-group">
 	                            <label for="closure" class="col-sm-4 control-label"><span data-i18n="lb_type_closure"></span></label>
 	                            <span class="ui-select">
-			                        <select ng-model="user.config.typeClosure" id="closure" ng-options="type.id as type.type for type in typeClosures">
+			                        <select ng-model="config.typeClosure" id="closure" ng-options="type.id as type.type for type in typeClosures">
 								    <option value="" >Select...</option>
 								</select>
 								</span>

@@ -43,7 +43,7 @@ appControllers.controller("signinCtrl", ["$scope", function($scope) {
         return $scope.showInfoOnSubmit = !0, $scope.revert();
     }
 }
-]).controller('userCtrl', function ($scope, $rootScope, $location, $cookieStore, userService) {
+]).controller('userCtrl', function ($scope, $rootScope, $location, $cookieStore, userService, localize) {
 	
 	$scope.rememberMe = false;
 	
@@ -74,6 +74,8 @@ appControllers.controller("signinCtrl", ["$scope", function($scope) {
 				}
 				
 				$rootScope.user = result.user;
+				$rootScope.config = result.config;
+				setLanguage(result.user.language);
 				$location.path("/dashboard");
 			}
 		});
