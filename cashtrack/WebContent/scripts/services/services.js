@@ -41,6 +41,26 @@ angular.module("app.ui.services", ['ngResource']).factory('userService', functio
 					method: 'GET',
 					params: {locale : '@locale'},
 					isArray:true
+				},
+				save: {
+					method: 'POST',
+					params: {'action' : ''},
+					headers : {'Content-Type': 'application/json'}
+				}
+			}
+		);
+}).factory('configService', function($resource){
+	return $resource('/cashtrackAPI/rest/config/:action', {},
+			{
+				get: {
+					method: 'GET',
+					params: {'action' : ''},
+					isArray:true
+				},
+				save: {
+					method: 'POST',
+					params: {'action' : ''},
+					headers : {'Content-Type': 'application/json'}
 				}
 			}
 		);

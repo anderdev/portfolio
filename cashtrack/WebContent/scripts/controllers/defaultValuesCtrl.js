@@ -5,8 +5,8 @@
 'use strict';
 
 appControllers.controller('defaultValuesCtrl', [
-    '$scope', '$routeParams', '$location', 'currencyService', 'typeClosureService',
-	function ($scope, $routeParams, $location, currencyService, typeClosureService) {
+    '$scope', '$routeParams', '$location', 'currencyService', 'typeClosureService', 'configService',
+	function ($scope, $routeParams, $location, currencyService, typeClosureService, configService) {
 
 		function loadDefaultsValues() {
 			
@@ -14,27 +14,28 @@ appControllers.controller('defaultValuesCtrl', [
 			
 			
 			currencyService.getbylocale({locale: $scope.user.language}, function(result) {
-				console.log('currency list:')
 				$scope.currencies = result;
-
-				var list = $scope.currencies;
-				for (var int = 0; int < list.length; int++) {
-					var currency = list[int];
-					console.log('result['+int+']: '+currency.id+' - '+currency.name+' - '+currency.locale);
-				}
 			});
 			
 			typeClosureService.getbylocale({locale: $scope.user.language}, function(result) {
-				console.log('typeClosure list:')
 				$scope.typeClosures = result;
-				for (var int = 0; int < result.length; int++) {
-					var typeClosure = result[int];
-					console.log('result['+int+']: '+typeClosure.id+' - '+typeClosure.type+' - '+typeClosure.locale);
-				}
-				
 			});
 			
 		}
+		
+		$scope.save = function(config) {
+			var token = $scope.authToken;
+			console.log("token to use:"+token);
+			config.user = $scope.user;
+			configService.save(config, function(result) {
+				$scope.message = result.message;
+				console.log("Saving message: "+$scope.message);
+			});
+		}
+		
+		$scope.back = function() {
+			$location.path("/dashboard");
+		};
     	
     	angular.extend($scope, {
     		currencies: [],

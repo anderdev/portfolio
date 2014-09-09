@@ -1,5 +1,6 @@
 {
 	"lb_already_have_account":"Already have an account? ",
+	"lb_back":"Back",
 	"lb_birth_date":"Birth date",
 	"lb_cancel":"Cancel",
 	"lb_credit_card":"Credit Card",

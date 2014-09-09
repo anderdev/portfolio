@@ -1,5 +1,6 @@
 {
 	"lb_already_have_account":"Já tem uma conta? ",
+	"lb_back":"Voltar",
 	"lb_birth_date":"Aniversário",
 	"lb_cancel":"Cancelar",
 	"lb_credit_card":"Cartão de Crédito",
