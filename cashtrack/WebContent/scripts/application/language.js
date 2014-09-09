@@ -15,7 +15,8 @@
                         return localize.dictionary = data, localize.resourceFileLoaded = !0, $rootScope.$broadcast("localizeResourcesUpdated")
                     },
                     setLanguage: function(value) {
-                        return localize.language = value.toLowerCase().split("-")[0], localize.initLocalizedResources()
+                    	console.log('value: '+value);
+                        return localize.language = value.toLowerCase().split("_")[0], localize.initLocalizedResources()
                     },
                     setUrl: function(value) {
                         return localize.url = value, localize.initLocalizedResources()
@@ -65,7 +66,7 @@
                             localize.setLanguage("EN");
                             break;
                         case "pt_br":
-                            localize.setLanguage("PT-BR");
+                            localize.setLanguage("PT");
                             break;
                     }
                     return $scope.lang = lang

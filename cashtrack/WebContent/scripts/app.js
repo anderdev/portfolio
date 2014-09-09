@@ -129,7 +129,7 @@
     				console.log('User role: '+result.user.role.role);
     				$rootScope.user = result.user;
     				$rootScope.config = result.config;
-    				setLanguage(result.user.language);
+    				localize.setLanguage(result.user.language);
     				$location.path("/dashboard");
     			});
     		}

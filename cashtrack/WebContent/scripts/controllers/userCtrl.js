@@ -75,7 +75,7 @@ appControllers.controller("signinCtrl", ["$scope", function($scope) {
 				
 				$rootScope.user = result.user;
 				$rootScope.config = result.config;
-				setLanguage(result.user.language);
+				localize.setLanguage(result.user.language);
 				$location.path("/dashboard");
 			}
 		});
