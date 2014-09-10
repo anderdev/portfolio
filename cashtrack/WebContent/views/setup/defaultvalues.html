@@ -23,7 +23,6 @@
     <div class="divider"></div>
     <div class="divider"></div>
     
-    
     <div class="row">
     	<div class="col-md-5">
 	    	<div class="panel panel-default">
@@ -36,7 +35,7 @@
 	                            <label for="currency" class="col-sm-4 control-label"><span  data-i18n="lb_currency"></span></label>
 	                            <span class="ui-select">
 			                        <select ng-model="config.currency.id" id="currency" ng-options="currency.id as currency.acronym for currency in currencies">
-									    <option value="" >Select...</option>
+									    <option value="" ></option>
 									</select>
 								</span>
 	                        </div>
@@ -44,7 +43,7 @@
 	                            <label for="closure" class="col-sm-4 control-label"><span data-i18n="lb_type_closure"></span></label>
 	                            <span class="ui-select">
 			                        <select ng-model="config.typeClosure.id" id="closure" ng-options="type.id as type.type for type in typeClosures">
-								    <option value="" >Select...</option>
+								    <option value="" ></option>
 								</select>
 								</span>
 	                        </div>

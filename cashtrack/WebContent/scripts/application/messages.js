@@ -4,7 +4,7 @@
 
 (    function() {
         "use strict";
-        angular.module("app.ui.ctrls", []).controller("NotifyCtrl", ["$scope", "logger",
+        appControllers.controller("NotifyCtrl", ["$scope", "logger",
             function($scope, logger) {
                 return $scope.notify = function(type) {
                     switch (type) {
@@ -267,13 +267,13 @@
     }.call(this),
     function() {
         "use strict";
-        angular.module("app.ui.services", []).factory("logger", [
+        appServices.factory("logger", [
             function() {
                 var logIt;
                 return toastr.options = {
                     closeButton: !0,
                     positionClass: "toast-bottom-right",
-                    timeOut: "3000"
+                    timeOut: "30000"
                 }, logIt = function(message, type) {
                     return toastr[type](message)
                 }, {

@@ -5,13 +5,10 @@
 'use strict';
 
 appControllers.controller('defaultValuesCtrl', [
-    '$scope', '$routeParams', '$location', 'currencyService', 'typeClosureService', 'configService',
-	function ($scope, $routeParams, $location, currencyService, typeClosureService, configService) {
+    '$scope', '$routeParams', '$location', 'currencyService', 'typeClosureService', 'configService', 'logger',
+	function ($scope, $routeParams, $location, currencyService, typeClosureService, configService, logger) {
 
 		function loadDefaultsValues() {
-			
-			console.log('user id:'+$scope.user.id);
-			
 			
 			currencyService.getbylocale({locale: $scope.user.language}, function(result) {
 				$scope.currencies = result;
@@ -28,9 +25,13 @@ appControllers.controller('defaultValuesCtrl', [
 			console.log("token to use:"+token);
 			config.user = $scope.user;
 			configService.save(config, function(result) {
-				$scope.message = result.message;
-				console.log("Saving message: "+$scope.message);
-			});
+				if(result.config != null){
+					return logger.logSuccess(result.message);
+				} else {
+					return logger.error(result.message);
+				}
+				
+			})
 		}
 		
 		$scope.back = function() {

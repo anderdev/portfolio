@@ -25,7 +25,7 @@
                     layout: "wide",
                     menu: "vertical",
                     fixedHeader: !0,
-                    fixedSidebar: !1,
+                    fixedSidebar: !0,
                     pageTransition: $scope.pageTransitionOpts[0]
                 }, $scope.$watch("admin", function(newVal, oldVal) {
                     return "horizontal" === newVal.menu && "vertical" === oldVal.menu ? void $rootScope.$broadcast("nav:reset") : newVal.fixedHeader === !1 && newVal.fixedSidebar === !0 ? (oldVal.fixedHeader === !1 && oldVal.fixedSidebar === !1 && ($scope.admin.fixedHeader = !0, $scope.admin.fixedSidebar = !0), void(oldVal.fixedHeader === !0 && oldVal.fixedSidebar === !0 && ($scope.admin.fixedHeader = !1, $scope.admin.fixedSidebar = !1))) : (newVal.fixedSidebar === !0 && ($scope.admin.fixedHeader = !0), void(newVal.fixedHeader === !1 && ($scope.admin.fixedSidebar = !1)))

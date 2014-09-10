@@ -15,7 +15,6 @@
                         return localize.dictionary = data, localize.resourceFileLoaded = !0, $rootScope.$broadcast("localizeResourcesUpdated")
                     },
                     setLanguage: function(value) {
-                    	console.log('value: '+value);
                         return localize.language = value.toLowerCase().split("_")[0], localize.initLocalizedResources()
                     },
                     setUrl: function(value) {

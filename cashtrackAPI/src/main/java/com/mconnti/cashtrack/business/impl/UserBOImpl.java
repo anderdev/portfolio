@@ -252,6 +252,10 @@ public class UserBOImpl extends GenericBOImpl<User> implements UserBO {
 	@Override
 	public MessageReturn getByUsername(String username) throws Exception {
 		MessageReturn ret =  userDAO.getByUsername(username);
+		Map<String, String> queryParams = new LinkedHashMap<>();
+		queryParams.put(" where x.user = ", ret.getUser().getId() + "");
+		Config config = configDAO.findByParameter(Config.class, queryParams);
+		ret.setConfig(config);
 		return ret;
 	}
 
