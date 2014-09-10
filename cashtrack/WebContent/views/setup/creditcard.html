@@ -1,0 +1,68 @@
+
+<div class="page page-table" data-ng-controller="creditCardCtrl">
+
+    <section class="panel panel-default table-dynamic">
+
+        <table class="table table-bordered table-striped table-responsive">
+            <thead>
+                <tr>
+                    <th>
+                    	<div class="th">
+                        	<span data-i18n="lb_name"></span>
+	                        <span class="fa fa-angle-up" data-ng-click=" order('name') " data-ng-class="{active: row == 'name'}"></span>
+                        	<span class="fa fa-angle-down" data-ng-click=" order('-name') " data-ng-class="{active: row == '-name'}"></span>
+                    	</div>
+                    </th>
+                    <th>
+                    	<div class="th">
+                        	<span data-i18n="lb_last_day_to_buy"></span>
+                        	<span class="fa fa-angle-up" data-ng-click=" order('lastDay') " data-ng-class="{active: row == 'lastDay'}"></span>
+                        	<span class="fa fa-angle-down" data-ng-click=" order('-lastDay') " data-ng-class="{active: row == '-lastDay'}"></span>
+                    	</div>
+                    </th>
+                    <th>
+                    	<div class="th">
+                        	<span data-i18n="lb_bill_pay_day"></span>
+                        	<span class="fa fa-angle-up" data-ng-click=" order('billPayDay') " data-ng-class="{active: row == 'billPayDay'}"></span>
+                        	<span class="fa fa-angle-down" data-ng-click=" order('-billPayDay') " data-ng-class="{active: row == '-billPayDay'}"></span>
+                    	</div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="store in currentPageStores">
+                    <td>{{store.name}}</td>
+                    <td>{{store.lastDay}}</td>
+                    <td>{{store.billPayDay}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <footer class="table-footer">
+            <div class="row">
+                <div class="col-md-6 page-num-info">
+                    <span>
+                        <span data-i18n="lb_show"></span>
+                        <select data-ng-model="numPerPage"
+                                data-ng-options="num for num in numPerPageOpt"
+                                data-ng-change="onNumPerPageChange()">
+                        </select> 
+                        <span data-i18n="lb_entries_page"></span>
+                    </span>
+                </div>
+                <div class="col-md-6 text-right pagination-container">
+                    <pagination class="pagination-sm"
+                                ng-model="currentPage"
+                                total-items="filteredStores.length"
+                                max-size="5"
+                                ng-change="select(currentPage)"
+                                items-per-page="numPerPage"
+                                rotate="false"
+                                previous-text="&lsaquo;" next-text="&rsaquo;"
+                                boundary-links="true">
+                    </pagination>
+                </div>
+            </div>
+        </footer>
+    </section>
+</div>

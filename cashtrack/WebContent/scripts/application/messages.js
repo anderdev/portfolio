@@ -272,8 +272,8 @@
                 var logIt;
                 return toastr.options = {
                     closeButton: !0,
-                    positionClass: "toast-bottom-right",
-                    timeOut: "30000"
+                    positionClass: "toast-top-right",
+                    timeOut: "5000"
                 }, logIt = function(message, type) {
                     return toastr[type](message)
                 }, {

@@ -18,6 +18,6 @@ public interface CreditCardBO extends GenericBO<CreditCard>{
 	
 	public CreditCard getById(Long id);
 
-	public List<CreditCard> listByParameter(CreditCard creditCard) throws Exception;
+	public List<CreditCard> listByParameter(Long userId) throws Exception;
 }
 

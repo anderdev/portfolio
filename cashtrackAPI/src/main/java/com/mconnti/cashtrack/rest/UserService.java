@@ -34,7 +34,7 @@ public class UserService {
 	@GET
 	@Path("/user")
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response listUser() {
+	public Response list() {
 
 		List<User> list = new ArrayList<>();
 		try {
@@ -49,7 +49,7 @@ public class UserService {
 	@PUT
 	@Path("/user")
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response listUserSuperUser(User user) {
+	public Response listSuperUser(User user) {
 		Map<String, String> queryParams = new LinkedHashMap<String, String>();
 		queryParams.put(" where x.superUser", "= " + user.getId());
 		queryParams.put(" or x.id", "= " + user.getId());
@@ -68,7 +68,7 @@ public class UserService {
 	@Path("/user")
 	@Consumes({ MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response saveUser(User user) {
+	public Response save(User user) {
 		MessageReturn ret = new MessageReturn();
 		try {
 			ret = userBO.save(user);
@@ -81,7 +81,7 @@ public class UserService {
 	@DELETE
 	@Path("/user/{id}")
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response deleteUser(@PathParam("id") Long id) {
+	public Response delete(@PathParam("id") Long id) {
 		MessageReturn ret = new MessageReturn();
 		try {
 			ret = userBO.delete(id);

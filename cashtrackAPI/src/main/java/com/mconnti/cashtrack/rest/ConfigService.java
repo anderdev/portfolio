@@ -29,8 +29,7 @@ public class ConfigService {
 	@GET
 	@Path("/config")
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response listConfig() {
-
+	public Response list() {
 		List<Config> list = new ArrayList<>();
 		try {
 			list = configBO.list();
@@ -45,7 +44,7 @@ public class ConfigService {
 	@Path("/config")
 	@Consumes({ MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response saveConfig(Config config) {
+	public Response save(Config config) {
 		MessageReturn ret = new MessageReturn();
 		try {
 			ret = configBO.save(config);
@@ -59,7 +58,7 @@ public class ConfigService {
 	@Path("/config")
 	@Consumes({ MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response deleteConfig(Config config) {
+	public Response delete(Config config) {
 		MessageReturn ret = new MessageReturn();
 		try {
 			ret = configBO.delete(config.getId());

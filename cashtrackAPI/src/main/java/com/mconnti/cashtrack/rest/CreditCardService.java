@@ -7,8 +7,8 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -28,29 +28,14 @@ public class CreditCardService {
 	}
 
 	@GET
-	@Path("/creditcard")
-	@Produces({ MediaType.APPLICATION_JSON })
-	public Response listCreditCard() {
-
-		List<CreditCard> list = new ArrayList<>();
-		try {
-			list = creditCardBO.list();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return Response.status(200).entity(list).build();
-	}
-
-	@PUT
-	@Path("/creditcard")
+	@Path("/creditcard/{userId}")
 	@Consumes({ MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response listCreditCardByParameter(CreditCard creditCard) {
+	public Response listByParameter(@PathParam("userId") Long userId) {
 
 		List<CreditCard> list = new ArrayList<>();
 		try {
-			list = creditCardBO.listByParameter(creditCard);
+			list = creditCardBO.listByParameter(userId);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -62,7 +47,7 @@ public class CreditCardService {
 	@Path("/creditcard")
 	@Consumes({ MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response saveCreditCard(CreditCard creditCard) {
+	public Response save(CreditCard creditCard) {
 		MessageReturn ret = new MessageReturn();
 		try {
 			ret = creditCardBO.save(creditCard);
@@ -76,7 +61,7 @@ public class CreditCardService {
 	@Path("/creditcard")
 	@Consumes({ MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response deleteCreditCard(CreditCard creditCard) {
+	public Response delete(CreditCard creditCard) {
 		MessageReturn ret = new MessageReturn();
 		try {
 			ret = creditCardBO.delete(creditCard.getId());
