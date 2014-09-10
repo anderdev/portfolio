@@ -29,7 +29,6 @@ public class CreditCardService {
 
 	@GET
 	@Path("/creditcard/{userId}")
-	@Consumes({ MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Response listByParameter(@PathParam("userId") Long userId) {
 

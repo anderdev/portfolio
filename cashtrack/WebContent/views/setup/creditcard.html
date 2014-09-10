@@ -1,6 +1,30 @@
 
 <div class="page page-table" data-ng-controller="creditCardCtrl">
 
+	<div class="divider"></div>
+    <div class="divider"></div>
+    <div class="divider"></div>
+    <div class="divider"></div>
+    <div class="divider"></div>
+    <div class="divider"></div>
+    <div class="divider"></div>
+    <div class="divider"></div>
+    
+    <div class="signin-header">
+        <section class="text-center">
+            <h2><span data-i18n="lb_credit_card_list"></span></h2>
+        </section>
+    </div>
+    
+    <div class="divider"></div>
+    <div class="divider"></div>
+    <div class="divider"></div>
+    <div class="divider"></div>
+    <div class="divider"></div>
+    <div class="divider"></div>
+    <div class="divider"></div>
+    <div class="divider"></div>
+
     <section class="panel panel-default table-dynamic">
 
         <table class="table table-bordered table-striped table-responsive">
@@ -30,10 +54,10 @@
                 </tr>
             </thead>
             <tbody>
-                <tr data-ng-repeat="store in currentPageStores">
-                    <td>{{store.name}}</td>
-                    <td>{{store.lastDay}}</td>
-                    <td>{{store.billPayDay}}</td>
+                <tr data-ng-repeat="card in currentPageCards">
+                    <td>{{card.name}}</td>
+                    <td>{{card.lastDay}}</td>
+                    <td>{{card.billPayDay}}</td>
                 </tr>
             </tbody>
         </table>
@@ -53,7 +77,7 @@
                 <div class="col-md-6 text-right pagination-container">
                     <pagination class="pagination-sm"
                                 ng-model="currentPage"
-                                total-items="filteredStores.length"
+                                total-items="filteredCards.length"
                                 max-size="5"
                                 ng-change="select(currentPage)"
                                 items-per-page="numPerPage"
