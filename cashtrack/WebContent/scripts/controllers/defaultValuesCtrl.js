@@ -5,12 +5,13 @@
 'use strict';
 
 appControllers.controller('defaultValuesCtrl', [
-    '$scope', '$routeParams', '$location', 'currencyService', 'typeClosureService', 'configService', 'logger',
-	function ($scope, $routeParams, $location, currencyService, typeClosureService, configService, logger) {
+    '$scope', '$routeParams', '$location', 'currencyService', 'typeClosureService', 'configService', 'logger', 'localize',
+	function ($scope, $routeParams, $location, currencyService, typeClosureService, configService, logger, localize) {
 
 		function loadDefaultsValues() {
 			
 			currencyService.getbylocale({locale: $scope.user.language}, function(result) {
+				console.log('Select: '+localize.getLocalizedString('lb_select'));
 				$scope.currencies = result;
 			});
 			
