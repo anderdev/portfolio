@@ -92,5 +92,5 @@ appControllers.controller("signinCtrl", ["$scope", function($scope) {
 				$location.path("/login");
 			}
 		});
-	}
+	};
 })
