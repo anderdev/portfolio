@@ -34,7 +34,7 @@ public class CreditCardBOImpl extends GenericBOImpl<CreditCard> implements Credi
 				if(creditCard.getExpire() != null){
 					creditCard.setExpireDate(Utils.getCreditCardExpiredDate(creditCard.getExpire()).getTime());
 				}else{
-					creditCard.setExpireDate(Utils.getCreditCardExpiredDate(creditCard.getExpire()).getTime());
+					creditCard.setExpireDate(Utils.getCreditCardExpiredDate(Utils.dateToStringCreditCard(creditCard.getExpireDate())).getTime());
 				}
 				
 				creditCard.setUser(user);
@@ -94,9 +94,9 @@ public class CreditCardBOImpl extends GenericBOImpl<CreditCard> implements Credi
 	}
 
 	@Override
-	public List<CreditCard> listByParameter(Long userId) throws Exception {
+	public List<CreditCard> listByParameter(String userId) throws Exception {
 		Map<String, String> queryParams = new HashMap<>();
-		queryParams.put(" where x.user.id = ", userId+"");
+		queryParams.put(" where x.user.id = ", userId);
 
 		return list(CreditCard.class, queryParams, "x.name");
 	}

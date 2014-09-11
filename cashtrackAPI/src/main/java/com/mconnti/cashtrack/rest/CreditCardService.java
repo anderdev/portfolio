@@ -30,8 +30,7 @@ public class CreditCardService {
 	@GET
 	@Path("/creditcard/{userId}")
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response listByParameter(@PathParam("userId") Long userId) {
-
+	public Response listByParameter(@PathParam("userId") String userId) {
 		List<CreditCard> list = new ArrayList<>();
 		try {
 			list = creditCardBO.listByParameter(userId);
