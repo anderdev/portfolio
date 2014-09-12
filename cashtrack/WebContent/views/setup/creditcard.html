@@ -33,7 +33,7 @@
                     <th>
                     	<div class="th">
                         	<span data-i18n="lb_name"></span>
-	                        <span class="fa fa-angle-up" data-ng-click=" order('name') " data-ng-class="{active: row == 'name'}"></span>
+	                        <span class="fa fa-angle-up"  data-ng-click=" order('name') " data-ng-class="{active: row == 'name'}"></span>
                         	<span class="fa fa-angle-down" data-ng-click=" order('-name') " data-ng-class="{active: row == '-name'}"></span>
                     	</div>
                     </th>
@@ -56,8 +56,8 @@
             <tbody>
                 <tr data-ng-repeat="card in currentPageCards">
                     <td>{{card.name}}</td>
-                    <td>{{card.lastDay}}</td>
-                    <td>{{card.billPayDay}}</td>
+                    <td>{{card.lastDayToBuy}}</td>
+                    <td>{{card.payday}}</td>
                 </tr>
             </tbody>
         </table>
