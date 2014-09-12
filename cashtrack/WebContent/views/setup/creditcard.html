@@ -30,6 +30,7 @@
         <table class="table table-bordered table-striped table-responsive">
             <thead>
                 <tr>
+                	<th style="width:5px"></th>
                     <th>
                     	<div class="th">
                         	<span data-i18n="lb_name"></span>
@@ -51,13 +52,16 @@
                         	<span class="fa fa-angle-down" data-ng-click=" order('-billPayDay') " data-ng-class="{active: row == '-billPayDay'}"></span>
                     	</div>
                     </th>
+                    <th style="width:5px"></th>
                 </tr>
             </thead>
             <tbody>
                 <tr data-ng-repeat="card in currentPageCards">
+                	<td><input type="checkbox" class="toggle-task ng-pristine ng-valid" data-ng-model="task.completed" data-ng-change="completed(task)"></td>
                     <td>{{card.name}}</td>
                     <td>{{card.lastDayToBuy}}</td>
                     <td>{{card.payday}}</td>
+                    <td><a href="javascript:;" ng-click="edit(card.id)" class="btn-icon-lined btn-icon-round btn-icon-sm btn-success"><i class="glyphicon glyphicon-edit"></</i></a></td>
                 </tr>
             </tbody>
         </table>
