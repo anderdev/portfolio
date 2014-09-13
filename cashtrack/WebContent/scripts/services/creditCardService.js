@@ -5,7 +5,7 @@
 'use strict';
 
 appServices.factory('creditCardService', function($resource){
-	return $resource('/cashtrackAPI/rest/creditcard/:userId', {},
+	return $resource('/cashtrackAPI/rest/creditcard/:userId:id', {},
 			{
 				get: {
 					method: 'GET',
@@ -16,6 +16,10 @@ appServices.factory('creditCardService', function($resource){
 					method: 'POST',
 					params: {'action' : ''},
 					headers : {'Content-Type': 'application/json'}
+				},
+				exclude: {
+					method: 'DELETE',
+					params: {id : '@id'}
 				}
 			}
 		);

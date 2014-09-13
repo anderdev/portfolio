@@ -9,7 +9,7 @@
 	"lb_currency":"Moeda",
 	"lb_dashboard":"Painel",
 	"lb_default_values":"Valores Padrões",
-	"lb_delete":"Deletar",
+	"lb_delete":"Excluir",
 	"lb_description":"Descrição",
 	"lb_dont_have_account":"Ainda não tem uma conta? ",
 	"lb_email":"E-mail",

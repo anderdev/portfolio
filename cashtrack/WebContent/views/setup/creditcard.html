@@ -6,9 +6,6 @@
     <div class="divider"></div>
     <div class="divider"></div>
     <div class="divider"></div>
-    <div class="divider"></div>
-    <div class="divider"></div>
-    <div class="divider"></div>
     
     <div class="signin-header">
         <section class="text-center">
@@ -21,12 +18,17 @@
     <div class="divider"></div>
     <div class="divider"></div>
     <div class="divider"></div>
-    <div class="divider"></div>
-    <div class="divider"></div>
-    <div class="divider"></div>
 
+	<div class="row">
+		<div class="col-sm-6 text-left">
+			<button type="button" class="btn btn-success btn-w-xs" ng-click="exclude()"><span data-i18n="lb_delete"></span></button>
+		</div>
+		<div class="col-sm-6 text-right">
+			<button type="button" class="btn btn-success btn-w-xs "><span data-i18n="lb_new"></span></button>
+		</div>
+	</div>
+	<div class="divider"></div>
     <section class="panel panel-default table-dynamic">
-
         <table class="table table-bordered table-striped table-responsive">
             <thead>
                 <tr>
@@ -57,7 +59,7 @@
             </thead>
             <tbody>
                 <tr data-ng-repeat="card in currentPageCards">
-                	<td><input type="checkbox" class="toggle-task ng-pristine ng-valid" data-ng-model="task.completed" data-ng-change="completed(task)"></td>
+                	<td><input type="checkbox" name="selectedCards[]" value="{{card.id}}" ng-checked="cardsToDelete.indexOf(card.id) > -1" ng-click="toggleSelection(card.id)" class="toggle-task ng-pristine ng-valid"></td>
                     <td>{{card.name}}</td>
                     <td>{{card.lastDayToBuy}}</td>
                     <td>{{card.payday}}</td>

@@ -56,13 +56,12 @@ public class CreditCardService {
 	}
 
 	@DELETE
-	@Path("/creditcard")
-	@Consumes({ MediaType.APPLICATION_JSON })
+	@Path("/creditcard/{id}")
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response delete(CreditCard creditCard) {
+	public Response delete(@PathParam("id") String id) {
 		MessageReturn ret = new MessageReturn();
 		try {
-			ret = creditCardBO.delete(creditCard.getId());
+			ret = creditCardBO.delete(Long.valueOf(id));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

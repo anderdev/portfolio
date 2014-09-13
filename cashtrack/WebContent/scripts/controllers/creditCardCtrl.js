@@ -9,15 +9,13 @@ appControllers.controller('creditCardCtrl', [
 	function ($scope, $filter, $location, creditCardService, logger, localize) {
     	var init;
     	
+    	$scope.cardsToDelete = [];
+    	
 		function load() {
 			console.log('loading credit cards');
 			console.log('User ID: '+$scope.user.id);
 			creditCardService.get({userId: $scope.user.id}).$promise.then(function(result) {
 				$scope.cards = result;
-//				for(var x = 0; x < $scope.cards.length; x++){
-//					console.log('credit card - ID: '+$scope.cards[x].id+' NAME: '+$scope.cards[x].name);
-//				}
-				
 				$scope.searchKeywords = "";
 				$scope.filteredCards = [];
 				$scope.row = "";
@@ -51,14 +49,20 @@ appControllers.controller('creditCardCtrl', [
 				$scope.numPerPage = $scope.numPerPageOpt[1];
 				$scope.currentPage = 1;
 				$scope.currentPageCards = [];
-				
-// console.log('currentPage: '+$scope.currentPage);
-// console.log('numPerPage: '+$scope.numPerPage);
-// console.log('cards: '+$scope.cards.length);
 		        return $scope.search(), $scope.select($scope.currentPage);
 			});
 		};
 		
+		$scope.toggleSelection = function toggleSelection(id) {
+			var idx = $scope.cardsToDelete.indexOf(id);
+			if (idx > -1) {
+				$scope.cardsToDelete.splice(idx, 1);
+			}
+			else {
+				$scope.cardsToDelete.push(id);
+			}
+		};
+		  
 		$scope.save = function(creditCard) {
 			var token = $scope.authToken;
 			console.log("token to use:"+token);
@@ -72,6 +76,17 @@ appControllers.controller('creditCardCtrl', [
 				
 			});
 		};
+		
+		$scope.exclude = function(){
+			for(var x = 0; x < $scope.cardsToDelete.length; x++){
+				var userId = $scope.cardsToDelete[x];
+				creditCardService.exclude({id: userId}, function(result) {
+					return logger.logSuccess(result.message);
+				});
+			}
+			$scope.cardsToDelete.length = 0;
+			load();
+		}
 	    
 	    $scope.back = function() {
 			$location.path("/dashboard");
