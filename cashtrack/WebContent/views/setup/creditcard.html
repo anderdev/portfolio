@@ -23,8 +23,27 @@
 		<div class="col-sm-6 text-left">
 			<button type="button" class="btn btn-success btn-w-xs" ng-click="exclude()"><span data-i18n="lb_delete"></span></button>
 		</div>
-		<div class="col-sm-6 text-right">
-			<button type="button" class="btn btn-success btn-w-xs "><span data-i18n="lb_new"></span></button>
+		<div class="col-sm-6 text-right" data-ng-controller="modalCtrl">
+			<script type="text/ng-template" id="creditCardModalContent.html">
+            	<div class="modal-header">
+                	<h3><span data-i18n="lb_credit_card_registration"></span></h3>
+                </div>
+                <div class="modal-body">
+                	<span ng-repeat="item in items" class="list-unstyled">
+                    	<label class="ui-radio"><input name="radio1" type="radio" value="{{ item }}"  ng-checked="selected.item === item" ng-click="selected.item = item"><span>{{ item }}</span></label>
+                    </span>
+                    <br>
+                    Selected: <b>{{ selected.item }}</b>
+                </div>
+                <div class="modal-footer">
+                	<button class="btn btn-primary" ng-click="ok()">OK</button>
+                    <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+                </div>
+            </script>
+			<button type="button" class="btn btn-success btn-w-xs" ng-click="open()"><span data-i18n="lb_new"></span></button>
+			<div class="callout callout-info" >
+		         <p>Selection from a modal: <strong>{{ selected }}</strong></p>
+		    </div>
 		</div>
 	</div>
 	<div class="divider"></div>
@@ -63,7 +82,7 @@
                     <td>{{card.name}}</td>
                     <td>{{card.lastDayToBuy}}</td>
                     <td>{{card.payday}}</td>
-                    <td><a href="javascript:;" ng-click="edit(card.id)" class="btn-icon-lined btn-icon-round btn-icon-sm btn-success"><i class="glyphicon glyphicon-edit"></</i></a></td>
+                    <td><a href="javascript:;" ng-click="edit(card.id)" class="btn-icon-lined btn-icon-round btn-icon-sm btn-success"><i class="glyphicon glyphicon-edit"></i></a></td>
                 </tr>
             </tbody>
         </table>

@@ -6,6 +6,7 @@
 	"lb_cancel":"Cancelar",
 	"lb_credit_card":"Cartão de Crédito",
 	"lb_credit_card_list":"Lista de Cartão de Crédito",
+	"lb_credit_card_registration":"Cadastro de Cartão de Crédito",
 	"lb_currency":"Moeda",
 	"lb_dashboard":"Painel",
 	"lb_default_values":"Valores Padrões",
