@@ -5,8 +5,8 @@
 'use strict';
 
 appControllers.controller('creditCardCtrl', [
-    '$scope', '$filter', '$location', 'creditCardService', 'logger', 'localize',
-	function ($scope, $filter, $location, creditCardService, logger, localize) {
+    '$scope', '$filter', '$location', 'creditCardService', 'logger', 'localize', '$log',
+	function ($scope, $filter, $location, creditCardService, logger, localize, $log) {
     	var init;
     	
     	$scope.cardsToDelete = [];
@@ -63,11 +63,11 @@ appControllers.controller('creditCardCtrl', [
 			}
 		};
 		  
-		$scope.save = function(creditCard) {
+		$scope.save = function(card) {
 			var token = $scope.authToken;
 			console.log("token to use:"+token);
-			creditCard.user = $scope.user;
-			configService.save(creditCard, function(result) {
+			card.user = $scope.user;
+			configService.save(card, function(result) {
 				if(result.creditCard != null){
 					return logger.logSuccess(result.message);
 				} else {
@@ -92,11 +92,8 @@ appControllers.controller('creditCardCtrl', [
 			$location.path("/dashboard");
 		};
 		
-		$scope.ok = function() {
-			$modalInstance.close($scope.selected.item)
-		};
-		
-		$scope.cancel = function() {
+		$scope.cancelModal = function() {
+			$log.info("Modal dismissed at: "+ new Date);
 			$modalInstance.dismiss("cancel");
 		};
     	
@@ -121,8 +118,7 @@ appControllers.controller('creditCardCtrl', [
 						return $scope.items;
 					}
 				}
-			}), modalInstance.result.then(function(
-					selectedItem) {
+			}), modalInstance.result.then(function(selectedItem) {
 				$scope.selected = selectedItem;
 			}, function() {
 				$log.info("Modal dismissed at: "+ new Date);
@@ -130,13 +126,14 @@ appControllers.controller('creditCardCtrl', [
 		}
 	} 
 ]).controller("modalInstCtrl",[ 
-	"$scope", "$modalInstance", "items",
+	"$scope", "$modalInstance", "items", 
 	function($scope, $modalInstance, items) {
 		$scope.items = items, $scope.selected = {
 			item : $scope.items[0]
 		}, $scope.ok = function() {
 			$modalInstance.close($scope.selected.item)
 		}, $scope.cancel = function() {
+			creditCardCtrl.load();
 			$modalInstance.dismiss("cancel");
 		}
 	} 

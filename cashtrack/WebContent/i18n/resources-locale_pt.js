@@ -16,6 +16,7 @@
 	"lb_email":"E-mail",
 	"lb_english":"English",
 	"lb_entries_page":" registros por página",
+	"lb_expire_on":"Vence em",
 	"lb_forgot_password":"Esqueceu sua senha?",
 	"lb_language":"Idioma",
 	"lb_last_day_to_buy":"Último dia Fatura",

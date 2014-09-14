@@ -16,6 +16,7 @@
 	"lb_email":"E-mail",
 	"lb_english":"English",
 	"lb_entries_page":" entries per page",
+	"lb_expire_on":"Expire on",
 	"lb_forgot_password":"Forgot your password?",
 	"lb_language":"Language",
 	"lb_last_day_to_buy":"Last day Bill",
