@@ -7,8 +7,6 @@
 appControllers.controller('creditCardCtrl', [
     '$scope', '$filter', '$location', 'creditCardService', 'logger', 'localize', '$log',
 	function ($scope, $filter, $location, creditCardService, logger, localize, $log) {
-    	var init;
-    	
     	$scope.cardsToDelete = [];
     	
 		function load() {
@@ -96,6 +94,10 @@ appControllers.controller('creditCardCtrl', [
 			$log.info("Modal dismissed at: "+ new Date);
 			$modalInstance.dismiss("cancel");
 		};
+		
+		$scope.$on('loadDatatable', function(event) {
+			load();
+		});
     	
     	angular.extend($scope, {
     		cards: [],
@@ -121,6 +123,7 @@ appControllers.controller('creditCardCtrl', [
 			}), modalInstance.result.then(function(selectedItem) {
 				$scope.selected = selectedItem;
 			}, function() {
+				$scope.$emit('loadDatatable');
 				$log.info("Modal dismissed at: "+ new Date);
 			});
 		}
@@ -133,7 +136,6 @@ appControllers.controller('creditCardCtrl', [
 		}, $scope.ok = function() {
 			$modalInstance.close($scope.selected.item)
 		}, $scope.cancel = function() {
-			creditCardCtrl.load();
 			$modalInstance.dismiss("cancel");
 		}
 	} 
