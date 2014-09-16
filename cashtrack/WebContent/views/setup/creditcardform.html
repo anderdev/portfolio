@@ -1,0 +1,60 @@
+
+<div class="page page-table" data-ng-controller="creditCardCtrl">
+
+	<div class="divider"></div>
+    <div class="divider"></div>
+    <div class="divider"></div>
+    <div class="divider"></div>
+    <div class="divider"></div>
+    
+    <div class="signin-header">
+        <section class="text-center">
+            <h2><span data-i18n="lb_credit_card_registration"></span></h2>
+        </section>
+    </div>
+    
+    <div class="divider"></div>
+    <div class="divider"></div>
+    <div class="divider"></div>
+    <div class="divider"></div>
+    <div class="divider"></div>
+    
+    <div class="row" style="border:0px solid #000">
+		<div class="col-md-10 col-md-offset-1" style="border:0px dotted #000">
+ 	    	<form class="form-horizontal" role="form">
+	    		<div class="form-group">
+    	    		<label for="cardName" class="col-sm-3 control-label" style="border:0px dotted #000"><span data-i18n="lb_name"></span></label>
+     	    	    <div class="col-sm-8">
+         	    		<input type="text" class="form-control" id="cardName" ng-model="card.name" required>
+             	    </div>
+                </div>
+                <div class="form-group">
+		        	<label for="expireOn" class="col-sm-3 control-label" style="border:0px dotted #000"><span data-i18n="lb_expire_on"></span></label>
+    		        <div class="col-sm-3">
+        		    	<input type="text" class="form-control" id="expireOn" ng-model="card.expire" required >
+            		</div>
+                </div>
+				<div class="form-group">
+                	<label for="payDay" class="col-sm-3 control-label" style="border:0px dotted #000"><span data-i18n="lb_bill_pay_day"></span></label>
+ 		            <div class="col-sm-2">
+     		        	<input type="text" class="form-control" id="payDay" ng-model="card.payday" required >
+         		    </div>
+             	</div>
+				<div class="form-group">
+		        	<label for="lastDay" class="col-sm-3 control-label" style="border:0px dotted #000"><span data-i18n="lb_last_day_to_buy"></span></label>
+    		        <div class="col-sm-2">
+        		    	<input type="text" class="form-control" id="lastDay" ng-model="card.lastDayToBuy" required>
+            		</div>
+				</div>
+        	</form>  
+		</div>	
+	</div>
+	<div class="divider"></div>
+    <div class="divider"></div>
+	<div class="row" >
+		<div class="text-center">
+			<button class="btn btn-primary" ng-click="save(card)"><span data-i18n="lb_save"></span></button>
+        	<button class="btn btn-warning" ng-click="cancel()"><span data-i18n="lb_cancel"></span></button>
+		</div>
+    </div>
+</div>

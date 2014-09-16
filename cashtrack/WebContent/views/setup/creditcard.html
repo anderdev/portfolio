@@ -21,51 +21,10 @@
 
 	<div class="row">
 		<div class="col-sm-6 text-left">
-			<button type="button" class="btn btn-success btn-w-xs" ng-click="exclude()"><span data-i18n="lb_delete"></span></button>
+			<button type="button" class="btn btn-success btn-w-xs" data-ng-click="exclude()"><span data-i18n="lb_delete"></span></button>
 		</div>
-		<div class="col-sm-6 text-right" data-ng-controller="modalCtrl">
-			<script type="text/ng-template" id="creditCardModalContent.html">
-            	<div class="modal-header">
-                	<h3><span data-i18n="lb_credit_card_registration"></span></h3>
-                </div>
-                <div class="modal-body">
-	            	<div class="row" style="border:0px solid #000">
-    	            	<div class="col-md-10 col-md-offset-1" style="border:0px dotted #000">
-	    	                <form class="form-horizontal" role="form">
-    	    	                <div class="form-group">
-        	    	                <label for="cardName" class="col-sm-3 control-label" style="border:0px dotted #000"><span data-i18n="lb_name"></span></label>
-            	    	            <div class="col-sm-8">
-                	    	            <input type="text" class="form-control" id="cardName" data-ng-model="card.name" required>
-                    	    	    </div>
-	                        	</div>
-		                        <div class="form-group">
-    		                        <label for="expireOn" class="col-sm-3 control-label" style="border:0px dotted #000"><span data-i18n="lb_expire_on"></span></label>
-        		                    <div class="col-sm-3">
-            		                    <input type="text" class="form-control" id="expireOn" data-ng-model="card.expire" required >
-                		            </div>
-                    		    </div>
-								<div class="form-group">
-    		                        <label for="payDay" class="col-sm-3 control-label" style="border:0px dotted #000"><span data-i18n="lb_bill_pay_day"></span></label>
-        		                    <div class="col-sm-2">
-            		                    <input type="text" class="form-control" id="payDay" data-ng-model="card.payday" required >
-                		            </div>
-                    		    </div>
-								<div class="form-group">
-    		                        <label for="lastDay" class="col-sm-3 control-label" style="border:0px dotted #000"><span data-i18n="lb_last_day_to_buy"></span></label>
-        		                    <div class="col-sm-2">
-            		                    <input type="text" class="form-control" id="lastDay" data-ng-model="card.lastDayToBuy" required>
-                		            </div>
-                    		    </div>
-                    		</form>  
-		                </div>	
-   			         </div>
-                </div>
-                <div class="modal-footer">
-                	<button class="btn btn-primary" ng-click="save()"><span data-i18n="lb_save"></span></button>
-                    <button class="btn btn-warning" ng-click="cancel()"><span data-i18n="lb_cancel"></span></button>
-                </div>
-            </script>
-			<button type="button" class="btn btn-success btn-w-xs" ng-click="open()"><span data-i18n="lb_new"></span></button>
+		<div class="col-sm-6 text-right" >
+			<button type="button" class="btn btn-success btn-w-xs" data-ng-click="newCard()"><span data-i18n="lb_new"></span></button>
 		</div>
 	</div>
 	<div class="divider"></div>
@@ -104,7 +63,7 @@
                     <td>{{card.name}}</td>
                     <td>{{card.lastDayToBuy}}</td>
                     <td>{{card.payday}}</td>
-                    <td><a href="javascript:;" ng-click="edit(card.id)" class="btn-icon-lined btn-icon-round btn-icon-sm btn-success"><i class="glyphicon glyphicon-edit"></i></a></td>
+                    <td><a href="javascript:;" ng-click="edit(card)" class="btn-icon-lined btn-icon-round btn-icon-sm btn-success"><i class="glyphicon glyphicon-edit"></i></a></td>
                 </tr>
             </tbody>
         </table>

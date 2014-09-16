@@ -5,13 +5,16 @@
 'use strict';
 
 appControllers.controller('creditCardCtrl', [
-    '$scope', '$filter', '$location', 'creditCardService', 'logger', 'localize', '$log',
-	function ($scope, $filter, $location, creditCardService, logger, localize, $log) {
+    '$rootScope', '$scope', '$filter', '$location', 'creditCardService', 'logger', 'localize', 
+	function ($rootScope, $scope, $filter, $location, creditCardService, logger, localize) {
     	$scope.cardsToDelete = [];
     	
 		function load() {
 			console.log('loading credit cards');
 			console.log('User ID: '+$scope.user.id);
+			if($rootScope.card != null){
+				console.log('Card ID: '+$rootScope.card.id);
+			}
 			creditCardService.get({userId: $scope.user.id}).$promise.then(function(result) {
 				$scope.cards = result;
 				$scope.searchKeywords = "";
@@ -65,7 +68,7 @@ appControllers.controller('creditCardCtrl', [
 			var token = $scope.authToken;
 			console.log("token to use:"+token);
 			card.user = $scope.user;
-			configService.save(card, function(result) {
+			creditCardService.save(card, function(result) {
 				if(result.creditCard != null){
 					return logger.logSuccess(result.message);
 				} else {
@@ -73,6 +76,8 @@ appControllers.controller('creditCardCtrl', [
 				}
 				
 			});
+			$rootScope.card = null;
+			$location.path("setup/creditcard");
 		};
 		
 		$scope.exclude = function(){
@@ -85,20 +90,25 @@ appControllers.controller('creditCardCtrl', [
 			$scope.cardsToDelete.length = 0;
 			load();
 		}
-	    
+		
 	    $scope.back = function() {
 			$location.path("/dashboard");
 		};
 		
-		$scope.cancelModal = function() {
-			$log.info("Modal dismissed at: "+ new Date);
-			$modalInstance.dismiss("cancel");
+		$scope.cancel = function() {
+			$rootScope.card = null;
+			$location.path("setup/creditcard");
 		};
 		
-		$scope.$on('loadDatatable', function(event) {
-			load();
-		});
-    	
+		$scope.newCard = function() {
+			$location.path("setup/creditcardform");
+		};
+		
+		$scope.edit = function(card){
+			$rootScope.card = card;
+			$location.path("setup/creditcardform");
+		}
+		
     	angular.extend($scope, {
     		cards: [],
     		load: function() {}
@@ -106,37 +116,4 @@ appControllers.controller('creditCardCtrl', [
     	
     	load();
     }
-]).controller("modalCtrl",[
-	"$scope", "$modal", "$log",
-   	function($scope, $modal, $log) {
-   		$scope.items = [ "item1", "item2", "item3" ],
-		$scope.open = function() {
-			var modalInstance;
-			modalInstance = $modal.open({
-				templateUrl : "creditCardModalContent.html",
-				controller : "modalInstCtrl",
-				resolve : {
-					items : function() {
-						return $scope.items;
-					}
-				}
-			}), modalInstance.result.then(function(selectedItem) {
-				$scope.selected = selectedItem;
-			}, function() {
-				$scope.$emit('loadDatatable');
-				$log.info("Modal dismissed at: "+ new Date);
-			});
-		}
-	} 
-]).controller("modalInstCtrl",[ 
-	"$scope", "$modalInstance", "items", 
-	function($scope, $modalInstance, items) {
-		$scope.items = items, $scope.selected = {
-			item : $scope.items[0]
-		}, $scope.ok = function() {
-			$modalInstance.close($scope.selected.item)
-		}, $scope.cancel = function() {
-			$modalInstance.dismiss("cancel");
-		}
-	} 
 ]);
