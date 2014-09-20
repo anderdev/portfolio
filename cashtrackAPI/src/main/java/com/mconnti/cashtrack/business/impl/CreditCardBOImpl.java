@@ -41,7 +41,6 @@ public class CreditCardBOImpl extends GenericBOImpl<CreditCard> implements Credi
 				saveGeneric(creditCard);
 			} catch (Exception e) {
 				e.printStackTrace();
-				libReturn.setCreditCard(creditCard);
 				libReturn.setMessage(e.getMessage());
 			}
 			

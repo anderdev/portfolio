@@ -7,7 +7,6 @@
 appControllers.controller('creditCardCtrl', [
     '$rootScope', '$scope', '$filter', '$location', 'creditCardService', 'logger', 'localize', 
 	function ($rootScope, $scope, $filter, $location, creditCardService, logger, localize) {
-    	$scope.cardsToDelete = [];
     	
 		function load() {
 			console.log('loading credit cards');
@@ -54,6 +53,8 @@ appControllers.controller('creditCardCtrl', [
 			});
 		};
 		
+		$scope.cardsToDelete = [];
+		
 		$scope.toggleSelection = function toggleSelection(id) {
 			var idx = $scope.cardsToDelete.indexOf(id);
 			if (idx > -1) {
@@ -70,14 +71,14 @@ appControllers.controller('creditCardCtrl', [
 			card.user = $scope.user;
 			creditCardService.save(card, function(result) {
 				if(result.creditCard != null){
+					$rootScope.card = null;
+					$location.path("setup/creditcard");
 					return logger.logSuccess(result.message);
 				} else {
-					return logger.error(result.message);
+					return logger.logError(result.message);
 				}
 				
 			});
-			$rootScope.card = null;
-			$location.path("setup/creditcard");
 		};
 		
 		$scope.exclude = function(){
@@ -116,4 +117,38 @@ appControllers.controller('creditCardCtrl', [
     	
     	load();
     }
+]).controller("creditCardFormCtrl", ["$scope",
+	function($scope) {
+	    var original;
+	    return $scope.cardTemp = {
+    		name: "",
+    		expire: "",
+	        payday: "",
+	        lastDayToBuy: ""
+	    }, original = angular.copy($scope.cardTemp), 
+	       $scope.revert = function() {
+	        return $scope.card = angular.copy(original), $scope.creditCardForm.$setPristine()
+	    }, $scope.canRevert = function() {
+	        return !angular.equals($scope.card, original) || !$scope.creditCardForm.$pristine
+	    }, $scope.canSubmit = function() {
+	        return $scope.creditCardForm.$valid && !angular.equals($scope.card, original);
+	    }
+	}
+]).directive("validateEquals2", [
+	function() {
+	    return {
+	        require: "ngModel",
+	        link: function(scope, ele, attrs, ngModelCtrl) {
+	            var validateEqual2;
+	            return validateEqual2 = function(value) {
+	                var valid;
+	                return valid = value === scope.$eval(attrs.validateEquals2), ngModelCtrl.$setValidity("equal", valid), "function" == typeof valid ? valid({
+	                    value: void 0
+	                }) : void 0;
+	            }, ngModelCtrl.$parsers.push(validateEqual2), ngModelCtrl.$formatters.push(validateEqual2), scope.$watch(attrs.validateEquals2, function(newValue, oldValue) {
+	                return newValue !== oldValue ? ngModelCtrl.$setViewValue(ngModelCtrl.$ViewValue) : void 0
+	            })
+	        }
+	    }
+	}
 ]);
