@@ -10,10 +10,6 @@ appControllers.controller('creditCardCtrl', [
     	
 		function load() {
 			console.log('loading credit cards');
-			console.log('User ID: '+$scope.user.id);
-			if($rootScope.card != null){
-				console.log('Card ID: '+$rootScope.card.id);
-			}
 			creditCardService.get({userId: $scope.user.id}).$promise.then(function(result) {
 				$scope.cards = result;
 				$scope.searchKeywords = "";
